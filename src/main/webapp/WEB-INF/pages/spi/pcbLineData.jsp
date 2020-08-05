@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 	<head>
-		<meta charset="utf-8">
+		<meta charset="utf-8" >
 		<title>pcbLineData</title>
 		<style>
 			body{
@@ -320,18 +320,19 @@
 							opposite: false,
                             minorGridLineWidth:0
 
+
                         };
 						jsonYeildHour.exporting={
 							enabled:false
 						};
 						jsonYeildHour.series=req.data.series;
 						jsonYeildHour.plotOptions = {
-							area: {
+							areaspline: {
 								pointStart: 0,
 								marker: {
 									enabled: true,
-									symbol: 'circle',
-									radius: 3,
+									symbol: 'triangle-down',
+									radius: 1,
 									states: {
 										hover: {
 											enabled: true

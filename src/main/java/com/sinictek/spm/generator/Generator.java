@@ -23,10 +23,12 @@ public class Generator {
     {
         String packageName = "com.sinictek.spm";
         boolean srtviceNameStartWithI=false;  //iservice
+
+        /*generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","a_line","a_status");*/
        /* generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_defaultSetting");*/
-        generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_component");
+        /* generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_component");
         generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_pad");
-       /* generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_pcb");
+       generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_pcb");
         generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_status");
         generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_component");
         generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_pad");
@@ -42,8 +44,8 @@ public class Generator {
         dataSourceConfig.setDbType(DbType.MYSQL)
                 .setUrl(dburl)
                 .setUsername("root")
-                .setPassword("123456")
-                .setDriverName("com.mysql.cj.jdbc.Driver");
+                .setPassword("1234")
+                .setDriverName("com.mysql.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         strategyConfig.setCapitalMode(true)
                 .setEntityLombokModel(false)

@@ -12,13 +12,16 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Board-Machine-View</title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport" /><%--content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />--%>
 
 		<style>
 			body{
+				margin: 0px;
+				padding: 0px;
 				background: url("${staticPath}/static/img/home6.jpg")  ;
 				background-size:cover;
 			}
+
 		</style>
     </head>
 	<body>
@@ -41,7 +44,7 @@
 						  <button type="button" style="width: 30px;height:25px;float: right" id= "status-refresh" class="btn btn-primary  btn-xs">
 							  <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
 					  </h4>
-					  <div id="left-wap" style="height: 250px;overflow:auto;">
+					  <div id="left-wap" style="height: 500px;overflow:auto;">
 						 <div class="panel panel-info" >
 							 <table  class="table" id="machineStatus">
 							 </table>
@@ -50,54 +53,18 @@
 			   </div>
 			</div>
 			<div class="row">
-			  <div class="col-md-8">
-				  <h4 ><span class="glyphicon glyphicon-leaf" aria-hidden="true">&nbsp;</span><i>FPY</i></h4>
-				  <div class="right-wap" style="height: 250px;">
-				  	<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-				  	<div id="container-FPY" style="min-width: 310px; height: 100%; margin: 0 auto">
-					</div>
-				  </div>
-			  </div>
-			  <div class="col-md-4">
-				  <h4><span class="glyphicon glyphicon-equalizer" aria-hidden="true">&nbsp;</span><i>Default Type5</i></h4>
-				  <div class="right-wap" style="height: 250px;">
-				  	<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-				  	<div id="container-defaultTop" style="max-width:800px;height:100%"></div>
-					</div>
-				  </div>
-			  </div>
+
+
 			</div>
 			<div class="row">
-			  <div class="col-md-6">
-					<h4><span class="glyphicon glyphicon-object-align-bottom" aria-hidden="true">&nbsp;</span><i>Product</i></h4>
-					<div class="right-wap" style="height: 250px;">
-						<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-						<div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div>
-					</div>
-			  </div>		
-			  <div class="col-md-6">
-			  				  <h4><div class="btn-group-sm" role="group" aria-label="...">
-								  <span class="glyphicon glyphicon-flag" aria-hidden="true">&nbsp;</span><i>CPK</i>&nbsp;&nbsp;&nbsp;&nbsp;
-								  <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="0">area</button>
-								  <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="1">height</button>
-								  <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="2">vol</button>
-								  <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="3">shiftX</button>
-								  <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="4">shiftY</button>
-							  </div></h4>
-			  				  <div class="right-wap" style="height: 250px;">
-			  				  	<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-									<div id="container-CPK" style="min-width:310px;height:100%;margin: 0 auto">
-									</div>
-			  					</div>
-			  				  </div>
-			  </div>
+
 			</div>
 		</nav>
 
         <script type="text/javascript" >  /*src="{staticPath}/js/pcbMonotorview.js" >*/
 
 
-        var StatusQueryUrl = '${basePath}/Status/pcbMonitorJson';
+        var StatusQueryUrl = '${basePath}/Status/aoi/pcbMonitorJson';
         var iTop1count=0;
         var iTop2count=0;
         var iTop3count=0;
@@ -106,223 +73,6 @@
         var fristLineNo ="";
         var vlineNo="";
         InitMainTable();
-        FPYRealTime();
-        //ProductRealTime();
-        //CPKRealTime();
-        //defaultTopRealTime();
-        function FPYRealTime(){
-            var json = {};
-            $.ajax({
-                url: "${basePath}/Pcb/FPY",
-                dataType:"json",   //返回格式为json
-                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:"",    //参数值
-                type:"GET",   //请求方式
-                beforeSend:function(){
-                    //请求前的处理
-                },
-                success:function(req){
-                    //请求成功时处理
-                    json.chart = req.data.chart;
-                    json.title = '';
-                    json.subtitle = '';
-                    json.tooltip = {
-                        formatter: function () {
-                            return '<b>' + this.x + '</b><br/>' +
-                                this.series.name + ': ' + this.y ;//+ '<br/>' +
-                            //'value: ' + this.point.stackTotal;
-                        }
-                    };
-                    json.plotOptions={
-                        column:{
-                            pointPadding: 0.2,
-                            borderWidth: 0,
-                            dataLabels:{enabled:true}
-                        }
-                    };
-                    json.credits={enabled: false };
-                    json.xAxis = req.data.xaxis;
-                    json.yAxis = req.data.yaxis;
-                    json.series = req.data.series;
-					json.exporting={
-						enabled:false
-					};
-                    iTop1count = req.rows.iTop1Count;
-                    iTop2count =req.rows.iTop2Count;
-                    iTop3count =req.rows.iTop3Count;
-                    iTop4count =req.rows.iTop4Count;
-                    iTop5count =req.rows.iTop5Count;
-                    fristLineNo = req.rows.fristLineNo;
-                    $('#container-FPY').highcharts(json);
-                    vlineNo = fristLineNo;
-                    defaultTopRealTime(fristLineNo);
-                    ProductRealTime(fristLineNo);
-                },
-                complete:function(){
-                    //请求完成的处理
-                },
-                error:function(){
-                    //请求出错处理
-                }
-            });
-        }
-        <!--  产能 -->
-        function ProductRealTime(lineNo){
-            $.ajax({
-                url: "${basePath}/Pcb/ProductCPK",
-                dataType:"json",   //返回格式为json
-                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{lineNo:lineNo,aValue:null},  //参数值
-                type:"POST",   //请求方式
-                success:function(req){
-                    //请求成功时处理
-                    var jsonProduct={};
-                    var jsonCPK={};
-                    jsonProduct.title={ text: ''};
-                    jsonProduct.tooltip={formatter: function () {
-                            return '<b>' + this.x + '</b><br/>' +
-                                this.series.name + ': ' + this.y ;//+ '<br/>' +
-                            //'value: ' + this.point.stackTotal;
-                        }};
-                    jsonProduct.xAxis=req.data.xaxis;
-                    jsonProduct.yAxis=req.data.yaxis;
-                    jsonProduct.plotOptions={spline: {
-                            pointPadding: 0.2,
-                            borderWidth: 1,
-                            dataLabels:{enabled:true}
-                        },
-                        column: {
-                            pointPadding: 0.2,
-                            borderWidth: 1,
-                            dataLabels:{enabled:true}
-                        }};
-					jsonProduct.exporting={
-						enabled:false
-					};
-                    jsonProduct.credits={enabled: false };
-                    jsonProduct.series=req.data.series;
-
-                    jsonCPK.title={text: ''};
-                    jsonCPK.series=req.rows.series;
-                    jsonCPK.tooltip={formatter: function () {
-                            return '<b>' + this.x + '</b><br/>' +
-                                this.series.name + ': ' + this.y ;
-
-                        }};
-                    jsonCPK.xAxis=req.rows.xaxis;
-                    jsonCPK.yAxis=req.rows.yaxis;
-                    jsonCPK.plotOptions={spline: {
-                            pointPadding: 0.2,
-                            borderWidth: 1,
-                            dataLabels:{enabled:true}
-                        }};
-					jsonCPK.exporting={
-						enabled:false
-					};
-                    jsonCPK.credits={enabled: false };
-                    $('#container-product').highcharts(jsonProduct);
-                    $('#container-CPK').highcharts(jsonCPK);
-                }
-            });
-
-        }
-
-        function CPKRealTime(value) {
-            $.ajax({
-                url: "${basePath}/Pcb/ProductCPK",
-                dataType:"json",   //返回格式为json
-                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{lineNo:vlineNo,aValue:value},  //参数值
-                type:"POST",   //请求方式
-                success:function(req){
-                    var jsonCPK={};
-                    jsonCPK.title={text: ''};
-                    jsonCPK.series=req.rows.series;
-                    jsonCPK.tooltip={formatter: function () {
-                            return '<b>' + this.x + '</b><br/>' +
-                                this.series.name + ': ' + this.y ;
-                        }};
-                    jsonCPK.xAxis=req.rows.xaxis;
-                    jsonCPK.yAxis=req.rows.yaxis;
-                    jsonCPK.plotOptions={spline: {
-                            pointPadding: 0.2,
-                            borderWidth: 1,
-                            dataLabels:{enabled:true}
-                        },column: {
-                            pointPadding: 0.2,
-                            borderWidth: 1,
-                            dataLabels:{enabled:true}
-                        }
-
-
-                    };
-					jsonCPK.exporting={
-						enabled:false
-					};
-                    jsonCPK.credits={enabled: false };
-                    //alert('come');
-                    $('#container-CPK').highcharts(jsonCPK);
-                    //alert('come');
-                }
-            });
-
-
-        }
-        <!-- defaultTop -->
-        function defaultTopRealTime(lineNo){
-
-            $.ajax({
-                url: "${basePath}/Pcb/DefaultTop5",
-                dataType:"json",   //返回格式为json
-                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{lineNo:lineNo,iTop1count:iTop1count,iTop2count:iTop2count,iTop3count:iTop3count,iTop4count:iTop4count,iTop5count:iTop5count},  //参数值
-                type:"POST",   //请求方式
-                beforeSend:function(){
-                    //请求前的处理
-                },
-                success:function(req){
-                    //请求成功时处理
-                    if(req.success == true) {
-                        var jsonDefault = {};
-                        jsonDefault.chart = req.data.chart;
-                        jsonDefault.title = '';
-                        jsonDefault.subtitle = '';
-                        jsonDefault.tooltip = {
-                            formatter: function () {
-                                return '<b>' + this.x + '</b><br/>' +
-                                    this.series.name + ': ' + this.y;//+ '<br/>' +
-                                //'value: ' + this.point.stackTotal;
-                            }
-                        };
-                        jsonDefault.xAxis = req.data.xaxis;
-                        jsonDefault.yAxis = req.data.yaxis;
-                        jsonDefault.series = req.data.series;
-                        jsonDefault.plotOptions = {
-                            column: {
-                                pointPadding: 0.2,
-                                borderWidth: 0,
-                                dataLabels: {enabled: true}
-                            }
-                        };
-						jsonDefault.exporting={
-							enabled:false
-						};
-                        jsonDefault.credits = {enabled: false};
-                        //console.log(JSON.stringify(json));
-                        $("#container-defaultTop").highcharts(jsonDefault);
-                    }else{
-                        alert(req.message);
-                    }
-                },
-                complete:function(){
-                    //请求完成的处理
-                },
-                error:function(message){
-                    console.log(message);
-                }
-            });
-
-        }
         <!--   设备状态js代码  -->
         var $table;
         function InitMainTable () {
@@ -474,20 +224,20 @@
                     console.log(status);
                 },
                 onDblClickRow: function (row, $element) {
-                    var line = row.lineNo;
-                    vlineNo = line;
+                    //var line = row.lineNo;
+                    //vlineNo = line;
                     //EditViewById(id, 'view');
                     //alert(line);
-                    defaultTopRealTime(line);
-                    ProductRealTime(line);
+                    //defaultTopRealTime(line);
+                    //ProductRealTime(line);
                 },
                 onClickRow: function (row, $element) {
-                    var line = row.lineNo;
-                    vlineNo = line;
+                    //var line = row.lineNo;
+                   // vlineNo = line;
                     //EditViewById(id, 'view');
                     //alert(line);
-                    defaultTopRealTime(line);
-                    ProductRealTime(line);
+                    //defaultTopRealTime(line);
+                    //ProductRealTime(line);
                 },
             });
 
@@ -513,20 +263,18 @@
 			};
 			$("#machineStatus").bootstrapTable('refresh', opt);
 		}
-		//window.setInterval(refreshTable,2000);
+		window.setInterval(refreshTable,5000);
 		window.setInterval(timeShow,1000);
         //setInterval(2,InitMainTable);
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        })
+
         </script>
 
         <style type="text/css">
-				body{
+				/*body{
 					margin: 0px;
 					padding: 0px;
 					background-color: #ECF0F5;
-				}
+				}*/
 				h4{
 					color: #4cae4c;
 					text-align: center;

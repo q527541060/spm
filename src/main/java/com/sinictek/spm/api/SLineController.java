@@ -228,13 +228,13 @@ public class SLineController {
                 axisYeild.setMax(23);
 
                 axisYeild.setCategories(lstCategoriesYeild);
-                goodSeries.setType("area");
+                goodSeries.setType("areaspline");
                 goodSeries.setData(lstGoodSeriesData);
                 goodSeries.setColor("#211cff");
-                ngSeries.setType("area");
+                ngSeries.setType("areaspline");
                 ngSeries.setData(lstNgSeriesData);
                 ngSeries.setColor("#ff4c39");
-                passSeries.setType("area");
+                passSeries.setType("areaspline");
                 passSeries.setData(lstPassSeriesData);
                 passSeries.setColor("#92ff4e");
 
@@ -242,11 +242,11 @@ public class SLineController {
                 lstSeries.add(passSeries);
                 lstSeries.add(ngSeries);
 
-                pcbCountSeries.setType("area");
+                pcbCountSeries.setType("areaspline");
                 pcbCountSeries.setData(lstpcbCountSeriesData);
-                passPcbCountSeries.setType("area");
+                passPcbCountSeries.setType("areaspline");
                 passPcbCountSeries.setData(lstpassPcbCountSeriesData);
-                ngPadCountSeries.setType("area");
+                ngPadCountSeries.setType("areaspline");
                 ngPadCountSeries.setData(lstngPadCountSeriesData);
 
                 lstPcbSeries.add(pcbCountSeries);

@@ -12,13 +12,22 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Board-Machine-View</title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-
+		<meta name="viewport"  />
+		<%--content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"--%>
 		<style>
 			body{
+				margin: 0px;
+				padding: 0px;
 				background: url("${staticPath}/static/img/home6.jpg")  ;
 				background-size:cover;
 			}
+			/*h4{
+				color: #4cae4c;
+				text-align: center;
+			}
+			.table{
+				background-color: #ECF0F5;
+			}*/
 		</style>
     </head>
 	<body>
@@ -513,7 +522,7 @@
 			};
 			$("#machineStatus").bootstrapTable('refresh', opt);
 		}
-		//window.setInterval(refreshTable,2000);
+		window.setInterval(refreshTable,5000);
 		window.setInterval(timeShow,1000);
         //setInterval(2,InitMainTable);
         $(function () {
@@ -522,11 +531,11 @@
         </script>
 
         <style type="text/css">
-				body{
+				/*body{
 					margin: 0px;
 					padding: 0px;
 					background-color: #ECF0F5;
-				}
+				}*/
 				h4{
 					color: #4cae4c;
 					text-align: center;
