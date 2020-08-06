@@ -266,7 +266,9 @@
 		window.setInterval(refreshTable,5000);
 		window.setInterval(timeShow,1000);
         //setInterval(2,InitMainTable);
-
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip();
+		})
         </script>
 
         <style type="text/css">

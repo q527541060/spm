@@ -294,7 +294,9 @@
 					dataType:"json",
 					async:true,
 					data:{inspectStarttime:startTime,inspectEndtime:endTime,mode:iGroupMode},
+					scriptCharset: 'utf-8',
 					type:"GET",
+
 					beforeSend:function(){
 
 					},

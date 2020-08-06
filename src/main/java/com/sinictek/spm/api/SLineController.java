@@ -38,7 +38,7 @@ public class SLineController {
     }
 
     @ResponseBody
-    @GetMapping("jsonPcbLine")
+    @GetMapping(value = "jsonPcbLine",  produces = "application/json;charset=UTF-8")
     public ApiResponse getJsonPcbLine(@RequestParam("inspectStarttime") String inspectStarttime,
                                       @RequestParam("inspectEndtime") String inspectEndtime ,
                                       @RequestParam("mode") String mode) throws ParseException {
