@@ -16,4 +16,5 @@ import java.util.List;
 public interface SStatusService extends IService<SStatus> {
 
     public List<SStatus> getAllStatusWithLineNoLimt();
+    public SStatus getStatusWithLineNo(String lineNo);
 }

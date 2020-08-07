@@ -51,6 +51,7 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
     })
     public List<SPcb> getPcbListWithALLLine(@Param("inspectStarttime") String inspectStarttime ,@Param("inspectEndtime") String inspectEndtime);
 
+
     @Select({"SELECT " +
             "COUNT(pcb.id) total," +
             "SUM(pcb.inspectResult = 1)/COUNT(pcb.id)*100  ngPcbYeild," +
@@ -86,10 +87,18 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
 
 
     @Select({"SELECT " +
-            //"COUNT(pcb.id) total," +
-            /*"SUM(pcb.inspectResult = 1)/COUNT(pcb.id)*100 ngPcbYeild," +
-            "SUM(pcb.inspectResult = 0)/COUNT(pcb.id)*100 goodPcbYeild," +
-            "SUM(pcb.inspectResult= 2 or pcb.inspectResult = 0)/COUNT(pcb.id)*100 passPcbYeild," +*/
+            "COUNT(pcb.id) total," +
+            "SUM(pcb.inspectResult = 1)/COUNT(pcb.id)*100  ngPcbYeild," +
+            "SUM(pcb.inspectResult = 0)/COUNT(pcb.id)*100  goodPcbYeild," +
+            "SUM(pcb.inspectResult= 2 )/COUNT(pcb.id)*100  passPcbYeild," +
+            "SUM(pcb.inspectResult = 1)  ngPcbCount,"+
+            "SUM(pcb.inspectResult = 0)  goodPcbCount,"+
+            "SUM(pcb.inspectResult = 2)  passPcbCount,"+
+            "SUM(pcb.ngpadCount)  ngpadCount,"+
+            "SUM(pcb.passpadCount) passpadCount," +
+            "SUM(pcb.lowareaCount) lowareaCount," +
+            "SUM(pcb.overareaCount) overareaCount," +
+
             "SUM(pcb.lowareaCount) lowareaCount," +
             "SUM(pcb.overareaCount) overareaCount," +
             "SUM(pcb.lowheightCount) lowheightCount," +
@@ -106,7 +115,7 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
             "SUM(pcb.excessCount) excessCount," +
             "SUM(pcb.insufficientCount) insufficientCount," +
             "SUM(pcb.missingCount) missingCount," +
-            "pcb.lineNo lineNo   " +
+            "pcb.lineNo lineNo,Min(pcb.inspectStarttime) inspectStarttime,Max(pcb.inspectEndtime) inspectEndtime   " +
             /// "SUM(pcb.ngpadCount) ngpadCount  "+
             "FROM  " +
             "s_pcb pcb WHERE pcb.lineNo = #{lineNo} "  + //})

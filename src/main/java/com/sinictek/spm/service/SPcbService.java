@@ -22,4 +22,5 @@ public interface SPcbService extends IService<SPcb> {
     public List<SPcb> getPcbListWithDateAndLineNoPcbResult( String lineNo,String inspectStarttime,
                                                             String inspectEndtime,
                                                             String pcbResult);
+    //public SPcb getPcbWithLineNo();
 }

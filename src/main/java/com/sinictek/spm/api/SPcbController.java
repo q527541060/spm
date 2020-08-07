@@ -1,6 +1,7 @@
 package com.sinictek.spm.api;
 
 
+import com.alibaba.druid.util.StringUtils;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.JsonchartModel.*;
 import com.sinictek.spm.model.SDefaultsetting;
@@ -52,6 +53,132 @@ public class SPcbController {
         System.gc();
         return map;
     }
+
+    @ResponseBody
+    @GetMapping("FPY_LineNo")
+    public ApiResponse<JsonChartsBean> getFPTYWithLineNo(@RequestParam("lineNo") String lineNo){
+
+        String[] arrStrTop5 = getDefaultTypeArray();
+        ModelMap model = new ModelMap();
+
+        int iTop1Count = 0 ;
+        int iTop2Count=  0;
+        int iTop3Count =  0;
+        int iTop4Count =  0;
+        int iTop5Count =  0;
+
+        String fristLineNo = "";
+        JsonChartsBean jsonChartsBean = new JsonChartsBean();
+        Title title = new Title();
+        Chart chart = new Chart();
+        Column column = new Column();
+        //Credits credits = new Credits();
+        //PlotOptions plotOptions = new PlotOptions();
+        Series goodSeries = new Series();
+        Series passSeries = new Series();
+        Series ngSeries = new Series();
+        XAxis xAxis = new XAxis();
+        Title yAxistitle = new Title();
+        YAxis yAxis = new YAxis();
+        String endTime =StringTimeUtils.getTimeDateToString(new Date());
+        List<SPcb> sPcbList = new ArrayList<SPcb>();
+        SPcb sPcbtmp = sPcbService.getPcbListWithLineNo(lineNo,StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_boardMachineTimeLimit),endTime);
+        if(sPcbtmp.getLineNo()!=null && sPcbtmp.getLineNo()!="") {
+            sPcbList.add(sPcbtmp);
+        }
+        List<String> categoriesList = new ArrayList<String>();
+        List<Series> seriesList = new ArrayList<Series>();
+        List<Double> goodSeriesList = new ArrayList<Double>();
+        List<Double> passSeriesList = new ArrayList<Double>();
+        List<Double> ngSeriesList = new ArrayList<Double>();
+
+
+
+        int iTop1 =  Integer.parseInt(arrStrTop5[0]) ;
+        int iTop2=  Integer.parseInt(arrStrTop5[1]);
+        int iTop3 =  Integer.parseInt(arrStrTop5[2]);
+        int iTop4 =  Integer.parseInt(arrStrTop5[3]);
+        int iTop5 =  Integer.parseInt(arrStrTop5[4]);
+        if(sPcbList!=null && sPcbList.size()>0){
+            for (int i=0;i<sPcbList.size();i++
+            ) {
+                fristLineNo = sPcbList.get(0).getLineNo();
+                categoriesList.add(sPcbList.get(i).getLineNo()+"");
+                goodSeriesList.add((double)(Math.round(Double.parseDouble(sPcbList.get(i).getGoodPcbYeild()) *100)/100.0));
+                passSeriesList.add((double)(Math.round(Double.parseDouble(sPcbList.get(i).getPassPcbYeild()) *100)/100.0));
+                ngSeriesList.add((double)(Math.round(Double.parseDouble(sPcbList.get(i).getNgPcbYeild()) *100)/100.0));
+                //default error count
+                iTop1Count+= getPadErrorCodeCount(sPcbList.get(i),iTop1);
+                iTop2Count+= getPadErrorCodeCount(sPcbList.get(i),iTop2);
+                iTop3Count+= getPadErrorCodeCount(sPcbList.get(i),iTop3);
+                iTop4Count+= getPadErrorCodeCount(sPcbList.get(i),iTop4);
+                iTop5Count= getPadErrorCodeCount(sPcbList.get(i),iTop5);
+            }
+        }
+        chart.setType("column");
+        xAxis.setCategories(categoriesList);
+        xAxis.setCrosshair(true);
+        xAxis.setMin(0);
+        xAxis.setMax(categoriesList.size()<=0?0:(categoriesList.size()-1));
+
+        yAxistitle.setText("yied(%)");
+        yAxis.setMin(0);
+        yAxis.setMax(100);
+        yAxis.setTitle(yAxistitle);
+        yAxis.setMinorGridLineWidth(0);
+
+        column.setBorderWidth(0);
+        column.setPointPadding(0.1);
+        //DataLabels dataLabels = new DataLabels();
+        //dataLabels.setEnabled(true);
+        //column.setDataLabels(dataLabels);
+        // plotOptions.setColumn(column);
+
+        //credits.setEnabled(false);
+
+        goodSeries.setType("column");
+        goodSeries.setName("good%");
+        goodSeries.setData(goodSeriesList);
+
+        ngSeries.setType("column");
+        ngSeries.setName("ng%");
+        ngSeries.setData(ngSeriesList);
+
+        passSeries.setType("column");
+        passSeries.setName("pass%");
+        passSeries.setData(passSeriesList);
+
+        seriesList.add(goodSeries);
+        seriesList.add(ngSeries);
+        seriesList.add(passSeries);
+
+        jsonChartsBean.setChart(chart);
+        //jsonChartsBean.setTitle("");
+        //json.subtitle = subtitle;
+        //jsonChartsBean.setTooltip("");
+        jsonChartsBean.setXAxis(xAxis) ;
+        jsonChartsBean.setYAxis(yAxis) ;
+        jsonChartsBean.setSeries(seriesList);
+        //jsonChartsBean.setPlotOptions(plotOptions);
+        //jsonChartsBean.setCredits(credits);
+
+        model.put("iTop1Count",iTop1Count);
+        model.put("iTop2Count",iTop2Count);
+        model.put("iTop3Count",iTop3Count);
+        model.put("iTop4Count",iTop4Count);
+        model.put("iTop5Count",iTop5Count);
+        model.put("fristLineNo",fristLineNo);
+
+        sPcbList=null;
+        /*categoriesList.clear();
+        seriesList.clear();
+        goodSeriesList.clear();
+        passSeriesList.clear();
+        ngSeriesList.clear();*/
+        System.gc();
+        return new ApiResponse(true,"",jsonChartsBean,model);
+    }
+
 
     @ResponseBody
     @GetMapping("FPY")

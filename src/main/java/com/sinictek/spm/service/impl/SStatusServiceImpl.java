@@ -28,5 +28,10 @@ public class SStatusServiceImpl extends ServiceImpl<SStatusMapper, SStatus> impl
         return  sStatusMapper.getAllStatusWithLineNoLimt();
     }
 
+    @Override
+    public SStatus getStatusWithLineNo(String lineNo) {
+        return sStatusMapper.getStatusWithLineNo(lineNo);
+    }
+
 
 }

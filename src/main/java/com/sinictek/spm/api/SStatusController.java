@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +45,15 @@ public class SStatusController {
         ModelAndView mv = new ModelAndView("spi/pcbMonitorview");
         // ini defaultsetting
         iniDefaultParamSetting();
+        return  mv;
+    }
+
+    @GetMapping("sigSpiPcbMonitorview")
+    public ModelAndView ShowSigSpiPcbMonitorview(@RequestParam("lineNo")String lineNo){
+        ModelAndView mv = new ModelAndView("spi/sigSpiPcbMonitorview");
+        // ini defaultsetting
+        iniDefaultParamSetting();
+        mv.addObject("lineNo",lineNo);
         return  mv;
     }
     private void iniDefaultParamSetting(){
@@ -111,6 +122,18 @@ public class SStatusController {
                 "}]";*/
         //JSON.toJSONString(statusList);
         return new ApiResponse<List<SStatus>>(null,sStatusService.getAllStatusWithLineNoLimt());
+    }
+
+    @ResponseBody
+    @GetMapping("sigSpiPcbMonitorJson")
+    public ApiResponse<List<SStatus>> getSigSpiPcbMonitorJson(@RequestParam("lineNo") String lineNo){
+
+        SStatus sStatus = sStatusService.getStatusWithLineNo(lineNo);
+        List<SStatus> lstStatus = new ArrayList<SStatus>();
+        lstStatus.add(sStatus);
+
+        return  new ApiResponse<List<SStatus>>(null,lstStatus);
+
     }
 
 }
