@@ -690,8 +690,8 @@ public class SPcbController {
                 if(dMaxCPK<dShiftYCPK){
                     dMaxCPK=dShiftYCPK;
                 }
-                dUcl =sPcb.getUcl()==null?0:Double.parseDouble(sPcb.getUcl().split(";")[0]);
-                dLcl =sPcb.getUcl()==null?0:Double.parseDouble(sPcb.getLcl().split(";")[0]);//sPcb.getLcl()==null ?0:sPcb.getLcl();
+                dUcl =sPcb.getUcl()==null?0:Double.parseDouble(sPcb.getUcl().split(";")[0])*0.1;
+                dLcl =sPcb.getUcl()==null?0:Double.parseDouble(sPcb.getLcl().split(";")[0])*0.1;//sPcb.getLcl()==null ?0:sPcb.getLcl();
             }
             columnSeriesData.add(productOneCount+0.0);
             if(aValue!=null && aValue.contains("0")){
@@ -739,8 +739,8 @@ public class SPcbController {
         xAxis1.setMin(0);
         xAxis1.setMax(4);
         yAxis1.setAllowDecimals(true);
-        yAxis1.setMin(dMinCPK>0?(int)-dMinCPK-10:(int)dMinCPK-10);
-        yAxis1.setMax((int) dMaxCPK<=0?(int)(-dMaxCPK+10):(int)dMaxCPK+10);
+        yAxis1.setMin(-10);//dMinCPK>0?(int)-dMinCPK-10:(int)dMinCPK-10);
+        yAxis1.setMax(10);//(int) dMaxCPK<=0?(int)(-dMaxCPK+10):(int)dMaxCPK+10);
         //yAxis1.setMin((int)dUcl);
         //yAxis1.setMax((int)dLcl);
         Title title1 = new Title();
