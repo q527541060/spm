@@ -114,6 +114,38 @@ CREATE TABLE IF NOT EXISTS `s_errorcode`  (
   PRIMARY KEY (`Code`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
+
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10000,'基准点出错'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10000);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10001,'条码错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10001);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10002,'CPK 错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10002);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10003,'直通率错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10003);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10004,'realtime 错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10004);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10005,'NGBuffer 错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10005);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10006,'平整度错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10006);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10007,'连续不良错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10007);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10008,'普通错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10008);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10009,'跳出手动输入条码对话框'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10009);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10010,'进板扫描错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10010);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10011,'出板扫描错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10011);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10012,'条码连读错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10012);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10013,'MES 错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10013);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 10014,'OCV 错误'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=10014);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20000,'紧急开关被按下'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20000);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20001,'安全门被打开'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20001);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20002,'气压不足'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20002);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20003,'X 轴负极限感应器不亮'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20003);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20004,'X 轴负极限感应器不亮'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20004);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20005,'X 轴正极限感应器不亮'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20005);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20006,'X 轴负极限感应器不亮'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20006);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20007,'X 轴正极限感应器不亮'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20007);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20008,'X 轴负极限感应器不亮'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20008);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20009,'1 轨“通过”状态下，进板口卡板'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20009);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20010,'1 轨进板口卡板'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20010);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20011,'1  轨“通过”状态下，进板口到轨道中间卡板'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20011);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20012,'1 轨进板口到轨道中间卡板'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20012);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20013,'1 轨减速感应超时'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20013);
+INSERT INTO `s_errorcode` (Code,Description) SELECT 20014,'1 轨调宽方向走反'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20014);
+
 INSERT INTO `s_errorcode` (Code,Description) SELECT 20015,'1 轨调宽方向走反'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20015);
 INSERT INTO `s_errorcode` (Code,Description) SELECT 20016,'1 轨“通过”状态下，出板口卡板'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20016);
 INSERT INTO `s_errorcode` (Code,Description) SELECT 20017,'1 轨出板口卡板'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_errorcode where Code=20017);
