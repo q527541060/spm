@@ -590,6 +590,106 @@ public class SPcbController {
         System.gc();
         return new ApiResponse<JsonChartsBean>(true,"",jsonChartsBean);
     }
+    @ResponseBody
+    @PostMapping("DefaultTop5_LineNo")
+    public ApiResponse<JsonChartsBean> getDefaultTop5ChartWithLineNo_LineNo(@RequestParam("lineNo") String lineNo,@RequestParam("iTop1count")Integer iTop1count,
+                                                                     @RequestParam("iTop2count") Integer iTop2count,@RequestParam("iTop3count") Integer iTop3count,
+                                                                     @RequestParam("iTop4count") Integer iTop4count ,@RequestParam("iTop5count") Integer iTop5count ){
+        //从后台获取defaultTop5数据;
+        List<String> categoriesList = new ArrayList<String>();
+        String[] arrStrTop5 = getDefaultTypeArray();
+        int iTop1Count = 0 ;
+        int iTop2Count=  0;
+        int iTop3Count =  0;
+        int iTop4Count =  0;
+        int iTop5Count =  0;
+        int timeInterVer = ConstParam.DEFAULTSETTING_boardMachineTimeLimit;
+        String endTime =   StringTimeUtils.getTimeDateToString(new Date());
+        String startTime = StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-timeInterVer);
+
+        SPcb sPcb = sPcbService.getPcbListWithLineNo(lineNo,startTime,endTime);
+        JsonChartsBean jsonChartsBean = new JsonChartsBean();
+        Title title = new Title();
+        Chart chart = new Chart();
+        Column column = new Column();
+        column.setStacking(lineNo);
+        Credits credits = new Credits();
+        PlotOptions plotOptions = new PlotOptions();
+        XAxis xAxis = new XAxis();
+
+        YAxis yAxis = new YAxis();
+        /*List<Double> seriesAllList = new ArrayList<Double>();
+        seriesAllList.add((double)iTop1count);
+        seriesAllList.add((double)iTop2count);
+        seriesAllList.add((double)iTop3count);
+        seriesAllList.add((double)iTop4count);
+        seriesAllList.add((double)iTop5count);*/
+        List<Double> seriesLineList = new ArrayList<Double>();
+        int iTop1 =  Integer.parseInt(arrStrTop5[0]) ;
+        int iTop2=  Integer.parseInt(arrStrTop5[1]);
+        int iTop3 =  Integer.parseInt(arrStrTop5[2]);
+        int iTop4 =  Integer.parseInt(arrStrTop5[3]);
+        int iTop5 =  Integer.parseInt(arrStrTop5[4]);
+        if(sPcb!=null ) {
+            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop1));
+            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop2));
+            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop3));
+            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop4));
+            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop5));
+        }else{
+            seriesLineList.add(0.0);
+            seriesLineList.add(0.0);
+            seriesLineList.add(0.0);
+            seriesLineList.add(0.0);
+            seriesLineList.add(0.0);
+        }
+        categoriesList.add(getErrorCodeString(iTop1));
+        categoriesList.add(getErrorCodeString(iTop2));
+        categoriesList.add(getErrorCodeString(iTop3));
+        categoriesList.add(getErrorCodeString(iTop4));
+        categoriesList.add(getErrorCodeString(iTop5));
+        chart = new Chart();
+        chart.setType("column");
+        xAxis.setMin(0);
+        xAxis.setMax(4);
+        xAxis.setCategories(categoriesList);
+        yAxis.setAllowDecimals(false);
+        yAxis.setMin(0);
+        yAxis.setMax(iTop1count+iTop2count+iTop3count+iTop4count+iTop5count);
+        title.setText("value");
+        yAxis.setTitle(title);
+        yAxis.setMinorGridLineWidth(0);
+        DataLabels dataLabels = new DataLabels();
+        dataLabels.setEnabled(true);
+        column.setDataLabels(dataLabels);
+        plotOptions.setColumn(column);
+
+        List<Series> seriesList = new ArrayList<Series>();
+        //Series seriesAll = new Series();
+        Series seriesLine = new Series();
+        //seriesAll.setStack("male");
+        //seriesAll.setName("All-Line");
+        //seriesAll.setData(seriesAllList);
+
+        seriesLine.setStack("'female'");
+        seriesLine.setName(lineNo);
+        seriesLine.setData(seriesLineList);
+
+        jsonChartsBean.setChart(chart);
+        jsonChartsBean.setTitle("");
+        //json.subtitle = subtitle;
+        jsonChartsBean.setXAxis(xAxis) ;
+        jsonChartsBean.setYAxis(yAxis) ;
+        //seriesList.add(seriesAll);
+        seriesList.add(seriesLine);
+        jsonChartsBean.setSeries(seriesList);
+        jsonChartsBean.setPlotOptions(plotOptions);
+        credits.setEnabled(false);
+        jsonChartsBean.setCredits(credits);
+
+        System.gc();
+        return new ApiResponse<JsonChartsBean>(true,"",jsonChartsBean);
+    }
 
     @ResponseBody
     @PostMapping("ProductCPK")
@@ -605,6 +705,7 @@ public class SPcbController {
         double dShiftYCPK = 0;
         double dUcl=1;
         double dLcl=-1;
+
         /*if(sDefaultsettingList!=null && sDefaultsettingList.size()>0){
             for (int i = 0; i < sDefaultsettingList.size(); i++) {
                 switch (sDefaultsettingList.get(i).getSettingName()){

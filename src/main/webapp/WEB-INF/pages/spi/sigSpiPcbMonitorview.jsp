@@ -282,7 +282,7 @@
         function defaultTopRealTime(lineNo){
 
             $.ajax({
-                url: "${basePath}/Pcb/DefaultTop5",
+                url: "${basePath}/Pcb/DefaultTop5_LineNo",
                 dataType:"json",   //返回格式为json
                 async:true,//请求是否异步，默认为异步，这也是ajax重要特性
                 data:{lineNo:lineNo,iTop1count:iTop1count,iTop2count:iTop2count,iTop3count:iTop3count,iTop4count:iTop4count,iTop5count:iTop5count},  //参数值
