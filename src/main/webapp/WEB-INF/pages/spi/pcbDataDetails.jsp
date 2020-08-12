@@ -385,7 +385,7 @@
                 sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
                 pageSize: 10,                     //每页的记录行数（*）
-                pageList: [15, 20, 50, 100],        //可供选择的每页的行数（*）
+                pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
                 search: true,                      //是否显示表格搜索
                 strictSearch: true,
                 showColumns: true,                  //是否显示所有的列（选择显示的列）
@@ -427,9 +427,9 @@
                     };
                 },
                 columns: [{
-                    checkbox: false,
+                    checkbox: true,
                     align:'center',
-                    visible: false
+                    visible: true
                     //是否显示复选框
                 }, {
                     field: 'jobName',
@@ -622,7 +622,7 @@
                 sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
                 pageSize: 12,                     //每页的记录行数（*）
-                pageList: [15, 20, 50, 100],        //可供选择的每页的行数（*）
+                pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
                 search: true,                      //是否显示表格搜索
                 strictSearch: true,
                 showColumns: true,                  //是否显示所有的列（选择显示的列）
@@ -663,9 +663,9 @@
                     };
                 },
                 columns: [{
-                    checkbox: false,
+                    checkbox: true,
                     align:'center',
-                    visible: false
+                    visible: true
                     //是否显示复选框
                 }, {
                     field: 'barcode',

@@ -15,6 +15,11 @@
 			.row{
 				text-align: center;
 				margin: 0px;
+
+			}
+			.row-border{
+				/*background-color: #F5F5F5;color: #F5F5F5;height: 25px*/
+                margin-top: 15px;
 			}
 		</style>
 	</head>
@@ -49,8 +54,10 @@
 				</button>
 			</div>
 		</div>
-
-        <div class="row">
+		<%--<hr style= "border:1px dotted  #ffffff"  />--%>
+		<%--<div class="row row-border"  >
+		</div>--%>
+        <div class="row row-border" >
             <div class="col-md-14">
                 <div class="right-wap" style="height: 350px;">
                     <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
@@ -58,17 +65,19 @@
                 </div>
             </div>
         </div>
-		<div class="row">
+		<%--<div class="row row-border" >
+		</div>--%>
+		<div class="row row-border" >
 			<div class="col-md-14">
 				<div class="right-wap" style="height: 350px;">
 					<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
 					<div id="container-lineFn" style="min-width: 310px; height: 100%; margin: 0 auto"></div>
-
 				</div>
 			</div>
 		</div>
-		<div class="row">
-
+		<%--<div class="row row-border" >
+		</div>--%>
+		<div class="row row-border" >
 			<table  class="table" id="pcbline_table">
 			</table>
 		</div>
@@ -135,8 +144,8 @@
                     sortOrder: "asc",                   //排序方式
                     sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
                     pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-                    pageSize: 5,                     //每页的记录行数（*）
-                    pageList: [15, 20, 50, 100],        //可供选择的每页的行数（*）
+                    pageSize: 10,                     //每页的记录行数（*）
+                    pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
                     search: true,                      //是否显示表格搜索
                     strictSearch: true,
                     showColumns: true,                  //是否显示所有的列（选择显示的列）
@@ -145,7 +154,7 @@
                     clickToSelect: true,                //是否启用点击选中行
                     //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
                     uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
-                    showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                    showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
                     cardView: false,                    //是否显示详细视图
                     detailView: false,                  //是否显示父子表
                     classes:'table table-striped table-hover',
@@ -177,9 +186,9 @@
                         };
                     },
                     columns: [{
-                        checkbox: false,
+                        checkbox: true,
                         align:'center',
-                        visible: false
+                        visible: true
                         //是否显示复选框
                     }, {
                         field: 'lineNo',
