@@ -281,6 +281,7 @@
         <!-- defaultTop -->
         function defaultTopRealTime(lineNo){
 
+
             $.ajax({
                 url: "${basePath}/Pcb/DefaultTop5_LineNo",
                 dataType:"json",   //返回格式为json

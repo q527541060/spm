@@ -28,6 +28,9 @@
 			.table{
 				background-color: #ECF0F5;
 			}*/
+            .row{
+                text-align: center;
+            }
 		</style>
     </head>
 	<body>
@@ -40,25 +43,60 @@
 					<ol class="breadcrumb">
 						<li><a href="${basePath}/Home/pcbHome">Home</a></li>
 						<li class="active" ><a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/Status/aoi/pcbMonitorview">spi</a></li>
-						<li class="active">Board-Machine</li>
+						<li class="active">Board-Machine-RealLineView</li>
 					</ol>
 				</div>
 			</div>
 			<div class="row">
-			    <div class="col-md-14">
-                    <h4><div id="timeShow" style="float: left"></div><span class="glyphicon glyphicon-tree-deciduous" aria-hidden="true">&nbsp;</span><i>Equipment Status</i>
-						  <button type="button" style="width: 30px;height:25px;float: right" id= "status-refresh" class="btn btn-primary  btn-xs">
-							  <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-					  </h4>
-					  <div id="left-wap" style="height: 250px;overflow:auto;">
-						 <div class="panel panel-info" >
-							 <table  class="table" id="machineStatus">
-							 </table>
-						 </div>
-					  </div>
+			    <div class="col-md-10">
+                    <!-- fpy product -->
+                    <div class="row">
+                        <div class="col-md-14">
+                            <div class="right-wap" style="height: 250px;">
+                                <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
+                                <div id="container-FPY" style="min-width: 100%; height: 100%; margin: 0 auto">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- top5 -->
+                    <div class="row">
+                        <div class="col-md-14">
+                            <div class="right-wap" style="height: 250px;">
+                                <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
+                                <div id="container-defaultTop" style="max-width:100%;height:100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- cpk -->
+                    <div class="row">
+                        <div class="col-md-14">
+                            <h4><div class="btn-group-sm" role="group" aria-label="...">
+                                <%--<span class="glyphicon glyphicon-flag" aria-hidden="true">&nbsp;</span><i>CPK</i>&nbsp;&nbsp;&nbsp;&nbsp;--%>
+                                <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="0">area</button>
+                                <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="1">height</button>
+                                <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="2">vol</button>
+                                <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="3">shiftX</button>
+                                <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="4">shiftY</button>
+                            </div></h4>
+                            <div class="right-wap" style="height: 250px;">
+                                <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
+                                <div id="container-CPK" style="min-width:310px;height:100%;margin: 0 auto">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 			   </div>
+				<div class="col-md-1 col-md-offset-1">
+					<div id="left-wap" style="height: 500px;overflow:auto;">
+						<div class="panel panel-info" >
+							<table  class="table" id="machineStatus">
+							</table>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="row">
+			<%--<div class="row">
 			  <div class="col-md-8">
 				  <h4 ><span class="glyphicon glyphicon-leaf" aria-hidden="true">&nbsp;</span><i>FPY</i></h4>
 				  <div class="right-wap" style="height: 250px;">
@@ -100,12 +138,16 @@
 			  					</div>
 			  				  </div>
 			  </div>
-			</div>
+			</div>--%>
 		</nav>
 
         <script type="text/javascript" >  /*src="{staticPath}/js/pcbMonotorview.js" >*/
 
-
+        window.operateEventsRealLineView={
+            "click #TableNGImage" :function(e,value, row, index){
+                 window.location.href="${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo;
+            }
+        }
         var StatusQueryUrl = '${basePath}/Status/pcbMonitorJson';
         var iTop1count=0;
         var iTop2count=0;
@@ -332,6 +374,18 @@
             });
 
         }
+
+        function  addFunctionAltyRealLineView(value, row, index) {
+            if(row.error==1 ){
+                return ['<span>'+row.lineNo+'</span>'].join("")+['<image style="cursor:pointer;width:80px;height:60px;" src="${staticPath}/img/spi2_red.jpg">'].join("");
+               // return ['<span id="TableNGImage"  style="cursor:pointer"  class="glyphicon glyphicon-picture">'+row.lineNo+"-红灯"+'</span>'].join("");
+            }else  if(row.stop==1){
+                return ['<span>'+row.lineNo+'</span>'].join("")+['<image style="cursor:pointer;width:80px;height:60px;" src="${staticPath}/img/spi2_yellow.jpg">'].join("");
+            }else{
+                return ['<span>'+row.lineNo+'</span>'].join("")+['<image style="cursor:pointer;width:80px;height:60px;" src="${staticPath}/img/spi2_green.jpg">'].join("");
+            }
+
+        }
         <!--   设备状态js代码  -->
         var $table;
         function InitMainTable () {
@@ -389,46 +443,30 @@
                         sortOrder: params.order //排位命令（desc，asc）
                     };
                 },
-                columns: [{
-                    checkbox: true,
-                    align:'center',
-                    visible: true,
-
-                    //是否显示复选框
-                }, {
-                    field: 'equipmentNo',
-                    title: 'Machine',
-                    width:50,
-                    align:'center',
-                    sortable: true
-                }, {
+                columns: [
+				 {
                     field: 'lineNo',
-                    title: 'LaneNo',
+                    title: 'Machine-List',
                     align:'center',
-                    width:100,
-
-                    sortable: true
-                }, {
-                    field: 'status',
-                    title: 'Status',
-                    align:'center',
-                    width:100,
-                    sortable: true,
+                    width:30,
+                     sortable: true,
+                     events: operateEventsRealLineView,
+                     formatter: addFunctionAltyRealLineView,
                     cellStyle: function (value, row, index){
                         if(row.status == 1) { return {css:{"background-color":"D9534F"}}  }
                     },
-                    formatter: function (value, row, index){
+                    /*formatter: function (value, row, index){
                         //row.status ==0?"停止":row.status==1?"故障":"运行";
 						if(row.error==1){
-							return "error";
+							return row.lineNo+"-error";
 						}else  if(row.run==1 && row.start==1){
 							return "run";
 						}else if(row.idle==1){
-							return  "idel";
+							return  row.lineNo+"-idel";
 						}else{
-							return  "stop";
+							return  row.lineNo+"-stop";
 						}
-                        /*switch (row.status) {
+                        /!*switch (row.status) {
                             case 0:
                                 return "run";
                             case  3:
@@ -439,9 +477,9 @@
                                 return "error";
                             default :
                                 return "run";
-                        }*/
-                        return
-                    },
+                        }*!/
+                        return ;
+                    },*/
                     cellStyle:function(value,row,index){
                         if(row.error==1) {
                             return {css: {"color": "#FF0000"}}
@@ -450,28 +488,7 @@
                         }
                     }
 
-                },{
-                    field: 'factory',
-                    title: 'Model',
-                    align:'center',
-                    sortable:true,
-                    width:100
-                    //formatter: linkFormatter
-                }, {
-                    field: 'errContent',
-                    title:  'Alarm',
-                    align:'center',
-                    //sortable: true,
-                    width:250
-                    //events:operateEvents,
-
-                },{
-					field: 'updateTime',
-					title:  'dateTime',
-					align:'center',
-					sortable: true,
-					width:100
-				}],
+                }],
                 onLoadSuccess: function (sta) {
                     //console.log("in onLoadSuccess");
                     //console.log(sta);
@@ -487,29 +504,29 @@
                     vlineNo = line;
                     //EditViewById(id, 'view');
                     //alert(line);
-                    defaultTopRealTime(line);
-                    ProductRealTime(line);
+                    //defaultTopRealTime(line);
+                    //ProductRealTime(line);
                 },
                 onClickRow: function (row, $element) {
                     var line = row.lineNo;
                     vlineNo = line;
                     //EditViewById(id, 'view');
                     //alert(line);
-                    defaultTopRealTime(line);
-                    ProductRealTime(line);
+                    //defaultTopRealTime(line);
+                    //ProductRealTime(line);
                 },
             });
 
         };
 
-        function timeShow() {
+        /*function timeShow() {
 
             var  startTime_str = ("2018-11-09 20:19:00").replace(/-/g,"/");;
             var startTime= new Date(startTime_str);
             var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'')
             document.getElementById("timeShow").innerText=date;
-        }
-        $("#status-refresh").click(refreshTable);
+        }*/
+        //$("#status-refresh").click(refreshTable);
 
         function refreshTable(){
 			var opt = {
@@ -522,12 +539,11 @@
 			};
 			$("#machineStatus").bootstrapTable('refresh', opt);
 		}
-		window.setInterval(refreshTable,5000);
-		window.setInterval(timeShow,1000);
-        //setInterval(2,InitMainTable);
-        $(function () {
+		setInterval(refreshTable,5000);
+		//window.setInterval(timeShow,1000);
+        /*$(function () {
             $('[data-toggle="tooltip"]').tooltip();
-        })
+        })*/
         </script>
 
         <style type="text/css">
