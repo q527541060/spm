@@ -62,7 +62,7 @@
                     <!-- top5 -->
                     <div class="row">
                         <div class="col-md-14">
-                            <div class="right-wap" style="height: 250px;">
+                            <div class="right-wap" style="height: 350px;">
                                 <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
                                 <div id="container-defaultTop" style="max-width:100%;height:100%"></div>
                             </div>
@@ -71,6 +71,12 @@
                     <!-- cpk -->
                     <div class="row">
                         <div class="col-md-14">
+
+                            <div class="right-wap" style="height: 250px;">
+                                <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
+                                <div id="container-CPK" style="min-width:310px;height:100%;margin: 0 auto">
+                                </div>
+                            </div>
                             <h4><div class="btn-group-sm" role="group" aria-label="...">
                                 <%--<span class="glyphicon glyphicon-flag" aria-hidden="true">&nbsp;</span><i>CPK</i>&nbsp;&nbsp;&nbsp;&nbsp;--%>
                                 <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="0">area</button>
@@ -79,11 +85,6 @@
                                 <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="3">shiftX</button>
                                 <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="4">shiftY</button>
                             </div></h4>
-                            <div class="right-wap" style="height: 250px;">
-                                <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-                                <div id="container-CPK" style="min-width:310px;height:100%;margin: 0 auto">
-                                </div>
-                            </div>
                         </div>
                     </div>
 			   </div>
@@ -159,8 +160,8 @@
         InitMainTable();
         FPYRealTime();
         //ProductRealTime();
-        //CPKRealTime();
-        //defaultTopRealTime();
+        CPKRealTime();
+        defaultTopRealTime();
         function FPYRealTime(){
             var json = {};
             $.ajax({
@@ -174,40 +175,121 @@
                 },
                 success:function(req){
                     //请求成功时处理
-                    json.chart = req.data.chart;
-                    json.title = '';
-                    json.subtitle = '';
+                    //json.chart = req.data.chart;
+                    json.chart ={
+                        zoomType: 'xy'
+                    };
+                    json.title = {text:'FPY、Product',style: {
+                            fontWeight: 'bold',
+                            fontSize:"22px",
+                            color: '#5cccff'// (Highcharts.theme &&
+                            // Highcharts.theme.textColor) ||
+                        }};
+                    //json.subtitle = {text:'FPY、Product'};
+                    json.plotOptions={
+                        spline:{
+                            dataLabels:{enabled:true} //,color:'#0f100b'
+                        },
+                        column:{
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            dataLabels:{enabled:true}//,color:'#ff0816'
+                        },
+
+                    };
+                    json.credits={enabled: false };
+                    //json.xAxis = req.data.xaxis;
+                    json.xAxis =  [{
+                        categories: ['SPI20', 'SPI25', 'SPI30'],
+                        //crosshair: true
+                    }];
+                    //json.yAxis = req.data.yaxis;
+                    json.yAxis =  [{ // Secondary yAxis
+                        title: {
+                            text: '',
+                        },
+                        labels: {
+                            format: '{value} pcs',
+                            /*style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }*/
+                        },
+                        opposite: true,
+                        minorGridLineWidth:0,
+                        min:0,
+                        max:400
+                    },{ // Primary yAxis
+                        labels: {
+                            format: '{value}%',
+                        },
+                        title: {
+                           text: '',
+                            /*style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }*/
+                        },minorGridLineWidth:0,
+                        max:100,
+                        min:0,
+                    }];
                     json.tooltip = {
                         formatter: function () {
                             return '<b>' + this.x + '</b><br/>' +
                                 this.series.name + ': ' + this.y ;//+ '<br/>' +
                             //'value: ' + this.point.stackTotal;
                         }
+                        //shared: true
                     };
-                    json.plotOptions={
-                        column:{
-                            pointPadding: 0.2,
-                            borderWidth: 0,
-                            dataLabels:{enabled:true}
-                        }
-                    };
-                    json.credits={enabled: false };
-                    json.xAxis = req.data.xaxis;
-                    json.yAxis = req.data.yaxis;
-                    json.series = req.data.series;
+                    //json.series = req.data.series;
+                    json.series= [{
+                        name: 'PCB->PASS',
+                        type: 'column',
+                        data: [266, 200, 202],
+                        tooltip: {
+                            valueSuffix: 'pcs'
+                        },
+                        stacking:'normal',
+                        color:'#13dd15'
+                    },{
+                        name: 'PCB->REPASS',
+                        type: 'column',
+                        data: [0, 20, 0],
+                        tooltip: {
+                            valueSuffix: 'pcs'
+                        },
+                        stacking:'normal',
+                        color:'#4449dd'
+                    },{
+                        name: 'PCB->NG',
+                        type: 'column',
+                        data: [0, 1, 50],
+                        tooltip: {
+                            valueSuffix: 'pcs'
+                        },
+                        stacking:'normal',
+                        color:'#dd0f31'
+                    },{
+                        name: '直通率',
+                        type: 'spline',
+                        yAxis: 1,
+                        data: [93.9, 99.5, 80.9],
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+                        color:'#7bdd18'
+                    }];
 					json.exporting={
 						enabled:false
 					};
-                    iTop1count = req.rows.iTop1Count;
+                    /*iTop1count = req.rows.iTop1Count;
                     iTop2count =req.rows.iTop2Count;
                     iTop3count =req.rows.iTop3Count;
                     iTop4count =req.rows.iTop4Count;
                     iTop5count =req.rows.iTop5Count;
-                    fristLineNo = req.rows.fristLineNo;
+                    fristLineNo = req.rows.fristLineNo;*/
                     $('#container-FPY').highcharts(json);
                     vlineNo = fristLineNo;
-                    defaultTopRealTime(fristLineNo);
-                    ProductRealTime(fristLineNo);
+                    //defaultTopRealTime(fristLineNo);
+                   // ProductRealTime(fristLineNo);
                 },
                 complete:function(){
                     //请求完成的处理
@@ -217,85 +299,60 @@
                 }
             });
         }
-        <!--  产能 -->
-        function ProductRealTime(lineNo){
+
+        function CPKRealTime() {
             $.ajax({
-                url: "${basePath}/Pcb/ProductCPK",
+                url: "${basePath}/Pcb/FPY",
                 dataType:"json",   //返回格式为json
                 async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{lineNo:lineNo,aValue:null},  //参数值
-                type:"POST",   //请求方式
-                success:function(req){
-                    //请求成功时处理
-                    var jsonProduct={};
-                    var jsonCPK={};
-                    jsonProduct.title={ text: ''};
-                    jsonProduct.tooltip={formatter: function () {
-                            return '<b>' + this.x + '</b><br/>' +
-                                this.series.name + ': ' + this.y ;//+ '<br/>' +
-                            //'value: ' + this.point.stackTotal;
-                        }};
-                    jsonProduct.xAxis=req.data.xaxis;
-                    jsonProduct.yAxis=req.data.yaxis;
-                    jsonProduct.plotOptions={spline: {
-                            pointPadding: 0.2,
-                            borderWidth: 1,
-                            dataLabels:{enabled:true}
-                        },
-                        column: {
-                            pointPadding: 0.2,
-                            borderWidth: 1,
-                            dataLabels:{enabled:true}
-                        }};
-					jsonProduct.exporting={
-						enabled:false
-					};
-                    jsonProduct.credits={enabled: false };
-                    jsonProduct.series=req.data.series;
-
-                    jsonCPK.title={text: ''};
-                    jsonCPK.series=req.rows.series;
-                    jsonCPK.tooltip={formatter: function () {
-                            return '<b>' + this.x + '</b><br/>' +
-                                this.series.name + ': ' + this.y ;
-
-                        }};
-                    jsonCPK.xAxis=req.rows.xaxis;
-                    jsonCPK.yAxis=req.rows.yaxis;
-                    jsonCPK.plotOptions={spline: {
-                            pointPadding: 0.2,
-                            borderWidth: 1,
-                            dataLabels:{enabled:true}
-                        }};
-					jsonCPK.exporting={
-						enabled:false
-					};
-                    jsonCPK.credits={enabled: false };
-                    $('#container-product').highcharts(jsonProduct);
-                    $('#container-CPK').highcharts(jsonCPK);
-                }
-            });
-
-        }
-
-        function CPKRealTime(value) {
-            $.ajax({
-                url: "${basePath}/Pcb/ProductCPK",
-                dataType:"json",   //返回格式为json
-                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{lineNo:vlineNo,aValue:value},  //参数值
-                type:"POST",   //请求方式
+                data:{},  //参数值
+                type:"GET",   //请求方式
                 success:function(req){
                     var jsonCPK={};
-                    jsonCPK.title={text: ''};
-                    jsonCPK.series=req.rows.series;
+                    jsonCPK.title={
+                        text: 'CPK',
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize:"22px",
+                            color: '#5cccff'// (Highcharts.theme &&
+                            // Highcharts.theme.textColor) ||
+                        }};
+                    //jsonCPK.series=req.rows.series;
+                    jsonCPK.series=[{
+                        name: 'CPK',
+                        type: 'line',
+                        data: [1.6, 0.3, 2.2],
+                        lineWidth:0,
+                        connectEnds:false
+                    },{
+                        name: 'UCL',
+                        type: 'line',
+                        data: [2, 2, 2],
+                        lineWidth:0,
+                        connectEnds:false
+                    },{
+                        name: 'LCL',
+                        type: 'line',
+                        data: [1, 1, 1],
+                        lineWidth:0,
+                        connectEnds:false
+                    }];
                     jsonCPK.tooltip={formatter: function () {
                             return '<b>' + this.x + '</b><br/>' +
                                 this.series.name + ': ' + this.y ;
                         }};
-                    jsonCPK.xAxis=req.rows.xaxis;
-                    jsonCPK.yAxis=req.rows.yaxis;
-                    jsonCPK.plotOptions={spline: {
+                    //jsonCPK.xAxis=req.rows.xaxis;
+                    jsonCPK.xAxis={
+                        categories: ['SPI20', 'SPI25', 'SPI30']
+                    };
+                    //jsonCPK.yAxis=req.rows.yaxis;
+                    jsonCPK.yAxis={
+                        title:'0.0f',
+                        minorGridLineWidth:0,
+                        gridLineWidth:'0px',
+                        width:0
+                    };
+                    jsonCPK.plotOptions={line: {
                             pointPadding: 0.2,
                             borderWidth: 1,
                             dataLabels:{enabled:true}
@@ -304,8 +361,6 @@
                             borderWidth: 1,
                             dataLabels:{enabled:true}
                         }
-
-
                     };
 					jsonCPK.exporting={
 						enabled:false
@@ -320,14 +375,14 @@
 
         }
         <!-- defaultTop -->
-        function defaultTopRealTime(lineNo){
+        function defaultTopRealTime(){
 
             $.ajax({
-                url: "${basePath}/Pcb/DefaultTop5",
+                url: "${basePath}/Pcb/FPY",
                 dataType:"json",   //返回格式为json
                 async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{lineNo:lineNo,iTop1count:iTop1count,iTop2count:iTop2count,iTop3count:iTop3count,iTop4count:iTop4count,iTop5count:iTop5count},  //参数值
-                type:"POST",   //请求方式
+                data:{},  //参数值
+                type:"GET",   //请求方式
                 beforeSend:function(){
                     //请求前的处理
                 },
@@ -335,8 +390,18 @@
                     //请求成功时处理
                     if(req.success == true) {
                         var jsonDefault = {};
-                        jsonDefault.chart = req.data.chart;
-                        jsonDefault.title = '';
+                        //jsonDefault.chart = req.data.chart;
+                        /*jsonDefault.chart = {
+                        };*/
+                        jsonDefault.title = {
+                            text:'TOP5',
+                            style: {
+                                fontWeight: 'bold',
+                                fontSize:"22px",
+                                color: '#5cccff'// (Highcharts.theme &&
+                                // Highcharts.theme.textColor) ||
+                            }
+                        };
                         jsonDefault.subtitle = '';
                         jsonDefault.tooltip = {
                             formatter: function () {
@@ -345,16 +410,121 @@
                                 //'value: ' + this.point.stackTotal;
                             }
                         };
-                        jsonDefault.xAxis = req.data.xaxis;
-                        jsonDefault.yAxis = req.data.yaxis;
-                        jsonDefault.series = req.data.series;
-                        jsonDefault.plotOptions = {
-                            column: {
+                        jsonDefault.plotOptions={
+                            spline:{
+                                dataLabels:{enabled:true} //,color:'#0f100b'
+                            },
+                            column:{
                                 pointPadding: 0.2,
                                 borderWidth: 0,
-                                dataLabels: {enabled: true}
+                                dataLabels:{enabled:true}//,color:'#ff0816'
+                            },
+
+                        };
+                        //jsonDefault.xAxis = req.data.xaxis;
+                        jsonDefault.xAxis = {
+                            categories: ['SPI20', 'SPI25', 'SPI30']
+                        }
+                        //jsonDefault.yAxis = req.data.yaxis;
+                        jsonDefault.yAxis = {
+                            title:'count',
+                            minorGridLineWidth:0,
+                            stackLabels: {
+                                enabled: true,
+                                allowOverlap: true,
+                                style: {
+                                    fontWeight: 'bold',
+                                    fontSize:"22px",
+                                    color: '#5cccff'// (Highcharts.theme &&
+                                    // Highcharts.theme.textColor) ||
+                                },
+                                formatter: function(){
+                                    if(this.total==0){
+                                        return "";
+                                    }else{
+                                        return this.total;
+                                    }
+                                }
                             }
                         };
+                        //jsonDefault.series = req.data.series;
+                        jsonDefault.series = [
+                            {
+                                type: 'column',
+                                name: 'missing',
+                                data: [3, 0, 0],
+                                stacking:'normal'
+                            }, {
+                                type: 'column',
+                                name: 'Insufficient',
+                                data: [2, 0, 0],
+                                stacking:'normal'
+                            }, {
+                                type: 'column',
+                                name: 'Excess',
+                                data: [4, 0, 3],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Overheight',
+                                data: [4, 0, 3],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Lowheight',
+                                data: [4, 0, 3],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Overarea',
+                                data: [0, 3, 3],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Lowarea',
+                                data: [0, 3, 3],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Shiftx',
+                                data: [0, 3, 0],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Shifty',
+                                data: [0, 11, 0],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Bridge',
+                                data: [0, 12, 0],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Shapeerror',
+                                data: [0, 0, 0],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Smeared',
+                                data: [0, 0, 0],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Coplanarity',
+                                data: [0, 0, 0],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Prebridge',
+                                data: [0, 0, 0],
+                                stacking:'normal'
+                            },{
+                                type: 'column',
+                                name: 'Padareapercent',
+                                data: [0, 0, 0],
+                                stacking:'normal'
+                            },];
 						jsonDefault.exporting={
 							enabled:false
 						};
@@ -538,12 +708,16 @@
 				}
 			};
 			$("#machineStatus").bootstrapTable('refresh', opt);
+
 		}
-		setInterval(refreshTable,5000);
+		setInterval(refreshTable,5000);//,FPYRealTime,CPKRealTime,defaultTopRealTime,
+        setInterval(FPYRealTime,10000);
+        setInterval(CPKRealTime,10000);
+        setInterval(defaultTopRealTime,10000);
 		//window.setInterval(timeShow,1000);
-        /*$(function () {
+        $(function () {
             $('[data-toggle="tooltip"]').tooltip();
-        })*/
+        })
         </script>
 
         <style type="text/css">

@@ -107,6 +107,15 @@ public class SStatusController {
 
     }
 
+    @GetMapping("pcbMonitorview_realLineView")
+    public ModelAndView ShowpcbMonitorview_realLineView(){
+        ModelAndView mv = new ModelAndView("spi/pcbMonitorview_realLineView");
+        // ini defaultsetting
+        iniDefaultParamSetting();
+        return  mv;
+    }
+
+
 
     @ResponseBody
     @GetMapping("pcbMonitorJson")
