@@ -43,6 +43,11 @@
 
 		<script src="${staticPath}/js/pcbLineData.js"></script>
 
+		<script src="${staticPath}/exportjs/jszip.min.js"></script>
+		<script src="${staticPath}/exportjs/FileSaver.js"></script>
+		<script src="${staticPath}/exportjs/excel-gen.js"></script>
+		<script src="${staticPath}/exportjs/demo.page.js"></script>
+
 		<style type="text/css">
 			ul{
 				padding: 0px;
@@ -94,7 +99,7 @@
 				}
 				<!-- 换肤 -->
 				//$.getScript("${staticPath}/hchart/themes/sunset.js");
-				$.getScript("${staticPath}/hchart/themes/dark-blue.js");
+				$.getScript("${staticPath}/hchart/themes/grid-light.js");
 			</script>
 	</body>
 </html>

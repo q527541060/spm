@@ -52,7 +52,7 @@
                     <!-- fpy product -->
                     <div class="row">
                         <div class="col-md-14">
-                            <div class="right-wap" style="height: 250px;">
+                            <div class="right-wap" style="height: 350px;">
                                 <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
                                 <div id="container-FPY" style="min-width: 100%; height: 100%; margin: 0 auto">
                                 </div>
@@ -72,7 +72,7 @@
                     <div class="row">
                         <div class="col-md-14">
 
-                            <div class="right-wap" style="height: 250px;">
+                            <div class="right-wap" style="height: 200px;">
                                 <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
                                 <div id="container-CPK" style="min-width:310px;height:100%;margin: 0 auto">
                                 </div>
@@ -89,15 +89,65 @@
                     </div>
 			   </div>
 				<div class="col-md-1">
-					<div id="left-wap" style="height: 500px;overflow:auto;">
-						<div class="panel panel-info" >
+					<%--<div id="left-wap" style="height: 500px;overflow:auto;">
+						<div class="panel panel-info" >--%>
 							<table  class="table" id="machineStatus">
 							</table>
-						</div>
-					</div>
+					<%--	</div>
+					</div>--%>
 				</div>
 			</div>
+            <button class="btn btn-default" id="generate-excel" type="submit">导出</button>
+            <table class="table table-bordered table-striped" id="test_table">
+                <thead>
+                <tr>
+                    <td>设备编号</td>
+                    <td>直通率</td>
+                    <td>Top5</td>
+                    <td>CPK</td>
+                    <td>设备状态</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <span>SPI20</span>
+                    </td>
+                    <td>
+                        <span>99.8% </span>
+                    </td>
+                    <td>
+                        <span>25</span>
+                    </td>
+                    <td>
+                        <span>1.6</span>
+                    </td>
+                    <td>
+                        <span>STOP</span>
+                    </td>
 
+                </tr>
+                <tr>
+                    <td>
+                        <span>SPI25</span>
+                    </td>
+                    <td>
+                        <span>99.8% </span>
+                    </td>
+                    <td>
+                        <span>20</span>
+                    </td>
+                    <td>
+                        <span>0.9</span>
+                    </td>
+                    <td>
+                        <span>STOP</span>
+                    </td>
+
+                </tr>
+
+                </tbody>
+            </table>
 		</nav>
 
         <script type="text/javascript" >  /*src="{staticPath}/js/pcbMonotorview.js" >*/
@@ -144,14 +194,26 @@
                             // Highcharts.theme.textColor) ||
                         }};
                     //json.subtitle = {text:'FPY、Product'};
+
                     json.plotOptions={
                         spline:{
-                            dataLabels:{enabled:true} //,color:'#0f100b'
+                            dataLabels:{enabled:true,useHTML: true,} //,color:'#0f100b'
                         },
                         column:{
-                            pointPadding: 0.2,
+                            pointPadding: 0,
                             borderWidth: 0,
-                            dataLabels:{enabled:true}//,color:'#ff0816'
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+                                /*formatter: function() {
+                                    return (this.series.name)+ ':' + (this.y);
+                                },*/
+                               /*style:{
+                                    fontSize:'5px',
+                                    fontWeight:'bold',
+                                   // color:'#141328'
+                                },*/
+                            }//,color:'#ff0816'
                         },
 
                     };
@@ -263,7 +325,7 @@
                 url: "${basePath}/Pcb/FPY",
                 dataType:"json",   //返回格式为json
                 async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{},  //参数值
+                data:"",  //参数值
                 type:"GET",   //请求方式
                 success:function(req){
                     var jsonCPK={};
@@ -279,22 +341,20 @@
                     jsonCPK.series=[{
                         name: 'CPK',
                         type: 'line',
-                        data: [1.6, 0.3, 2.2],
+                        data: [{y:1.6,color:'#25dd19'},{y:0.6,color:'#dd1127'},{y:0.8,color:'#dd1127'}],
                         lineWidth:0,
                         connectEnds:false
                     },{
-                        name: 'UCL',
-                        type: 'line',
-                        data: [2, 2, 2],
-                        lineWidth:0,
-                        connectEnds:false
-                    },{
-                        name: 'LCL',
+                        name: 'StandCPK',
                         type: 'line',
                         data: [1, 1, 1],
-                        lineWidth:0,
-                        connectEnds:false
-                    }];
+
+                    },];
+                    jsonCPK.legend={
+                        layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle',
+                    };
                     jsonCPK.tooltip={formatter: function () {
                             return '<b>' + this.x + '</b><br/>' +
                                 this.series.name + ': ' + this.y ;
@@ -311,13 +371,13 @@
                         width:0
                     };
                     jsonCPK.plotOptions={line: {
-                            pointPadding: 0.2,
-                            borderWidth: 1,
+                            pointPadding: 0,
+                            borderWidth: 0,
                             dataLabels:{enabled:true}
                         },column: {
-                            pointPadding: 0.2,
-                            borderWidth: 1,
-                            dataLabels:{enabled:true}
+                            pointPadding: 0,
+                            borderWidth: 0,
+                            dataLabels:{enabled:true,useHTML: true,}
                         }
                     };
 					jsonCPK.exporting={
@@ -334,12 +394,11 @@
         }
         <!-- defaultTop -->
         function defaultTopRealTime(){
-
             $.ajax({
                 url: "${basePath}/Pcb/FPY",
                 dataType:"json",   //返回格式为json
                 async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{},  //参数值
+                data:"",  //参数值
                 type:"GET",   //请求方式
                 beforeSend:function(){
                     //请求前的处理
@@ -349,8 +408,11 @@
                     if(req.success == true) {
                         var jsonDefault = {};
                         //jsonDefault.chart = req.data.chart;
-                        /*jsonDefault.chart = {
-                        };*/
+                        jsonDefault.chart = {
+                            pointWidth:25,
+                            pointPadding: 0.4,
+                            groupPadding: 0
+                        };
                         jsonDefault.title = {
                             text:'TOP5',
                             style: {
@@ -368,64 +430,53 @@
                                 //'value: ' + this.point.stackTotal;
                             }
                         };
-                        jsonDefault.plotOptions={
-                            spline:{
-                                dataLabels:{enabled:true} //,color:'#0f100b'
-                            },
-                            column:{
-                                pointPadding: 0.2,
-                                borderWidth: 0,
-                                dataLabels:{enabled:true}//,color:'#ff0816'
-                            },
-
+                        jsonDefault.legend = {
+                            enabled:false,
                         };
                         //jsonDefault.xAxis = req.data.xaxis;
                         jsonDefault.xAxis = {
                             categories: ['SPI20', 'SPI25', 'SPI30']
                         }
                         //jsonDefault.yAxis = req.data.yaxis;
-                        jsonDefault.yAxis = {
-                            title:'count',
+                        jsonDefault.yAxis =
+                        {
+                            title:'',
                             minorGridLineWidth:0,
-                            stackLabels: {
+                            stackLabels:
+                            {
                                 enabled: true,
                                 allowOverlap: true,
-                                style: {
-                                    fontWeight: 'bold',
-                                    fontSize:"22px",
-                                    color: '#5cccff'// (Highcharts.theme &&
-                                    // Highcharts.theme.textColor) ||
+                                style:
+                                {
+                                fontWeight: 'bold',
+                                fontSize:"22px",
+                                color: '#5cccff'// (Highcharts.theme &&
+                                // Highcharts.theme.textColor) ||
                                 },
-                                formatter: function(){
-                                    if(this.total==0){
-                                        return "";
-                                    }else{
-                                        return this.total;
-                                    }
-                                }
-                            }
+                            },
+                            type: 'logarithmic',
                         };
                         //jsonDefault.series = req.data.series;
                         jsonDefault.series = [
                             {
                                 type: 'column',
                                 name: 'Missing',
-                                data: [3, 0, 0],
+                                data: [300, 0, 0],
                                 stacking:'normal'
                             }, {
                                 type: 'column',
                                 name: 'Insufficient',
-                                data: [2, 0, 0],
+                                data: [200, 0, 0],
                                 stacking:'normal'
                             }, {
                                 type: 'column',
                                 name: 'Excess',
-                                data: [4, 0, 3],
+                                data: [4,0,5],
                                 stacking:'normal'
                             },{
                                 type: 'column',
                                 name: 'Overheight',
-                                data: [4, 0, 3],
+                                data: [4, 0, 2],
                                 stacking:'normal'
                             },{
                                 type: 'column',
@@ -435,7 +486,7 @@
                             },{
                                 type: 'column',
                                 name: 'Overarea',
-                                data: [0, 3, 3],
+                                data: [0, 23, 1],
                                 stacking:'normal'
                             },{
                                 type: 'column',
@@ -450,12 +501,12 @@
                             },{
                                 type: 'column',
                                 name: 'Shifty',
-                                data: [0, 11, 0],
+                                data: [0, 2, 0],
                                 stacking:'normal'
                             },{
                                 type: 'column',
                                 name: 'Bridge',
-                                data: [0, 12, 0],
+                                data: [0, 1, 0],
                                 stacking:'normal'
                             },{
                                 type: 'column',
@@ -482,11 +533,32 @@
                                 name: 'Padareapercent',
                                 data: [0, null, 0],
                                 stacking:'normal'
-                            },];
+                            },
+                        ];
 						jsonDefault.exporting={
 							enabled:false
 						};
                         jsonDefault.credits = {enabled: false};
+                        jsonDefault.plotOptions={
+                            column:{
+                                borderWidth: 0,
+                                dataLabels:{
+                                    useHTML: true,
+                                    enabled:true,
+                                    formatter: function() {
+                                        return (this.series.name)+ ':' +(this.y);
+                                    },
+                                    style:{
+                                        fontSize:'5px',
+                                        fontWeight:'bold',
+                                        color:'#141328'
+                                    },
+
+                                },//,color:'#ff0816'
+                            },
+
+
+                        };
                         //console.log(JSON.stringify(json));
                         $("#container-defaultTop").highcharts(jsonDefault);
                     }else{
@@ -500,7 +572,6 @@
                     console.log(message);
                 }
             });
-
         }
 
         function  addFunctionAltyRealLineView(value, row, index) {
@@ -676,6 +747,16 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         })
+
+
+       excel = new ExcelGen({
+            "src_id": "test_table",
+            "show_header": true
+        });
+        $("#generate-excel").click(function () {
+            excel.generate();
+        });
+
         </script>
 
         <style type="text/css">
