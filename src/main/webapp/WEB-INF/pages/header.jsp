@@ -35,7 +35,7 @@
 		<script src="${staticPath}/hchart/modules/export-data.js"></script>
 		<!-- <script src="./hchart/modules/accessibility.js"></script> -->
 		<!-- <script src="./hchart/themes/dark-unica.js"></script> -->
-		<script src="${staticPath}/hchart/themes/grid-light.js"></script>
+		<%--<script src="${staticPath}/hchart/themes/grid-light.js"></script> --%><!--grid-light -->
 
 		<script src="${staticPath}/bootstrap/js/bootstrap-datetimepicker.js"></script>
 		<script src="${staticPath}/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
@@ -92,6 +92,9 @@
 				function showHome(){
 					window.location.href="${basePath}/Home/pcbHome";
 				}
+				<!-- 换肤 -->
+				//$.getScript("${staticPath}/hchart/themes/sunset.js");
+				$.getScript("${staticPath}/hchart/themes/dark-blue.js");
 			</script>
 	</body>
 </html>

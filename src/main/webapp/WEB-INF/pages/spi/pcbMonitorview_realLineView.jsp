@@ -48,7 +48,7 @@
 				</div>
 			</div>
 			<div class="row">
-			    <div class="col-md-10">
+			    <div class="col-md-11">
                     <!-- fpy product -->
                     <div class="row">
                         <div class="col-md-14">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
 			   </div>
-				<div class="col-md-1 col-md-offset-1">
+				<div class="col-md-1">
 					<div id="left-wap" style="height: 500px;overflow:auto;">
 						<div class="panel panel-info" >
 							<table  class="table" id="machineStatus">
@@ -97,49 +97,7 @@
 					</div>
 				</div>
 			</div>
-			<%--<div class="row">
-			  <div class="col-md-8">
-				  <h4 ><span class="glyphicon glyphicon-leaf" aria-hidden="true">&nbsp;</span><i>FPY</i></h4>
-				  <div class="right-wap" style="height: 250px;">
-				  	<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-				  	<div id="container-FPY" style="min-width: 310px; height: 100%; margin: 0 auto">
-					</div>
-				  </div>
-			  </div>
-			  <div class="col-md-4">
-				  <h4><span class="glyphicon glyphicon-equalizer" aria-hidden="true">&nbsp;</span><i>Default Top5</i></h4>
-				  <div class="right-wap" style="height: 250px;">
-				  	<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-				  	<div id="container-defaultTop" style="max-width:800px;height:100%"></div>
-					</div>
-				  </div>
-			  </div>
-			</div>
-			<div class="row">
-			  <div class="col-md-6">
-					<h4><span class="glyphicon glyphicon-object-align-bottom" aria-hidden="true">&nbsp;</span><i>Product</i></h4>
-					<div class="right-wap" style="height: 250px;">
-						<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-						<div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div>
-					</div>
-			  </div>		
-			  <div class="col-md-6">
-			  				  <h4><div class="btn-group-sm" role="group" aria-label="...">
-								  <span class="glyphicon glyphicon-flag" aria-hidden="true">&nbsp;</span><i>CPK</i>&nbsp;&nbsp;&nbsp;&nbsp;
-								  <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="0">area</button>
-								  <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="1">height</button>
-								  <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="2">vol</button>
-								  <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="3">shiftX</button>
-								  <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="4">shiftY</button>
-							  </div></h4>
-			  				  <div class="right-wap" style="height: 250px;">
-			  				  	<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-									<div id="container-CPK" style="min-width:310px;height:100%;margin: 0 auto">
-									</div>
-			  					</div>
-			  				  </div>
-			  </div>
-			</div>--%>
+
 		</nav>
 
         <script type="text/javascript" >  /*src="{staticPath}/js/pcbMonotorview.js" >*/
@@ -451,7 +409,7 @@
                         jsonDefault.series = [
                             {
                                 type: 'column',
-                                name: 'missing',
+                                name: 'Missing',
                                 data: [3, 0, 0],
                                 stacking:'normal'
                             }, {
@@ -502,27 +460,27 @@
                             },{
                                 type: 'column',
                                 name: 'Shapeerror',
-                                data: [0, 0, 0],
+                                data: [0, null, 0],
                                 stacking:'normal'
                             },{
                                 type: 'column',
                                 name: 'Smeared',
-                                data: [0, 0, 0],
+                                data: [0, null, 0],
                                 stacking:'normal'
                             },{
                                 type: 'column',
                                 name: 'Coplanarity',
-                                data: [0, 0, 0],
+                                data: [0, null, 0],
                                 stacking:'normal'
                             },{
                                 type: 'column',
                                 name: 'Prebridge',
-                                data: [0, 0, 0],
+                                data: [0, null, 0],
                                 stacking:'normal'
                             },{
                                 type: 'column',
                                 name: 'Padareapercent',
-                                data: [0, 0, 0],
+                                data: [0, null, 0],
                                 stacking:'normal'
                             },];
 						jsonDefault.exporting={
