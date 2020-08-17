@@ -43,7 +43,8 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
                 "SUM(pcb.excessCount) excessCount," +
                 "SUM(pcb.insufficientCount) insufficientCount," +
                 "SUM(pcb.missingCount) missingCount," +
-                "pcb.lineNo lineNo, Min(pcb.inspectStarttime) inspectStarttime,Max(pcb.inspectEndtime) inspectEndtime  " +
+                "pcb.lineNo lineNo, Min(pcb.inspectStarttime) inspectStarttime,Max(pcb.inspectEndtime) inspectEndtime,  " +
+                "ROUND(AVG(pcb.hCpk),3) AS hCpk ,ROUND(AVG(pcb.aCpk),3) AS aCpk,ROUND(AVG(pcb.VCPK),3) AS vcpk  "+
           /// "SUM(pcb.ngpadCount) ngpadCount  "+
             "FROM  " +
             "s_pcb pcb WHERE  pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   " +

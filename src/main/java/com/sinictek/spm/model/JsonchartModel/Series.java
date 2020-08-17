@@ -2,6 +2,7 @@
   * Copyright 2020 bejson.com 
   */
 package com.sinictek.spm.model.JsonchartModel;
+
 import java.util.List;
 
 /**
@@ -14,10 +15,47 @@ public class Series {
 
     private String type;
     private String name;
-    private List<Double> data;
+    //private List<Double> data;
     private String stack;
     private String stacking;
     private String color;
+    private  Tooltip tooltip;
+    private List<Data> data;
+    private double lineWidth;
+    private boolean connectEnds;
+
+    public double getLineWidth() {
+        return lineWidth;
+    }
+
+    public boolean isConnectEnds() {
+        return connectEnds;
+    }
+
+    public void setConnectEnds(boolean connectEnds) {
+        this.connectEnds = connectEnds;
+    }
+
+    public void setLineWidth(double lineWidth) {
+        this.lineWidth = lineWidth;
+    }
+
+    public List<Data> getData() {
+        return data;
+    }
+
+    public void setData(List<Data> data) {
+        this.data = data;
+    }
+
+    public Tooltip getTooltip() {
+        return tooltip;
+    }
+
+    public void setTooltip(Tooltip tooltip) {
+        this.tooltip = tooltip;
+    }
+
     public void setType(String type) {
          this.type = type;
      }
@@ -32,12 +70,12 @@ public class Series {
          return name;
      }
 
-    public void setData(List<Double> data) {
+   /* public void setData(List<Double> data) {
          this.data = data;
      }
      public List<Double> getData() {
          return data;
-     }
+     }*/
 
     public String getStack() {
         return stack;

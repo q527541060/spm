@@ -219,10 +219,21 @@
                         case 'boardMachineTimeLimit':
                         case 'boardMachineRefreshTime':{
                             var vselect = ($('<select ></select>').addClass("form-control"))  ; //$('<div></div>').addClass("col-sm-4").append
-                            for (var i = 1; i <=5 ; i++) {
-                                var voption = $("<option></option>").addClass('option').append(i*5).attr("value",i*5);
-                                if(req.data.settingValue==i*5){
+                            for (var i = 1; i <=6 ; i++) {
+                                var voption = '';//$("<option></option>").addClass('option').append(i*5-1).attr("value",i*5-1);
+                                if(req.data.settingValue==i*5-1){
                                     voption.attr('selected','selected');
+                                }
+                                if(i==6){
+                                    voption = $("<option></option>").addClass('option').append(2).attr("value",2);
+                                    if(req.data.settingValue==2){
+                                        voption.attr('selected','selected');
+                                    }
+                                }else{
+                                    voption = $("<option></option>").addClass('option').append(i*5-1).attr("value",i*5-1);
+                                    if(req.data.settingValue==i*5-1){
+                                        voption.attr('selected','selected');
+                                    }
                                 }
                                 voption.appendTo(vselect);
                             }
@@ -244,6 +255,8 @@
                             $('.selectPicker').append(vselect);
                             break;
                         }
+                        case 'Frequency-start':
+                        case 'standCPK':
                         case 'autoDeleteDays':{
                             var vselectinput = $('<input class="form-control deleteDaysValue" value="'+req.data.settingValue+'">').append(req.data.settingValue);
                             //$('.selectPicker').append(vselectinput);
@@ -251,16 +264,16 @@
                             //$('.deleteDaysValue').val(req.data.settingValue);
                             break;
                         }
-
-
-
+                       /* case 'standCPK':{
+                            var vselectinput =$('<input class="form-control deleteDaysValue" value="'+req.data.settingValue+'">').append(req.data.settingValue);
+                            vselectinput.appendTo('.selectPicker');
+                            break;
+                        }*/
                     }
-
                     $('#form_default .updateTime').val(req.data.updateTime);
                     //$('.selectpicker').combobox();
                 }
             });
-
             $('#editDefaultLineModal').modal({
                 backdrop:'static',keyboard:false
             });

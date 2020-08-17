@@ -40,5 +40,13 @@ public  class ConstParam {
      */
     public static int DEFAULTSETTING_autoDelete=0;
     public static String DEFAULTSETTING_defaultType="";
+    /**
+     * standCPK  CPK设置标准值1
+     */
+    public static int DEFAULTSETTING_standCPK=0;
 
+    /**
+     * FrequencyStart  班次设置值
+     */
+    public static int DEFAULTSETTING_FrequencyStart=0;
 }

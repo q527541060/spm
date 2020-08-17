@@ -88,9 +88,9 @@ public class SPcbController {
         }
         List<String> categoriesList = new ArrayList<String>();
         List<Series> seriesList = new ArrayList<Series>();
-        List<Double> goodSeriesList = new ArrayList<Double>();
-        List<Double> passSeriesList = new ArrayList<Double>();
-        List<Double> ngSeriesList = new ArrayList<Double>();
+        List<Data> goodSeriesList = new ArrayList<Data>();
+        List<Data> passSeriesList = new ArrayList<Data>();
+        List<Data> ngSeriesList = new ArrayList<Data>();
 
 
 
@@ -99,14 +99,21 @@ public class SPcbController {
         int iTop3 =  Integer.parseInt(arrStrTop5[2]);
         int iTop4 =  Integer.parseInt(arrStrTop5[3]);
         int iTop5 =  Integer.parseInt(arrStrTop5[4]);
+        Data data =null;
         if(sPcbList!=null && sPcbList.size()>0){
             for (int i=0;i<sPcbList.size();i++
             ) {
+                data = new Data();
                 fristLineNo = sPcbList.get(0).getLineNo();
                 categoriesList.add(sPcbList.get(i).getLineNo()+"");
-                goodSeriesList.add((double)(Math.round(Double.parseDouble(sPcbList.get(i).getGoodPcbYeild()) *100)/100.0));
-                passSeriesList.add((double)(Math.round(Double.parseDouble(sPcbList.get(i).getPassPcbYeild()) *100)/100.0));
-                ngSeriesList.add((double)(Math.round(Double.parseDouble(sPcbList.get(i).getNgPcbYeild()) *100)/100.0));
+                data.setY((double)(Math.round(Double.parseDouble(sPcbList.get(i).getGoodPcbYeild()) *100)/100.0));
+                goodSeriesList.add(data);
+                data = new Data();
+                data.setY((double)(Math.round(Double.parseDouble(sPcbList.get(i).getPassPcbYeild()) *100)/100.0));
+                passSeriesList.add(data);
+                data = new Data();
+                data.setY((double)(Math.round(Double.parseDouble(sPcbList.get(i).getNgPcbYeild()) *100)/100.0));
+                ngSeriesList.add(data);
                 //default error count
                 iTop1Count+= getPadErrorCodeCount(sPcbList.get(i),iTop1);
                 iTop2Count+= getPadErrorCodeCount(sPcbList.get(i),iTop2);
@@ -210,25 +217,30 @@ public class SPcbController {
         List<SPcb> sPcbList =  sPcbService.getPcbListWithALLLine(StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_boardMachineTimeLimit),endTime);
         List<String> categoriesList = new ArrayList<String>();
         List<Series> seriesList = new ArrayList<Series>();
-        List<Double> goodSeriesList = new ArrayList<Double>();
-        List<Double> passSeriesList = new ArrayList<Double>();
-        List<Double> ngSeriesList = new ArrayList<Double>();
-
-
+        List<Data> goodSeriesList = new ArrayList<Data>();
+        List<Data> passSeriesList = new ArrayList<Data>();
+        List<Data> ngSeriesList = new ArrayList<Data>();
 
         int iTop1 =  Integer.parseInt(arrStrTop5[0]) ;
         int iTop2=  Integer.parseInt(arrStrTop5[1]);
         int iTop3 =  Integer.parseInt(arrStrTop5[2]);
         int iTop4 =  Integer.parseInt(arrStrTop5[3]);
         int iTop5 =  Integer.parseInt(arrStrTop5[4]);
+        Data data =null;
         if(sPcbList!=null && sPcbList.size()>0){
             for (int i=0;i<sPcbList.size();i++
                  ) {
                 fristLineNo = sPcbList.get(0).getLineNo();
                 categoriesList.add(sPcbList.get(i).getLineNo()+"");
-                goodSeriesList.add((double)(Math.round(Double.parseDouble(sPcbList.get(i).getGoodPcbYeild()) *100)/100.0));
-                passSeriesList.add((double)(Math.round(Double.parseDouble(sPcbList.get(i).getPassPcbYeild()) *100)/100.0));
-                ngSeriesList.add((double)(Math.round(Double.parseDouble(sPcbList.get(i).getNgPcbYeild()) *100)/100.0));
+                data = new Data();
+                data.setY((double)(Math.round(Double.parseDouble(sPcbList.get(i).getGoodPcbYeild()) *100)/100.0));
+                goodSeriesList.add(data);
+                data = new Data();
+                data.setY((double)(Math.round(Double.parseDouble(sPcbList.get(i).getPassPcbYeild()) *100)/100.0));
+                passSeriesList.add(data);
+                data = new Data();
+                data.setY((double)(Math.round(Double.parseDouble(sPcbList.get(i).getNgPcbYeild()) *100)/100.0));
+                ngSeriesList.add(data);
                 //default error count
                 iTop1Count+= getPadErrorCodeCount(sPcbList.get(i),iTop1);
                 iTop2Count+= getPadErrorCodeCount(sPcbList.get(i),iTop2);
@@ -518,30 +530,52 @@ public class SPcbController {
         XAxis xAxis = new XAxis();
 
         YAxis yAxis = new YAxis();
-        List<Double> seriesAllList = new ArrayList<Double>();
-        seriesAllList.add((double)iTop1count);
-        seriesAllList.add((double)iTop2count);
-        seriesAllList.add((double)iTop3count);
-        seriesAllList.add((double)iTop4count);
-        seriesAllList.add((double)iTop5count);
-        List<Double> seriesLineList = new ArrayList<Double>();
+        List<Data> seriesAllList = new ArrayList<Data>();
+        Data data = new Data();
+        data.setY((double)iTop1count);
+        seriesAllList.add(data);
+        data = new Data();
+        data.setY((double)iTop2count);
+        seriesAllList.add(data);
+        data = new Data();
+        data.setY((double)iTop3count);
+        seriesAllList.add(data);
+        data = new Data();
+        data.setY((double)iTop4count);
+        seriesAllList.add(data);
+        data = new Data();
+        data.setY((double)iTop5count);
+        seriesAllList.add(data);
+        List<Data> seriesLineList = new ArrayList<Data>();
         int iTop1 =  Integer.parseInt(arrStrTop5[0]) ;
         int iTop2=  Integer.parseInt(arrStrTop5[1]);
         int iTop3 =  Integer.parseInt(arrStrTop5[2]);
         int iTop4 =  Integer.parseInt(arrStrTop5[3]);
         int iTop5 =  Integer.parseInt(arrStrTop5[4]);
         if(sPcb!=null ) {
-            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop1));
-            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop2));
-            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop3));
-            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop4));
-            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop5));
+            data = new Data();
+            data.setY((double) getPadErrorCodeCount(sPcb, iTop1));
+            seriesLineList.add(data);
+            data = new Data();
+            data.setY((double) getPadErrorCodeCount(sPcb, iTop2));
+            seriesLineList.add(data);
+            data = new Data();
+            data.setY((double) getPadErrorCodeCount(sPcb, iTop3));
+            seriesLineList.add(data);
+            data = new Data();
+            data.setY((double) getPadErrorCodeCount(sPcb, iTop4));
+            seriesLineList.add(data);
+            data = new Data();
+            data.setY((double) getPadErrorCodeCount(sPcb, iTop5));
+            seriesLineList.add(data);
         }else{
-            seriesLineList.add(0.0);
-            seriesLineList.add(0.0);
-            seriesLineList.add(0.0);
-            seriesLineList.add(0.0);
-            seriesLineList.add(0.0);
+            data = new Data();
+            data.setY(0.0);
+            seriesLineList.add(data);
+            seriesLineList.add(data);
+            seriesLineList.add(data);
+            seriesLineList.add(data);
+            seriesLineList.add(data);
         }
         categoriesList.add(getErrorCodeString(iTop1));
         categoriesList.add(getErrorCodeString(iTop2));
@@ -624,24 +658,33 @@ public class SPcbController {
         seriesAllList.add((double)iTop3count);
         seriesAllList.add((double)iTop4count);
         seriesAllList.add((double)iTop5count);*/
-        List<Double> seriesLineList = new ArrayList<Double>();
+        List<Data> seriesLineList = new ArrayList<Data>();
         int iTop1 =  Integer.parseInt(arrStrTop5[0]) ;
         int iTop2=  Integer.parseInt(arrStrTop5[1]);
         int iTop3 =  Integer.parseInt(arrStrTop5[2]);
         int iTop4 =  Integer.parseInt(arrStrTop5[3]);
         int iTop5 =  Integer.parseInt(arrStrTop5[4]);
+        Data data =new Data();
         if(sPcb!=null ) {
-            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop1));
-            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop2));
-            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop3));
-            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop4));
-            seriesLineList.add((double) getPadErrorCodeCount(sPcb, iTop5));
+            data = new Data();
+            data.setY((double) getPadErrorCodeCount(sPcb, iTop1));
+            seriesLineList.add(data);
+            data = new Data();
+            data.setY((double) getPadErrorCodeCount(sPcb, iTop2));
+            seriesLineList.add(data);
+            data = new Data();data.setY((double) getPadErrorCodeCount(sPcb, iTop3));
+            seriesLineList.add(data);
+            data = new Data();data.setY((double) getPadErrorCodeCount(sPcb, iTop4));
+            seriesLineList.add(data);
+            data = new Data();data.setY((double) getPadErrorCodeCount(sPcb, iTop5));
+            seriesLineList.add(data);
         }else{
-            seriesLineList.add(0.0);
-            seriesLineList.add(0.0);
-            seriesLineList.add(0.0);
-            seriesLineList.add(0.0);
-            seriesLineList.add(0.0);
+            data = new Data();data.setY(0.0);
+            seriesLineList.add(data);
+            seriesLineList.add(data);
+            seriesLineList.add(data);
+            seriesLineList.add(data);
+            seriesLineList.add(data);
         }
         categoriesList.add(getErrorCodeString(iTop1));
         categoriesList.add(getErrorCodeString(iTop2));
@@ -740,16 +783,18 @@ public class SPcbController {
         YAxis yAxis = new YAxis();
         //product chart
         List<String> categoriesList = new ArrayList<String>();
-        List<Double> columnSeriesData = new ArrayList<Double>();
-        List<Double> splineSeriesData = new ArrayList<Double>();
-        List<Double> dAreaCPKListData  = new ArrayList<Double>();
-        List<Double> dUclListData = new ArrayList<Double>();
-        List<Double> dLclListData  = new ArrayList<Double>();
+        List<Data> columnSeriesData = new ArrayList<Data>();
+        List<Data> splineSeriesData = new ArrayList<Data>();
+        List<Data> dAreaCPKListData  = new ArrayList<Data>();
+        List<Data> dUclListData = new ArrayList<Data>();
+        List<Data> dLclListData  = new ArrayList<Data>();
 
         double dMaxCPK = 0;
         double dMinCPK = 0;
+        Data data = new Data();
         for (int i = 0; i < 5; i++) {
-            splineSeriesData.add(standardPa+0.0);
+            data = new Data();data.setY(standardPa+0.0);
+            splineSeriesData.add(data);
             categoriesList.add(timeInterVer*(1+i)+"H");
             endTime = StringTimeUtils.addHourTimeStrNow(calendar,0);
             startTime = StringTimeUtils.addHourTimeStrNow(calendar,-(1*timeInterVer));
@@ -794,22 +839,31 @@ public class SPcbController {
                 dUcl =sPcb.getUcl()==null?0:Double.parseDouble(sPcb.getUcl().split(";")[0])*0.1;
                 dLcl =sPcb.getUcl()==null?0:Double.parseDouble(sPcb.getLcl().split(";")[0])*0.1;//sPcb.getLcl()==null ?0:sPcb.getLcl();
             }
-            columnSeriesData.add(productOneCount+0.0);
+            data = new Data();data.setY(productOneCount+0.0);
+            columnSeriesData.add(data);
             if(aValue!=null && aValue.contains("0")){
-                dAreaCPKListData.add(dAreaCPK);
+                data = new Data();data.setY(dAreaCPK);
+                dAreaCPKListData.add(data);
             }else if(aValue!=null && aValue.contains("1")){
-                dAreaCPKListData.add(dHeightCPK);
+                data = new Data();data.setY(dHeightCPK);
+                dAreaCPKListData.add(data);
             }else if(aValue!=null && aValue.contains("2")){
-                dAreaCPKListData.add(dVolCPK);
+                data = new Data();data.setY(dVolCPK);
+                dAreaCPKListData.add(data);
             }else if(aValue!=null && aValue.contains("3")){
-                dAreaCPKListData.add(dShiftXCPK);
+                data = new Data();data.setY(dShiftXCPK);
+                dAreaCPKListData.add(data);
             }else if(aValue!=null && aValue.contains("4")){
-                dAreaCPKListData.add(dShiftYCPK);
+                data = new Data();data.setY(dShiftYCPK);
+                dAreaCPKListData.add(data);
             }else {
-                dAreaCPKListData.add(dAreaCPK);
+                data = new Data();data.setY(dAreaCPK);
+                dAreaCPKListData.add(data);
             }
-            dUclListData.add(dUcl);
-            dLclListData.add(dLcl);
+            data = new Data();data.setY(dUcl);
+            dUclListData.add(data);
+            data = new Data();data.setY(dLcl);
+            dLclListData.add(data);
         }
         xAxis.setCategories(categoriesList);
         xAxis.setMin(0);

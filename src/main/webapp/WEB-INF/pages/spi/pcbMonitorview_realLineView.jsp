@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%--<%
-	String contextPath = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath;
-	String staticPath = basePath + "/static";
-	request.setAttribute("basePath", basePath);
-	request.setAttribute("staticPath", staticPath);
-%>--%>
 <html lang="zh-CN">
 	<head>
 		<meta charset="utf-8">
@@ -79,12 +72,14 @@
                             </div>
                             <h4><div class="btn-group-sm" role="group" aria-label="...">
                                 <%--<span class="glyphicon glyphicon-flag" aria-hidden="true">&nbsp;</span><i>CPK</i>&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                                <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="0">area</button>
-                                <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="1">height</button>
-                                <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="2">vol</button>
-                                <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="3">shiftX</button>
-                                <button type="button" class="btn btn-sm" onclick="CPKRealTime(this.value)" VALUE="4">shiftY</button>
+                                <button type="button" class="btn btn-sm" onclick="FPYRealTime(this.value)" VALUE="0">area</button>
+                                <button type="button" class="btn btn-sm" onclick="FPYRealTime(this.value)" VALUE="1">height</button>
+                                <button type="button" class="btn btn-sm" onclick="FPYRealTime(this.value)" VALUE="2">vol</button>
+                                <button type="button" class="btn btn-sm" onclick="FPYRealTime(this.value)" VALUE="3">shiftX</button>
+                                <button type="button" class="btn btn-sm" onclick="FPYRealTime(this.value)" VALUE="4">shiftY</button>
                             </div></h4>
+
+                            <input type="hidden" id="boardMachineRefreshTime" value="${boardMachineRefreshTime}"/>
                         </div>
                     </div>
 			   </div>
@@ -97,7 +92,7 @@
 					</div>--%>
 				</div>
 			</div>
-            <button class="btn btn-default" id="generate-excel" type="submit">导出</button>
+            <%--<button class="btn btn-default" id="generate-excel" type="submit">导出</button>
             <table class="table table-bordered table-striped" id="test_table">
                 <thead>
                 <tr>
@@ -147,7 +142,7 @@
                 </tr>
 
                 </tbody>
-            </table>
+            </table>--%>
 		</nav>
 
         <script type="text/javascript" >  /*src="{staticPath}/js/pcbMonotorview.js" >*/
@@ -158,25 +153,24 @@
             }
         }
         var StatusQueryUrl = '${basePath}/Status/pcbMonitorJson';
-        var iTop1count=0;
-        var iTop2count=0;
-        var iTop3count=0;
-        var iTop4count=0;
-        var iTop5count=0;
-        var fristLineNo ="";
-        var vlineNo="";
+        var vValue=1;
+        var refreshSecon = $('#boardMachineRefreshTime').val();
+        if(refreshSecon==0){
+            refreshSecon=10;
+        }
         InitMainTable();
-        FPYRealTime();
+        FPYRealTime(vValue);
         //ProductRealTime();
-        CPKRealTime();
         defaultTopRealTime();
-        function FPYRealTime(){
+        function FPYRealTime(value){
+            vValue = value;
+            //alert(vValue);
             var json = {};
             $.ajax({
-                url: "${basePath}/Pcb/FPY",
+                url: "${basePath}/Status/pcbMonitorview_realLineViewJson?aValue="+value,
                 dataType:"json",   //返回格式为json
                 async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:"",    //参数值
+                data:'',    //参数值
                 type:"GET",   //请求方式
                 beforeSend:function(){
                     //请求前的处理
@@ -194,7 +188,6 @@
                             // Highcharts.theme.textColor) ||
                         }};
                     //json.subtitle = {text:'FPY、Product'};
-
                     json.plotOptions={
                         spline:{
                             dataLabels:{enabled:true,useHTML: true,} //,color:'#0f100b'
@@ -218,13 +211,15 @@
 
                     };
                     json.credits={enabled: false };
-                    //json.xAxis = req.data.xaxis;
-                    json.xAxis =  [{
+                    json.xAxis = req.data[0].xaxis;
+                    /*json.xAxis =  [{
                         categories: ['SPI20', 'SPI25', 'SPI30'],
                         //crosshair: true
-                    }];
+                    }];*/
                     //json.yAxis = req.data.yaxis;
-                    json.yAxis =  [{ // Secondary yAxis
+                    json.yAxis =
+                    [
+                    { // Secondary yAxis
                         title: {
                             text: '',
                         },
@@ -237,8 +232,9 @@
                         opposite: true,
                         minorGridLineWidth:0,
                         min:0,
-                        max:400
-                    },{ // Primary yAxis
+                        //max:400
+                    },
+                    {
                         labels: {
                             format: '{value}%',
                         },
@@ -259,8 +255,8 @@
                         }
                         //shared: true
                     };
-                    //json.series = req.data.series;
-                    json.series= [{
+                    json.series = req.data[0].series;
+                    /*json.series= [{
                         name: 'PCB->PASS',
                         type: 'column',
                         data: [266, 200, 202],
@@ -296,20 +292,71 @@
                             valueSuffix: '%'
                         },
                         color:'#7bdd18'
-                    }];
+                    }];*/
 					json.exporting={
 						enabled:false
 					};
-                    /*iTop1count = req.rows.iTop1Count;
-                    iTop2count =req.rows.iTop2Count;
-                    iTop3count =req.rows.iTop3Count;
-                    iTop4count =req.rows.iTop4Count;
-                    iTop5count =req.rows.iTop5Count;
-                    fristLineNo = req.rows.fristLineNo;*/
+
+					//cpk
+                    var jsonCPK={};
+                    jsonCPK.title={
+                        text: 'CPK',
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize:"22px",
+                            color: '#5cccff'// (Highcharts.theme &&
+                            // Highcharts.theme.textColor) ||
+                        }};
+                    jsonCPK.series=req.data[1].series;
+                    /*jsonCPK.series=[{
+                        name: 'CPK',
+                        type: 'line',
+                        data: [{y:1.6,color:'#25dd19'},{y:0.6,color:'#dd1127'},{y:0.8,color:'#dd1127'}],
+                        lineWidth:0,
+                        connectEnds:false
+                    },{
+                        name: 'StandCPK',
+                        type: 'line',
+                        data: [1, 1, 1],
+                    },];*/
+                    jsonCPK.legend={
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                    };
+                    jsonCPK.tooltip={formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y ;
+                        }};
+                    jsonCPK.xAxis=req.data[0].xaxis;
+                    /*jsonCPK.xAxis={
+                        categories: ['SPI20', 'SPI25', 'SPI30']
+                    };*/
+                    //jsonCPK.yAxis=req.rows.yaxis;
+                    jsonCPK.yAxis={
+                        title:'0.0f',
+                        minorGridLineWidth:0,
+                        gridLineWidth:'0px',
+                        width:0
+                    };
+                    jsonCPK.plotOptions={line: {
+                            pointPadding: 0,
+                            borderWidth: 0,
+                            dataLabels:{enabled:true}
+                        },column: {
+                            pointPadding: 0,
+                            borderWidth: 0,
+                            dataLabels:{enabled:true,useHTML: true,}
+                        }
+                    };
+                    jsonCPK.exporting={
+                        enabled:false
+                    };
+                    jsonCPK.credits={enabled: false };
+                    //alert('come');
+                    $('#container-CPK').highcharts(jsonCPK);
+                    //alert('come');
                     $('#container-FPY').highcharts(json);
-                    vlineNo = fristLineNo;
-                    //defaultTopRealTime(fristLineNo);
-                   // ProductRealTime(fristLineNo);
                 },
                 complete:function(){
                     //请求完成的处理
@@ -319,13 +366,12 @@
                 }
             });
         }
-
-        function CPKRealTime() {
+        function CPKRealTime(value) {
             $.ajax({
                 url: "${basePath}/Pcb/FPY",
                 dataType:"json",   //返回格式为json
                 async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:"",  //参数值
+                data:{aValue:value},  //参数值
                 type:"GET",   //请求方式
                 success:function(req){
                     var jsonCPK={};
@@ -409,9 +455,7 @@
                         var jsonDefault = {};
                         //jsonDefault.chart = req.data.chart;
                         jsonDefault.chart = {
-                            pointWidth:25,
-                            pointPadding: 0.4,
-                            groupPadding: 0
+
                         };
                         jsonDefault.title = {
                             text:'TOP5',
@@ -440,6 +484,7 @@
                         //jsonDefault.yAxis = req.data.yaxis;
                         jsonDefault.yAxis =
                         {
+                            min:0.1,
                             title:'',
                             minorGridLineWidth:0,
                             stackLabels:
@@ -455,6 +500,8 @@
                                 },
                             },
                             type: 'logarithmic',
+                            //tickLength: 20
+                            //min:0,
                         };
                         //jsonDefault.series = req.data.series;
                         jsonDefault.series = [
@@ -541,6 +588,7 @@
                         jsonDefault.credits = {enabled: false};
                         jsonDefault.plotOptions={
                             column:{
+
                                 borderWidth: 0,
                                 dataLabels:{
                                     useHTML: true,
@@ -573,7 +621,6 @@
                 }
             });
         }
-
         function  addFunctionAltyRealLineView(value, row, index) {
             if(row.error==1 ){
                 return ['<span>'+row.lineNo+'</span>'].join("")+['<image style="cursor:pointer;width:80px;height:60px;" src="${staticPath}/img/spi2_red.jpg">'].join("");
@@ -718,15 +765,6 @@
 
         };
 
-        /*function timeShow() {
-
-            var  startTime_str = ("2018-11-09 20:19:00").replace(/-/g,"/");;
-            var startTime= new Date(startTime_str);
-            var date = new Date(+new Date()+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'')
-            document.getElementById("timeShow").innerText=date;
-        }*/
-        //$("#status-refresh").click(refreshTable);
-
         function refreshTable(){
 			var opt = {
 				url: StatusQueryUrl,
@@ -739,23 +777,26 @@
 			$("#machineStatus").bootstrapTable('refresh', opt);
 
 		}
-		setInterval(refreshTable,5000);//,FPYRealTime,CPKRealTime,defaultTopRealTime,
-        setInterval(FPYRealTime,10000);
-        setInterval(CPKRealTime,10000);
-        setInterval(defaultTopRealTime,10000);
+		function refreshFPYRealTime(){
+            FPYRealTime(vValue);
+        }
+		setInterval(refreshTable,refreshSecon*1000);//,FPYRealTime,CPKRealTime,defaultTopRealTime,
+        setInterval(refreshFPYRealTime,refreshSecon*1000*2);
+        //setInterval(CPKRealTime,10000);
+        //setInterval(defaultTopRealTime,10000);
 		//window.setInterval(timeShow,1000);
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         })
 
 
-       excel = new ExcelGen({
+      /* excel = new ExcelGen({
             "src_id": "test_table",
             "show_header": true
         });
         $("#generate-excel").click(function () {
             excel.generate();
-        });
+        });*/
 
         </script>
 

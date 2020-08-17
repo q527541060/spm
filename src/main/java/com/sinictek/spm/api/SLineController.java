@@ -69,9 +69,9 @@ public class SLineController {
         ngSeries.setName("不良率(%)");
         Series passSeries = new Series();
         passSeries.setName("误报率(%)");
-        List<Double> lstGoodSeriesData = new ArrayList<Double>();
-        List<Double> lstNgSeriesData = new ArrayList<Double>();
-        List<Double> lstPassSeriesData = new ArrayList<Double>();
+        List<Data> lstGoodSeriesData = new ArrayList<Data>();
+        List<Data> lstNgSeriesData = new ArrayList<Data>();
+        List<Data> lstPassSeriesData = new ArrayList<Data>();
 
         List<Series> lstPcbSeries = new ArrayList<Series>();
         Series pcbCountSeries = new Series();
@@ -80,9 +80,11 @@ public class SLineController {
         passPcbCountSeries.setName("复判PASS-PCB个数");
         Series ngPadCountSeries = new Series();
         ngPadCountSeries.setName("不良点个数");
-        List<Double> lstpcbCountSeriesData = new ArrayList<Double>();
-        List<Double> lstpassPcbCountSeriesData = new ArrayList<Double>();
-        List<Double> lstngPadCountSeriesData = new ArrayList<Double>();
+        List<Data> lstpcbCountSeriesData = new ArrayList<Data>();
+        List<Data> lstpassPcbCountSeriesData = new ArrayList<Data>();
+        List<Data> lstngPadCountSeriesData = new ArrayList<Data>();
+
+        Data data = new Data();
         double dAVGGood=0.0,dAVGNg=0.0,dAVGPass=0.0;
         double dAVGpcbCount=0.0,dAVGpassPcbCount=0.0,dAVGPadCount=0.0;
         switch (mode){
@@ -93,42 +95,53 @@ public class SLineController {
                     for (int i = 0; i < lstPcb.size(); i++) {
                         dTmp =lstPcb.get(i).getGoodPcbYeild()==null?0.0: new BigDecimal(Double.parseDouble(lstPcb.get(i).getGoodPcbYeild() )).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                         dAVGGood +=  dTmp;
-                        lstGoodSeriesData.add(dTmp);
+                        data = new Data();data.setY(dTmp);
+                        lstGoodSeriesData.add(data);
 
                         dTmp =lstPcb.get(i).getNgPcbYeild()==null?0.0:new BigDecimal( Double.parseDouble(lstPcb.get(i).getNgPcbYeild())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue() ;
                         dAVGNg+=dTmp ;
-                        lstNgSeriesData.add(dTmp);
+                        data = new Data();data.setY(dTmp);
+                        lstNgSeriesData.add(data);
 
                         dTmp =lstPcb.get(i).getPassPcbYeild()==null?0.0:new BigDecimal( Double.parseDouble(lstPcb.get(i).getPassPcbYeild())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                         dAVGPass+= dTmp ;
-                        lstPassSeriesData.add(dTmp);
+                        data = new Data();data.setY(dTmp);
+                        lstPassSeriesData.add(data);
                         lstCategoriesYeild.add(lstPcb.get(i).getLineNo());
 
                         //pcb count
                         dTmp = lstPcb.get(i).getTotal() ==null ? 0.0:Double.parseDouble(lstPcb.get(i).getTotal());
-                        lstpcbCountSeriesData.add(dTmp);
+                        data = new Data();data.setY(dTmp);
+                        lstpcbCountSeriesData.add(data);
                         dAVGpcbCount+=dTmp;
                         //pass pcb count
                         dTmp=lstPcb.get(i).getPassPcbCount()==null?0:Double.parseDouble(lstPcb.get(i).getPassPcbCount());
-                        lstpassPcbCountSeriesData.add(dTmp);
+                        data = new Data();data.setY(dTmp);
+                        lstpassPcbCountSeriesData.add(data);
                         dAVGpassPcbCount+=dTmp;
                         //pad 缺陷趋势
                         dTmp = lstPcb.get(i).getNgpadCount()==null?0.0:lstPcb.get(i).getNgpadCount()+0.0;
-                        lstngPadCountSeriesData.add(dTmp);
+                        data = new Data();data.setY(dTmp);
+                        lstngPadCountSeriesData.add(data);
                         dAVGPadCount+=dTmp;
                     }
                 }
                 lstCategoriesYeild.add("ALL-LINE");
                // List<Double> lists=null;
                 //DoubleSummaryStatistics statistics = lstPcb.stream().mapToDouble(Number::doubleValue).summaryStatistics();
+                data = new Data();data.setY(lstPcb.size()>0?new BigDecimal(dAVGGood/lstPcb.size()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue():0.0);
+                lstGoodSeriesData.add(data );
+                data = new Data();data.setY(lstPcb.size()>0?new BigDecimal(dAVGNg/lstPcb.size()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue():0.0);
+                lstNgSeriesData.add(data );
+                data = new Data();data.setY( lstPcb.size()>0?new BigDecimal(dAVGPass/lstPcb.size()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue():0.0);
+                lstPassSeriesData.add(data);
 
-                lstGoodSeriesData.add( lstPcb.size()>0?new BigDecimal(dAVGGood/lstPcb.size()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue():0.0);
-                lstNgSeriesData.add( lstPcb.size()>0?new BigDecimal(dAVGNg/lstPcb.size()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue():0.0);
-                lstPassSeriesData.add( lstPcb.size()>0?new BigDecimal(dAVGPass/lstPcb.size()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue():0.0);
-
-                lstpcbCountSeriesData.add( lstPcb.size()>0?dAVGpcbCount:0.0);
-                lstpassPcbCountSeriesData.add( lstPcb.size()>0?dAVGpassPcbCount:0.0);
-                lstngPadCountSeriesData.add( lstPcb.size()>0?dAVGPadCount:0.0);
+                data = new Data();data.setY(lstPcb.size()>0?dAVGpcbCount:0.0);
+                lstpcbCountSeriesData.add(data );
+                data = new Data();data.setY(lstPcb.size()>0?dAVGpassPcbCount:0.0);
+                lstpassPcbCountSeriesData.add(data );
+                data = new Data();data.setY(lstPcb.size()>0?dAVGPadCount:0.0);
+                lstngPadCountSeriesData.add( data);
 
                 goodSeries.setType("column");
                 goodSeries.setColor("#211cff");
@@ -189,31 +202,38 @@ public class SLineController {
                     inspectStarttime = inspectEndtime; //开始时间=结束时间
                     if (pcb != null) {
                         //直通率
-                        lstGoodSeriesData.add(pcb.getGoodPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getGoodPcbYeild()));
+                        data = new Data();data.setY(pcb.getGoodPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getGoodPcbYeild()));
+                        lstGoodSeriesData.add(data);
                         //不良率
-                        lstNgSeriesData.add(pcb.getNgPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getNgPcbYeild()));
+                        data = new Data();data.setY(pcb.getNgPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getNgPcbYeild()));
+                        lstNgSeriesData.add(data);
                         //误判率
-                        lstPassSeriesData.add(pcb.getPassPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getPassPcbYeild()));
+                        data = new Data();data.setY(pcb.getPassPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getPassPcbYeild()));
+                        lstPassSeriesData.add(data);
 
                         //pcb count
-                        lstpcbCountSeriesData.add(pcb.getTotal() ==null ? 0:Double.parseDouble( pcb.getTotal()));
+                        data = new Data(); data.setY(pcb.getTotal() ==null ? 0:Double.parseDouble( pcb.getTotal()));
+                        lstpcbCountSeriesData.add(data);
                         //pass pcb count
-                        lstpassPcbCountSeriesData.add(pcb.getPassPcbCount()==null?0:Double.parseDouble(pcb.getPassPcbCount()));
+                        data = new Data();data.setY(pcb.getPassPcbCount()==null?0:Double.parseDouble(pcb.getPassPcbCount()));
+                        lstpassPcbCountSeriesData.add(data);
                         //pad 缺陷趋势
-                        lstngPadCountSeriesData.add(pcb.getNgpadCount()==null?0.0:pcb.getNgpadCount()+0.0);
+                        data = new Data();data.setY(pcb.getNgpadCount()==null?0.0:pcb.getNgpadCount()+0.0);
+                        lstngPadCountSeriesData.add(data);
                     } else {
                         //直通率
-                        lstGoodSeriesData.add(0.0);
+                        data = new Data();data.setY(0.0);
+                        lstGoodSeriesData.add(data);
                         //不良率
-                        lstNgSeriesData.add(0.0);
+                        lstNgSeriesData.add(data);
                         //误判率
-                        lstPassSeriesData.add(0.0);
+                        lstPassSeriesData.add(data);
                         //pcb count
-                        lstpcbCountSeriesData.add(0.0);
+                        lstpcbCountSeriesData.add(data);
                         //pass pcb count
-                        lstpassPcbCountSeriesData.add(0.0);
+                        lstpassPcbCountSeriesData.add(data);
                         //pad 缺陷趋势
-                        lstngPadCountSeriesData.add(0.0);
+                        lstngPadCountSeriesData.add(data);
                     }
                     lstCategoriesYeild.add(i * (int) dOptical + "h");
                 }
