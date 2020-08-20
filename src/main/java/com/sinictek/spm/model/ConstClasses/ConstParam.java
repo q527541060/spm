@@ -19,6 +19,7 @@ public  class ConstParam {
     public static int DEFAULTSETTING_boardMachineTimeLimit=0;
     public static int DEFAULTSETTING_boardMachineRefreshTime=0;
     public static int DEFAULTSETTING_autoDeleteDays=0;
+
     /**
      * FPY 0初始化 1开启  2关闭
      */

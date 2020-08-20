@@ -11,6 +11,7 @@ package com.sinictek.spm.model.JsonchartModel;
  */
 public class Chart {
 
+
     private String type;
     public void setType(String type) {
          this.type = type;

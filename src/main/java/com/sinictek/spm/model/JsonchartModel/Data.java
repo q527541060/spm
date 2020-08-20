@@ -26,6 +26,7 @@ public class Data {
         this.color = color;
     }
 
+
    /* public double getX() {
         return x;
     }

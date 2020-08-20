@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface SJobMapper extends BaseMapper<SJob> {
 
+
 }

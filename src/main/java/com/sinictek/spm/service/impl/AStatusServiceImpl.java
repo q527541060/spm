@@ -20,6 +20,7 @@ import java.util.List;
 @Service
 public class AStatusServiceImpl extends ServiceImpl<AStatusMapper, AStatus> implements AStatusService {
 
+
     @Autowired
     AStatusMapper aStatusMapper;
 

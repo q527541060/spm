@@ -547,6 +547,7 @@ public class SPcbController {
         return new ApiResponse<JsonChartsBean>(true,"",jsonChartsBean);
     }
 
+
     @ResponseBody
     @PostMapping("ProductCPK")
     public ApiResponse<JsonChartsBean> getProductCPKChartWithLineNo(@RequestParam("lineNo") String lineNo,@RequestParam("aValue") String aValue){

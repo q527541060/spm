@@ -18,6 +18,7 @@ public class Marker {
         this.enabled = enabled;
     }
 
+
     public int getRadius() {
         return radius;
     }

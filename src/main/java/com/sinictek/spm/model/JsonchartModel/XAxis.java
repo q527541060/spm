@@ -18,6 +18,7 @@ public class XAxis {
     private int max;
     private int lineWidth;
 
+
     public boolean isCrosshair() {
         return crosshair;
     }

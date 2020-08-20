@@ -492,7 +492,7 @@
                     title:  '不良点数',
                     align:'center',
                     sortable: true,
-                    width:10
+                    width:10 
                 },{
                     field: 'arrayBarcode',
                     title:  'arrayBarcode',

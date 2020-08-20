@@ -23,4 +23,5 @@ public interface SPcbService extends IService<SPcb> {
                                                             String inspectEndtime,
                                                             String pcbResult);
     //public SPcb getPcbWithLineNo();
+
 }

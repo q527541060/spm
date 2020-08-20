@@ -344,6 +344,7 @@ public class SLineController {
                         "[\"PASS\","+totleGoodPcb +"]" +
                         "]" ;
 
+
         System.gc();
         return  new ApiResponse(true,null,strPieServies,lstPcb);
     }

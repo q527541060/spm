@@ -12,6 +12,7 @@ public class Enabled {
         return enabled;
     }
 
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }

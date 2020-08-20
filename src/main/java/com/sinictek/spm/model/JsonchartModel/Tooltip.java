@@ -12,6 +12,7 @@ public class Tooltip {
         return valueSuffix;
     }
 
+
     public void setValueSuffix(String valueSuffix) {
         this.valueSuffix = valueSuffix;
     }

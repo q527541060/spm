@@ -389,6 +389,7 @@
                         sortOrder: params.order //排位命令（desc，asc）
                     };
                 },
+
                 columns: [{
                     checkbox: true,
                     align:'center',

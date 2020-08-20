@@ -267,6 +267,7 @@
                     }
                     $('#form_default .updateTime').val(req.data.updateTime);
                     //$('.selectpicker').combobox();
+
                 }
             });
             $('#editDefaultLineModal').modal({

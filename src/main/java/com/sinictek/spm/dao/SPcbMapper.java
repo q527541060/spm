@@ -17,6 +17,7 @@ import java.util.List;
  */
 public interface SPcbMapper extends BaseMapper<SPcb> {
 
+
     @Select({"SELECT " +
                "COUNT(pcb.id) total," +
                "SUM(pcb.inspectResult = 1)/COUNT(pcb.id)*100  ngPcbYeild," +

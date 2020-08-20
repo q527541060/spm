@@ -222,6 +222,7 @@
                             }//,color:'#ff0816'
                         },
 
+
                     };
                     json.credits={enabled: false };
                     json.xAxis = req.data[0].xaxis;

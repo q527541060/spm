@@ -32,6 +32,7 @@ import java.util.List;
 @RequestMapping("/sDefaultsetting")
 public class SDefaultsettingController {
 
+
     @Autowired
     SLineService sLineService;
     @Autowired

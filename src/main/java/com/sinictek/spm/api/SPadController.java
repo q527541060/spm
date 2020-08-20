@@ -113,6 +113,7 @@ public class SPadController {
         String padTableName =null;
         if(sPcblst!=null&&sPcblst.size()>0)
         {
+
             padTableName = sPcblst.get(0).getPadTableName();
 
             SPad sPad = sPadService.getPadWithPCbidLineService(padTableName,pcbidLine,padId);

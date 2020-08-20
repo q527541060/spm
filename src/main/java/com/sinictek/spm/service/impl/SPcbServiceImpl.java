@@ -20,6 +20,7 @@ import java.util.List;
 @Service
 public class SPcbServiceImpl extends ServiceImpl<SPcbMapper, SPcb> implements SPcbService {
 
+
     @Autowired
     public SPcbMapper sPcbMapper;
 

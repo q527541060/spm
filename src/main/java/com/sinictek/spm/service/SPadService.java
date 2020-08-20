@@ -17,4 +17,5 @@ public interface SPadService extends IService<SPad> {
     public List<SPad> getPadListWithPCbidLineService(String padTableName,String pcbIdLine,String defectTypeCode);
     public SPad getPadWithPCbidLineService( String padTableName, String pcbIdLine,String padId);
 
+
 }

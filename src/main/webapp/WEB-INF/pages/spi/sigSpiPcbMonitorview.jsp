@@ -237,6 +237,7 @@
 
         }
 
+
         function CPKRealTime(value) {
             $.ajax({
                 url: "${basePath}/Pcb/ProductCPK",

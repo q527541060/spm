@@ -12,6 +12,7 @@ import java.util.Date;
  */
 public class StringTimeUtils {
 
+
     private static String timeStr1;
     private static String timeStr2;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

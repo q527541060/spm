@@ -15,5 +15,6 @@ import java.util.List;
  */
 public interface AStatusService extends IService<AStatus> {
 
+
     public List<AStatus> getAllStatusWithLineNoLimt_AOI();
 }

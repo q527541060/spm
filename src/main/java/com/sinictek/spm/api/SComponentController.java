@@ -17,5 +17,6 @@ import org.springframework.stereotype.Controller;
 @RequestMapping("/sComponent")
 public class SComponentController {
 
+
 }
 

@@ -20,6 +20,7 @@ import java.util.List;
 @Service
 public class SPadServiceImpl extends ServiceImpl<SPadMapper, SPad> implements SPadService {
 
+
     @Autowired
     SPadMapper sPadMapper;
 

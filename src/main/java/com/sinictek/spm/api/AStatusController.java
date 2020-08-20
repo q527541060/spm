@@ -33,6 +33,7 @@ public class AStatusController {
     @ResponseBody
     @RequestMapping("aoi/pcbMonitorJson")
     public ApiResponse GetPcbMonitorListJson_AOI(){
+
         //获取所有线体;
         //List<SLine> lineList = sLineService.selectList(null);
         //List<SStatus> statusList = sStatusService.getAllStatusWithLineNoLimt();

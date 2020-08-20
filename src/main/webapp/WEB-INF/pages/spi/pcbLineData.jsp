@@ -99,6 +99,7 @@
 				 todayBtn: true,
                 //pickerPosition: "bottom-left"
 				 //minuteStep: 1
+
 			});
             $("#endTime").datetimepicker({
                 minView:"month",

@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface AStatusMapper extends BaseMapper<AStatus> {
 
+
     @Select({"SELECT s.equipmentNo equipmentNo,s.lineNo lineNo,s.`status` status,s.factory factory,s.errContent errContent," +
             "s.start start,s.run run,s.stop stop,s.idle idle,s.error error ,MAX(s.updateTime) updateTime  " +
             " FROM db_spm.a_status s  GROUP BY s.lineNo desc"})

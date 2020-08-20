@@ -17,4 +17,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class SComponentServiceImpl extends ServiceImpl<SComponentMapper, SComponent> implements SComponentService {
 
+
 }

@@ -205,6 +205,7 @@ public class ConstPublicClassUtil {
         return  str;
     }
 
+
     public static String getErrorCodeChinase(int iJuResult) {
         String str = "";
         switch (iJuResult) {

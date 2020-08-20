@@ -17,6 +17,7 @@ import java.util.List;
  */
 public interface SPadMapper extends BaseMapper<SPad> {
 
+
     @Select({
             "<script> SELECT * "+//pad.padId padId,pad.padInspectResult padInspectResult,pad.defectTypeName defectTypeName," +
                     //"pad.height height,pad.area area,pad.volume volume,pad.offsetx offsetx,pad.offsety offsety,pad.arrayId arrayId,pad.componentId componentId  " +

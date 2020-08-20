@@ -21,6 +21,7 @@ public class JsonChartsBean {
     private PlotOptions plotOptions;
     private Credits credits;
 
+
     public void setChart(Chart chart) {
          this.chart = chart;
      }

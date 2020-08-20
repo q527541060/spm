@@ -24,6 +24,7 @@ public class PlotOptions {
         return series;
     }
 
+
     public void setSeries(Series series) {
         this.series = series;
     }

@@ -16,6 +16,7 @@ public class Column {
     private DataLabels dataLabels;
     private String stacking;
 
+
     public DataLabels getDataLabels() {
         return dataLabels;
     }

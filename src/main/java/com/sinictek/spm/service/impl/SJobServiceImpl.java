@@ -17,4 +17,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class SJobServiceImpl extends ServiceImpl<SJobMapper, SJob> implements SJobService {
 
+
 }

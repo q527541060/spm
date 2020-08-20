@@ -20,6 +20,7 @@ import java.util.List;
 @Service
 public class SStatusServiceImpl extends ServiceImpl<SStatusMapper, SStatus> implements SStatusService {
 
+
     @Autowired
     SStatusMapper sStatusMapper;
 

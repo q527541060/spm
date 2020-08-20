@@ -400,6 +400,7 @@ public class SStatusController {
         productPassSeries.setStacking("normal");
         productPassSeries.setColor("#4449dd");
 
+
         Tooltip productSplineTooltip = new Tooltip();
         productSplineTooltip.setValueSuffix("%");
         productSplineSeries.setType("spline");

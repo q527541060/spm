@@ -11,6 +11,7 @@ package com.sinictek.spm.model.JsonchartModel;
  */
 public class YAxis {
 
+
     private int min;
     private int max;
     private Title title;
