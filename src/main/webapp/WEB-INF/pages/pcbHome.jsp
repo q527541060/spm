@@ -78,7 +78,7 @@
                         window.location.href="${basePath}/sLine/pcbLine";
 						break;
 					case 3:
-						window.location.href="${basePath}/Status/pcbMonitorview";
+						window.location.href="${basePath}/Status/pcbMonitorview_realLineView";
 						break;
 					case 7:
 						window.location.href="${basePath}/Status/aoi/pcbMonitorview";

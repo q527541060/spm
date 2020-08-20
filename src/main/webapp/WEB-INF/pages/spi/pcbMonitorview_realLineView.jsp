@@ -23,6 +23,8 @@
 			}*/
             .row{
                 text-align: center;
+                margin: 0px;
+                padding: 0px;
             }
 		</style>
     </head>
@@ -41,35 +43,39 @@
 				</div>
 			</div>
 			<div class="row">
-			    <div class="col-md-11">
+			    <div class="col-md-11" >
+
                     <!-- fpy product -->
-                    <div class="row">
+                    <div class="row" >
                         <div class="col-md-14">
-                            <div class="right-wap" style="height: 350px;">
+                           <%-- <div class="right-wap" >--%>  <%--style="height: 350px;"--%>
                                 <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-                                <div id="container-FPY" style="min-width: 100%; height: 100%; margin: 0 auto">
+                                <div id="container-FPY" style="max-height: 800px;height: 700px">
                                 </div>
-                            </div>
+                          <%-- </div>--%>
+                               <input type="hidden" id="boardMachineRefreshTime" value="${boardMachineRefreshTime}"/>
+                               <input type="hidden" id="Frequency-start" value="${Frequency_start}"/>
                         </div>
                     </div>
                     <!-- top5 -->
-                    <div class="row">
+                    <div class="row" >
                         <div class="col-md-14">
-                            <div class="right-wap" style="height: 350px;">
+                          <%--  <div class="right-wap" >--%> <%--style="height: 350px;"--%>
                                 <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-                                <div id="container-defaultTop" style="max-width:100%;height:100%"></div>
-                            </div>
+                                <div id="container-defaultTop" style="height: 500px;overflow:auto;"></div>
+                           <%-- </div>--%>
                         </div>
                     </div>
                     <!-- cpk -->
-                    <div class="row">
-                        <div class="col-md-14">
+                    <div class="row" >
+                        <div class="col-md-14" >
 
-                            <div class="right-wap" style="height: 200px;">
-                                <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-                                <div id="container-CPK" style="min-width:310px;height:100%;margin: 0 auto">
-                                </div>
+                            <%-- <div class="right-wap" > --%> <%--style="height: 200px;">--%>
+                            <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
+                            <div id="container-CPK" style="max-height: 200px;height: 200px">
+
                             </div>
+                            <%-- </div>--%>
                             <h4><div class="btn-group-sm" role="group" aria-label="...">
                                 <%--<span class="glyphicon glyphicon-flag" aria-hidden="true">&nbsp;</span><i>CPK</i>&nbsp;&nbsp;&nbsp;&nbsp;--%>
                                 <button type="button" class="btn btn-sm" onclick="FPYRealTime(this.value)" VALUE="0">area</button>
@@ -79,7 +85,6 @@
                                 <button type="button" class="btn btn-sm" onclick="FPYRealTime(this.value)" VALUE="4">shiftY</button>
                             </div></h4>
 
-                            <input type="hidden" id="boardMachineRefreshTime" value="${boardMachineRefreshTime}"/>
                         </div>
                     </div>
 			   </div>
@@ -148,8 +153,12 @@
         <script type="text/javascript" >  /*src="{staticPath}/js/pcbMonotorview.js" >*/
 
         window.operateEventsRealLineView={
-            "click #TableNGImage" :function(e,value, row, index){
-                 window.location.href="${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo;
+            "click #MachineListNo" :function(e,value, row, index){
+                var Frequency_start = $('#Frequency-start').val();
+                var nowDate = new Date();
+                var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
+                window.location.href="${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime;
             }
         }
         var StatusQueryUrl = '${basePath}/Status/pcbMonitorJson';
@@ -161,7 +170,8 @@
         InitMainTable();
         FPYRealTime(vValue);
         //ProductRealTime();
-        defaultTopRealTime();
+        //defaultTopRealTime();
+        var  pcbTotal =0;
         function FPYRealTime(value){
             vValue = value;
             //alert(vValue);
@@ -176,6 +186,9 @@
                     //请求前的处理
                 },
                 success:function(req){
+
+                    pcbTotal = req.rows;
+                    pcbTotal = pcbTotal+pcbTotal/4;
                     //请求成功时处理
                     //json.chart = req.data.chart;
                     json.chart ={
@@ -198,14 +211,14 @@
                             dataLabels:{
                                 useHTML: true,
                                 enabled:true,
-                                /*formatter: function() {
-                                    return (this.series.name)+ ':' + (this.y);
-                                },*/
-                               /*style:{
+                                formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+                                },
+                                style:{
                                     fontSize:'5px',
                                     fontWeight:'bold',
-                                   // color:'#141328'
-                                },*/
+                                    //color:'#141328'
+                                },
                             }//,color:'#ff0816'
                         },
 
@@ -219,34 +232,42 @@
                     //json.yAxis = req.data.yaxis;
                     json.yAxis =
                     [
-                    { // Secondary yAxis
-                        title: {
-                            text: '',
+                        { // Secondary yAxis
+                            title: {
+                                text: '',
+                            },
+                            labels: {
+                                format: '{value}pcs',
+                                /*style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }*/
+                            },
+                            opposite: true,
+                            minorGridLineWidth:0,
+                            min:0,
+                            max:pcbTotal,
+                            //type:'category'
+                            //type: 'logarithmic'
+
                         },
-                        labels: {
-                            format: '{value} pcs',
-                            /*style: {
-                                color: Highcharts.getOptions().colors[1]
-                            }*/
+                        {
+                            labels: {
+                                format: '{value}%',
+                            },
+                            title: {
+                               text: '',
+                                /*style: {
+                                    color: Highcharts.getOptions().colors[0]
+                                }*/
+                            },
+                            minorGridLineWidth:0,
+                            max:100,
+                            min:0,
+                            tickInterval:20,
+                            type:'category'
+                            //opposite: false
                         },
-                        opposite: true,
-                        minorGridLineWidth:0,
-                        min:0,
-                        //max:400
-                    },
-                    {
-                        labels: {
-                            format: '{value}%',
-                        },
-                        title: {
-                           text: '',
-                            /*style: {
-                                color: Highcharts.getOptions().colors[0]
-                            }*/
-                        },minorGridLineWidth:0,
-                        max:100,
-                        min:0,
-                    }];
+                    ];
                     json.tooltip = {
                         formatter: function () {
                             return '<b>' + this.x + '</b><br/>' +
@@ -256,43 +277,6 @@
                         //shared: true
                     };
                     json.series = req.data[0].series;
-                    /*json.series= [{
-                        name: 'PCB->PASS',
-                        type: 'column',
-                        data: [266, 200, 202],
-                        tooltip: {
-                            valueSuffix: 'pcs'
-                        },
-                        stacking:'normal',
-                        color:'#13dd15'
-                    },{
-                        name: 'PCB->REPASS',
-                        type: 'column',
-                        data: [0, 20, 0],
-                        tooltip: {
-                            valueSuffix: 'pcs'
-                        },
-                        stacking:'normal',
-                        color:'#4449dd'
-                    },{
-                        name: 'PCB->NG',
-                        type: 'column',
-                        data: [0, 1, 50],
-                        tooltip: {
-                            valueSuffix: 'pcs'
-                        },
-                        stacking:'normal',
-                        color:'#dd0f31'
-                    },{
-                        name: '直通率',
-                        type: 'spline',
-                        yAxis: 1,
-                        data: [93.9, 99.5, 80.9],
-                        tooltip: {
-                            valueSuffix: '%'
-                        },
-                        color:'#7bdd18'
-                    }];*/
 					json.exporting={
 						enabled:false
 					};
@@ -308,17 +292,6 @@
                             // Highcharts.theme.textColor) ||
                         }};
                     jsonCPK.series=req.data[1].series;
-                    /*jsonCPK.series=[{
-                        name: 'CPK',
-                        type: 'line',
-                        data: [{y:1.6,color:'#25dd19'},{y:0.6,color:'#dd1127'},{y:0.8,color:'#dd1127'}],
-                        lineWidth:0,
-                        connectEnds:false
-                    },{
-                        name: 'StandCPK',
-                        type: 'line',
-                        data: [1, 1, 1],
-                    },];*/
                     jsonCPK.legend={
                         layout: 'vertical',
                         align: 'right',
@@ -334,25 +307,124 @@
                     };*/
                     //jsonCPK.yAxis=req.rows.yaxis;
                     jsonCPK.yAxis={
-                        title:'0.0f',
+                        title:'',
                         minorGridLineWidth:0,
                         gridLineWidth:'0px',
-                        width:0
+                        width:2,
+                        //min:0.1,
+                        //type: 'logarithmic',
+
                     };
-                    jsonCPK.plotOptions={line: {
-                            pointPadding: 0,
-                            borderWidth: 0,
-                            dataLabels:{enabled:true}
-                        },column: {
-                            pointPadding: 0,
-                            borderWidth: 0,
-                            dataLabels:{enabled:true,useHTML: true,}
+                    //dataLabels:{enabled:true},
+
+                     jsonCPK.plotOptions = {
+                        series: {
+                            lineWidth:1,
+                            //allowPointSelect :true,
+                            //animation:true,
+                            //lineColor:'blue',
+                            //enableMouseTracking:true,//显示提示框
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+
+                            },//,colo
+                            marker: {
+                                enabled:true,
+                                radius: 6,//点的大小
+                                //fillColor: '#DD7272',
+                                //lineColor: '#DEECF9',
+                                //lineWidth:5,
+                                shadow:false,
+                                states:{
+                                    hover:{
+                                        radius: 10,
+                                        enabled:true,
+                                    }
+                                }
+                            }
                         }
                     };
                     jsonCPK.exporting={
                         enabled:false
                     };
                     jsonCPK.credits={enabled: false };
+
+                    //top5
+                    var jsonDefault = {};
+                    //jsonDefault.chart = req.data.chart;
+                    jsonDefault.chart = {
+
+                    };
+                    jsonDefault.title = {
+                        text:'TOP5',
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize:"22px",
+                            color: '#5cccff'// (Highcharts.theme &&
+                            // Highcharts.theme.textColor) ||
+                        }
+                    };
+                    jsonDefault.subtitle = '';
+                    jsonDefault.tooltip = {
+                        formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y;//+ '<br/>' +
+                            //'value: ' + this.point.stackTotal;
+                        }
+                    };
+                    jsonDefault.legend = {
+                        enabled:false,
+                    };
+                    jsonDefault.xAxis = req.data[0].xaxis;
+                    //jsonDefault.yAxis = req.data.yaxis;
+                    jsonDefault.yAxis =
+                        {
+                            min:0,
+                            title:'',
+                            minorGridLineWidth:0,
+                            stackLabels:
+                                {
+                                    enabled: true,
+                                    allowOverlap: true,
+                                    style:
+                                        {
+                                            fontWeight: 'bold',
+                                            fontSize:"22px",
+                                            color: '#5cccff'// (Highcharts.theme &&
+                                            // Highcharts.theme.textColor) ||
+                                        },
+                                },
+                            //type: 'logarithmic',
+                            //tickPixelInterval:5
+                            //tickLength: 20
+                            //min:0,
+                        };
+                    jsonDefault.series = req.data[2].series;
+
+                    jsonDefault.exporting={
+                        enabled:false
+                    };
+                    jsonDefault.credits = {enabled: false};
+                    jsonDefault.plotOptions={
+                        column:{
+                            borderWidth: 0,
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+                                formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+                                },
+                                style:{
+                                    fontSize:'5px',
+                                    fontWeight:'bold',
+                                    color:'#141328'
+                                },
+                            },//,color:'#ff0816'
+                        },
+                    };
+                    //console.log(JSON.stringify(json));
+                    $("#container-defaultTop").highcharts(jsonDefault);
                     //alert('come');
                     $('#container-CPK').highcharts(jsonCPK);
                     //alert('come');
@@ -582,7 +654,8 @@
                                 stacking:'normal'
                             },
                         ];
-						jsonDefault.exporting={
+
+                        jsonDefault.exporting={
 							enabled:false
 						};
                         jsonDefault.credits = {enabled: false};
@@ -609,6 +682,7 @@
                         };
                         //console.log(JSON.stringify(json));
                         $("#container-defaultTop").highcharts(jsonDefault);
+
                     }else{
                         alert(req.message);
                     }
@@ -621,14 +695,15 @@
                 }
             });
         }
+
         function  addFunctionAltyRealLineView(value, row, index) {
             if(row.error==1 ){
-                return ['<span>'+row.lineNo+'</span>'].join("")+['<image style="cursor:pointer;width:80px;height:60px;" src="${staticPath}/img/spi2_red.jpg">'].join("");
+                return ['<span class="span-machineno">'+row.lineNo+'</span><br>'].join("")+['<image style="cursor:pointer;width:70px;height:60px" id="MachineListNo"  src="${staticPath}/img/spi2_red.jpg">'].join("");
                // return ['<span id="TableNGImage"  style="cursor:pointer"  class="glyphicon glyphicon-picture">'+row.lineNo+"-红灯"+'</span>'].join("");
             }else  if(row.stop==1){
-                return ['<span>'+row.lineNo+'</span>'].join("")+['<image style="cursor:pointer;width:80px;height:60px;" src="${staticPath}/img/spi2_yellow.jpg">'].join("");
+                return ['<span class="span-machineno">'+row.lineNo+'</span><br>'].join("")+['<image id="MachineListNo"  style="cursor:pointer;width:70px;height:60px" src="${staticPath}/img/spi2_yellow.jpg">'].join("");
             }else{
-                return ['<span>'+row.lineNo+'</span>'].join("")+['<image style="cursor:pointer;width:80px;height:60px;" src="${staticPath}/img/spi2_green.jpg">'].join("");
+                return ['<span class="span-machineno">'+row.lineNo+'</span><br>'].join("")+['<image id="MachineListNo"  style="cursor:pointer;width:70px;height:60px" src="${staticPath}/img/spi2_green.jpg">'].join("");
             }
 
         }
@@ -701,31 +776,6 @@
                     cellStyle: function (value, row, index){
                         if(row.status == 1) { return {css:{"background-color":"D9534F"}}  }
                     },
-                    /*formatter: function (value, row, index){
-                        //row.status ==0?"停止":row.status==1?"故障":"运行";
-						if(row.error==1){
-							return row.lineNo+"-error";
-						}else  if(row.run==1 && row.start==1){
-							return "run";
-						}else if(row.idle==1){
-							return  row.lineNo+"-idel";
-						}else{
-							return  row.lineNo+"-stop";
-						}
-                        /!*switch (row.status) {
-                            case 0:
-                                return "run";
-                            case  3:
-                                return  "stop";
-                            case 2:
-                                return  "idel";
-                            case  1:
-                                return "error";
-                            default :
-                                return "run";
-                        }*!/
-                        return ;
-                    },*/
                     cellStyle:function(value,row,index){
                         if(row.error==1) {
                             return {css: {"color": "#FF0000"}}
@@ -788,8 +838,6 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         })
-
-
       /* excel = new ExcelGen({
             "src_id": "test_table",
             "show_header": true
@@ -797,9 +845,7 @@
         $("#generate-excel").click(function () {
             excel.generate();
         });*/
-
         </script>
-
         <style type="text/css">
 				/*body{
 					margin: 0px;
@@ -813,6 +859,14 @@
 				.table{
 					background-color: #ECF0F5;
 				}
+                /*#TableNGImage{
+                    cursor: pointer;
+                }*/
+           /* .span-machineno{
+                font-weight:bold;
+                fontSize:12px;
+                color: rgba(0, 0, 0, 0.84);
+            }*/
 
 			</style>
 	</body>

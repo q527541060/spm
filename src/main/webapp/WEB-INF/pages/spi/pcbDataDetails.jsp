@@ -475,6 +475,19 @@
                         }
                     }
                 }, {
+                        field: 'cpk',
+                        title:  'cpk',
+                        align:'center',
+                        sortable: true,
+                        formatter:function (value,row,index) {
+
+                           return '<span>'+ 'area:'+ row.aCpk.toFixed(3) +
+                                ';hight:'+ row.hCpk.toFixed(3)+
+                                ';vol:'+ row.vcpk.toFixed(3)+
+                                ';shithxCpk:'+row.shithxCpk.toFixed(3)+
+                                ';shithyCpk:'+row.shithyCpk.toFixed(3) +'</span>';
+                        }
+                    },{
                     field: 'ngpadCount',
                     title:  '不良点数',
                     align:'center',

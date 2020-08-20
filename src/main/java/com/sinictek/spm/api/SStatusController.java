@@ -7,6 +7,7 @@ import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.SStatus;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
+import com.sinictek.spm.model.utils.ConstPublicClassUtil;
 import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.SDefaultsettingService;
 import com.sinictek.spm.service.SLineService;
@@ -21,10 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+//import java.util.Date;
+
 
 /**
  * <p>
@@ -130,6 +130,7 @@ public class SStatusController {
         // ini defaultsetting
         iniDefaultParamSetting();
         mv.addObject("boardMachineRefreshTime",ConstParam.DEFAULTSETTING_boardMachineRefreshTime);
+        mv.addObject("Frequency_start",ConstParam.DEFAULTSETTING_FrequencyStart);
         return  mv;
     }
 
@@ -152,8 +153,15 @@ public class SStatusController {
         double dHeightCPK = 0;
         double dShiftXCPK = 0;
         double dShiftYCPK = 0;
-        String stratTime = StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_FrequencyStart);
-        String endTime = StringTimeUtils.getTimeDateToString(new Date());
+        Date sDate = new Date();
+        //sDate.setHours(ConstParam.DEFAULTSETTING_FrequencyStart);
+
+        //记得改回班次
+        Calendar instance = Calendar.getInstance();
+        String stratTime =instance.get(instance.YEAR)+"-"+(instance.get(instance.MONTH)+1)+"-"+instance.get(instance.DAY_OF_MONTH)+
+                " "+ConstParam.DEFAULTSETTING_FrequencyStart + ":00:00";//StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_FrequencyStart);
+
+        String endTime = StringTimeUtils.getTimeDateToString(sDate);
         //获取到每条线计算后总数据
         List<SPcb> lstPcb = pcbService.getPcbListWithALLLine(stratTime,endTime);
         //FPY、PROFUCT
@@ -175,7 +183,7 @@ public class SStatusController {
         Series standCpkSeries = new Series();
 
         List<Series> lstTop5Series = new ArrayList<Series>();
-        //Series    = new Series();
+        Series  top5Series  = null;//new Series();
         //Series standCpkSeries = new Series();
 
         XAxis xAxisFPYProduct = new XAxis();
@@ -186,8 +194,10 @@ public class SStatusController {
         List<Data> goodFPYProductSplineSeriesList = new ArrayList<Data>();
         List<Data> cpkSeriesList = new ArrayList<Data>();
         List<Data> standCPKSeriesList = new ArrayList<Data>();
+        List<Data> top5SeriesList = new ArrayList<Data>();
         Data data =null;
         double doubleTmp=0;
+        //FPY、PRODUCT、CPK
         if(lstPcb!=null && lstPcb.size()>0){
             for (int i = 0; i < lstPcb.size(); i++){
                 data = new Data();
@@ -206,11 +216,7 @@ public class SStatusController {
                 goodFPYProductSplineSeriesList.add(data);
                 data= new Data();
                 //CPK
-                if(doubleTmp >= ConstParam.DEFAULTSETTING_standCPK){
-                    data.setColor("#25dd19");
-                }else{
-                    data.setColor("#dd1127");
-                }
+
                 dAreaCPK = lstPcb.get(i).getaCpk()==null?0: (double)(Math.round(lstPcb.get(i).getaCpk()*100)/100.0);
                 dHeightCPK = lstPcb.get(i).gethCpk()==null?0:(double)(Math.round(lstPcb.get(i).gethCpk()*100)/100.0);
                 dVolCPK = lstPcb.get(i).getVcpk()==null?0:(double)(Math.round(lstPcb.get(i).getVcpk()*100)/100.0);
@@ -218,20 +224,50 @@ public class SStatusController {
                 dShiftYCPK = lstPcb.get(i).getShithyCpk()==null?0: (double)(Math.round(lstPcb.get(i).getShithyCpk()*100)/100.0);
                 if(aValue!=null && aValue.contains("0")){
                     data.setY(dAreaCPK);
+                    if(dAreaCPK >= (double) ConstParam.DEFAULTSETTING_standCPK){
+                        data.setColor("#25dd19");
+                    }else{
+                        data.setColor("#dd1127");
+                    }
                     cpkSeriesList.add(data);
                 }else if(aValue!=null && aValue.contains("1")){
+                    if(dHeightCPK >= (double) ConstParam.DEFAULTSETTING_standCPK){
+                        data.setColor("#25dd19");
+                    }else{
+                        data.setColor("#dd1127");
+                    }
                     data.setY(dHeightCPK);
                     cpkSeriesList.add(data);
                 }else if(aValue!=null && aValue.contains("2")){
+                    if(dVolCPK >= (double) ConstParam.DEFAULTSETTING_standCPK){
+                        data.setColor("#25dd19");
+                    }else{
+                        data.setColor("#dd1127");
+                    }
                     data.setY(dVolCPK);
                     cpkSeriesList.add(data);
                 }else if(aValue!=null && aValue.contains("3")){
+                    if(dShiftXCPK >= (double) ConstParam.DEFAULTSETTING_standCPK){
+                        data.setColor("#25dd19");
+                    }else{
+                        data.setColor("#dd1127");
+                    }
                     data.setY(dShiftXCPK);
                     cpkSeriesList.add(data);
                 }else if(aValue!=null && aValue.contains("4")){
+                    if(dShiftYCPK >= (double) ConstParam.DEFAULTSETTING_standCPK){
+                        data.setColor("#25dd19");
+                    }else{
+                        data.setColor("#dd1127");
+                    }
                     data.setY(dShiftYCPK);
                     cpkSeriesList.add(data);
                 }else {
+                    if(dAreaCPK >= (double) ConstParam.DEFAULTSETTING_standCPK){
+                        data.setColor("#25dd19");
+                    }else{
+                        data.setColor("#dd1127");
+                    }
                     data.setY(dAreaCPK);
                     cpkSeriesList.add(data);
                 }
@@ -239,44 +275,126 @@ public class SStatusController {
                 data = new Data();
                 data.setY(ConstParam.DEFAULTSETTING_standCPK);
                 standCPKSeriesList.add(data);
-
-                //top5
-
+            }
+        }else{
+            lstFPYProductCategories.add("当前时间段无设备检测信息  "+stratTime+"-"+endTime);
+        }
+        //new  top5
+       // List<Map<Integer,Integer>> lst = new ArrayList<Map<Integer,Integer>>();
+        int iTotal =0,iPcbTmp=0;
+        List<Map<Integer,Integer>> realLst = new ArrayList<Map<Integer,Integer>>();
+       if (lstPcb != null && lstPcb.size() > 0) {
+            for (int i = 0; i < lstPcb.size(); i++) {
+                iPcbTmp = lstPcb.get(i).getTotal()==null?0:Integer.parseInt(lstPcb.get(i).getTotal());
+                if(iTotal<iPcbTmp){
+                    iTotal=iPcbTmp;
+                }
+                //List<Integer> lstPadCount = new ArrayList<Integer>();
+                Map<Integer,Integer> mapsort = new HashMap<Integer, Integer>();
+                Map<Integer,Integer> realMap = new HashMap<Integer, Integer>();
+                for (int j = 0; j <15 ; j++) {
+                    //int iPadCount = ;
+                    mapsort.put(j,ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(i),j));
+                    //lstPadCount.add(ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(i),j));
+                }
+                ConstPublicClassUtil.sortByValue(mapsort,true);
+                //lst.add(mapsort);
+                int iTmp =0;
+                for(Integer key : mapsort.keySet()){
+                    iTmp++;
+                    if(iTmp>5){
+                        continue;
+                    }
+                    realMap.put(key,mapsort.get(key));
+                }
+                realLst.add(realMap);
+                //Collections.sort(lstPadCount);
+                //lst.add(lstPadCount);
+               /*Collections.sort(lstPadCount);
+                top5Series = new Series();
+                top5Series.setType("column");
+                top5Series.setName(ConstPublicClassUtil.getErrorCodeString(i));
+                top5Series.setStacking("normal");
+                top5SeriesList = new ArrayList<Data>();
+                for (int j = lstPadCount.size(); j > 9; j-- ){
+                    data = new Data();
+                    data.setY( lstPadCount.get(j));
+                    top5SeriesList.add(data);
+                }
+                top5Series.setData(top5SeriesList);
+                //top5Series.setColor("#F5A96A");
+                lstTop5Series.add(top5Series);*/
             }
         }
+        //for(Map.Entry<String, String> entry : map.entrySet()){
+       /* for (int i = 0; i <5 ; i++) {
+            top5Series = new Series();
+            if (lstPcb != null && lstPcb.size() > 0) {
+                top5Series.setType("column");
+                top5Series.setName(ConstPublicClassUtil.getErrorCodeString(i));
+                top5Series.setStacking("normal");
+                top5SeriesList = new ArrayList<Data>();
+                for (int y = 0; y < realLst.size(); y++) {
+                    data = new Data();
+
+                    for(Map.Entry<Integer, Integer> entry : realLst.get(y).entrySet()) {
+                    }
+                    lst.get(y)
+                    data.setY( ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(y),i));
+                    //data.setColor("#F5A96A");
+                    top5SeriesList.add(data);
+                }
+                top5Series.setData(top5SeriesList);
+                //top5Series.setColor("#F5A96A");
+                lstTop5Series.add(top5Series);
+            }
+        }*/
 
         //top5
         for (int i = 0; i < 15; i++) {
+            top5Series = new Series();
             if (lstPcb != null && lstPcb.size() > 0) {
+                top5Series.setType("column");
+                top5Series.setName(ConstPublicClassUtil.getErrorCodeChinase(i));
+                top5Series.setStacking("normal");
+                top5SeriesList = new ArrayList<Data>();
                 for (int y = 0; y < lstPcb.size(); y++) {
-
-
+                    if(realLst.get(y).keySet().contains(i)) {
+                        data = new Data();
+                        data.setY(ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(y), i));
+                        //data.setColor("#F5A96A");
+                        top5SeriesList.add(data);
+                    }
                 }
             }
+            top5Series.setData(top5SeriesList);
+            //top5Series.setColor("#F5A96A");
+            lstTop5Series.add(top5Series);
         }
         xAxisFPYProduct.setCategories(lstFPYProductCategories);
         xAxisFPYProduct.setMin(0);
         xAxisFPYProduct.setMax(lstFPYProductCategories.size()<=0?0:(lstFPYProductCategories.size()-1));
+        //xAxisFPYProduct.setLineWidth(2);
         jsonChartsBean_FPYProduct.setXAxis(xAxisFPYProduct);
 
         Tooltip productTooltip = new Tooltip();
         productTooltip.setValueSuffix("pcs");
         productGoodSeries.setType("column");
-        productGoodSeries.setName("PCB->PASS");
+        productGoodSeries.setName("良好板");
         productGoodSeries.setData(goodFPYProductSeriesList);
         productGoodSeries.setTooltip(productTooltip);
         productGoodSeries.setStacking("normal");
         productGoodSeries.setColor("#13dd15");
 
         productNGSeries.setType("column");
-        productNGSeries.setName("PCB->NG");
+        productNGSeries.setName("不良板");
         productNGSeries.setData(ngFPYProductSeriesList);
         productNGSeries.setTooltip(productTooltip);
         productNGSeries.setStacking("normal");
         productNGSeries.setColor("#dd0f31");
 
         productPassSeries.setType("column");
-        productPassSeries.setName("PCB->REPASS");
+        productPassSeries.setName("误判板");
         productPassSeries.setData(passFPYProductSeriesList);
         productPassSeries.setTooltip(productTooltip);
         productPassSeries.setStacking("normal");
@@ -289,12 +407,17 @@ public class SStatusController {
         productSplineSeries.setData(goodFPYProductSplineSeriesList);
         productSplineSeries.setTooltip(productSplineTooltip);
         productSplineSeries.setColor("#7bdd18");
+        productSplineSeries.setLineWidth(1.2);
+        productSplineSeries.setConnectEnds(true);
+        productSplineSeries.setyAxis(1);
+
         lstFPYProductSeries.add(productSplineSeries);
-        lstFPYProductSeries.add(productGoodSeries);
         lstFPYProductSeries.add(productNGSeries);
+        lstFPYProductSeries.add(productGoodSeries);
+
         lstFPYProductSeries.add(productPassSeries);
 
-        jsonChartsBean_FPYProduct.setSeries(lstFPYProductSeries);
+
 
         cpkSeries.setName("CPK");
         cpkSeries.setType("line");
@@ -305,17 +428,23 @@ public class SStatusController {
         standCpkSeries.setName("StandCPK");
         standCpkSeries.setType("line");
         standCpkSeries.setData(standCPKSeriesList);
-        standCpkSeries.setLineWidth(0.4);
+        standCpkSeries.setLineWidth(2);
         standCpkSeries.setConnectEnds(true);
+
 
         lstCPKSeries.add(cpkSeries);
         lstCPKSeries.add(standCpkSeries);
+
+
+        jsonChartsBean_FPYProduct.setSeries(lstFPYProductSeries);
         jsonChartsBean_CPK.setSeries(lstCPKSeries);
+        jsonChartsBean_Top5.setSeries(lstTop5Series);
 
         List<JsonChartsBean> lstJsonChartsBean = new ArrayList<JsonChartsBean>();
         lstJsonChartsBean.add(jsonChartsBean_FPYProduct);
         lstJsonChartsBean.add(jsonChartsBean_CPK);
-        return  new ApiResponse(true,null,lstJsonChartsBean);
+        lstJsonChartsBean.add(jsonChartsBean_Top5);
+        return  new ApiResponse(true,null,lstJsonChartsBean,iTotal);
     }
 
     @ResponseBody

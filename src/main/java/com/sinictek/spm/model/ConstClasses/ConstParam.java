@@ -49,4 +49,6 @@ public  class ConstParam {
      * FrequencyStart  班次设置值
      */
     public static int DEFAULTSETTING_FrequencyStart=0;
+
+
 }

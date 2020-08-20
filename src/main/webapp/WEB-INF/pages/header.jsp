@@ -87,7 +87,7 @@
 					  </li>
 					  <li role="presentation"><a href="${basePath}/Home/pcbHome"><img  src="${staticPath}/img/zz.png">analyze</a></li>
 					  <li role="presentation"><a href="${basePath}/sLine/pcbLine"><img  src="${staticPath}/img/VD_001.png">Profile</a></li>
-					  <li role="presentation"><a href="${basePath}/Status/pcbMonitorview"><img  src="${staticPath}/img/zz04.png">status</a></li>
+					  <li role="presentation"><a href="${basePath}/Status/pcbMonitorview_realLineView"><img  src="${staticPath}/img/zz04.png">status</a></li>
 						<li role="presentation"><a href="${basePath}/sDefaultsetting/setting"><img  src="${staticPath}/img/DL.png">setting</a></li>
 					</ul>
 				</div>

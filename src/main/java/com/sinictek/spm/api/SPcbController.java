@@ -7,6 +7,7 @@ import com.sinictek.spm.model.JsonchartModel.*;
 import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
+import com.sinictek.spm.model.utils.ConstPublicClassUtil;
 import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.SDefaultsettingService;
 import com.sinictek.spm.service.SPcbService;
@@ -58,7 +59,7 @@ public class SPcbController {
     @GetMapping("FPY_LineNo")
     public ApiResponse<JsonChartsBean> getFPTYWithLineNo(@RequestParam("lineNo") String lineNo){
 
-        String[] arrStrTop5 = getDefaultTypeArray();
+        String[] arrStrTop5 = ConstPublicClassUtil.getDefaultTypeArray();
         ModelMap model = new ModelMap();
 
         int iTop1Count = 0 ;
@@ -115,11 +116,11 @@ public class SPcbController {
                 data.setY((double)(Math.round(Double.parseDouble(sPcbList.get(i).getNgPcbYeild()) *100)/100.0));
                 ngSeriesList.add(data);
                 //default error count
-                iTop1Count+= getPadErrorCodeCount(sPcbList.get(i),iTop1);
-                iTop2Count+= getPadErrorCodeCount(sPcbList.get(i),iTop2);
-                iTop3Count+= getPadErrorCodeCount(sPcbList.get(i),iTop3);
-                iTop4Count+= getPadErrorCodeCount(sPcbList.get(i),iTop4);
-                iTop5Count= getPadErrorCodeCount(sPcbList.get(i),iTop5);
+                iTop1Count+= ConstPublicClassUtil.getPadErrorCodeCount(sPcbList.get(i),iTop1);
+                iTop2Count+= ConstPublicClassUtil.getPadErrorCodeCount(sPcbList.get(i),iTop2);
+                iTop3Count+= ConstPublicClassUtil.getPadErrorCodeCount(sPcbList.get(i),iTop3);
+                iTop4Count+= ConstPublicClassUtil.getPadErrorCodeCount(sPcbList.get(i),iTop4);
+                iTop5Count= ConstPublicClassUtil.getPadErrorCodeCount(sPcbList.get(i),iTop5);
             }
         }
         chart.setType("column");
@@ -191,7 +192,7 @@ public class SPcbController {
     @GetMapping("FPY")
     public ApiResponse<JsonChartsBean> getFPTYAndTop5ChartDatas(){
 
-        String[] arrStrTop5 = getDefaultTypeArray();
+        String[] arrStrTop5 = ConstPublicClassUtil.getDefaultTypeArray();
         ModelMap model = new ModelMap();
 
         int iTop1Count = 0 ;
@@ -242,11 +243,11 @@ public class SPcbController {
                 data.setY((double)(Math.round(Double.parseDouble(sPcbList.get(i).getNgPcbYeild()) *100)/100.0));
                 ngSeriesList.add(data);
                 //default error count
-                iTop1Count+= getPadErrorCodeCount(sPcbList.get(i),iTop1);
-                iTop2Count+= getPadErrorCodeCount(sPcbList.get(i),iTop2);
-                iTop3Count+= getPadErrorCodeCount(sPcbList.get(i),iTop3);
-                iTop4Count+= getPadErrorCodeCount(sPcbList.get(i),iTop4);
-                iTop5Count= getPadErrorCodeCount(sPcbList.get(i),iTop5);
+                iTop1Count+= ConstPublicClassUtil.getPadErrorCodeCount(sPcbList.get(i),iTop1);
+                iTop2Count+= ConstPublicClassUtil.getPadErrorCodeCount(sPcbList.get(i),iTop2);
+                iTop3Count+= ConstPublicClassUtil.getPadErrorCodeCount(sPcbList.get(i),iTop3);
+                iTop4Count+= ConstPublicClassUtil.getPadErrorCodeCount(sPcbList.get(i),iTop4);
+                iTop5Count= ConstPublicClassUtil.getPadErrorCodeCount(sPcbList.get(i),iTop5);
             }
         }
        chart.setType("column");
@@ -313,195 +314,7 @@ public class SPcbController {
         return new ApiResponse(true,"",jsonChartsBean,model);
     }
 
-    private int getPadErrorCodeCount(SPcb sPcbList,int iJuResult){
-        int i=0;
 
-        switch (iJuResult){
-            case 0:{
-                i = sPcbList.getMissingCount()==null?0:sPcbList.getMissingCount();
-                break;
-            }
-            case 1:
-            {
-                i = sPcbList.getInsufficientCount()==null?0:sPcbList.getInsufficientCount();
-                break;
-            }
-            case 2:
-            {
-                i = sPcbList.getExcessCount()==null?0:sPcbList.getExcessCount();
-                break;
-            }
-            case 3:
-            {
-                i = sPcbList.getOverheightCount()==null?0:sPcbList.getOverheightCount();
-                break;
-            }
-            case 4:
-            {
-                i = sPcbList.getLowheightCount()==null?0:sPcbList.getLowheightCount();
-                break;
-            }
-            case 5:
-            {
-                i = sPcbList.getOverareaCount()==null?0:sPcbList.getOverareaCount();
-                break;
-            }
-            case 6:
-            {
-                i = sPcbList.getLowareaCount()==null?0:sPcbList.getLowareaCount();
-                break;
-            }
-            case 7:
-            {
-                i = sPcbList.getShiftxCount()==null?0:sPcbList.getShiftxCount();
-                break;
-            }
-            case 8:
-            {
-                i = sPcbList.getShiftyCount()==null?0:sPcbList.getShiftyCount();
-                break;
-            }
-            case 9:
-            {
-                i = sPcbList.getBridgeCount()==null?0:sPcbList.getBridgeCount();
-                break;
-            }
-            case 10:
-            {
-                i = sPcbList.getShapeerrorCount()==null?0:sPcbList.getShapeerrorCount();
-                break;
-            }
-            case 11:
-            {
-                i = sPcbList.getSmearedCount()==null?0:sPcbList.getSmearedCount();
-                break;
-            }
-            case 12:
-            {
-                i = sPcbList.getCoplanarityCount()==null?0:sPcbList.getCoplanarityCount();
-                break;
-            }
-            case 13:
-            {
-                i = sPcbList.getPrebridgeCount()==null?0:sPcbList.getPrebridgeCount();
-                break;
-            }
-            case 14:
-            {
-                i = sPcbList.getPadareapercentCount()==null?0:sPcbList.getPadareapercentCount();
-                break;
-            }
-            case 15:
-            {
-                i = sPcbList.getBridgeCount()==null?0:sPcbList.getBridgeCount();
-                break;
-            }
-           default:{
-               i = sPcbList.getOtherCount()==null?0:sPcbList.getOtherCount();
-               break;
-           }
-                   /* Missing = 0,
-                   Insufficient = 1,
-                   Excess = 2,
-                   OverHeight = 3,
-                   LowHeight = 4,
-                   OverArea = 5,
-                   LowArea = 6,
-                   ShiftX = 7,
-                   ShiftY = 8,
-                   Bridge = 9,
-                   ShapeError = 10,
-                   Smeared = 11,
-                   Coplanarity = 12,
-                   PreBridge = 13,
-                   PadAreaError = 14,
-                   WarpError = 15,*/
-        }
-
-        return  i;
-    }
-
-    private String[] getDefaultTypeArray(){
-        if(ConstParam.DEFAULTSETTING_defaultType==""){
-            ConstParam.DEFAULTSETTING_defaultType="0;1;2;3;4";
-        }
-        return ConstParam.DEFAULTSETTING_defaultType.split(";");
-    }
-    private String getErrorCodeString(int iJuResult) {
-        String str = "";
-        switch (iJuResult) {
-            case 0: {
-                str = "Missing";
-                break;
-            }
-            case 1: {
-                str = "Insufficient";
-                break;
-            }
-            case 2: {
-                str = "Excess";
-                break;
-            }
-            case 3: {
-                str = "Overheight";
-                break;
-            }
-            case 4: {
-                str = "Lowheight";
-                break;
-            }
-            case 5: {
-                str = "Overarea";
-                break;
-            }
-            case 6: {
-                str = "Lowarea";
-                break;
-            }
-            case 7: {
-                str = "Shiftx";
-                break;
-            }
-            case 8: {
-                str = "Shifty";
-                break;
-            }
-            case 9: {
-                str = "Bridge";
-                break;
-            }
-            case 10: {
-                str = "Shapeerror";
-                break;
-            }
-            case 11: {
-                str = "Smeared";
-                break;
-            }
-            case 12: {
-                str = "Coplanarity";
-                break;
-            }
-            case 13: {
-                str = "Prebridge";
-                break;
-            }
-            case 14: {
-                str = "Padareapercent";
-                break;
-            }
-            case 15: {
-                str = "Bridge";
-                break;
-            }
-            default: {
-                str = "Other";
-                break;
-            }
-
-        }
-        return  str;
-    }
     @ResponseBody
     @PostMapping("DefaultTop5")
     public ApiResponse<JsonChartsBean> getDefaultTop5ChartWithLineNo(@RequestParam("lineNo") String lineNo,@RequestParam("iTop1count")Integer iTop1count,
@@ -509,7 +322,7 @@ public class SPcbController {
                                                                      @RequestParam("iTop4count") Integer iTop4count ,@RequestParam("iTop5count") Integer iTop5count ){
         //从后台获取defaultTop5数据;
         List<String> categoriesList = new ArrayList<String>();
-        String[] arrStrTop5 = getDefaultTypeArray();
+        String[] arrStrTop5 = ConstPublicClassUtil.getDefaultTypeArray();
         int iTop1Count = 0 ;
         int iTop2Count=  0;
         int iTop3Count =  0;
@@ -554,19 +367,19 @@ public class SPcbController {
         int iTop5 =  Integer.parseInt(arrStrTop5[4]);
         if(sPcb!=null ) {
             data = new Data();
-            data.setY((double) getPadErrorCodeCount(sPcb, iTop1));
+            data.setY((double) ConstPublicClassUtil.getPadErrorCodeCount(sPcb, iTop1));
             seriesLineList.add(data);
             data = new Data();
-            data.setY((double) getPadErrorCodeCount(sPcb, iTop2));
+            data.setY((double) ConstPublicClassUtil.getPadErrorCodeCount(sPcb, iTop2));
             seriesLineList.add(data);
             data = new Data();
-            data.setY((double) getPadErrorCodeCount(sPcb, iTop3));
+            data.setY((double) ConstPublicClassUtil.getPadErrorCodeCount(sPcb, iTop3));
             seriesLineList.add(data);
             data = new Data();
-            data.setY((double) getPadErrorCodeCount(sPcb, iTop4));
+            data.setY((double) ConstPublicClassUtil.getPadErrorCodeCount(sPcb, iTop4));
             seriesLineList.add(data);
             data = new Data();
-            data.setY((double) getPadErrorCodeCount(sPcb, iTop5));
+            data.setY((double) ConstPublicClassUtil.getPadErrorCodeCount(sPcb, iTop5));
             seriesLineList.add(data);
         }else{
             data = new Data();
@@ -577,11 +390,11 @@ public class SPcbController {
             seriesLineList.add(data);
             seriesLineList.add(data);
         }
-        categoriesList.add(getErrorCodeString(iTop1));
-        categoriesList.add(getErrorCodeString(iTop2));
-        categoriesList.add(getErrorCodeString(iTop3));
-        categoriesList.add(getErrorCodeString(iTop4));
-        categoriesList.add(getErrorCodeString(iTop5));
+        categoriesList.add(ConstPublicClassUtil.getErrorCodeString(iTop1));
+        categoriesList.add(ConstPublicClassUtil.getErrorCodeString(iTop2));
+        categoriesList.add(ConstPublicClassUtil.getErrorCodeString(iTop3));
+        categoriesList.add(ConstPublicClassUtil.getErrorCodeString(iTop4));
+        categoriesList.add(ConstPublicClassUtil.getErrorCodeString(iTop5));
         chart = new Chart();
         chart.setType("column");
         xAxis.setMin(0);
@@ -631,7 +444,7 @@ public class SPcbController {
                                                                      @RequestParam("iTop4count") Integer iTop4count ,@RequestParam("iTop5count") Integer iTop5count ){
         //从后台获取defaultTop5数据;
         List<String> categoriesList = new ArrayList<String>();
-        String[] arrStrTop5 = getDefaultTypeArray();
+        String[] arrStrTop5 = ConstPublicClassUtil.getDefaultTypeArray();
         int iTop1Count = 0 ;
         int iTop2Count=  0;
         int iTop3Count =  0;
@@ -667,16 +480,16 @@ public class SPcbController {
         Data data =new Data();
         if(sPcb!=null ) {
             data = new Data();
-            data.setY((double) getPadErrorCodeCount(sPcb, iTop1));
+            data.setY((double) ConstPublicClassUtil.getPadErrorCodeCount(sPcb, iTop1));
             seriesLineList.add(data);
             data = new Data();
-            data.setY((double) getPadErrorCodeCount(sPcb, iTop2));
+            data.setY((double) ConstPublicClassUtil.getPadErrorCodeCount(sPcb, iTop2));
             seriesLineList.add(data);
-            data = new Data();data.setY((double) getPadErrorCodeCount(sPcb, iTop3));
+            data = new Data();data.setY((double) ConstPublicClassUtil.getPadErrorCodeCount(sPcb, iTop3));
             seriesLineList.add(data);
-            data = new Data();data.setY((double) getPadErrorCodeCount(sPcb, iTop4));
+            data = new Data();data.setY((double) ConstPublicClassUtil.getPadErrorCodeCount(sPcb, iTop4));
             seriesLineList.add(data);
-            data = new Data();data.setY((double) getPadErrorCodeCount(sPcb, iTop5));
+            data = new Data();data.setY((double) ConstPublicClassUtil.getPadErrorCodeCount(sPcb, iTop5));
             seriesLineList.add(data);
         }else{
             data = new Data();data.setY(0.0);
@@ -686,11 +499,11 @@ public class SPcbController {
             seriesLineList.add(data);
             seriesLineList.add(data);
         }
-        categoriesList.add(getErrorCodeString(iTop1));
-        categoriesList.add(getErrorCodeString(iTop2));
-        categoriesList.add(getErrorCodeString(iTop3));
-        categoriesList.add(getErrorCodeString(iTop4));
-        categoriesList.add(getErrorCodeString(iTop5));
+        categoriesList.add(ConstPublicClassUtil.getErrorCodeString(iTop1));
+        categoriesList.add(ConstPublicClassUtil.getErrorCodeString(iTop2));
+        categoriesList.add(ConstPublicClassUtil.getErrorCodeString(iTop3));
+        categoriesList.add(ConstPublicClassUtil.getErrorCodeString(iTop4));
+        categoriesList.add(ConstPublicClassUtil.getErrorCodeString(iTop5));
         chart = new Chart();
         chart.setType("column");
         xAxis.setMin(0);

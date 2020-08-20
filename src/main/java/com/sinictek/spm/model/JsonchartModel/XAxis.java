@@ -16,6 +16,20 @@ public class XAxis {
     private boolean crosshair;
     private int min;
     private int max;
+    private int lineWidth;
+
+    public boolean isCrosshair() {
+        return crosshair;
+    }
+
+    public int getLineWidth() {
+        return lineWidth;
+    }
+
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
+    }
+
     public void setCategories(List<String> categories) {
          this.categories = categories;
      }

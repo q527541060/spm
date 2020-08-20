@@ -75,9 +75,7 @@ CREATE TABLE IF NOT EXISTS `s_component`  (
   `arrayId` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `componentInspectResult` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `fore_component_pcb_pcbidline`(`pcbIdLine`) USING BTREE,
-  CONSTRAINT `fore_component_pcb_pcbidline` FOREIGN KEY (`pcbIdLine`) REFERENCES `s_pcb` (`pcbIdLine`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -99,11 +97,11 @@ INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SE
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 4, 'Product', '1', '2020-07-17 18:19:25', '看板是否需要Product图'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=4);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 5, 'DefaultTop5', '1', '2020-07-16 17:42:31', '看板是否需要top5图'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=5);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 6, 'defaultType', '1;2;3;4;5', '2020-07-24 17:10:15', 'top5设置'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=6);
-INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 7, 'boardMachineRefreshTime', '10', '2020-07-17 18:20:45', '看板实时刷新间隔(秒单位)'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=7);
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 7, 'boardMachineRefreshTime', '4', '2020-07-17 18:20:45', '看板实时刷新间隔(秒单位)'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=7);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 8, 'autoDelete', '0', '2020-07-17 10:20:53', '自动删除'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=8);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 9, 'autoDeleteDays', '35', '2020-07-24 17:10:04', '保存数据天数'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=9);
-
-
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 10, 'standCPK', '1', '2020-07-24 17:10:04', 'CPK设置标准值'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=10);
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 11, 'Frequency-start', '8', '2020-07-24 17:10:04', '班次设置值(例如早上八点:8   24小时制)'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=11);
 -- ----------------------------
 -- Table structure for s_errorcode
 -- ----------------------------

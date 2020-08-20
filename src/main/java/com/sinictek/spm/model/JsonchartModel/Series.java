@@ -23,6 +23,24 @@ public class Series {
     private List<Data> data;
     private double lineWidth;
     private boolean connectEnds;
+    private int yAxis;
+    //private Marker marker;
+
+    /*public Marker getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
+    }*/
+
+    public int getyAxis() {
+        return yAxis;
+    }
+
+    public void setyAxis(int yAxis) {
+        this.yAxis = yAxis;
+    }
 
     public double getLineWidth() {
         return lineWidth;

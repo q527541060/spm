@@ -147,7 +147,12 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
             "pcb.laneNo laneNo, "+
             "pcb.inspectStarttime inspectStarttime, "+
             "pcb.inspectEndtime inspectEndtime," +
-            "pcb.ngpadCount ngpadCount "+
+            "pcb.ngpadCount ngpadCount," +
+            "pcb.hCpk hCpk, " +
+            "pcb.aCpk aCpk, " +
+            "pcb.vcpk vcpk, " +
+            "pcb.shithxCpk shithxCpk, " +
+            "pcb.shithyCpk shithyCpk " +
             "FROM  " +
             "s_pcb pcb WHERE pcb.lineNo = #{lineNo}   " +
             "and pcb.inspectStarttime >= #{inspectStarttime} " +

@@ -33,7 +33,7 @@
 				<div class="col-md-14">
 					<ol class="breadcrumb">
 						<li><a href="${basePath}/Home/pcbHome">Home</a></li>
-						<li class="active" ><a data-toggle="tooltip" data-placement="bottom" title="点击切换至spi" href="${basePath}/Status/pcbMonitorview">aoi</a></li>
+						<li class="active" ><a data-toggle="tooltip" data-placement="bottom" title="点击切换至spi" href="${basePath}/Status/pcbMonitorview_realLineView">aoi</a></li>
 						<li class="active">Board-Machine</li>
 					</ol>
 				</div>

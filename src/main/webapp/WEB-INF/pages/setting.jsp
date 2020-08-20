@@ -23,12 +23,7 @@
         #table_line{
             width: 100%;
         }
-        .form-control{
-            text-align: center;
-        }
-        .option{
-            text-align: center;
-        }
+
         #selectPicker{
         }
     </style>
@@ -221,9 +216,9 @@
                             var vselect = ($('<select ></select>').addClass("form-control"))  ; //$('<div></div>').addClass("col-sm-4").append
                             for (var i = 1; i <=6 ; i++) {
                                 var voption = '';//$("<option></option>").addClass('option').append(i*5-1).attr("value",i*5-1);
-                                if(req.data.settingValue==i*5-1){
+                                /*if(req.data.settingValue==i*5-1){
                                     voption.attr('selected','selected');
-                                }
+                                }*/
                                 if(i==6){
                                     voption = $("<option></option>").addClass('option').append(2).attr("value",2);
                                     if(req.data.settingValue==2){
@@ -731,5 +726,15 @@
 
     </script>
 
+    <style>
+        .form-control{
+            text-align: center;
+            text-align-last: center;
+        }
+        .option{
+            text-align: center;
+            text-align-last: center;
+        }
+    </style>
 </body>
 </html>
