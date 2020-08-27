@@ -44,6 +44,24 @@ public class StringTimeUtils {
     public static Date getTimeStringToDate(String str) throws ParseException {
         return  simpleDateFormat.parse(str);
     }
+
+    /***
+     * @param instance  Calendar.getInstance();
+     * @param days  天数加减 返回 yyyyMMdd
+     * @return
+     */
+    public static String addDataStrNow(Calendar instance,int days) {
+        //Calendar instance = Calendar.getInstance(); instance.setTime();
+        instance.add(Calendar.DAY_OF_YEAR,days);
+        String year = instance.get(instance.YEAR)+"";
+        String month = String.valueOf(instance.get(instance.MONTH)+1);
+        month = month.length()>1?month:"0"+month;
+        String day = instance.get(instance.DAY_OF_MONTH)+"";
+        day = day.length()>1?day:"0"+day;
+
+        return year+month+day;
+    }
+
     /***
      * @param instance  Calendar.getInstance();
      * @param hour  小时加减

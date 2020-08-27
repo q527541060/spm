@@ -51,5 +51,10 @@ public  class ConstParam {
      */
     public static int DEFAULTSETTING_FrequencyStart=0;
 
+    /**
+     * autoDeleteMaxDays 自动删除设置最大天数
+     */
+    public static int DEFAULTSETTING_autoDeleteMaxDays=0;
+
 
 }

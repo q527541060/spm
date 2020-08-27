@@ -38,4 +38,7 @@ public interface SPadMapper extends BaseMapper<SPad> {
     })
     public SPad getPadWithPCbidLineDao(@Param("padTableName") String padTableName,@Param("pcbidLine") String pcbIdLine,@Param("padId")String padId);
 
+    @Select({"<script> DROP TABLE IF EXISTS ${padTableName}</script>"})
+    public void deletePadTableWithName(@Param("padTableName") String padTableName);
+
 }

@@ -33,4 +33,9 @@ public class SPadServiceImpl extends ServiceImpl<SPadMapper, SPad> implements SP
     public SPad getPadWithPCbidLineService(String padTableName, String pcbIdLine, String padId) {
         return sPadMapper.getPadWithPCbidLineDao(padTableName,pcbIdLine,padId);
     }
+
+    @Override
+    public void deletePadTableWithName(String padTableName) {
+         sPadMapper.deletePadTableWithName(padTableName);
+    }
 }

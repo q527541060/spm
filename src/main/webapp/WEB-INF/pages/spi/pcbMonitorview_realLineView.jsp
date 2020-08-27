@@ -192,7 +192,8 @@
                     //请求成功时处理
                     //json.chart = req.data.chart;
                     json.chart ={
-                        zoomType: 'xy'
+                        zoomType: 'xy',
+                        //animation:false
                     };
                     json.title = {text:'FPY、Product',style: {
                             fontWeight: 'bold',
@@ -202,6 +203,9 @@
                         }};
                     //json.subtitle = {text:'FPY、Product'};
                     json.plotOptions={
+                        series:{
+                            animation: true
+                        },
                         spline:{
                             dataLabels:{enabled:true,useHTML: true,} //,color:'#0f100b'
                         },
@@ -217,7 +221,7 @@
                                 style:{
                                     fontSize:'5px',
                                     fontWeight:'bold',
-                                    //color:'#141328'
+                                    color:'#141328'
                                 },
                             }//,color:'#ff0816'
                         },
@@ -270,6 +274,7 @@
                         },
                     ];
                     json.tooltip = {
+                        //animation:true,
                         formatter: function () {
                             return '<b>' + this.x + '</b><br/>' +
                                 this.series.name + ': ' + this.y ;//+ '<br/>' +
@@ -322,7 +327,7 @@
                         series: {
                             lineWidth:1,
                             //allowPointSelect :true,
-                            //animation:true,
+                            animation:true,  //动画
                             //lineColor:'blue',
                             //enableMouseTracking:true,//显示提示框
                             dataLabels:{
@@ -408,6 +413,9 @@
                     };
                     jsonDefault.credits = {enabled: false};
                     jsonDefault.plotOptions={
+                        series:{
+                            animation: true
+                        },
                         column:{
                             borderWidth: 0,
                             dataLabels:{

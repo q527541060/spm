@@ -7,7 +7,7 @@ import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.SStatus;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
-import com.sinictek.spm.model.utils.ConstPublicClassUtil;
+import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
 import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.SDefaultsettingService;
 import com.sinictek.spm.service.SLineService;
@@ -77,7 +77,8 @@ public class SStatusController {
                 ConstParam.DEFAULTSETTING_autoDelete==0|
                 ConstParam.DEFAULTSETTING_defaultType==""|
                 ConstParam.DEFAULTSETTING_FrequencyStart==0|
-                ConstParam.DEFAULTSETTING_standCPK==0
+                ConstParam.DEFAULTSETTING_standCPK==0|
+                ConstParam.DEFAULTSETTING_autoDeleteMaxDays==0
         ){
             List<SDefaultsetting> lstDefaultSetting = sDefaultsettingService.selectList(null);
             if(lstDefaultSetting!=null&&lstDefaultSetting.size()>0){
@@ -116,6 +117,9 @@ public class SStatusController {
                     }
                     if("standCPK".equals(strSettingName)) {
                         ConstParam.DEFAULTSETTING_standCPK=strSettingValue==null?1:Integer.parseInt(strSettingValue);
+                    }
+                    if("autoDelete-MaxDays".equals(strSettingName)){
+                        ConstParam.DEFAULTSETTING_autoDeleteMaxDays=strSettingValue==null?365:Integer.parseInt(strSettingValue);
                     }
                 }
             }
@@ -158,8 +162,8 @@ public class SStatusController {
 
         //记得改回班次
         Calendar instance = Calendar.getInstance();
-        String stratTime =instance.get(instance.YEAR)+"-"+(instance.get(instance.MONTH)+1)+"-"+instance.get(instance.DAY_OF_MONTH)+
-                " "+ConstParam.DEFAULTSETTING_FrequencyStart + ":00:00";//StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_FrequencyStart);
+        String stratTime =StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_FrequencyStart);//instance.get(instance.YEAR)+"-"+(instance.get(instance.MONTH)+1)+"-"+instance.get(instance.DAY_OF_MONTH)+
+                //" "+ConstParam.DEFAULTSETTING_FrequencyStart + ":00:00";//StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_FrequencyStart);
 
         String endTime = StringTimeUtils.getTimeDateToString(sDate);
         //获取到每条线计算后总数据

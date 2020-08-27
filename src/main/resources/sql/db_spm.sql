@@ -102,6 +102,7 @@ INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SE
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 9, 'autoDeleteDays', '35', '2020-07-24 17:10:04', '保存数据天数'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=9);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 10, 'standCPK', '1', '2020-07-24 17:10:04', 'CPK设置标准值'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=10);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 11, 'Frequency-start', '8', '2020-07-24 17:10:04', '班次设置值(例如早上八点:8   24小时制)'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=11);
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 12, 'autoDelete-MaxDays', '365', '2020-07-24 17:10:04', '自动删除最大上限设置天数(一般不设置,如果需要删除天数大于365天请修改天数 例如500天 500)'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=12);
 -- ----------------------------
 -- Table structure for s_errorcode
 -- ----------------------------

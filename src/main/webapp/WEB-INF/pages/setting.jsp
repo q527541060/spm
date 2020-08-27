@@ -250,6 +250,7 @@
                             $('.selectPicker').append(vselect);
                             break;
                         }
+                        case 'autoDelete-MaxDays':
                         case 'Frequency-start':
                         case 'standCPK':
                         case 'autoDeleteDays':{

@@ -2,6 +2,7 @@ package com.sinictek.spm.api;
 
 
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.model.SLine;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
@@ -102,6 +103,26 @@ public class SDefaultsettingController {
     @ResponseBody
     @PostMapping("updatedefault")
     public ApiResponse updateSettingLine(SDefaultsetting sDefaultsetting){
+
+        //保存全局设置  暂写入自动删除  保存数据天数
+        switch (sDefaultsetting.getIdStr()){
+            case "8":{    //自动删除
+                ConstParam.DEFAULTSETTING_autoDelete = sDefaultsetting.getSettingValue()==null?0:Integer.parseInt(sDefaultsetting.getSettingValue());
+                break;
+            }case "9":{    //保存数据天数
+                ConstParam.DEFAULTSETTING_autoDeleteDays = sDefaultsetting.getSettingValue()==null?35:Integer.parseInt(sDefaultsetting.getSettingValue());
+                break;
+            }case "12":{    //自动删除最大天数
+                ConstParam.DEFAULTSETTING_autoDeleteMaxDays= sDefaultsetting.getSettingValue()==null?365:Integer.parseInt(sDefaultsetting.getSettingValue());
+                break;
+            }
+            default:{
+                break;
+            }
+
+        }
+
+
         sDefaultsetting.setUpdateTime(new Date());
         boolean bIsSuccess = sDefaultsettingService.update(sDefaultsetting, Condition.create().eq("id",sDefaultsetting.getIdStr()));
         if (bIsSuccess){

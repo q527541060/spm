@@ -1,13 +1,17 @@
-package com.sinictek.spm.model.utils;
+package com.sinictek.spm.model.ConstClasses;
 
 import com.sinictek.spm.model.ConstClasses.ConstParam;
+import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.model.SPcb;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.sinictek.spm.service.SDefaultsettingService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @Author sinictek-pd
@@ -15,6 +19,8 @@ import com.google.common.collect.Maps;
  * @Version 1.0
  */
 public class ConstPublicClassUtil {
+
+
     public static int getPadErrorCodeCount(SPcb sPcbList, int iJuResult){
         int i=0;
 
@@ -320,4 +326,6 @@ public class ConstPublicClassUtil {
         }
         return result;
     }
+
+
 }
