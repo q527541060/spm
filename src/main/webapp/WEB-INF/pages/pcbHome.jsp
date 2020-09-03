@@ -113,7 +113,7 @@
 						<div id="line-win"  onclick="showModel(2)">
 							<span  class="glyphicon glyphicon-star-empty"></span>
 							<p> 过程分析大数据</p>
-							<i class="line-count"> 102100</i>
+							<i class="line-count"> ${spi_dataCount}</i>
 						</div>
 					</div>
 					<%--<div class="col-md-2">
@@ -126,16 +126,16 @@
 					<div class="col-md-2">
 						<div id="line-win"  onclick="showModel(3)">
 								<span  class="glyphicon glyphicon-bell"></span>
-								<p>活动线体/总线体</p>
+								<p>活动总线实时监控</p>
 								<%--<p> 活动线体/总线体</p>--%>
-								<i class="line-count">9/12</i>
+								<i class="line-count">${spi_lineCount}</i>
 						</div>
 					</div>
 					<div class="col-md-2">
 						<div id="line-win"  onclick="showModel(4)">
 								<span  class="glyphicon glyphicon-exclamation-sign"></span>
 								<p> 条码追溯</p>
-								<i class="line-count">10201</i>
+								<i class="line-count">${spi_barcodeCount}</i>
 						</div>
 					</div>
                    <%-- <div class="col-md-1">
@@ -173,15 +173,14 @@
 					<div id="line-win"  onclick="showModel(4)">
 						<span  class="glyphicon glyphicon-modal-window"></span>
 						<p> FOV/PCB分析</p>
-						<i class="line-count"> 236/50</i>
+						<i class="line-count"> ${spi_fovCount}/${spi_pcbCount}</i>
 					</div>
 				</div>
 				<div class="col-md-2">
 					<div id="line-win"  onclick="showModel(5)">
 						<span  class="glyphicon glyphicon-copyright-mark"></span>
 						<p>component分析</p>
-						<%--<p> 活动线体/总线体</p>--%>
-						<i class="line-count">50</i>
+						<i class="line-count">${spi_componentCount}</i>
 					</div>
 				</div>
 				<div class="col-md-2">

@@ -62,6 +62,8 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
             "SUM(pcb.inspectResult = 1)  ngPcbCount,"+
             "SUM(pcb.inspectResult = 0)  goodPcbCount,"+
             "SUM(pcb.inspectResult = 2)  passPcbCount,"+
+            //totalpadCount
+            "SUM(pcb.totalpadCount)  totalpadCount,"+
             "SUM(pcb.ngpadCount)  ngpadCount,"+
             "SUM(pcb.lowareaCount) lowareaCount," +
             "SUM(pcb.overareaCount) overareaCount," +

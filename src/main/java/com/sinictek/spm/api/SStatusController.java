@@ -162,8 +162,8 @@ public class SStatusController {
 
         //记得改回班次
         Calendar instance = Calendar.getInstance();
-        String stratTime =StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_FrequencyStart);//instance.get(instance.YEAR)+"-"+(instance.get(instance.MONTH)+1)+"-"+instance.get(instance.DAY_OF_MONTH)+
-                //" "+ConstParam.DEFAULTSETTING_FrequencyStart + ":00:00";//StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_FrequencyStart);
+        String stratTime =instance.get(instance.YEAR)+"-"+(instance.get(instance.MONTH)+1)+"-"+instance.get(instance.DAY_OF_MONTH)+
+                " "+ConstParam.DEFAULTSETTING_FrequencyStart + ":00:00";//StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_FrequencyStart);
 
         String endTime = StringTimeUtils.getTimeDateToString(sDate);
         //获取到每条线计算后总数据

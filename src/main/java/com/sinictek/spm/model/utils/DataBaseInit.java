@@ -20,8 +20,8 @@ import org.springframework.util.Assert;
  * 
  * 数据库初始化
  * 
- * @author 00fly
- * @version [版本号, 2018年11月11日]
+ * @author sinictek-pd
+ * @version [版本号, 2020年1月11日]
  * @see [相关类/方法]
  * @since [产品/模块版本]
  */

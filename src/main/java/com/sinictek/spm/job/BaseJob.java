@@ -136,8 +136,8 @@ public class BaseJob {
                 sPadService.deletePadTableWithName(strPadSqlName);
             }
             //System.out.println(new Date()+"---结束delete焊盘");
-            sPcbService.delete(Condition.create().lt("inspectStarttime",startTime).last("limit 300") );//..and("1=1  LIMIT 1")
-            sStatusService.delete(Condition.create().lt("updateTime",startTime).last("limit 300") );
+            sPcbService.delete(Condition.create().lt("inspectStarttime",startTime).last("limit 3000") );//..and("1=1  LIMIT 1")
+            sStatusService.delete(Condition.create().lt("updateTime",startTime).last("limit 3000") );
             //ystem.out.println(bTure);
 
         }
