@@ -56,5 +56,22 @@ public  class ConstParam {
      */
     public static int DEFAULTSETTING_autoDeleteMaxDays=0;
 
+    /**
+     * hChartColor  表格图背景主题
+     */
+    public static int DEFAULTSETTING_hChartColor=0;
 
+    /**
+     * backgroundColor 页面背景色
+     */
+    public static int DEFAULTSETTING_backgroundColor=0;
+
+    /**
+     * passPcbYeild  看板直通率标准设定值
+     */
+    public static int DEFAULTSETTING_passPcbYeild=0;
+    /**
+     * boardViewChartMove  看板动画渲染开关
+     */
+    public static int DEFAULTSETTING_boardViewChartMove=0;
 }

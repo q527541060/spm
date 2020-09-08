@@ -25,8 +25,8 @@ public class SStatusServiceImpl extends ServiceImpl<SStatusMapper, SStatus> impl
     SStatusMapper sStatusMapper;
 
     @Override
-    public List<SStatus> getAllStatusWithLineNoLimt(){
-        return  sStatusMapper.getAllStatusWithLineNoLimt();
+    public List<SStatus> getAllStatusWithLineNoLimt(String lane){
+        return  sStatusMapper.getAllStatusWithLineNoLimt(lane);
     }
 
     @Override

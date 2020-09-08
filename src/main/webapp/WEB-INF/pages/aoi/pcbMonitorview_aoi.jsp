@@ -18,8 +18,8 @@
 			body{
 				margin: 0px;
 				padding: 0px;
-				background: url("${staticPath}/static/img/home6.jpg")  ;
-				background-size:cover;
+				/*background: url("$staticPath}/static/img/home6.jpg")  ;*/
+				/*background-size:cover;*/
 			}
 
 		</style>
@@ -110,7 +110,7 @@
                         'bg-green',
                         'bg-red'
                     ]
-                    if (index % 2 === 0 ) {
+                    if (index % 2 == 0 ) {
                         return {
                             classes: 'success'
                         }

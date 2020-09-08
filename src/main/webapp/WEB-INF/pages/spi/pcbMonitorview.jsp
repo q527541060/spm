@@ -18,8 +18,8 @@
 			body{
 				margin: 0px;
 				padding: 0px;
-				background: url("${staticPath}/static/img/home6.jpg")  ;
-				background-size:cover;
+				/*background: url("$staticPath}/static/img/home6.jpg")  ;*/
+				/*background-size:cover;*/
 			}
 			/*h4{
 				color: #4cae4c;
@@ -35,7 +35,7 @@
             <%@include file="../header.jsp"%>
            <%-- <jsp:include page="header.jsp"></jsp:include>--%>
             <%--<%@include file="header.jsp" %>--%>
-			<div class="row" style=" text-align: left;">
+			<div class="row" style=" text-align: left;margin-top: -5px">
 				<div class="col-md-14">
 					<ol class="breadcrumb">
 						<li><a href="${basePath}/Home/pcbHome">Home</a></li>
@@ -338,7 +338,7 @@
         	//alert('come in..');
             //记录页面bootstrap-table全局变量$table，方便应用
             $table = $('#machineStatus').bootstrapTable({
-                url: StatusQueryUrl,                      //请求后台的URL（*）
+                url: StatusQueryUrl+"?lane="+'',                    //请求后台的URL（*）
                 dataType:"json",
                 method: 'GET',                      //请求方式（*）
                 //toolbar: '#toolbar',              //工具按钮用哪个容器
@@ -369,7 +369,7 @@
                         'bg-green',
                         'bg-red'
                     ]
-                    if (index % 2 === 0 ) {
+                    if (index % 2 == 0 ) {
                         return {
                             classes: 'success'
                         }
@@ -514,7 +514,7 @@
 
         function refreshTable(){
 			var opt = {
-				url: StatusQueryUrl,
+				url: StatusQueryUrl+"?lane="+'',
 				silent: true,
 				query:{
 					type:1,

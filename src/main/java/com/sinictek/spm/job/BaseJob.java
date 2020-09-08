@@ -1,7 +1,9 @@
 package com.sinictek.spm.job;
 
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.sinictek.spm.api.SDefaultsettingController;
 import com.sinictek.spm.api.SStatusController;
+import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.model.SJob;
@@ -30,8 +32,6 @@ public class BaseJob {
     @Autowired
     SStatusService sStatusService;
 
-    @Autowired
-    SDefaultsettingService sDefaultsettingService;
     /*@Scheduled(cron = "0/2 * * * * *")
     public void doJob(){
         System.out.println("springboot thread job..." + new Date());
@@ -45,7 +45,7 @@ public class BaseJob {
         System.gc();
     }
 
-    private void iniDefaultParamSetting(){
+    /*private void iniDefaultParamSetting(){
 
         if(ConstParam.DEFAULTSETTING_boardMachineTimeLimit==0|
                 ConstParam.DEFAULTSETTING_boardMachineRefreshTime==0|
@@ -107,7 +107,7 @@ public class BaseJob {
 
 
     }
-
+*/
     /***
      * 自动删除  删除多少天数据
      */
@@ -119,7 +119,7 @@ public class BaseJob {
             }*/
             //如果系统自启动 数据库获取参数值
             if(ConstParam.DEFAULTSETTING_autoDeleteDays==0){
-                iniDefaultParamSetting();
+                ConstController.constController.iniDefaultParamSetting();
                 /*SStatusController sStatusController = new SStatusController();
                 sStatusController.iniDefaultParamSetting();*/
             }

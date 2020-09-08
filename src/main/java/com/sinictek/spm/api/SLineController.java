@@ -1,6 +1,8 @@
 package com.sinictek.spm.api;
 
 
+import com.sinictek.spm.model.ConstClasses.ConstController;
+import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.JsonchartModel.*;
 import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
@@ -33,7 +35,10 @@ public class SLineController {
 
     @GetMapping("pcbLine")
     public ModelAndView showPcbLine()  {
+        ConstController.constController.iniDefaultParamSetting();
         ModelAndView mv = new ModelAndView("spi/pcbLineData");
+        mv.addObject("hChartColor", ConstParam.DEFAULTSETTING_hChartColor);
+        mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
         return  mv;
     }
 
@@ -306,7 +311,8 @@ public class SLineController {
         mv.addObject("lineNo",lineNo);
         mv.addObject("inspectStarttime",inspectStarttime);
         mv.addObject("inspectEndtime",inspectEndtime);
-
+        mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
+        mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
         return mv;
     }
 

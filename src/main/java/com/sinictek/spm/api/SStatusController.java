@@ -1,6 +1,7 @@
 package com.sinictek.spm.api;
 
 
+import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.JsonchartModel.*;
 import com.sinictek.spm.model.SDefaultsetting;
@@ -38,8 +39,8 @@ import java.util.*;
 @RequestMapping("/Status")
 public class SStatusController {
 
-    @Autowired
-    SDefaultsettingService sDefaultsettingService;
+    //@Autowired
+    //SDefaultsettingService sDefaultsettingService;
     @Autowired
     SStatusService sStatusService;
 
@@ -51,21 +52,21 @@ public class SStatusController {
 
     @GetMapping("pcbMonitorview")
     public ModelAndView ShowPcbMonitorView(){
+        ConstController.constController.iniDefaultParamSetting();
         ModelAndView mv = new ModelAndView("spi/pcbMonitorview");
         // ini defaultsetting
-        iniDefaultParamSetting();
         return  mv;
     }
 
     @GetMapping("sigSpiPcbMonitorview")
     public ModelAndView ShowSigSpiPcbMonitorview(@RequestParam("lineNo")String lineNo){
+        ConstController.constController.iniDefaultParamSetting();
         ModelAndView mv = new ModelAndView("spi/sigSpiPcbMonitorview");
         // ini defaultsetting
-        iniDefaultParamSetting();
         mv.addObject("lineNo",lineNo);
         return  mv;
     }
-    private void iniDefaultParamSetting(){
+    /*private void iniDefaultParamSetting(){
 
         if(ConstParam.DEFAULTSETTING_boardMachineTimeLimit==0|
                 ConstParam.DEFAULTSETTING_boardMachineRefreshTime==0|
@@ -78,7 +79,11 @@ public class SStatusController {
                 ConstParam.DEFAULTSETTING_defaultType==""|
                 ConstParam.DEFAULTSETTING_FrequencyStart==0|
                 ConstParam.DEFAULTSETTING_standCPK==0|
-                ConstParam.DEFAULTSETTING_autoDeleteMaxDays==0
+                ConstParam.DEFAULTSETTING_autoDeleteMaxDays==0|
+                ConstParam.DEFAULTSETTING_hChartColor==0|
+                ConstParam.DEFAULTSETTING_backgroundColor==0|
+                ConstParam.DEFAULTSETTING_passPcbYeild==0|
+                ConstParam.DEFAULTSETTING_boardViewChartMove==0
         ){
             List<SDefaultsetting> lstDefaultSetting = sDefaultsettingService.selectList(null);
             if(lstDefaultSetting!=null&&lstDefaultSetting.size()>0){
@@ -111,7 +116,6 @@ public class SStatusController {
                     if("autoDeleteDays".equals(strSettingName)) {
                         ConstParam.DEFAULTSETTING_autoDeleteDays=strSettingValue==null?30:Integer.parseInt(strSettingValue);
                     }
-
                     if("Frequency-start".equals(strSettingName)) {
                         ConstParam.DEFAULTSETTING_FrequencyStart=strSettingValue==null?8:Integer.parseInt(strSettingValue);
                     }
@@ -121,20 +125,36 @@ public class SStatusController {
                     if("autoDelete-MaxDays".equals(strSettingName)){
                         ConstParam.DEFAULTSETTING_autoDeleteMaxDays=strSettingValue==null?365:Integer.parseInt(strSettingValue);
                     }
+                    if("hChartColor".equals(strSettingName)){
+                        ConstParam.DEFAULTSETTING_hChartColor=strSettingValue==null?0:Integer.parseInt(strSettingValue);
+                    }
+                    if("backgroundColor".equals(strSettingName)){
+                        ConstParam.DEFAULTSETTING_backgroundColor=strSettingValue==null?0:Integer.parseInt(strSettingValue);
+                    }
+                    if("passPcbYeild".equals(strSettingName)){     //看板直通率标准设定值
+                        ConstParam.DEFAULTSETTING_passPcbYeild= strSettingValue==null?0:Integer.parseInt(strSettingValue);
+                    }
+                    if("boardView-chartMove".equals(strSettingName)){     //看板动画渲染开关
+                        ConstParam.DEFAULTSETTING_boardViewChartMove= strSettingValue==null?1:Integer.parseInt(strSettingValue);
+                    }
                 }
             }
         }
 
 
-    }
+    }*/
 
     @GetMapping("pcbMonitorview_realLineView")
     public ModelAndView ShowpcbMonitorview_realLineView(){
+        ConstController.constController.iniDefaultParamSetting();
         ModelAndView mv = new ModelAndView("spi/pcbMonitorview_realLineView");
         // ini defaultsetting
-        iniDefaultParamSetting();
         mv.addObject("boardMachineRefreshTime",ConstParam.DEFAULTSETTING_boardMachineRefreshTime);
         mv.addObject("Frequency_start",ConstParam.DEFAULTSETTING_FrequencyStart);
+        mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
+        mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
+        mv.addObject("passPcbYeild",ConstParam.DEFAULTSETTING_passPcbYeild);
+        mv.addObject("boardView_chartMove",ConstParam.DEFAULTSETTING_boardViewChartMove);
         return  mv;
     }
 
@@ -163,7 +183,7 @@ public class SStatusController {
         //记得改回班次
         Calendar instance = Calendar.getInstance();
         String stratTime =instance.get(instance.YEAR)+"-"+(instance.get(instance.MONTH)+1)+"-"+instance.get(instance.DAY_OF_MONTH)+
-                " "+ConstParam.DEFAULTSETTING_FrequencyStart + ":00:00";//StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_FrequencyStart);
+               " "+ConstParam.DEFAULTSETTING_FrequencyStart + ":00:00";//StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_FrequencyStart);
 
         String endTime = StringTimeUtils.getTimeDateToString(sDate);
         //获取到每条线计算后总数据
@@ -184,24 +204,28 @@ public class SStatusController {
 
         List<Series> lstCPKSeries = new ArrayList<Series>();
         Series cpkSeries = new Series();
-        Series standCpkSeries = new Series();
+        //Series standCpkSeries = new Series();
 
         List<Series> lstTop5Series = new ArrayList<Series>();
         Series  top5Series  = null;//new Series();
         //Series standCpkSeries = new Series();
 
         XAxis xAxisFPYProduct = new XAxis();
+        XAxis xAxisCPK = new XAxis();
         List<String> lstFPYProductCategories = new ArrayList<String>();
         List<Data> goodFPYProductSeriesList = new ArrayList<Data>();
         List<Data> passFPYProductSeriesList = new ArrayList<Data>();
         List<Data> ngFPYProductSeriesList = new ArrayList<Data>();
         List<Data> goodFPYProductSplineSeriesList = new ArrayList<Data>();
         List<Data> cpkSeriesList = new ArrayList<Data>();
-        List<Data> standCPKSeriesList = new ArrayList<Data>();
+       // List<Data> standCPKSeriesList = new ArrayList<Data>();
         List<Data> top5SeriesList = new ArrayList<Data>();
+
+        List<PlotBands> lstPlotBands = new ArrayList<PlotBands>();
         Data data =null;
         double doubleTmp=0;
         //FPY、PRODUCT、CPK
+        double maxCpk =0;
         if(lstPcb!=null && lstPcb.size()>0){
             for (int i = 0; i < lstPcb.size(); i++){
                 data = new Data();
@@ -216,16 +240,44 @@ public class SStatusController {
                 ngFPYProductSeriesList.add(data);
                 doubleTmp =(double)(Math.round(Double.parseDouble(lstPcb.get(i).getGoodPcbYeild()) *100)/100.0);
                 data= new Data();
+                if(doubleTmp >= (double)ConstParam.DEFAULTSETTING_passPcbYeild){
+                    data.setColor("#25dd19");//"#25dd19"
+                }else{
+                    data.setColor("#dd1127");
+                    //描绘直通率报警
+
+                   PlotBands plotBands = new PlotBands();
+                    plotBands.setFrom(i-0.5);
+                    plotBands.setTo(i+0.5);
+                    plotBands.setColor("#ED1B24");
+                    lstPlotBands.add(plotBands);
+                }
                 data.setY(doubleTmp);
                 goodFPYProductSplineSeriesList.add(data);
                 data= new Data();
                 //CPK
 
                 dAreaCPK = lstPcb.get(i).getaCpk()==null?0: (double)(Math.round(lstPcb.get(i).getaCpk()*100)/100.0);
+
                 dHeightCPK = lstPcb.get(i).gethCpk()==null?0:(double)(Math.round(lstPcb.get(i).gethCpk()*100)/100.0);
                 dVolCPK = lstPcb.get(i).getVcpk()==null?0:(double)(Math.round(lstPcb.get(i).getVcpk()*100)/100.0);
                 dShiftXCPK = lstPcb.get(i).getShithxCpk()==null?0: (double)(Math.round(lstPcb.get(i).getShithxCpk()*100)/100.0);
                 dShiftYCPK = lstPcb.get(i).getShithyCpk()==null?0: (double)(Math.round(lstPcb.get(i).getShithyCpk()*100)/100.0);
+                if(maxCpk<dAreaCPK){
+                    maxCpk = dAreaCPK;
+                }
+                if(maxCpk<dHeightCPK){
+                    maxCpk = dHeightCPK;
+                }
+                if(maxCpk<dVolCPK){
+                    maxCpk = dVolCPK;
+                }
+                if(maxCpk<dShiftXCPK){
+                    maxCpk = dShiftXCPK;
+                }
+                if(maxCpk<dShiftYCPK){
+                    maxCpk = dShiftYCPK;
+                }
                 if(aValue!=null && aValue.contains("0")){
                     data.setY(dAreaCPK);
                     if(dAreaCPK >= (double) ConstParam.DEFAULTSETTING_standCPK){
@@ -276,15 +328,15 @@ public class SStatusController {
                     cpkSeriesList.add(data);
                 }
                 //standCPK
-                data = new Data();
+                /*data = new Data();
                 data.setY(ConstParam.DEFAULTSETTING_standCPK);
-                standCPKSeriesList.add(data);
+                standCPKSeriesList.add(data);*/
             }
         }else{
             lstFPYProductCategories.add("当前时间段无设备检测信息  "+stratTime+"-"+endTime);
         }
         //new  top5
-       // List<Map<Integer,Integer>> lst = new ArrayList<Map<Integer,Integer>>();
+        Map<String,String> mapData = new HashMap<String,String>();
         int iTotal =0,iPcbTmp=0;
         List<Map<Integer,Integer>> realLst = new ArrayList<Map<Integer,Integer>>();
        if (lstPcb != null && lstPcb.size() > 0) {
@@ -378,27 +430,35 @@ public class SStatusController {
         xAxisFPYProduct.setCategories(lstFPYProductCategories);
         xAxisFPYProduct.setMin(0);
         xAxisFPYProduct.setMax(lstFPYProductCategories.size()<=0?0:(lstFPYProductCategories.size()-1));
+        xAxisCPK.setCategories(lstFPYProductCategories);
+        xAxisCPK.setMin(0);
+        xAxisCPK.setMax(lstFPYProductCategories.size()<=0?0:(lstFPYProductCategories.size()-1));
+        if(lstPlotBands.size()>0) {
+            xAxisFPYProduct.setPlotBands(lstPlotBands);
+        }
+        //xAxisFPYProduct.set
         //xAxisFPYProduct.setLineWidth(2);
         jsonChartsBean_FPYProduct.setXAxis(xAxisFPYProduct);
+        jsonChartsBean_CPK.setXAxis(xAxisCPK);
 
         Tooltip productTooltip = new Tooltip();
-        productTooltip.setValueSuffix("pcs");
+        productTooltip.setValueSuffix("p");
         productGoodSeries.setType("column");
-        productGoodSeries.setName("良好板");
+        productGoodSeries.setName("良好");
         productGoodSeries.setData(goodFPYProductSeriesList);
         productGoodSeries.setTooltip(productTooltip);
         productGoodSeries.setStacking("normal");
         productGoodSeries.setColor("#13dd15");
 
         productNGSeries.setType("column");
-        productNGSeries.setName("不良板");
+        productNGSeries.setName("不良");
         productNGSeries.setData(ngFPYProductSeriesList);
         productNGSeries.setTooltip(productTooltip);
         productNGSeries.setStacking("normal");
-        productNGSeries.setColor("#dd0f31");
+        productNGSeries.setColor("#F7A35C");
 
         productPassSeries.setType("column");
-        productPassSeries.setName("误判板");
+        productPassSeries.setName("误判");
         productPassSeries.setData(passFPYProductSeriesList);
         productPassSeries.setTooltip(productTooltip);
         productPassSeries.setStacking("normal");
@@ -430,15 +490,15 @@ public class SStatusController {
         cpkSeries.setLineWidth(0);
         cpkSeries.setConnectEnds(false);
 
-        standCpkSeries.setName("StandCPK");
-        standCpkSeries.setType("line");
-        standCpkSeries.setData(standCPKSeriesList);
-        standCpkSeries.setLineWidth(2);
-        standCpkSeries.setConnectEnds(true);
+        //standCpkSeries.setName("StandCPK");
+        //standCpkSeries.setType("line");
+        //standCpkSeries.setData(standCPKSeriesList);
+        //standCpkSeries.setLineWidth(0);
+        //standCpkSeries.setConnectEnds(true);
 
 
         lstCPKSeries.add(cpkSeries);
-        lstCPKSeries.add(standCpkSeries);
+       // lstCPKSeries.add(standCpkSeries);
 
 
         jsonChartsBean_FPYProduct.setSeries(lstFPYProductSeries);
@@ -449,12 +509,15 @@ public class SStatusController {
         lstJsonChartsBean.add(jsonChartsBean_FPYProduct);
         lstJsonChartsBean.add(jsonChartsBean_CPK);
         lstJsonChartsBean.add(jsonChartsBean_Top5);
-        return  new ApiResponse(true,null,lstJsonChartsBean,iTotal);
+        mapData.put("iTotal",iTotal+"");
+        mapData.put("standCPK",ConstParam.DEFAULTSETTING_standCPK+"");
+        mapData.put("maxCpk",maxCpk+"");
+        return  new ApiResponse(true,null,lstJsonChartsBean,mapData);
     }
 
     @ResponseBody
     @GetMapping("pcbMonitorJson")
-    public ApiResponse<List<SStatus>> GetPcbMonitorListJson(){
+    public ApiResponse<List<SStatus>> GetPcbMonitorListJson(@RequestParam("lane") String lane){
         //获取所有线体;
         //List<SLine> lineList = sLineService.selectList(null);
         //List<SStatus> statusList = sStatusService.getAllStatusWithLineNoLimt();
@@ -465,7 +528,7 @@ public class SStatusController {
                 "\"lineNo\":\"SPI-01\",\"status\":\"stop\",\"factory\":\"Ssssss\" ,\"errContent\":\"eeeeee\"" +
                 "}]";*/
         //JSON.toJSONString(statusList);
-        return new ApiResponse<List<SStatus>>(null,sStatusService.getAllStatusWithLineNoLimt());
+        return new ApiResponse<List<SStatus>>(null,sStatusService.getAllStatusWithLineNoLimt(lane));
     }
 
     @ResponseBody

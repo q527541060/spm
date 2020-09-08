@@ -14,8 +14,8 @@
         body{
             margin: 0px;
             padding: 0px;
-            background: url("${staticPath}/static/img/home6.jpg")  ;
-            background-size:cover;
+            /*background: url("$staticPath}/static/img/home6.png");*/
+            /*background-size:cover;*/
         }
         .row{
             margin-bottom: 10px;
@@ -31,7 +31,7 @@
 <body>
     <nav>
         <%@include file="header.jsp" %>
-        <div class="row" style="margin-top: -10px; text-align: left;">
+        <div class="row" style="text-align: left;margin-top: -15px; ">
             <div class="col-md-14">
                 <ol class="breadcrumb">
                     <li><a href="${basePath}/Home/pcbHome">Home</a></li>
@@ -40,9 +40,22 @@
                 </ol>
             </div>
         </div>
-        <!--  default 设置  -->
+        <!--  Default参数设置 -->
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Default参数设置
+                    </div>
+                    <div class="panel-body">
+                        <div id="table_default" ></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  线体 设置  -->
+        <div class="row" >
+            <div class="col-md-8 col-md-offset-2" >
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         SPI线体信息变更
@@ -69,19 +82,7 @@
                 </div>
             </div>
         </div>
-        <!--  设备名称信息 -->
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        Default参数设置
-                    </div>
-                    <div class="panel-body">
-                        <div id="table_default" ></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <div class="row">
             <div class="modal fade" id="editSettingLineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
@@ -199,7 +200,9 @@
                         case 'CPK':
                         case 'Product':
                         case 'autoDelete':
-                        case 'DefaultTop5':{
+                        case 'DefaultTop5':
+                        case 'boardView-chartMove':
+                            {
                             var vselect =  $('<select ></select>').addClass("form-control"); //$('.selectPicker').append();
                             for (var i = 0; i <2 ; i++) {
                                 var voption = $("<option></option>").addClass('option').append(i==1?'开启':'关闭').attr("value",i);
@@ -214,12 +217,12 @@
                         case 'boardMachineTimeLimit':
                         case 'boardMachineRefreshTime':{
                             var vselect = ($('<select ></select>').addClass("form-control"))  ; //$('<div></div>').addClass("col-sm-4").append
-                            for (var i = 1; i <=6 ; i++) {
+                            for (var i = 1; i <=60 ; i++) {
                                 var voption = '';//$("<option></option>").addClass('option').append(i*5-1).attr("value",i*5-1);
                                 /*if(req.data.settingValue==i*5-1){
                                     voption.attr('selected','selected');
                                 }*/
-                                if(i==6){
+                                if(i==60){
                                     voption = $("<option></option>").addClass('option').append(2).attr("value",2);
                                     if(req.data.settingValue==2){
                                         voption.attr('selected','selected');
@@ -250,9 +253,39 @@
                             $('.selectPicker').append(vselect);
                             break;
                         }
+                        case 'hChartColor':{
+                            var vselect = ($('<select ></select>').addClass("form-control"))  ; //$('<div></div>').addClass("col-sm-4").append
+                            for (var i = 0; i <12 ; i++) {
+                                var voption = $("<option></option>").addClass('option').
+                                append(hChartColorToStr(i+'')).
+                                attr("value",i);
+                                if(req.data.settingValue==i){
+                                    voption.attr('selected','selected');
+                                }
+                                voption.appendTo(vselect);
+                            }
+                            $('.selectPicker').append(vselect);
+                            break;
+                        }
+                        case 'backgroundColor':{
+                            var vselect = ($('<select ></select>').addClass("form-control"))  ; //$('<div></div>').addClass("col-sm-4").append
+                            for (var i = 0; i <8; i++) {
+                                var voption = $("<option></option>").addClass('option').
+                                append(backgroundColorToStr(i+'')).
+                                attr("value",i);
+                                if(req.data.settingValue==i){
+                                    voption.attr('selected','selected');
+                                }
+                                voption.appendTo(vselect);
+                            }
+                            $('.selectPicker').append(vselect);
+
+                            break;
+                        }
                         case 'autoDelete-MaxDays':
                         case 'Frequency-start':
                         case 'standCPK':
+                        case 'passPcbYeild':
                         case 'autoDeleteDays':{
                             var vselectinput = $('<input class="form-control deleteDaysValue" value="'+req.data.settingValue+'">').append(req.data.settingValue);
                             //$('.selectPicker').append(vselectinput);
@@ -275,6 +308,89 @@
                 backdrop:'static',keyboard:false
             });
         }
+        /*function update_headHtml_hchartColor(iParm){
+            $('#chartColor').val(iParm);
+        }*/
+        function backgroundColorToStr(i){
+            var result = '';
+            switch (i) {
+                case '0':
+                    result='大理石纹色';
+                    break;
+                case '1':
+                    result= '白色';
+                    break;
+                case '2':
+                    result= '淡蓝色';
+                    break;
+                case '3':
+                    result= '淡绿色';
+                    break;
+                case '4':
+                    result= '蓝色';
+                    break;
+                case '5':
+                    result= '灰色1';
+                    break;
+                case '6':
+                    result= '灰色2';
+                    break;
+                case '7':
+                    result= '绿色';
+                    break;
+                default :
+                    result='大理石纹色';
+                    break;
+            }
+            return result;
+        }
+        function hChartColorToStr(i) {
+            var result ='';
+            switch (i) {
+                case '0':
+                    result = 'grid-light';
+                    break;
+                case '1':
+                    result='dark-blue';
+                    break;
+                case '2':
+                    result='dark-green';
+                    break;
+                case '3':
+                    result='dark-unica';
+                    break;
+                case '4':
+                    result='gray';
+                    break;
+                case '5':
+                    result='grid';
+                    break;
+                case '6':
+                    result='grid-light';
+                    break;
+                case '7':
+                    result='high-contrast-dark';
+                    break;
+                case '8':
+                    result='high-contrast-light';
+                    break;
+                case '9':
+                    result='sand-signika';
+                    break;
+                case '10':
+                    result='skies';
+                    break;
+                case '11':
+                    result='sunset';
+                    break;
+                default :{
+                    result='sunset';
+                    break;
+                }
+
+            }
+            return result;
+        }
         function update_edit_Default(){
             var selectValue = $('.selectPicker select option:selected').val();
             if(selectValue==null || selectValue==''){
@@ -292,6 +408,11 @@
                 success:function(data) {
                     refreshDefaultTable();
                     alert(data.message);
+                    var idStr = $('.defaultId').val();
+                    //alert(idStr);
+                    if(idStr == '14' ){
+                        window.location.href="${basePath}/sDefaultsetting/setting";
+                    }
                 },
                 error:function (data) {
                     //alert(data.message);
@@ -434,7 +555,7 @@
                 sortOrder: "desc",                   //排序方式
                 sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-                pageSize: 10,                     //每页的记录行数（*）
+                pageSize: 5,                     //每页的记录行数（*）
                 pageList: [15, 20, 50, 100],        //可供选择的每页的行数（*）
                 search: false,                      //是否显示表格搜索
                 strictSearch: false,
@@ -456,7 +577,7 @@
                         'bg-green',
                         'bg-red'
                     ]
-                    if (index % 2 === 0 ) {
+                    if (index % 2 == 0 ) {
                         return {
                             classes: 'success'
                         }
@@ -571,7 +692,7 @@
                 sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
                 pageSize: 6,                     //每页的记录行数（*）
-                pageList: [15, 20, 50, 100],        //可供选择的每页的行数（*）
+                pageList: [6,15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
                 search: false,                      //是否显示表格搜索
                 strictSearch: false,
                 showColumns: false,                  //是否显示所有的列（选择显示的列）
@@ -592,7 +713,7 @@
                         'bg-green',
                         'bg-red'
                     ]
-                    if (index % 2 === 0 ) {
+                    if (index % 2 == 0 ) {
                         return {
                             classes: 'success'
                         }
@@ -645,6 +766,7 @@
                             case 'CPK':
                             case 'Product':
                             case 'autoDelete':
+                            case 'boardView-chartMove':
                             case 'DefaultTop5': {
                                 result = row.settingValue=='1'?'开启':'关闭';
                                 break;
@@ -675,6 +797,16 @@
                                 }else if(row.settingValue=='11;12;13;14;15'){
                                     result = 'Smeared;Coplanarity;PreBridge;PadAreaError;WarpError';
                                 }
+                                break;
+                            }case 'hChartColor':{
+                                result = hChartColorToStr(row.settingValue);
+                                break;
+                            }
+                            case 'backgroundColor':{
+                                result =backgroundColorToStr(row.settingValue);
+                                break;
+                            }case 'boardMachineTimeLimit':{
+                                result ='[此设置停止使用]';
                                 break;
                             }
                             default :{

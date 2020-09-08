@@ -14,8 +14,8 @@
         body{
             margin: 0px;
             padding: 0px;
-            background: url("${staticPath}/static/img/home6.jpg")  ;
-            background-size:cover;
+           /* background: url("$staticPath}/static/img/home6.jpg")  ;*/
+         /*   background-size:cover;*/
 
         }
         .row{

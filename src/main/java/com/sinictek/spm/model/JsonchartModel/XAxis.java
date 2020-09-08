@@ -17,7 +17,15 @@ public class XAxis {
     private int min;
     private int max;
     private int lineWidth;
+    private List<PlotBands> plotBands;
 
+    public List<PlotBands> getPlotBands() {
+        return plotBands;
+    }
+
+    public void setPlotBands(List<PlotBands> plotBands) {
+        this.plotBands = plotBands;
+    }
 
     public boolean isCrosshair() {
         return crosshair;

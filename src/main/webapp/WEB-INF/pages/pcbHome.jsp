@@ -15,8 +15,8 @@
 				margin: 0px;
 				padding: 0px;
 				/*background-color: #FFFFFF;*/
-                background: url("${staticPath}/static/img/home6.jpg")  ;
-                background-size:cover;
+              /*  background: url("$staticPath}/static/img/home6.png")  ;*/
+              /*  background-size:cover;*/
 			} 
 			.col-md-3{
 				padding: 0px;

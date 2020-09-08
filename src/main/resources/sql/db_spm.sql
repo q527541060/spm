@@ -103,6 +103,11 @@ INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SE
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 10, 'standCPK', '1', '2020-07-24 17:10:04', 'CPK设置标准值'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=10);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 11, 'Frequency-start', '8', '2020-07-24 17:10:04', '班次设置值(例如早上八点:8   24小时制)'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=11);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 12, 'autoDelete-MaxDays', '365', '2020-07-24 17:10:04', '自动删除最大上限设置天数(一般不设置,如果需要删除天数大于365天请修改天数 例如500天 500)'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=12);
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 13, 'hChartColor', '0', '2020-07-24 17:10:04', '选择chart柱形图图表主题皮肤'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=13);
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 14, 'backgroundColor', '0', '2020-07-24 17:10:04', '选择spc系统背景皮肤'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=14);
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 15, 'passPcbYeild', '85', '2020-07-24 17:10:04', '看板直通率标准设定值 例如85% 85'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=15);
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 16, 'boardView-chartMove', '1', '2020-07-24 17:10:04', '看板动画渲染开关'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=16);
+
 -- ----------------------------
 -- Table structure for s_errorcode
 -- ----------------------------

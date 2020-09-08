@@ -91,16 +91,116 @@
 					  <li role="presentation"><a href="${basePath}/Status/pcbMonitorview_realLineView"><img  src="${staticPath}/img/zz04.png">status</a></li>
 						<li role="presentation"><a href="${basePath}/sDefaultsetting/setting"><img  src="${staticPath}/img/DL.png">setting</a></li>
 					</ul>
-				</div>
+					 <input  type="hidden" id="chartColor" value="${hChartColor}"/>
+                     <input type="hidden" id="backgroundColor" value="${backgroundColor}">
+
+                 </div>
 			</div>
 
 			<script type="text/javascript">
 				function showHome(){
 					window.location.href="${basePath}/Home/pcbHome";
 				}
-				<!-- 换肤 -->
-				//$.getScript("${staticPath}/hchart/themes/sunset.js");
-				$.getScript("${staticPath}/hchart/themes/grid-light.js");
-			</script>
+
+				var vCharColor = $('#chartColor').val();
+				if(vCharColor==null || vCharColor==''){
+					vCharColor=0;
+				}
+				var vBackground = $('#backgroundColor').val();
+                if(vBackground==null || vBackground==''){
+                    vBackground=0;
+                }
+
+				<!-- 换图表背景 -->
+				switch (vCharColor) {
+					case '0':
+						$.getScript("${staticPath}/hchart/themes/grid-light.js");
+                        break;
+					case '1':
+						$.getScript("${staticPath}/hchart/themes/dark-blue.js");
+                        break;
+					case '2':
+						$.getScript("${staticPath}/hchart/themes/dark-green.js");
+						break;
+					case '3':
+						$.getScript("${staticPath}/hchart/themes/dark-unica.js");
+						break;
+					case '4':
+						$.getScript("${staticPath}/hchart/themes/gray.js");
+						break;
+					case '5':
+						$.getScript("${staticPath}/hchart/themes/grid.js");
+						break;
+					case '6':
+						$.getScript("${staticPath}/hchart/themes/grid-light.js");
+						break;
+					case '7':
+						$.getScript("${staticPath}/hchart/themes/high-contrast-dark.js");
+						break;
+					case '8':
+						$.getScript("${staticPath}/hchart/themes/high-contrast-light.js");
+						break;
+					case '9':
+						$.getScript("${staticPath}/hchart/themes/sand-signika.js");
+						break;
+					case '10':
+						$.getScript("${staticPath}/hchart/themes/skies.js");
+						break;
+					case '11':
+						$.getScript("${staticPath}/hchart/themes/sunset.js");
+						break;
+					default :{
+						$.getScript("${staticPath}/hchart/themes/sunset.js");
+						break;
+					}
+				}
+			    <!-- 换后台背景-->
+                switch (vBackground) {
+                    case '0':{
+                        $("body").css(
+                            {
+                                'background-image':'url("${staticPath}/img/home6.png")',
+								'background-size':'cover',
+								//'opacity':1,
+								//'filter':'alpha(opacity=40)',
+                            });
+                        break;
+                    }
+                    case '1':
+                        //white-pictue
+                        $("body").css({'background-image':'url("${staticPath}/img/white-pictue.png")'});//white-pictue
+                        break;
+                    case '2':
+						$("body").css({
+							'background-image':'url("${staticPath}/img/zzbg.png")',
+							'background-size':'cover',
+						});//white-pictue
+						break;
+                    case '3':
+						$("body").css({'background-image':'url("${staticPath}/img/1.jpg")'});
+						break;
+                    case '4':
+						$("body").css({'background-image':'url("${staticPath}/img/2.jpg")','background-size':'cover',});
+						break;
+                    case '5':
+						$("body").css({'background-image':'url("${staticPath}/img/gray.jpg")',});
+						break;
+                    case '6':
+						$("body").css({'background-image':'url("${staticPath}/img/4.jpg")',});
+						break;
+                    case '7':
+						$("body").css({'background-image':'url("${staticPath}/img/dls.jpg")',});
+						break;
+                    case '8':
+                    case '9':
+                    case '10':
+                    case '11':
+                    default :{
+                        $("body").css({'background-image':'url("${staticPath}/img/home6.png")','background-size':'cover'});
+                        break;
+                    }
+                }
+
+            </script>
 	</body>
 </html>

@@ -253,7 +253,7 @@ $(document).ready(function() {
                     'bg-green',
                     'bg-red'
                 ]
-                if (index % 2 === 0 ) {
+                if (index % 2 == 0 ) {
                     return {
                         classes: 'success'
                     }

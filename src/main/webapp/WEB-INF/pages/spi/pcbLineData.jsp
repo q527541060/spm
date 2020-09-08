@@ -9,8 +9,8 @@
 				margin: 0px;
 				padding: 0px;
 				/*background-color: #ECF0F5;*/
-                background: url("${staticPath}/static/img/home6.jpg")  ;
-                background-size:cover;
+               /* background: url("$staticPath}/static/img/home6.jpg")  ;*/
+             /*   background-size:cover;*/
 			} 
 			.row{
 				text-align: center;
@@ -25,7 +25,7 @@
 	</head>
 	<body>
 		<%@include file="../header.jsp"  %>
-		<div class="row" style=" text-align: left;">
+		<div class="row" style=" text-align: left;margin-top: -5px">
 			<div class="col-md-14">
 				<ol class="breadcrumb">
 					<li><a href="${basePath}/Home/pcbHome">Home</a></li>
@@ -165,7 +165,7 @@
                             'bg-green',
                             'bg-red'
                         ]
-                        if (index % 2 === 0 ) {
+                        if (index % 2 == 0 ) {
                             return {
                                 classes: 'success'
                             }

@@ -1,57 +1,33 @@
-package com.sinictek.spm.api;
+package com.sinictek.spm.model.ConstClasses;
 
-import com.sinictek.spm.model.ConstClasses.ConstController;
-import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.SDefaultsetting;
-import com.sinictek.spm.model.SPcb;
-import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.SDefaultsettingService;
-import com.sinictek.spm.service.SLineService;
-import com.sinictek.spm.service.SPcbService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
  * @Author sinictek-pd
- * @Date 2020/6/20 12:25
+ * @Date 2020/9/8 11:06
  * @Version 1.0
  */
-@Controller
-@RequestMapping("/Home")
-public class SHomeController {
+@Component
+public class ConstController {
 
     @Autowired
-    SPcbService sPcbService;
+    SDefaultsettingService sDefaultsettingService;
 
-    @Autowired
-    SLineService sLineService;
+    public static ConstController constController;
 
-    @GetMapping("/pcbHome")
-    public ModelAndView showHome(){
-        String strStartTime = "1900-01-01 00:00:00";
-        //spi data
-        //过程数据
-        SPcb sPcb = sPcbService.getPcbListWithALLLineByDateNoGroup(strStartTime,StringTimeUtils.getTimeDateToString(new Date()));
-        ConstController.constController.iniDefaultParamSetting();
-        ModelAndView mv = new ModelAndView("pcbHome");
-        mv.addObject("spi_dataCount",sPcb.getTotalpadCount());
-        mv.addObject("spi_barcodeCount",sPcb.getTotal());
-        mv.addObject("spi_lineCount",sLineService.selectCount(null));
-        mv.addObject("spi_fovCount",0);
-        mv.addObject("spi_pcbCount",0);
-        mv.addObject("spi_componentCount",0);
-        mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
-        mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
-        return  mv;
+    @PostConstruct
+    public void init(){
+        constController = this;
+        constController.sDefaultsettingService = this.sDefaultsettingService;
+        //iniDefaultParamSetting();
     }
-
-   /* private void iniDefaultParamSetting(){
+    public void iniDefaultParamSetting(){
 
         if(ConstParam.DEFAULTSETTING_boardMachineTimeLimit==0|
                 ConstParam.DEFAULTSETTING_boardMachineRefreshTime==0|
@@ -69,9 +45,8 @@ public class SHomeController {
                 ConstParam.DEFAULTSETTING_backgroundColor==0|
                 ConstParam.DEFAULTSETTING_passPcbYeild==0|
                 ConstParam.DEFAULTSETTING_boardViewChartMove==0
-
         ){
-            List<SDefaultsetting> lstDefaultSetting = sDefaultsettingService.selectList(null);
+            List<SDefaultsetting> lstDefaultSetting = constController.sDefaultsettingService.selectList(null);
             if(lstDefaultSetting!=null&&lstDefaultSetting.size()>0){
                 for (int i = 0; i < lstDefaultSetting.size(); i++) {
                     String strSettingName=lstDefaultSetting.get(i).getSettingName(),strSettingValue=lstDefaultSetting.get(i).getSettingValue();
@@ -102,7 +77,6 @@ public class SHomeController {
                     if("autoDeleteDays".equals(strSettingName)) {
                         ConstParam.DEFAULTSETTING_autoDeleteDays=strSettingValue==null?30:Integer.parseInt(strSettingValue);
                     }
-
                     if("Frequency-start".equals(strSettingName)) {
                         ConstParam.DEFAULTSETTING_FrequencyStart=strSettingValue==null?8:Integer.parseInt(strSettingValue);
                     }
@@ -122,7 +96,7 @@ public class SHomeController {
                         ConstParam.DEFAULTSETTING_passPcbYeild= strSettingValue==null?0:Integer.parseInt(strSettingValue);
                     }
                     if("boardView-chartMove".equals(strSettingName)){     //看板动画渲染开关
-                        ConstParam.DEFAULTSETTING_boardViewChartMove= strSettingValue==null?0:Integer.parseInt(strSettingValue);
+                        ConstParam.DEFAULTSETTING_boardViewChartMove= strSettingValue==null?1:Integer.parseInt(strSettingValue);
                     }
                 }
             }
@@ -130,6 +104,5 @@ public class SHomeController {
 
 
     }
-*/
 
 }
