@@ -5,6 +5,7 @@ package com.sinictek.spm.model.JsonchartModel;
  * @Date 2020/8/17 13:33
  * @Version 1.0
  */
+
 public class Tooltip {
     private String valueSuffix;
 

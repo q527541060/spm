@@ -4,10 +4,9 @@
 package com.sinictek.spm.model.JsonchartModel;
 
 /**
- * Auto-generated: 2020-06-13 19:1:14
- *
- * @author bejson.com (i@bejson.com)
- * @website http://www.bejson.com/java2pojo/
+ * @Author sinictek-pd
+ * @Date 2020/9/4 16:56
+ * @Version 1.0
  */
 public class Chart {
 

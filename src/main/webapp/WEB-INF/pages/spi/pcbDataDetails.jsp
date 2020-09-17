@@ -43,6 +43,8 @@
                 <input id="lineNo" type="hidden" value="${lineNo}">
                 <input id="inspectStarttime" type="hidden" value="${inspectStarttime}">
                 <input id="inspectEndtime" type="hidden" value="${inspectEndtime}">
+                <input id="pcbType" type="hidden" value="${pcbType}">
+
             </div>
         </div>
         <!--  饼图缺陷  -->
@@ -57,12 +59,17 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <table id="table_pcbList"></table>
+                <table id="table_pcbList" ></table>
             </div>
             <div class="col-md-6">
                 <table id="table_padList"></table>
             </div>
-
+            <div id="pcbToolbar">
+                <button  type="button" class="btn btn-default">导出</button>
+            </div>
+            <div id="padToolbar">
+                <button  type="button" class="btn btn-default ">导出</button>
+            </div>
         </div>
 
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -83,6 +90,9 @@
             </div>
         </div>
 
+        <div id="svgImage">
+
+        </div>
        <%-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -107,6 +117,9 @@
         var lineNo =$('#lineNo').val();
         var inspectStarttime = $("#inspectStarttime").val();
         var inspectEndtime = $("#inspectEndtime").val();
+        var pcbType = $('#pcbType').val();
+        var padArrBarcode = null;
+        var padArrResult='';
         //alert(inspectStarttime);
         //alert(inspectEndtime);
         <!--  缺陷类型图  -->
@@ -246,7 +259,7 @@
                 url:"${basePath}/sLine/lineDetailsLeftChart",
                 dataType:"json",
                 async:true,
-                data:{lineNo:lineNo,inspectStarttime:inspectStarttime,inspectEndtime:inspectEndtime,pcbResult:pcbResult},
+                data:{lineNo:lineNo,inspectStarttime:inspectStarttime,inspectEndtime:inspectEndtime,pcbResult:pcbResult,pcbType:pcbType},
                 type:"GET",
                 success:function (req) {
                     //success
@@ -276,20 +289,30 @@
                                 click:function (e) {
                                     var pcbresult = '';
                                     var tmp = e.point.name;
-                                    switch (tmp) {
-                                        case 'NG':
-                                            pcbresult = '1';
-                                            break;
-                                        case  'REPASS':
-                                            pcbresult = '2';
-                                            break;
-                                        case  'PASS':
-                                            pcbresult = '0';
-                                            break;
-                                        default :
-                                            pcbresult ='0,1,2,4';
-                                            break;
-
+                                    if(pcbType==2){
+                                        switch (tmp) {
+                                            case 'NG':
+                                                pcbresult = '1';
+                                                break;
+                                            default :
+                                                pcbresult = '0,1,2,4';
+                                                break;
+                                        }
+                                    }else {
+                                        switch (tmp) {
+                                            case 'NG':
+                                                pcbresult = '1';
+                                                break;
+                                            case  'REPASS':
+                                                pcbresult = '2';
+                                                break;
+                                            case  'PASS':
+                                                pcbresult = '0';
+                                                break;
+                                            default :
+                                                pcbresult = '0,1,2,4';
+                                                break;
+                                        }
                                     }
                                     refreshPcbDataDetailsPCBTable(pcbresult);
                                 }
@@ -364,6 +387,12 @@
             $('#myModal').modal('show');
         }
         InitPcbTable('0,1,2,4');
+        function DoOnMsoNumberFormat(cell, row, col) {
+            var result = "";
+            if (row > 0 && col == 0)
+                result = "\\@";
+            return result;
+        }
         function InitPcbTable (pcbResult) {
             //alert(lineNo);
             //记录页面bootstrap-table全局变量$table，方便应用
@@ -371,11 +400,13 @@
                 url:"${basePath}/sLine/lineDetailsLeftChart?lineNo="+lineNo+
                     "&inspectStarttime="+inspectStarttime+
                     "&inspectEndtime="+inspectEndtime+
-                    "&pcbResult="+pcbResult,                      //请求后台的URL（*）
+                    "&pcbResult="+pcbResult+                      //请求后台的URL（*）
+                    "&pcbType="+pcbType,
                 dataType:"json",
                 method: 'GET',                      //请求方式（*）
                 //data:{lineNo:lineNo,inspectStarttime:inspectStarttime,inspectEndtime:inspectEndtime,pcbResult:pcbResult},
-                //toolbar: '#toolbar',              //工具按钮用哪个容器
+                toolbar: '#pcbToolbar',              //工具按钮用哪个容器
+                toolbarAlign:'right',
                 striped: true,                      //是否显示行间隔色
                 cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: true,                   //是否显示分页（*）
@@ -387,19 +418,31 @@
                 pageSize: 10,                     //每页的记录行数（*）
                 pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
                 search: true,                      //是否显示表格搜索
-                strictSearch: true,
+                //data-search=true,
+                strictSearch: false,
                 showColumns: true,                  //是否显示所有的列（选择显示的列）
                 showRefresh: true,                  //是否显示刷新按钮
                 minimumCountColumns: 2,             //最少允许的列数
                 clickToSelect: true,                //是否启用点击选中行
                 //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                //uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
                 showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
                 cardView: false,                    //是否显示详细视图
                 detailView: false,                  //是否显示父子表
                 classes:'table table-striped table-hover',
+                exportDataType:'all',
+                showExport: false,  //是否显示导出按钮
                 showLoading:true,
-                showExport:true,
+                exportTypes: [ 'csv', 'txt', 'xml', 'excel'],
+                Icons:'glyphicon-export',
+                exportOptions:{
+                    ignoreColumn: [0],  //忽略某一列的索引
+                    fileName: '线体',  //文件名称设置
+                    worksheetName: 'sheet1',  //表格工作区名称
+                    tableName: '线体',
+                    excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+                    onMsoNumberFormat: DoOnMsoNumberFormat
+                },
                 rowStyle: function(row, index) {
                     var classes = [
                         'bg-blue',
@@ -426,12 +469,16 @@
                         sortOrder: params.order //排位命令（desc，asc）
                     };
                 },
-                columns: [{
+                columns: [
+                    /*{
                     checkbox: true,
                     align:'center',
-                    visible: true
+                    visible: true,
+                    //field: 'id',
+                    title: 'ser'
                     //是否显示复选框
-                }, {
+                }, */
+                    {
                     field: 'jobName',
                     title: 'jobName',
                    // width:50,
@@ -441,14 +488,9 @@
                     field: 'lineNo',
                     title: 'lineNo',
                     align:'center',
-                  //  width:100,pcbIdLine
+                    width:10,
                     sortable: true
                 },
-                    /*{
-                    field: 'pcbIdLine',
-                    title: 'pcbIdLine',
-                    align:'center',
-                },*/
                     {
                     field: 'boardBarcode',
                     title:  'boardBarcode',
@@ -458,8 +500,9 @@
                     //events:operateEvents,
                 },  {
                     field: 'inspectResult',
-                    title:  'inspectResult',
+                    title:  'pcbResult',
                     align:'center',
+                    width:5,
                     sortable: true,
                     formatter:function (value,row,index) {
                         switch (row.inspectResult) {
@@ -475,37 +518,61 @@
                         }
                     }
                 }, {
+                        field: 'arrayBarcode',
+                        title:  'arrayInfo',
+                        align:'center',
+                        sortable: true,
+                        formatter:function (value,row,index) {
+
+                            var arrBarcode = row.arrayBarcode.split(';');
+                            var arrResult = row.arrayinspectResult.split(';');
+                            var resultHtml='<span>';
+                            var tmp='';
+                            if(arrBarcode.length>1){
+                                for (var i=0;i<arrBarcode.length;i++){
+                                    if(arrResult.length>=arrBarcode.length){
+                                        tmp =arrpcbResultToStandResult(arrResult[i]);
+                                    }else{
+                                        tmp = 'PASS';
+                                    }
+                                    resultHtml +=(i+1) +';'+ arrBarcode[i]+';'+tmp+'<br>';
+                                }
+                            }else{
+                                resultHtml= arrBarcode + ';' +arrResult;
+                            }
+                            resultHtml +='</span>';
+                            return  resultHtml;
+
+                        }
+                        //  width:50
+                    },{
                         field: 'cpk',
                         title:  'cpk',
                         align:'center',
                         sortable: true,
                         formatter:function (value,row,index) {
 
-                           return '<span>'+ 'area:'+ row.aCpk.toFixed(3) +
-                                ';hight:'+ row.hCpk.toFixed(3)+
+                           return '<span>'+ 'area:'+ row.acpk.toFixed(3) +
+                                ';hight:'+ row.hcpk.toFixed(3)+
                                 ';vol:'+ row.vcpk.toFixed(3)+
                                 ';shithxCpk:'+row.shithxCpk.toFixed(3)+
                                 ';shithyCpk:'+row.shithyCpk.toFixed(3) +'</span>';
                         }
                     },{
                     field: 'ngpadCount',
-                    title:  '不良点数',
+                    title:  'ngPadCount',
                     align:'center',
                     sortable: true,
                     width:10 
-                },{
-                    field: 'arrayBarcode',
-                    title:  'arrayBarcode',
-                    align:'center',
-                    sortable: true,
-                    //  width:50
-                },{
+                },
+                   /* {
                     field: 'arrayinspectResult',
                     title:  'arrayinspectResult',
                     align:'center',
                     sortable: true,
                   //  width:50
-                },{
+                },*/
+                    {
                     field: 'laneNo',
                     title:  'laneNo',
                     align:'center',
@@ -526,12 +593,25 @@
                     align:'center',
                     sortable: true,
                  //   width:50
-                }],
+                },
+                    /*{
+                        field: 'svgInfo',
+                        title:  'svgInfo',
+                        formatter:function (value,row,index) {
+                            var chart = $('#container_pcb').highcharts().getSVG();
+                            return '<img style="width:100px;height:100px;object-fit: cover;" src="data:image/svg+xml;base64,'+window.btoa(unescape(encodeURIComponent(chart)))+'" >';
+                            //return 'sds';
+                        }
+                    }*/
+                    ],
                 formatLoadingMessage:function(){
                   return "请稍等,正在加载中.........";
                 },
                 onLoadSuccess: function (data,$element) {
-                    barcode = data.rows[0].boardBarcode;
+
+                    padArrBarcode = data.rows[0].arrayBarcode.split(';');
+                    //padArrResult = data.rows.arrayinspectResult.split(';');
+                    barcode = data.rows==null?'':data.rows[0].boardBarcode;
                     padCpountpie(data.rows[0].id);
 
                     //firstPcbId = data.rows[0].id;
@@ -564,10 +644,13 @@
                     refreshPcbDataDetailsPadTable(pcbidLine,'');
                 },
                 onClickRow: function (row, $element) {
+                    $('.danger').removeClass('danger');
+                    $($element).addClass('danger');
                     var line = row.lineNo; //线体
                     var pcbidLine = row.pcbIdLine;  //pcbIdLine
                     barcode = row.boardBarcode;
-
+                    padArrBarcode = row.arrayBarcode.split(';');
+                    //padArrResult = row.arrayinspectResult.split(';');
                     //var tableName = row.
                     var id = row.id;
                     pcbidLine = pcbidLine.replace('#','=====');
@@ -602,7 +685,8 @@
                 url:"${basePath}/sLine/lineDetailsLeftChart?lineNo="+lineNo+
                     "&inspectStarttime="+inspectStarttime+
                     "&inspectEndtime="+inspectEndtime+
-                    "&pcbResult="+pcbResult,
+                    "&pcbResult="+pcbResult+
+                    "&pcbType="+pcbType,
                 silent: true,
                 //contentType: "application/x-www-form-urlencoded",//请求方式（*）
                 query:{
@@ -624,7 +708,8 @@
                 method: 'GET',
                 //contentType: "application/x-www-form-urlencoded",//请求方式（*）
                 //data:{pcbIdLine:ApcbIdLine},
-                //toolbar: '#toolbar',              //工具按钮用哪个容器
+                toolbar: '#padToolbar',              //工具按钮用哪个容器
+                toolbarAlign:'right',
                 striped: true,                      //是否显示行间隔色
                 cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: true,                   //是否显示分页（*）
@@ -637,13 +722,27 @@
                 pageSize: 12,                     //每页的记录行数（*）
                 pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
                 search: true,                      //是否显示表格搜索
-                strictSearch: true,
+                strictSearch: false,
                 showColumns: true,                  //是否显示所有的列（选择显示的列）
                 showRefresh: true,                  //是否显示刷新按钮
                 minimumCountColumns: 2,             //最少允许的列数
                 clickToSelect: true,                //是否启用点击选中行
+                settimeout:1,
                 //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
                 //uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                exportDataType:'all',
+                showExport: false,  //是否显示导出按钮
+                buttonsAlign:"right",  //按钮位置
+                exportTypes: [ 'csv', 'txt', 'xml', 'excel'],
+                Icons:'glyphicon-export',
+                exportOptions:{
+                    ignoreColumn: [0],  //忽略某一列的索引
+                    fileName: 'padE',  //文件名称设置
+                    //worksheetName: 'sheet1',  //表格工作区名称
+                    //tableName: '缺陷',
+                    //excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+                    //onMsoNumberFormat: DoOnMsoNumberFormat
+                },
                 showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
                 cardView: false,                    //是否显示详细视图
                 detailView: false,                  //是否显示父子表
@@ -675,12 +774,14 @@
                         //pcbIdLine:ApcbIdLine
                     };
                 },
-                columns: [{
+                columns: [
+                   /* {
                     checkbox: true,
                     align:'center',
                     visible: true
                     //是否显示复选框
-                }, {
+                }, */
+                    {
                     field: 'barcode',
                     title: 'barcode',
                     // width:50,
@@ -688,6 +789,23 @@
                     sortable: true,
                     formatter:function () {
                         return barcode;
+                    }
+                },{
+                    field: 'padBarcode',
+                    title: 'padBarcode',
+                    // width:50,
+                    align:'center',
+                    sortable: true,
+                    formatter:function (value,row,index) {
+                        if(padArrBarcode!=null&&padArrBarcode.length>0)
+                        {
+                            for (var i = 0; i < padArrBarcode.length; i++) {
+                                if(row.arrayId == (i+1)+''){
+                                    return padArrBarcode[i];
+                                }
+                            }
+                        }
+                       return barcode;
                     }
                 },
                     {
@@ -770,11 +888,14 @@
                     sortable: true,
                     //  width:50
                     //events:operateEvents,
-                }, ],
+                },
+
+                ],
                 onLoadSuccess: function (sta) {
                     //console.log("in onLoadSuccess");
                     //console.log(sta);
                     //alert(sta.rows.pcbIdLine);
+
                 },
                 onLoadError: function (status,res) {
                     //showTips("数据加载失败！");
@@ -790,6 +911,48 @@
         function  addFunctionAltylineDetailsLeftChart(value, row, index) {
             return ['<span id="TableNGImage"  style="cursor:pointer"  class="glyphicon glyphicon-picture"></span>'].join("");
         }
+
+
+        $("#padToolbar").click(function () {
+            var toolbarBarcode = (barcode == ''|| barcode==null)?'NOREAD':barcode;
+            var toolbarInspectStarttime = inspectStarttime.myReplace('-','').myReplace(':','').myReplace(' ','');
+            //toolbarInspectStarttime = toolbarInspectStarttime.replace("-",'');
+            //toolbarInspectStarttime = toolbarInspectStarttime.replace("_",'');
+            var toolbarfirstpcbIdLine = firstpcbIdLine.replace('=====','_');
+            excel = new ExcelGen({
+                "src_id": "table_padList",
+                "show_header": true,
+                //"src": "D:\\360MoveData\\Users\\sinictek\\Desktop\\web-dataexport",
+                "format": "csv",
+                "type": "table",
+                // "auto_format": false,
+                //"header_row": null,
+                //"body_rows": null,
+                "exclude_selector": null,
+                "file_name":toolbarfirstpcbIdLine+"_"+toolbarBarcode+"_"+toolbarInspectStarttime+ "_pad.csv",//"output.xlsx",
+                //"column_formats": []
+            });
+            excel.generate();
+        });
+        $("#pcbToolbar").click(function () {
+            excel = new ExcelGen({
+                "src_id": "table_pcbList",
+                "show_header": true,
+                "format": "csv",
+                "type": "table",
+                "exclude_selector": null,
+                "file_name":lineNo+"_"+$("#inspectStarttime").val()+"-"+$("#inspectEndtime").val()+ "_pcb.csv",//"output.xlsx",
+            });
+            excel.generate();
+        });
+       /* $('#pcbToolbar').click(function() {
+            var chart = $('#container_pcb').highcharts().getSVG();
+            $('<img style="width:500px;height:500px;object-fit: cover;" src="data:image/svg+xml;base64,'+window.btoa(unescape(encodeURIComponent(chart)))+'" >').appendTo("#svgImage");
+
+        });*/
+        /*document.body.onclick = function(){
+             this.webkitRequestFullscreen();
+         }*/
     </script>
 </body>
 </html>

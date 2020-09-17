@@ -1,6 +1,7 @@
 package com.sinictek.spm.api;
 
 
+import com.alibaba.druid.util.StringUtils;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.JsonchartModel.*;
@@ -9,6 +10,7 @@ import com.sinictek.spm.model.apiResponse.ApiResponse;
 import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.SPcbService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
@@ -46,7 +48,8 @@ public class SLineController {
     @GetMapping(value = "jsonPcbLine",  produces = "application/json;charset=UTF-8")
     public ApiResponse getJsonPcbLine(@RequestParam("inspectStarttime") String inspectStarttime,
                                       @RequestParam("inspectEndtime") String inspectEndtime ,
-                                      @RequestParam("mode") String mode) throws ParseException {
+                                      @RequestParam("mode") String mode ,
+                                      @RequestParam("pcbType") String pcbType) throws ParseException {
 
         if(inspectStarttime ==null || inspectEndtime ==null){
             inspectStarttime= StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-24);
@@ -98,29 +101,67 @@ public class SLineController {
                 if(lstPcb!=null && lstPcb.size()>0) {
                     double dTmp=0.0;
                     for (int i = 0; i < lstPcb.size(); i++) {
-                        dTmp =lstPcb.get(i).getGoodPcbYeild()==null?0.0: new BigDecimal(Double.parseDouble(lstPcb.get(i).getGoodPcbYeild() )).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+
+                        double goodarrayCount = (lstPcb.get(i).getGoodarrayCount()==null )? 0:Double.parseDouble(lstPcb.get(i).getGoodarrayCount()),
+                        ngarrayCount = (lstPcb.get(i).getNgarrayCount()==null )? 0:Double.parseDouble(lstPcb.get(i).getNgarrayCount()),
+                        passarrayCount = (lstPcb.get(i).getPassarrayCount()==null )? 0:Double.parseDouble(lstPcb.get(i).getPassarrayCount());
+                        if(StringUtils.equals("1",pcbType)){
+                            dTmp = lstPcb.get(i).getGoodPcbYeild()==null?0: new BigDecimal(Double.parseDouble(lstPcb.get(i).getGoodPcbYeild() )).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+                        }else if(StringUtils.equals("2",pcbType)){
+                            dTmp = goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(goodarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0);
+                        }else{
+                            dTmp = lstPcb.get(i).getGoodpadYeild()==null?0:(double)(Math.round(Double.parseDouble(lstPcb.get(i).getGoodpadYeild()) *100)/100.0);
+                        }
+                        //dTmp =lstPcb.get(i).getGoodPcbYeild()==null?0.0: new BigDecimal(Double.parseDouble(lstPcb.get(i).getGoodPcbYeild() )).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                         dAVGGood +=  dTmp;
                         data = new Data();data.setY(dTmp);
                         lstGoodSeriesData.add(data);
 
-                        dTmp =lstPcb.get(i).getNgPcbYeild()==null?0.0:new BigDecimal( Double.parseDouble(lstPcb.get(i).getNgPcbYeild())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue() ;
+                        if(StringUtils.equals("1",pcbType)){
+                            dTmp =lstPcb.get(i).getNgPcbYeild()==null?0.0:new BigDecimal( Double.parseDouble(lstPcb.get(i).getNgPcbYeild())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue() ;
+                        }else if(StringUtils.equals("2",pcbType)){
+                            dTmp=goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(ngarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0);
+                        }else{
+                            dTmp =lstPcb.get(i).getNgpadYeild()==null?0:(double)(Math.round(Double.parseDouble(lstPcb.get(i).getNgpadYeild()) *100)/100.0);
+                        }
                         dAVGNg+=dTmp ;
                         data = new Data();data.setY(dTmp);
                         lstNgSeriesData.add(data);
 
-                        dTmp =lstPcb.get(i).getPassPcbYeild()==null?0.0:new BigDecimal( Double.parseDouble(lstPcb.get(i).getPassPcbYeild())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+                        if(StringUtils.equals("1",pcbType)){
+                            dTmp =lstPcb.get(i).getPassPcbYeild()==null?0:new BigDecimal( Double.parseDouble(lstPcb.get(i).getPassPcbYeild())).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+                        }else if(StringUtils.equals("2",pcbType)){
+                            dTmp=goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(passarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0);
+                        }else{
+                            dTmp =lstPcb.get(i).getPasspadYeild()==null?0:(double)(Math.round(Double.parseDouble(lstPcb.get(i).getPasspadYeild()) *100)/100.0);
+                        }
+
                         dAVGPass+= dTmp ;
                         data = new Data();data.setY(dTmp);
                         lstPassSeriesData.add(data);
                         lstCategoriesYeild.add(lstPcb.get(i).getLineNo());
 
                         //pcb count
-                        dTmp = lstPcb.get(i).getTotal() ==null ? 0.0:Double.parseDouble(lstPcb.get(i).getTotal());
+
+                        if(StringUtils.equals("1",pcbType)){
+                            dTmp = lstPcb.get(i).getTotal() ==null ? 0:Double.parseDouble(lstPcb.get(i).getTotal());
+                        }else if(StringUtils.equals("2",pcbType)){
+                            dTmp=goodarrayCount+ngarrayCount+passarrayCount;
+                        }else{
+                            dTmp = lstPcb.get(i).getTotal() ==null ? 0:Double.parseDouble(lstPcb.get(i).getTotal());
+                        }
+
                         data = new Data();data.setY(dTmp);
                         lstpcbCountSeriesData.add(data);
                         dAVGpcbCount+=dTmp;
                         //pass pcb count
-                        dTmp=lstPcb.get(i).getPassPcbCount()==null?0:Double.parseDouble(lstPcb.get(i).getPassPcbCount());
+                        if(StringUtils.equals("1",pcbType)){
+                            dTmp=lstPcb.get(i).getPassPcbCount()==null?0:Double.parseDouble(lstPcb.get(i).getPassPcbCount());
+                        }else if(StringUtils.equals("2",pcbType)){
+                            dTmp=passarrayCount;
+                        }else{
+                            dTmp=lstPcb.get(i).getPassPcbCount()==null?0:Double.parseDouble(lstPcb.get(i).getPassPcbCount());
+                        }
                         data = new Data();data.setY(dTmp);
                         lstpassPcbCountSeriesData.add(data);
                         dAVGpassPcbCount+=dTmp;
@@ -149,7 +190,7 @@ public class SLineController {
                 lstngPadCountSeriesData.add( data);
 
                 goodSeries.setType("column");
-                goodSeries.setColor("#211cff");
+                goodSeries.setColor("#92ff4e");
                 goodSeries.setData(lstGoodSeriesData);
                 goodSeries.setStack("0");
 
@@ -159,7 +200,7 @@ public class SLineController {
                 ngSeries.setStack("0");
 
                 passSeries.setType("column");
-                passSeries.setColor("#92ff4e");
+                passSeries.setColor("#211cff");
                 passSeries.setData(lstPassSeriesData);
                 passSeries.setStack("0");
 
@@ -206,21 +247,61 @@ public class SLineController {
                     pcb = sPcbService.getPcbListWithALLLineByDateNoGroup(inspectStarttime, inspectEndtime);
                     inspectStarttime = inspectEndtime; //开始时间=结束时间
                     if (pcb != null) {
+
+                        double goodarrayCount = pcb.getGoodarrayCount()==null? 0:Double.parseDouble(pcb.getGoodarrayCount()),
+                                ngarrayCount = pcb.getNgarrayCount()==null ? 0:Double.parseDouble(pcb.getNgarrayCount()),
+                                passarrayCount = pcb.getPassarrayCount()==null ? 0:Double.parseDouble(pcb.getPassarrayCount());
                         //直通率
-                        data = new Data();data.setY(pcb.getGoodPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getGoodPcbYeild()));
+                        data = new Data();
+                        if(StringUtils.equals("1",pcbType)){
+                            data.setY(pcb.getGoodPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getGoodPcbYeild()));
+                        }else if(StringUtils.equals("2",pcbType)){
+                            data.setY(goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(goodarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0));
+                        }else{
+                            data.setY(pcb.getGoodpadYeild()==null?0:(double)(Math.round(Double.parseDouble(pcb.getGoodpadYeild()) *100)/100.0));
+                        }
                         lstGoodSeriesData.add(data);
                         //不良率
-                        data = new Data();data.setY(pcb.getNgPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getNgPcbYeild()));
-                        lstNgSeriesData.add(data);
+                        data = new Data();
+                        if(StringUtils.equals("1",pcbType)){
+                            data.setY(pcb.getNgPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getNgPcbYeild()));
+                        }else if(StringUtils.equals("2",pcbType)){
+                            data.setY(goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(ngarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0));
+                        }else{
+                            data.setY(pcb.getNgpadYeild()==null?0:(double)(Math.round(Double.parseDouble(pcb.getNgpadYeild()) *100)/100.0));
+                        }
+                         lstNgSeriesData.add(data);
                         //误判率
-                        data = new Data();data.setY(pcb.getPassPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getPassPcbYeild()));
+                        data = new Data();
+                        if(StringUtils.equals("1",pcbType)){
+                            data.setY(pcb.getPassPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getPassPcbYeild()));
+                        }else if(StringUtils.equals("2",pcbType)){
+                            data.setY(goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(passarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0));
+                        }else{
+                            data.setY(pcb.getPasspadYeild()==null?0:(double)(Math.round(Double.parseDouble(pcb.getPasspadYeild()) *100)/100.0));
+                        }
                         lstPassSeriesData.add(data);
 
                         //pcb count
-                        data = new Data(); data.setY(pcb.getTotal() ==null ? 0:Double.parseDouble( pcb.getTotal()));
+                        data = new Data();
+                        if(StringUtils.equals("1",pcbType)){
+                            data.setY(pcb.getTotal() ==null ? 0:Double.parseDouble( pcb.getTotal()));
+                        }else if(StringUtils.equals("2",pcbType)){
+                            data.setY(goodarrayCount+ngarrayCount+passarrayCount);
+                        }else{
+                            data.setY(pcb.getTotal() ==null ? 0:Double.parseDouble( pcb.getTotal()));
+                        }
                         lstpcbCountSeriesData.add(data);
                         //pass pcb count
-                        data = new Data();data.setY(pcb.getPassPcbCount()==null?0:Double.parseDouble(pcb.getPassPcbCount()));
+                        data = new Data();
+                        if(StringUtils.equals("1",pcbType)){
+                            data.setY(pcb.getPassPcbCount()==null?0:Double.parseDouble(pcb.getPassPcbCount()));
+                        }else if(StringUtils.equals("2",pcbType)){
+                            data.setY(passarrayCount);
+                        }else{
+                            data.setY(pcb.getTotal() ==null ? 0:Double.parseDouble( pcb.getTotal()));
+                        }
+
                         lstpassPcbCountSeriesData.add(data);
                         //pad 缺陷趋势
                         data = new Data();data.setY(pcb.getNgpadCount()==null?0.0:pcb.getNgpadCount()+0.0);
@@ -255,13 +336,13 @@ public class SLineController {
                 axisYeild.setCategories(lstCategoriesYeild);
                 goodSeries.setType("areaspline");
                 goodSeries.setData(lstGoodSeriesData);
-                goodSeries.setColor("#211cff");
+                goodSeries.setColor("#92ff4e");
                 ngSeries.setType("areaspline");
                 ngSeries.setData(lstNgSeriesData);
                 ngSeries.setColor("#ff4c39");
                 passSeries.setType("areaspline");
                 passSeries.setData(lstPassSeriesData);
-                passSeries.setColor("#92ff4e");
+                passSeries.setColor("#211cff");
 
                 lstSeries.add(goodSeries);
                 lstSeries.add(passSeries);
@@ -306,8 +387,10 @@ public class SLineController {
     @GetMapping("pcbLineDetails")
     public ModelAndView showPcbLineDetails(@RequestParam("lineNo") String lineNo,
                                            @RequestParam("inspectStarttime") String inspectStarttime,
-                                           @RequestParam("inspectEndtime") String inspectEndtime){
+                                           @RequestParam("inspectEndtime") String inspectEndtime,
+                                           @RequestParam("pcbType") String pcbType){
         ModelAndView mv = new ModelAndView("spi/pcbDataDetails");
+        mv.addObject("pcbType",pcbType);
         mv.addObject("lineNo",lineNo);
         mv.addObject("inspectStarttime",inspectStarttime);
         mv.addObject("inspectEndtime",inspectEndtime);
@@ -317,11 +400,12 @@ public class SLineController {
     }
 
     @ResponseBody
-    @GetMapping("lineDetailsLeftChart")
+    @GetMapping(value="lineDetailsLeftChart",produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse getJsonlineDetailsLeftChart(@RequestParam("lineNo") String lineNo,
                                                    @RequestParam("inspectStarttime") String inspectStarttime,
                                                    @RequestParam("inspectEndtime") String inspectEndtime,
-                                                   @RequestParam("pcbResult") String pcbResult)
+                                                   @RequestParam("pcbResult") String pcbResult,
+                                                   @RequestParam("pcbType") String pcbType)
     {
 
         if(pcbResult==null || pcbResult==""){
@@ -336,12 +420,21 @@ public class SLineController {
         strPieServies +="[";
         if(lstPcb!=null && lstPcb.size()>0){
             for (int i = 0; i < lstPcb.size(); i++) {
-                if(lstPcb.get(i).getInspectResult().contains("0")){
-                    totleGoodPcb++;
-                }else if(lstPcb.get(i).getInspectResult().contains("1")){
-                    totleNgPcb++;
-                }else if(lstPcb.get(i).getInspectResult().contains("2")){
-                    totlePassPcb++;
+                if(pcbType.contains("1") || pcbType.contains("3") ) {
+                    if (lstPcb.get(i).getInspectResult().contains("0")) {
+                        totleGoodPcb++;
+                    } else if (lstPcb.get(i).getInspectResult().contains("1")) {
+                        totleNgPcb++;
+                    } else if (lstPcb.get(i).getInspectResult().contains("2")) {
+                        totlePassPcb++;
+                    }
+                }else{
+                    if(lstPcb.get(i).getArrayinspectResult()!=null
+                        &&lstPcb.get(i).getArrayinspectResult()!=""){
+                        totleNgPcb+=org.apache.commons.lang3.StringUtils.countMatches(lstPcb.get(i).getArrayinspectResult(),"NG");
+                        totleGoodPcb+=org.apache.commons.lang3.StringUtils.countMatches(lstPcb.get(i).getArrayinspectResult(),"Good");
+                        totlePassPcb+=org.apache.commons.lang3.StringUtils.countMatches(lstPcb.get(i).getArrayinspectResult(),"Pass");
+                    }
                 }
             }
         }
@@ -351,7 +444,7 @@ public class SLineController {
                         "]" ;
 
 
-        System.gc();
+        //System.gc();
         return  new ApiResponse(true,null,strPieServies,lstPcb);
     }
 

@@ -26,8 +26,18 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
                " SUM(pcb.inspectResult = 1)  ngPcbCount,"+
                 "SUM(pcb.inspectResult = 0)  goodPcbCount,"+
                 "SUM(pcb.inspectResult = 2)  passPcbCount,"+
+
+                "SUM(FLOOR((LENGTH(pcb.arrayinspectResult)-LENGTH( REPLACE(pcb.arrayinspectResult,'NG','')   ))/2)) ngarrayCount,"+
+                "SUM(FLOOR((LENGTH(pcb.arrayinspectResult)-LENGTH( REPLACE(pcb.arrayinspectResult,'Pass','')  ))/4)) passarrayCount,"+
+                "SUM(FLOOR((LENGTH(pcb.arrayinspectResult)-LENGTH( REPLACE(pcb.arrayinspectResult,'Good','')  ))/4)) goodarrayCount,"+
+
+                "SUM(pcb.ngpadCount)/SUM(pcb.totalpadCount)*100  ngpadYeild," +
+                "SUM(pcb.goodpadCount)/SUM(pcb.totalpadCount)*100  goodpadYeild," +
+                "SUM(pcb.passpadCount)/SUM(pcb.totalpadCount)*100  passpadYeild," +
                 "SUM(pcb.ngpadCount)  ngpadCount,"+
                 "SUM(pcb.passpadCount) passpadCount," +
+                "SUM(pcb.goodpadCount) goodpadCount,"+
+                "SUM(pcb.totalpadCount) totalpadCount,"+
                "SUM(pcb.lowareaCount) lowareaCount," +
                "SUM(pcb.overareaCount) overareaCount," +
                 "SUM(pcb.lowheightCount) lowheightCount," +
@@ -62,7 +72,14 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
             "SUM(pcb.inspectResult = 1)  ngPcbCount,"+
             "SUM(pcb.inspectResult = 0)  goodPcbCount,"+
             "SUM(pcb.inspectResult = 2)  passPcbCount,"+
-            //totalpadCount
+
+            "SUM(FLOOR((LENGTH(pcb.arrayinspectResult)-LENGTH( REPLACE(pcb.arrayinspectResult,'NG','')   ))/2)) ngarrayCount,"+
+            "SUM(FLOOR((LENGTH(pcb.arrayinspectResult)-LENGTH( REPLACE(pcb.arrayinspectResult,'Pass','')  ))/4)) passarrayCount,"+
+            "SUM(FLOOR((LENGTH(pcb.arrayinspectResult)-LENGTH( REPLACE(pcb.arrayinspectResult,'Good','')  ))/4)) goodarrayCount,"+
+
+            "SUM(pcb.ngpadCount)/SUM(pcb.totalpadCount)*100  ngpadYeild," +
+            "SUM(pcb.goodpadCount)/SUM(pcb.totalpadCount)*100  goodpadYeild," +
+            "SUM(pcb.passpadCount)/SUM(pcb.totalpadCount)*100  passpadYeild," +
             "SUM(pcb.totalpadCount)  totalpadCount,"+
             "SUM(pcb.ngpadCount)  ngpadCount,"+
             "SUM(pcb.lowareaCount) lowareaCount," +
@@ -130,7 +147,7 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
                                      @Param("inspectEndtime") String inspectEndtime);
 
     @Select({"SELECT  COUNT(pcb.id) total, " +
-            "AVG(pcb.hCpk) hCpk, AVG(pcb.VCPK) VCPK, AVG(pcb.aCpk) aCpk, AVG(pcb.shithxCpk) shithxCpk, AVG(pcb.shiftyCount) shiftyCount, " +
+            "AVG(pcb.hCpk) hCpk, AVG(pcb.VCPK) vcpk, AVG(pcb.aCpk) aCpk, AVG(pcb.shithxCpk) shithxCpk, AVG(pcb.shiftyCount) shiftyCount, " +
             "MAX(pcb.ucl) ucl, MAX(pcb.lcl) lcl FROM s_pcb pcb  " +
             "WHERE pcb.lineNo=#{lineNo} AND pcb.inspectStarttime >= #{inspectStarttime} AND pcb.inspectEndtime< #{inspectEndtime}"})
     public SPcb getPcbListProductCPKWithLineNo(@Param("lineNo") String lineNo,

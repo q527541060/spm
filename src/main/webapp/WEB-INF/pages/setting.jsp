@@ -181,6 +181,9 @@
                 show_Default(lineId);
             },
         }
+
+        InitEquipmentTable();
+        InitDefaultTable();
         function show_Default(lineId) {
             $.ajax({
                 url:"${basePath}/sDefaultsetting/default",
@@ -308,6 +311,7 @@
                 backdrop:'static',keyboard:false
             });
         }
+
         /*function update_headHtml_hchartColor(iParm){
             $('#chartColor').val(iParm);
         }*/
@@ -540,7 +544,7 @@
                 }
             });
         }
-        InitEquipmentTable();
+
         function InitEquipmentTable () {
             //alert(lineNo);
             //记录页面bootstrap-table全局变量$table，方便应用
@@ -676,7 +680,7 @@
         }
 
         //addFunctionAltyDefault
-        InitDefaultTable();
+
         function InitDefaultTable () {
             //alert(lineNo);
             //记录页面bootstrap-table全局变量$table，方便应用

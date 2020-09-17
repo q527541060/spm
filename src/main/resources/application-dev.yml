@@ -1,0 +1,67 @@
+# 项目信息配置
+project:
+  name: spm
+  version: 1.0.0
+  env: development
+#WEB SERVER
+server:
+  port: 80
+  servlet:
+    context-path: /
+#MYSQL
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/db_spm?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+# JSON返回配置
+# 默认时区
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  resources:
+    # 静态资源配置
+    # 默认值为 classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+    # 静态资源配置
+      static-locations: classpath:/META-INF/resources/, classpath:/META-INF/resources/webjars/,classpath:/META-INF/static/,classpath:/static/
+  # Thymeleaf配置
+  #  thymeleaf:
+  #    mode: LEGACYHTML5
+  #    encoding: UTF-8
+  #    servlet:
+  #      content-type: text/html
+  #    cache: false
+  #    prefix: classpath:/templates
+  #    suffix: .html
+  mvc:
+    view:
+      prefix: /WEB-INF/pages/
+      suffix: .jsp
+  freemarker:
+    suffix: .ff
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sinictek.spm.model
+# 日志配置
+#logback:
+#  level: INFO
+#  appender: ${project.env}
+## dao层的日志设置为debug，方便查看sql
+#logging:
+#  level:
+#    com.sinictek.spm.dao: debug
+#mq
+#rocketmq.name-server=127.0.0.1:9876;
+#rocketmq.producer.group=my-group
+#rocketmq.consumer.group=dubbo-demo-service-manager-consumer-group-1
+#demo-topic
+#rocketmq.consumer.topic=demo-topic
+#rocketmq.producer.send-message-timeout=30000
+#rocketmq.producer.compress-message-body-threshold=4096
+#rocketmq.producer.max-message-size=4194304
+#rocketmq.producer.retry-times-when-send-async-failed=0
+#rocketmq.producer.retry-next-server=true
+#rocketmq.producer.retry-times-when-send-failed=2

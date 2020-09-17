@@ -1,6 +1,7 @@
 package com.sinictek.spm.api;
 
 
+import com.alibaba.druid.util.StringUtils;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.JsonchartModel.*;
@@ -160,7 +161,8 @@ public class SStatusController {
 
     @ResponseBody
     @GetMapping("pcbMonitorview_realLineViewJson")
-    public ApiResponse GetpcbMonitorview_realLineViewJson(@RequestParam("aValue") String aValue){
+    public ApiResponse GetpcbMonitorview_realLineViewJson(@RequestParam("aValue") String aValue,
+                                                          @RequestParam("mode") String iMode){
         //后台获取数据有:    FPY  全线的PCB的直通率, NG板个数,PASS板个数,REPASS板个数
         //                  CPK  全线的PCB的CPK值, SETTING内设置ckp标准值
         //                  TOP5  全线的PCB内计算  每条线所有不良项排列前5位的不良项
@@ -226,19 +228,53 @@ public class SStatusController {
         double doubleTmp=0;
         //FPY、PRODUCT、CPK
         double maxCpk =0;
+        long iTotal =0,iPcbTmp=0;
         if(lstPcb!=null && lstPcb.size()>0){
             for (int i = 0; i < lstPcb.size(); i++){
                 data = new Data();
                 lstFPYProductCategories.add(lstPcb.get(i).getLineNo()+"");
-                data.setY((lstPcb.get(i).getGoodPcbCount()==null || lstPcb.get(i).getGoodPcbCount()== "0")? null:Double.parseDouble(lstPcb.get(i).getGoodPcbCount()));
+                double goodarrayCount = 0,ngarrayCount = 0,passarrayCount = 0;
+                if(StringUtils.equals("1",iMode)){
+                    data.setY((lstPcb.get(i).getGoodPcbCount()==null )? 0:Double.parseDouble(lstPcb.get(i).getGoodPcbCount()));
+                }else if(StringUtils.equals("2",iMode)){
+                    goodarrayCount = (lstPcb.get(i).getGoodarrayCount()==null)? 0:Double.parseDouble(lstPcb.get(i).getGoodarrayCount());
+                    data.setY(goodarrayCount);
+                }else{
+                    data.setY((lstPcb.get(i).getGoodpadCount()==null )? 0:lstPcb.get(i).getGoodpadCount());
+                }
                 goodFPYProductSeriesList.add(data);
                 data = new Data();
-                data.setY((lstPcb.get(i).getPassPcbCount()==null || lstPcb.get(i).getPassPcbCount()=="0")?null:Double.parseDouble(lstPcb.get(i).getPassPcbCount()));
+                if(StringUtils.equals("1",iMode)){
+                    data.setY((lstPcb.get(i).getPassPcbCount()==null)?0:Double.parseDouble(lstPcb.get(i).getPassPcbCount()));
+                }else if(StringUtils.equals("2",iMode)){
+                    passarrayCount =(lstPcb.get(i).getPassarrayCount()==null)? 0:Double.parseDouble(lstPcb.get(i).getPassarrayCount());
+                    data.setY(passarrayCount);
+                }else{
+                    data.setY((lstPcb.get(i).getPasspadCount()==null )? null:lstPcb.get(i).getPasspadCount());
+                }
+
                 passFPYProductSeriesList.add(data);
                 data = new Data();
-                data.setY((lstPcb.get(i).getNgPcbCount()==null || lstPcb.get(i).getNgPcbCount()=="0")?null:Double.parseDouble(lstPcb.get(i).getNgPcbCount()));
+                if(StringUtils.equals("1",iMode)){
+                    data.setY((lstPcb.get(i).getNgPcbCount()==null )?0:Double.parseDouble(lstPcb.get(i).getNgPcbCount()));
+                }else if(StringUtils.equals("2",iMode)){
+                    ngarrayCount=(lstPcb.get(i).getNgarrayCount()==null )? 0:Double.parseDouble(lstPcb.get(i).getNgarrayCount());
+                    data.setY(ngarrayCount);
+                }else{
+                    data.setY((lstPcb.get(i).getNgpadCount()==null )? null:lstPcb.get(i).getNgpadCount());
+                }
+
                 ngFPYProductSeriesList.add(data);
-                doubleTmp =(double)(Math.round(Double.parseDouble(lstPcb.get(i).getGoodPcbYeild()) *100)/100.0);
+
+                if(StringUtils.equals("1",iMode)){
+                    doubleTmp =(double)(Math.round(Double.parseDouble(lstPcb.get(i).getGoodPcbYeild()) *100)/100.0);
+                }else if(StringUtils.equals("2",iMode)){
+
+                    doubleTmp = (double)(Math.round(goodarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0);
+                }else{
+                    doubleTmp =(double)(Math.round(Double.parseDouble(lstPcb.get(i).getGoodpadYeild()) *100)/100.0);
+                }
+
                 data= new Data();
                 if(doubleTmp >= (double)ConstParam.DEFAULTSETTING_passPcbYeild){
                     data.setColor("#25dd19");//"#25dd19"
@@ -252,14 +288,26 @@ public class SStatusController {
                     plotBands.setColor("#ED1B24");
                     lstPlotBands.add(plotBands);
                 }
+
+                if(StringUtils.equals("1",iMode)){
+                    iPcbTmp = lstPcb.get(i).getTotal()==null?0:Integer.parseInt(lstPcb.get(i).getTotal());
+                }else if(StringUtils.equals("2",iMode)){
+                    iPcbTmp = Long.parseLong(Math.round(goodarrayCount+ngarrayCount+passarrayCount)+"");
+                }else{
+                    iPcbTmp = lstPcb.get(i).getTotalpadCount()==null?0:lstPcb.get(i).getTotalpadCount();
+                }
+                if(iTotal<iPcbTmp){
+                    iTotal=iPcbTmp;
+                }
+
+
                 data.setY(doubleTmp);
                 goodFPYProductSplineSeriesList.add(data);
                 data= new Data();
                 //CPK
+                dAreaCPK = lstPcb.get(i).getACpk()==null?0: (double)(Math.round(lstPcb.get(i).getACpk()*100)/100.0);
 
-                dAreaCPK = lstPcb.get(i).getaCpk()==null?0: (double)(Math.round(lstPcb.get(i).getaCpk()*100)/100.0);
-
-                dHeightCPK = lstPcb.get(i).gethCpk()==null?0:(double)(Math.round(lstPcb.get(i).gethCpk()*100)/100.0);
+                dHeightCPK = lstPcb.get(i).getHCpk()==null?0:(double)(Math.round(lstPcb.get(i).getHCpk()*100)/100.0);
                 dVolCPK = lstPcb.get(i).getVcpk()==null?0:(double)(Math.round(lstPcb.get(i).getVcpk()*100)/100.0);
                 dShiftXCPK = lstPcb.get(i).getShithxCpk()==null?0: (double)(Math.round(lstPcb.get(i).getShithxCpk()*100)/100.0);
                 dShiftYCPK = lstPcb.get(i).getShithyCpk()==null?0: (double)(Math.round(lstPcb.get(i).getShithyCpk()*100)/100.0);
@@ -337,14 +385,20 @@ public class SStatusController {
         }
         //new  top5
         Map<String,String> mapData = new HashMap<String,String>();
-        int iTotal =0,iPcbTmp=0;
+        //int iTotal =0,iPcbTmp=0;
         List<Map<Integer,Integer>> realLst = new ArrayList<Map<Integer,Integer>>();
        if (lstPcb != null && lstPcb.size() > 0) {
             for (int i = 0; i < lstPcb.size(); i++) {
-                iPcbTmp = lstPcb.get(i).getTotal()==null?0:Integer.parseInt(lstPcb.get(i).getTotal());
+               /* if(StringUtils.equals("1",iMode)){
+                    iPcbTmp = lstPcb.get(i).getTotal()==null?0:Integer.parseInt(lstPcb.get(i).getTotal());
+                }else if(StringUtils.equals("2",iMode)){
+
+                }else{
+                    iPcbTmp = lstPcb.get(i).getTotalpadCount()==null?0:lstPcb.get(i).getTotalpadCount();
+                }
                 if(iTotal<iPcbTmp){
                     iTotal=iPcbTmp;
-                }
+                }*/
                 //List<Integer> lstPadCount = new ArrayList<Integer>();
                 Map<Integer,Integer> mapsort = new HashMap<Integer, Integer>();
                 Map<Integer,Integer> realMap = new HashMap<Integer, Integer>();
@@ -518,6 +572,7 @@ public class SStatusController {
     @ResponseBody
     @GetMapping("pcbMonitorJson")
     public ApiResponse<List<SStatus>> GetPcbMonitorListJson(@RequestParam("lane") String lane){
+
         //获取所有线体;
         //List<SLine> lineList = sLineService.selectList(null);
         //List<SStatus> statusList = sStatusService.getAllStatusWithLineNoLimt();

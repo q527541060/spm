@@ -44,15 +44,25 @@
             <%@include file="../header.jsp"%>
            <%-- <jsp:include page="header.jsp"></jsp:include>--%>
             <%--<%@include file="header.jsp" %>--%>
-			<div class="row" style=" text-align: left;margin-top: -5px">
-				<div class="col-md-14">
-					<ol class="breadcrumb">
-						<li><a href="${basePath}/Home/pcbHome">Home</a></li>
-						<li class="active" ><a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/Status/aoi/pcbMonitorview">spi</a></li>
-						<li class="active">Board-Machine-RealLineView</li>
-					</ol>
+
+			<div class="row" style="text-align: left;margin-top: -5px">
+				<div class="col-md-14" >
+                        <ol class="breadcrumb" >
+                            <li><a href="${basePath}/Home/pcbHome">Home</a></li>
+                            <li class="active" ><a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/Status/aoi/pcbMonitorview">spi</a></li>
+                            <li class="active">Board-Machine-RealLineView</li>
+                            <li>
+                                <div  class="btn-group" role="group" aria-label="..." >
+                                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析" onclick="changeChartView(1)">pcb</button>
+                                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="changeChartView(2)">array</button>
+                                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按焊盘点位分析" onclick="changeChartView(3)">position</button>
+                                </div>
+                            </li>
+                        </ol>
+
 				</div>
 			</div>
+
 			<div class="row" style="margin-top: -25px">
 			    <div class="col-md-11" style="padding: 0;margin: 0px">
                  <%--   <marquee  behavior="right">SMT-01直通率70%</marquee>--%>
@@ -172,7 +182,7 @@
 
         <script type="text/javascript" >  /*src="{staticPath}/js/pcbMonotorview.js" >*/
 
-
+        var mode = 1;
         window.operateEventsRealLineView={
             "click #MachineListNo" :function(e,value, row, index){
                 var Frequency_start = $('#Frequency-start').val();
@@ -203,16 +213,20 @@
         }
         InitMainTableLeft();
         InitMainTableRight();
-        FPYRealTime(vValue);
+        FPYRealTime(vValue,mode);
         //ProductRealTime();
         //defaultTopRealTime();
         var  pcbTotal =0;
-        function FPYRealTime(value){
+        function changeChartView(x){
+            mode = x;
+            FPYRealTime(vValue,mode);
+        }
+        function FPYRealTime(value,x){
             vValue = value;
-            //alert(vValue);
+           // alert(value+mode);
             var json = {};
             $.ajax({
-                url: "${basePath}/Status/pcbMonitorview_realLineViewJson?aValue="+value,
+                url: "${basePath}/Status/pcbMonitorview_realLineViewJson?aValue="+value+"&mode="+mode,
                 dataType:"json",   //返回格式为json
                 async:true,//请求是否异步，默认为异步，这也是ajax重要特性
                 data:'',    //参数值
@@ -563,7 +577,7 @@
         function  addFunctionAltyRealLineView(value, row, index) {
                 if(row.error==1 ){
                     //(row.errContent==''?'':' ['+row.errContent+']')+
-                    return ['<i  id="MachineListNo" style="cursor:pointer;">'+row.lineNo+'</i ><br>']+['<image style="cursor:pointer;width:27px;height:20px" id="MachineListNo"  src="${staticPath}/img/spi2_red.jpg">'].join("");
+                    return ['<i data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" id="MachineListNo" style="cursor:pointer;">'+row.lineNo+'</i ><br>']+['<image data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" style="cursor:pointer;width:27px;height:20px" id="MachineListNo"  src="${staticPath}/img/spi2_red.jpg">'].join("");
                    // return ['<span id="TableNGImage"  style="cursor:pointer"  class="glyphicon glyphicon-picture">'+row.lineNo+"-红灯"+'</span>'].join("");
                 }else  if(row.stop==1){
                     //(row.errContent==''?'':' ['+row.errContent+']')+
@@ -766,7 +780,7 @@
 
         }
 		function refreshFPYRealTime(){
-            FPYRealTime(vValue);
+            FPYRealTime(vValue,mode);
         }
         setInterval(refreshTableLeft,refreshSecon*1000);
 		setInterval(refreshTableRight,refreshSecon*1000);//,FPYRealTime,CPKRealTime,defaultTopRealTime,
@@ -774,9 +788,7 @@
         //setInterval(CPKRealTime,10000);
         //setInterval(defaultTopRealTime,10000);
 		//window.setInterval(timeShow,1000);
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        })
+
       /* excel = new ExcelGen({
             "src_id": "test_table",
             "show_header": true

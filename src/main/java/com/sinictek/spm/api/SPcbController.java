@@ -613,14 +613,14 @@ public class SPcbController {
             SPcb sPcb =  sPcb = sPcbService.getPcbListProductCPKWithLineNo(lineNo,startTime,endTime);
             if(sPcb!=null) {
                 productOneCount = sPcb.getTotal()==null?0:Integer.parseInt(sPcb.getTotal());
-                dAreaCPK = sPcb.getaCpk()==null?0: (double)(Math.round(sPcb.getaCpk()*100)/100.0);
+                dAreaCPK = sPcb.getACpk()==null?0: (double)(Math.round(sPcb.getACpk()*100)/100.0);
                 if(dMinCPK>dAreaCPK){
                     dMinCPK =dAreaCPK;
                 }
                 if(dMaxCPK<dAreaCPK){
                     dMaxCPK=dAreaCPK;
                 }
-                dHeightCPK = sPcb.gethCpk()==null?0:(double)(Math.round(sPcb.gethCpk()*100)/100.0);
+                dHeightCPK = sPcb.getHCpk()==null?0:(double)(Math.round(sPcb.getHCpk()*100)/100.0);
                 if(dMinCPK>dHeightCPK){
                     dMinCPK =dHeightCPK;
                 }

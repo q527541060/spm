@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -15,6 +18,8 @@ import java.io.Serializable;
  * @since 2020-08-05
  */
 @TableName("a_line")
+@Getter
+@Setter
 public class ALine implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,63 +51,5 @@ public class ALine implements Serializable {
     private String remark;
 
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLineNo() {
-        return LineNo;
-    }
-
-    public void setLineNo(String LineNo) {
-        this.LineNo = LineNo;
-    }
-
-    public String getLineContent() {
-        return lineContent;
-    }
-
-    public void setLineContent(String lineContent) {
-        this.lineContent = lineContent;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    @Override
-    public String toString() {
-        return "ALine{" +
-        ", id=" + id +
-        ", LineNo=" + LineNo +
-        ", lineContent=" + lineContent +
-        ", createDate=" + createDate +
-        ", updateDate=" + updateDate +
-        ", remark=" + remark +
-        "}";
-    }
 }
