@@ -7,7 +7,7 @@
 	request.setAttribute("basePath", basePath);
 	request.setAttribute("staticPath", staticPath);
 %>
-<html>
+<html lang="zh-CN">
 	<head>
 		<meta charset="utf-8">
 		<title></title>

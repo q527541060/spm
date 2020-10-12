@@ -74,4 +74,8 @@ public  class ConstParam {
      * boardViewChartMove  看板动画渲染开关
      */
     public static int DEFAULTSETTING_boardViewChartMove=0;
+    /**
+     * showPad2DImageMode  看2D图片方式  0:中间层(autoapp)直接插入sql方式   1:中间层(autoapp)调用web接口传入base64方式   2:中间层(autoapp)调用web传入图片路径方式
+     */
+    public static int DEFAULTSETTING_showPad2DImageMode=0;
 }

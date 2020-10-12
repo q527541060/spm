@@ -71,7 +71,7 @@
                         <div class="col-md-14">
                            <%-- <div class="right-wap" >--%>  <%--style="height: 350px;"--%>
                                 <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-                                <div id="container-FPY" style="max-height: 50vh;height: 50vh;overflow:auto;">
+                                <div id="container-FPY" style="max-height: 48vh;height: 48vh;overflow:auto;">
                                 </div>
                           <%-- </div>--%>
 
@@ -186,11 +186,17 @@
         window.operateEventsRealLineView={
             "click #MachineListNo" :function(e,value, row, index){
                 var Frequency_start = $('#Frequency-start').val();
-
                 var nowDate = new Date();
                 var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
                 var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
-                window.location.href="${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime;
+                window.location.href="${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+1;
+            },
+            "click #MachineListNo_i" :function(e,value, row, index){
+                var Frequency_start = $('#Frequency-start').val();
+                var nowDate = new Date();
+                var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
+                window.location.href="${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+1;
             }
         };
         var StatusQueryUrl = '${basePath}/Status/pcbMonitorJson';
@@ -577,14 +583,14 @@
         function  addFunctionAltyRealLineView(value, row, index) {
                 if(row.error==1 ){
                     //(row.errContent==''?'':' ['+row.errContent+']')+
-                    return ['<i data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" id="MachineListNo" style="cursor:pointer;">'+row.lineNo+'</i ><br>']+['<image data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" style="cursor:pointer;width:27px;height:20px" id="MachineListNo"  src="${staticPath}/img/spi2_red.jpg">'].join("");
+                    return ['<i data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" id="MachineListNo_i" style="cursor:pointer;">'+row.lineNo+'</i ><br>']+['<image data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" style="cursor:pointer;width:27px;height:20px" id="MachineListNo"  src="${staticPath}/img/spi2_red.jpg">'];
                    // return ['<span id="TableNGImage"  style="cursor:pointer"  class="glyphicon glyphicon-picture">'+row.lineNo+"-红灯"+'</span>'].join("");
                 }else  if(row.stop==1){
                     //(row.errContent==''?'':' ['+row.errContent+']')+
-                    return ['<i  id="MachineListNo" style="cursor:pointer;">' +row.lineNo+'</i><br>']+['<image id="MachineListNo"  style="cursor:pointer;width:27px;height:20px" src="${staticPath}/img/spi2_yellow.jpg">'].join("");
+                    return ['<i  id="MachineListNo_i" style="cursor:pointer;">' +row.lineNo+'</i><br>']+['<image id="MachineListNo"  style="cursor:pointer;width:27px;height:20px" src="${staticPath}/img/spi2_yellow.jpg">'];
                 }else{
                     //(row.errContent==''?'':' ['+row.errContent+']')+
-                    return ['<i  id="MachineListNo" style="cursor:pointer;">'+row.lineNo+'</i><br>']+['<image id="MachineListNo"  style="cursor:pointer;width:27px;height:20px" src="${staticPath}/img/spi2_green.jpg">'].join("");
+                    return ['<i  id="MachineListNo_i" style="cursor:pointer;">'+row.lineNo+'</i><br>']+['<image id="MachineListNo"  style="cursor:pointer;width:27px;height:20px" src="${staticPath}/img/spi2_green.jpg">'];
                 }
         }
         <!--   设备状态js代码  -->

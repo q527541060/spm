@@ -1,9 +1,11 @@
 package com.sinictek.spm.api;
 
 
+import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.SPad;
 import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
+import com.sinictek.spm.model.utils.Base64Helper;
 import com.sinictek.spm.model.utils.QuickLZ;
 import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.SPadService;
@@ -119,8 +121,21 @@ public class SPadController {
             SPad sPad = sPadService.getPadWithPCbidLineService(padTableName,pcbidLine,padId);
             if(sPad!=null )
             {
-                byte[] byte64 = net.iharder.Base64.decode(sPad.getPad2dImage());
-                String base64Str = Base64.getEncoder().encodeToString(QuickLZ.decompress(byte64));
+                String base64Str =null;
+                switch (ConstParam.DEFAULTSETTING_showPad2DImageMode){
+                    case 1:
+                        base64Str = sPad.getPad2dImageBase64();//Base64Helper.decompressData(sPad.getPad2dImageBase64());//
+                        break;
+                    case 2:
+                        //调用路径
+                        break;
+                    case 0:
+                    default:
+                        byte[] byte64 = net.iharder.Base64.decode(sPad.getPad2dImage()); //net.iharder.Base64.decode(sPad.getPad2dImage());
+                        base64Str = Base64.getEncoder().encodeToString(QuickLZ.decompress(byte64));//QuickLZ.decompress(byte64));
+                        break;
+                }
+
                 return new ApiResponse(true,null,base64Str,null);
             }
             else{

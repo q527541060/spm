@@ -1,7 +1,9 @@
 package com.sinictek.spm.model;
 
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +24,8 @@ public class SComponent implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    //@TableField(exist = false)
-    //private  long id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private  long id;
     private String pcbIdLine;
     private String componentName;
     private String arrayId;

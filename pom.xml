@@ -27,12 +27,23 @@
         <spring-boot-devtools.version>2.3.0.RELEASE</spring-boot-devtools.version>
         <log4j-over-slf4j.version>1.7.25</log4j-over-slf4j.version>
         <spring-boot-maven-plugin.version>1.4.2.RELEASE</spring-boot-maven-plugin.version>
+        <google-collections.version>1.0</google-collections.version>
+        <mysql-connector-java.version>5.1.49</mysql-connector-java.version>
+        <commons-io.version>2.5</commons-io.version>
+        <base64.version>2.3.8</base64.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!--<exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>-->
+
         </dependency>
         <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -162,17 +173,17 @@
         <dependency>
             <groupId>net.iharder</groupId>
             <artifactId>base64</artifactId>
-            <version>2.3.8</version>
+            <version>${base64.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.5</version>
+            <version>${commons-io.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.49</version>
+            <version>${mysql-connector-java.version}</version>
         </dependency>
        <!-- <dependency>
             <groupId>org.assertj</groupId>
@@ -181,17 +192,26 @@
         <dependency>
             <groupId>com.google.collections</groupId>
             <artifactId>google-collections</artifactId>
-            <version>1.0</version>
+            <version>${google-collections.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
-       <!-- <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-spring-boot-starter</artifactId>
-            <version>2.0.4</version>
+        <!-- jetty -->
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>-->
+        <!-- <dependency>
+             <groupId>org.apache.rocketmq</groupId>
+             <artifactId>rocketmq-spring-boot-starter</artifactId>
+             <version>2.0.4</version>
+         </dependency>-->
         <!--<dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>

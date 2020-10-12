@@ -3,7 +3,9 @@ package com.sinictek.spm.model;
 import java.sql.Blob;
 
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,8 +28,8 @@ public class SPad implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    //@TableField(exist = false)
-    //private long id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private long id;
     private String padId;
     private String pcbidLine;
     private Long padIndex;
@@ -71,6 +73,9 @@ public class SPad implements Serializable {
     private Long padTableID;
     private Long componentTableID;
     private String remark;
+
+    private String pad2dImageBase64;
+    private String pad3dImageBase64;
 
 
 

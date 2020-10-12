@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- Table structure for a_line
 -- ----------------------------
 
-CREATE TABLE IF NOT EXISTS `a_line`  (
+CREATE TABLE IF NOT EXISTS `db_spm`.`a_line`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '线体ID',
   `LineNo` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '线体编号',
   `lineContent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '线体说明',
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `a_line`  (
 -- Table structure for a_status
 -- ----------------------------
 
-CREATE TABLE IF NOT EXISTS `a_status`  (
+CREATE TABLE IF NOT EXISTS `db_spm`.`a_status`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'aoi机器状态数据ID',
   `lineNo` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'aoi机器线体',
   `barcode` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '当前条码或上一片条码',
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `a_status`  (
 -- Table structure for s_component
 -- ----------------------------
 
-CREATE TABLE IF NOT EXISTS `s_component`  (
+CREATE TABLE IF NOT EXISTS `db_spm`.`s_component`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'component数据 ',
   `pcbIdLine` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `componentName` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `s_component`  (
 -- Table structure for s_defaultSetting
 -- ----------------------------
 
-CREATE TABLE IF NOT EXISTS `s_defaultSetting`  (
+CREATE TABLE IF NOT EXISTS `db_spm`.`s_defaultSetting`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `settingName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `settingValue` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -107,12 +107,13 @@ INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SE
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 14, 'backgroundColor', '0', '2020-07-24 17:10:04', '选择spc系统背景皮肤'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=14);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 15, 'passPcbYeild', '85', '2020-07-24 17:10:04', '看板直通率标准设定值 例如85% 85'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=15);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 16, 'boardView-chartMove', '1', '2020-07-24 17:10:04', '看板动画渲染开关'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=16);
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 17, 'showPad2DImageMode', '0', '2020-07-24 17:10:04', '选择查看缺陷图片方式'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=17);
 
 -- ----------------------------
 -- Table structure for s_errorcode
 -- ----------------------------
 
-CREATE TABLE IF NOT EXISTS `s_errorcode`  (
+CREATE TABLE IF NOT EXISTS `db_spm`.`s_errorcode`  (
   `Code` int(11) NOT NULL,
   `Description` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`Code`) USING BTREE
@@ -187,9 +188,9 @@ CREATE TABLE IF NOT EXISTS `db_spm`.`s_job`  (
   `updateDate` datetime NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`jobId`, `jobName`) USING BTREE,
-  UNIQUE INDEX `jobName`(`jobName`) USING BTREE,
-  INDEX `fore_job_line_lineNo`(`lineNo`) USING BTREE,
-  CONSTRAINT `fore_job_line_lineNo` FOREIGN KEY (`lineNo`) REFERENCES `s_line` (`LineNo`) ON DELETE CASCADE ON UPDATE CASCADE
+  UNIQUE INDEX `jobName`(`jobName`) USING BTREE
+-- INDEX `fore_job_line_lineNo`(`lineNo`) USING BTREE,
+-- CONSTRAINT `fore_job_line_lineNo` FOREIGN KEY (`lineNo`) REFERENCES `s_line` (`LineNo`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'job总表' ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -212,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `db_spm`.`s_line`  (
 -- ----------------------------
 
 CREATE TABLE IF NOT EXISTS `db_spm`.`s_pad`  (
-  `id` bigint(255) NOT NULL,
+  `id` bigint(255)  NOT NULL AUTO_INCREMENT,
   `padId` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `pcbidLine` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `padIndex` bigint(20) NULL DEFAULT NULL,
@@ -254,13 +255,13 @@ CREATE TABLE IF NOT EXISTS `db_spm`.`s_pad`  (
   `uPerOffsety` double NULL DEFAULT NULL,
   `padTableID` bigint(20) NULL DEFAULT NULL,
   `componentTableID` bigint(20) NULL DEFAULT NULL,
+  `pad2dImageBase64` longtext Null DEFAULT NULL,
+  `pad3dImageBase64` longtext Null DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fore_pad_pcb_pcbidLine`(`pcbidLine`) USING BTREE,
   CONSTRAINT `fore_pad_pcb_pcbidLine` FOREIGN KEY (`pcbidLine`) REFERENCES `s_pcb` (`pcbIdLine`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '焊盘' ROW_FORMAT = Compact;
-
-
 -- ----------------------------
 -- Table structure for s_pcb
 -- ----------------------------
@@ -355,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `db_spm`.`s_status`  (
 -- Table structure for s_user
 -- ----------------------------
 
-CREATE TABLE IF NOT EXISTS `s_user`  (
+CREATE TABLE IF NOT EXISTS `db_spm`.`s_user`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `age` int(11) NULL DEFAULT NULL,
@@ -366,4 +367,8 @@ CREATE TABLE IF NOT EXISTS `s_user`  (
   INDEX `lineWithUser`(`lineNoStr`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
+
+
 SET FOREIGN_KEY_CHECKS = 1;
+
+

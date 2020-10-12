@@ -30,9 +30,10 @@ public class SRestTestController {
     @GetMapping("/selectLine/{line}")
     @ResponseStatus(HttpStatus.OK)
     public Object getTestLineData(@PathVariable("line") String line){
-
         return  new ApiResponse(true,null,sLineService.selectById(line)) ;
     }
+
+
 
     @PostMapping("/addUser")
     @ResponseStatus(HttpStatus.CREATED)

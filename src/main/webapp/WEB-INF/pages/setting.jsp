@@ -285,6 +285,20 @@
 
                             break;
                         }
+                        case 'showPad2DImageMode':{
+                            var vselect = ($('<select ></select>').addClass("form-control")) ;
+                            for (var i = 0; i <3; i++) {
+                                var voption = $("<option></option>").addClass('option').
+                                append(pad2DImageToStr(i+'')).
+                                attr("value",i);
+                                if(req.data.settingValue==i){
+                                    voption.attr('selected','selected');
+                                }
+                                voption.appendTo(vselect);
+                            }
+                            $('.selectPicker').append(vselect);
+                            break;
+                        }
                         case 'autoDelete-MaxDays':
                         case 'Frequency-start':
                         case 'standCPK':
@@ -315,6 +329,17 @@
         /*function update_headHtml_hchartColor(iParm){
             $('#chartColor').val(iParm);
         }*/
+        function pad2DImageToStr(i) {
+            if(i=='0'){
+                return '不调用web接口传输';
+            }else if(i=='1'){
+                return '调用web接口但传入base64';
+            }else if(i=='2'){
+                return '调用web接口但传入路径';
+            }else{
+                return '不调用web接口传输';
+            }
+        }
         function backgroundColorToStr(i){
             var result = '';
             switch (i) {
@@ -811,6 +836,17 @@
                                 break;
                             }case 'boardMachineTimeLimit':{
                                 result ='[此设置停止使用]';
+                                break;
+                            }case 'showPad2DImageMode':{
+                                if(row.settingValue=='0'){
+                                    result = '不调用web接口传输';
+                                }else if(row.settingValue=='1'){
+                                    result='调用web接口但传入base64';
+                                }else if(row.settingValue=='2'){
+                                    result='调用web接口但传入路径';
+                                }else{
+                                    result = '不调用web接口传输';
+                                }
                                 break;
                             }
                             default :{
