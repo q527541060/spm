@@ -28,7 +28,7 @@
         <log4j-over-slf4j.version>1.7.25</log4j-over-slf4j.version>
         <spring-boot-maven-plugin.version>1.4.2.RELEASE</spring-boot-maven-plugin.version>
         <google-collections.version>1.0</google-collections.version>
-        <mysql-connector-java.version>5.1.49</mysql-connector-java.version>
+       <!-- <mysql-connector-java.version>5.1.6</mysql-connector-java.version>-->
         <commons-io.version>2.5</commons-io.version>
         <base64.version>2.3.8</base64.version>
     </properties>
@@ -180,10 +180,13 @@
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
         </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
+           <!-- <version>${mysql-connector-java.version}</version>-->
+            <version>5.1.49</version>
+
         </dependency>
        <!-- <dependency>
             <groupId>org.assertj</groupId>
@@ -198,6 +201,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cm</groupId>
+            <artifactId>CmDemo</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/CmDemo.jar</systemPath>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna -->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>4.5.0</version>
+        </dependency>
+
         <!-- jetty -->
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>
@@ -244,8 +261,26 @@
             <artifactId>rocketmq-client</artifactId>
             <version>4.3.0</version>
         </dependency>-->
+       <!-- <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+        </dependency>-->
+       <!-- <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>-->
     </dependencies>
-
+    <!--<dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Finchley.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>-->
     <build>
         <finalName>spm</finalName>
         <resources>
@@ -287,6 +322,9 @@
                     <layout>JAR</layout>
                     <fork>true</fork>
                     <!--<addResources>true</addResources>-->
+
+                    <executable>true</executable>
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
 

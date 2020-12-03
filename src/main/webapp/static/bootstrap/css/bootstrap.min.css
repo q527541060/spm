@@ -38,7 +38,7 @@ fieldset{padding:.35em .625em .75em;margin:0 2px;border:1px solid #ccc}
 legend{padding:0;border:0}
 textarea{overflow:auto}
 optgroup{font-weight:700}
-table{border-spacing:0;border-collapse:collapse}
+table{border-spacing:0;border-collapse:collapse;}
 td,th{padding:0}
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css*/@media print{*,:after,:before{color:#000!important;text-shadow:none!important;background:0 0!important;-webkit-box-shadow:none!important;box-shadow:none!important}
 a,a:visited{text-decoration:underline}
@@ -321,7 +321,7 @@ select{background:#fff!important}
 .glyphicon-menu-right:before{content:"\e258"}
 .glyphicon-menu-down:before{content:"\e259"}
 .glyphicon-menu-up:before{content:"\e260"}
-*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;font-size: 12px;}
 :after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 html{font-size:10px;-webkit-tap-highlight-color:rgba(0,0,0,0)}
 body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.42857143;color:#333;}

@@ -1,17 +1,20 @@
 package com.sinictek.spm.model.ConstClasses;
 
-import com.sinictek.spm.model.ConstClasses.ConstParam;
-import com.sinictek.spm.model.SDefaultsetting;
+import com.alibaba.druid.util.StringUtils;
 import com.sinictek.spm.model.SPcb;
 
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.*;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.sinictek.spm.service.SDefaultsettingService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sinictek.spm.model.utils.MapValueComparator;
+import com.wibu.CodeMeter.CodeMeter;
+import com.wibu.CodeMeter.CodeMeter.CMACCESS2;
+import com.wibu.CodeMeter.CodeMeter.CMBOXENTRY;
+import com.wibu.CodeMeter.CodeMeter.CMBOXINFO;
+import com.wibu.CodeMeter.CodeMeter.CMTIME;
 
 /**
  * @Author sinictek-pd
@@ -288,6 +291,26 @@ public class ConstPublicClassUtil {
         return  str;
     }
 
+
+
+
+    public static Map<Integer, Integer> sortMapByValue(Map<Integer, Integer> map) {
+        if (map == null || map.isEmpty()) {
+            return null;
+        }
+        Map<Integer, Integer> sortedMap = new LinkedHashMap<Integer, Integer>();
+        List<Map.Entry<Integer, Integer>> entryList = new ArrayList<Map.Entry<Integer, Integer>>(map.entrySet());
+        Collections.sort(entryList, new MapValueComparator());
+        Iterator<Map.Entry<Integer, Integer>> iter = entryList.iterator();
+        Map.Entry<Integer, Integer> tmpEntry = null;
+
+        while (iter.hasNext()) {
+            tmpEntry = iter.next();
+            sortedMap.put(tmpEntry.getKey(), tmpEntry.getValue());
+        }
+        return sortedMap;
+    }
+
     /**
      * 根据map的value排序
      *
@@ -327,5 +350,130 @@ public class ConstPublicClassUtil {
         return result;
     }
 
+
+    public static boolean  loadCmBoxs() {
+        boolean validate = false;
+        StringBuffer[] sb = getBoxList();
+        if (sb != null) {
+            validate = listFirmItem(102124, 0, 69);  //产品号
+        }
+        return validate;
+    }
+    private static boolean listFirmItem(long firmCode, int boxIndex, long productCode) {
+        long handle;
+        if ((arrayBoxInfo == null) | (boxIndex == -1)) {
+            return false;
+        }
+        if (boxIndex >= arrayBoxInfo.length) {
+            return false;
+        }
+
+        // Create an "Firm Item Access"
+        CMACCESS2 cmacc = new CMACCESS2();
+        cmacc.ctrl = CodeMeter.CM_ACCESS_FIRMITEM;
+        cmacc.firmCode = firmCode;
+        cmacc.boxMask = arrayBoxInfo[boxIndex].boxMask;
+        cmacc.serialNumber = arrayBoxInfo[boxIndex].serialNumber;
+        handle = CodeMeter.cmAccess2(CodeMeter.CM_ACCESS_LOCAL, cmacc);
+        if (0 == handle) {
+            int error = CodeMeter.cmGetLastErrorCode();
+            if (error == 200) {
+                return false;
+            }
+            return false;
+        }
+
+        int numberOfEntries = CodeMeter.cmGetBoxContents(handle,
+                CodeMeter.CM_GBC_FI | CodeMeter.CM_GBC_BOX, firmCode,
+                arrayBoxInfo[boxIndex], null);
+        if (numberOfEntries == 0) {
+            return false;
+        } else {
+            CMBOXENTRY[] cmboxentry = new CMBOXENTRY[numberOfEntries];
+            int ret = CodeMeter.cmGetBoxContents(handle, CodeMeter.CM_GBC_FI
+                            | CodeMeter.CM_GBC_BOX, firmCode, arrayBoxInfo[boxIndex],
+                    cmboxentry);
+            if ((ret == 0) || (ret != numberOfEntries)) {
+                return false;
+            }
+            // Format FirmPreciseTime
+            CMTIME firmPreciseTime = new CMTIME();
+            firmPreciseTime.setTimeInSeconds(cmboxentry[0].firmPreciseTime);
+            if (cmboxentry[0].setPios == 0) {
+                return true;
+            } // if
+            for (int i = 0; i < ret; i++) {
+                if ((cmboxentry[i].setPios & CodeMeter.CM_GF_PRODUCTCODE) == CodeMeter.CM_GF_PRODUCTCODE) {
+                    if (cmboxentry[i].productCode == productCode) {
+                        return true;
+
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    private static CMBOXINFO[] arrayBoxInfo = null;
+    private static StringBuffer[] getBoxList() {
+        long handle;
+        int numberOfCmBoxes;
+        StringBuffer[] boxList = null;
+
+        // clean up old stored list of Boxes
+        arrayBoxInfo = null;
+        // Create a "Subsystem Access" to the local subsystem
+        CMACCESS2 cmacc = new CMACCESS2();
+        cmacc.ctrl = CodeMeter.CM_ACCESS_SUBSYSTEM;
+        handle = CodeMeter.cmAccess2(CodeMeter.CM_ACCESS_LOCAL, cmacc);
+        if (0 == handle) {
+            return null;
+        }
+        // get information of connected CmContainers
+        // first determine the number of CmContainers
+        numberOfCmBoxes = CodeMeter.cmGetBoxes(handle,
+                CodeMeter.CM_GB_ALLPORTS, null);
+        if (numberOfCmBoxes > 0) {
+            arrayBoxInfo = new CMBOXINFO[numberOfCmBoxes];
+            numberOfCmBoxes = CodeMeter.cmGetBoxes(handle,
+                    CodeMeter.CM_GB_ALLPORTS, arrayBoxInfo);
+            boxList = new StringBuffer[numberOfCmBoxes];
+            for (int i = 0; i < Math.min(boxList.length, numberOfCmBoxes); i++) {
+                boxList[i] = new StringBuffer(arrayBoxInfo[i].boxMask + "-"
+                        + arrayBoxInfo[i].serialNumber);
+            }
+            StringBuffer output = new StringBuffer("    " + numberOfCmBoxes
+                    + " CmContainers found.\n");
+            output.append("    Found serial numbers: ");
+            for (int i = 0; i < numberOfCmBoxes; i++) {
+                if (i > 0)
+                    output.append("|");
+                output.append(boxList[i]);
+            }
+
+        } else {
+            return null;
+        }
+        CodeMeter.cmRelease(handle);
+
+        return boxList;
+    }
+
+
+    public static byte[] getFileByte(String filePath) throws IOException {
+
+        if(StringUtils.isEmpty(filePath)) return null;
+        File file = new File(filePath);
+        byte[] arrBy = null;
+        if(file.exists()) {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+
+            arrBy = new byte[fileInputStream.available()];
+            fileInputStream.read(arrBy, 0, fileInputStream.available());
+            fileInputStream.close();
+        }
+        return arrBy;
+    }
 
 }

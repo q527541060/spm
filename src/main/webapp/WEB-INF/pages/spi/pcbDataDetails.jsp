@@ -415,7 +415,7 @@
                 sortOrder: "desc",                   //排序方式
                 sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-                pageSize: 10,                     //每页的记录行数（*）
+                pageSize: 12,                     //每页的记录行数（*）
                 pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
                 search: true,                      //是否显示表格搜索
                 //data-search=true,
@@ -424,7 +424,7 @@
                 showRefresh: true,                  //是否显示刷新按钮
                 minimumCountColumns: 2,             //最少允许的列数
                 clickToSelect: true,                //是否启用点击选中行
-                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                height:380,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
                 //uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
                 showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
                 cardView: false,                    //是否显示详细视图
@@ -479,45 +479,57 @@
                     //是否显示复选框
                 }, */
                     {
-                    field: 'jobName',
-                    title: 'jobName',
-                   // width:50,
-                    align:'center',
-                    sortable: true
-                }, {
-                    field: 'lineNo',
-                    title: 'lineNo',
-                    align:'center',
-                    width:10,
-                    sortable: true
-                },
-                    {
-                    field: 'boardBarcode',
-                    title:  'boardBarcode',
-                    align:'center',
-                    sortable: true,
-                  //  width:50
-                    //events:operateEvents,
-                },  {
-                    field: 'inspectResult',
-                    title:  'pcbResult',
-                    align:'center',
-                    width:5,
-                    sortable: true,
-                    formatter:function (value,row,index) {
-                        switch (row.inspectResult) {
-                            case '0':
-                                return 'PASS';
-                            case '1':
-                                return 'NG';
-                            case '2':
-                                return 'REPASS';
-                            default :
-                                return  'SKIP';
-
+                        field: 'jobName',
+                        title: 'jobName',
+                        // width:50,
+                        align:'center',
+                        sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
                         }
-                    }
-                }, {
+                    }, {
+                        field: 'lineNo',
+                        title: 'lineNo',
+                        align:'center',
+                        width:10,
+                        sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
+                    },
+                    {
+                        field: 'boardBarcode',
+                        title:  'boardBarcode',
+                        align:'center',
+                        sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
+                        //  width:50
+                        //events:operateEvents,
+                    },  {
+                        field: 'inspectResult',
+                        title:  'pcbResult',
+                        align:'center',
+                        width:5,
+                        sortable: true,
+                        formatter:function (value,row,index) {
+                            switch (row.inspectResult) {
+                                case '0':
+                                    return 'PASS';
+                                case '1':
+                                    return 'NG';
+                                case '2':
+                                    return 'REPASS';
+                                default :
+                                    return  'SKIP';
+
+                            }
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
+                    }, {
                         field: 'arrayBarcode',
                         title:  'arrayInfo',
                         align:'center',
@@ -543,6 +555,9 @@
                             resultHtml +='</span>';
                             return  resultHtml;
 
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
                         }
                         //  width:50
                     },{
@@ -552,48 +567,63 @@
                         sortable: true,
                         formatter:function (value,row,index) {
 
-                           return '<span>'+ 'area:'+ row.acpk.toFixed(3) +
+                            return '<span>'+ 'area:'+ row.acpk.toFixed(3) +
                                 ';hight:'+ row.hcpk.toFixed(3)+
                                 ';vol:'+ row.vcpk.toFixed(3)+
                                 ';shithxCpk:'+row.shithxCpk.toFixed(3)+
                                 ';shithyCpk:'+row.shithyCpk.toFixed(3) +'</span>';
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
                         }
                     },{
-                    field: 'ngpadCount',
-                    title:  'ngPadCount',
-                    align:'center',
-                    sortable: true,
-                    width:10 
-                },
-                   /* {
-                    field: 'arrayinspectResult',
-                    title:  'arrayinspectResult',
-                    align:'center',
-                    sortable: true,
-                  //  width:50
-                },*/
+                        field: 'ngpadCount',
+                        title:  'ngPadCount',
+                        align:'center',
+                        sortable: true,
+                        width:10,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
+                    },
+                    /* {
+                     field: 'arrayinspectResult',
+                     title:  'arrayinspectResult',
+                     align:'center',
+                     sortable: true,
+                   //  width:50
+                 },*/
                     {
-                    field: 'laneNo',
-                    title:  'laneNo',
-                    align:'center',
-                    sortable: true,
-                    width:2
-                },{
-                    field: 'inspectStarttime',
-                    title:  'inspectStarttime',
-                    align:'center',
-                    sortable: true,
-                     width:10,
-                    //events: operateEventslineDetailsLeftChart,//给按钮注册事件
-                    //formatter: addFunctionAltylineDetailsLeftChart//表格中增加按钮
-                },
-                {
-                    field: 'inspectEndtime',
-                    title:  'inspectEndtime',
-                    align:'center',
-                    sortable: true,
-                 //   width:50
-                },
+                        field: 'laneNo',
+                        title:  'laneNo',
+                        align:'center',
+                        sortable: true,
+                        width:2,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
+                    },{
+                        field: 'inspectStarttime',
+                        title:  'inspectStarttime',
+                        align:'center',
+                        sortable: true,
+                        width:10,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
+                        //events: operateEventslineDetailsLeftChart,//给按钮注册事件
+                        //formatter: addFunctionAltylineDetailsLeftChart//表格中增加按钮
+                    },
+                    {
+                        field: 'inspectEndtime',
+                        title:  'inspectEndtime',
+                        align:'center',
+                        sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
+                        //   width:50
+                    },
                     /*{
                         field: 'svgInfo',
                         title:  'svgInfo',
@@ -603,9 +633,9 @@
                             //return 'sds';
                         }
                     }*/
-                    ],
+                ],
                 formatLoadingMessage:function(){
-                  return "请稍等,正在加载中.........";
+                    return "请稍等,正在加载中.........";
                 },
                 onLoadSuccess: function (data,$element) {
 
@@ -728,7 +758,7 @@
                 minimumCountColumns: 2,             //最少允许的列数
                 clickToSelect: true,                //是否启用点击选中行
                 settimeout:1,
-                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                height: 380,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
                 //uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
                 exportDataType:'all',
                 showExport: false,  //是否显示导出按钮
@@ -789,7 +819,10 @@
                     sortable: true,
                     formatter:function () {
                         return barcode;
-                    }
+                    },
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
                 },{
                     field: 'padBarcode',
                     title: 'padBarcode',
@@ -806,14 +839,20 @@
                             }
                         }
                        return barcode;
-                    }
+                    },
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
                 },
                     {
                     field: 'padId',
                     title: 'padId',
                     // width:50,
                     align:'center',
-                    sortable: true
+                    sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
                 },{
                         field: 'padImage',
                         title:  'image',
@@ -821,7 +860,10 @@
                         sortable: true,
                         //  width:100,
                         events: operateEventslineDetailsLeftChart,
-                        formatter: addFunctionAltylineDetailsLeftChart
+                        formatter: addFunctionAltylineDetailsLeftChart,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
                 },{
                         field: 'position',
                         title:  'position',
@@ -829,6 +871,9 @@
                         sortable: true,
                         formatter:function (value,row,index) {
                             return row.arrayId+ '_'+row.componentId;
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
                         }
                     },{
                         field: 'padInspectResult',
@@ -847,24 +892,36 @@
                                     return  'SKIP';
                             }
                            //return ;
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
                         }
                     },{
                         field: 'defectTypeName',
                         title:  'errorCode',
                         align:'center',
                         sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
                         //    width:100
                     },{
                     field: 'height',
                     title: 'height',
                     align:'center',
                     //  width:100,
-                    sortable: true
+                    sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
                 },{
                     field: 'area',
                     title: 'area',
                     align:'center',
                     sortable:true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
                     //  width:100
                     //formatter: linkFormatter
                 }, {
@@ -872,6 +929,9 @@
                     title:  'volume',
                     align:'center',
                     sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
                     //  width:50
                     //events:operateEvents,
                 }, {
@@ -879,6 +939,9 @@
                     title:  'offX',
                     align:'center',
                     sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
                     //  width:50
                     //events:operateEvents,
                 },{
@@ -886,6 +949,9 @@
                     title:  'offY',
                     align:'center',
                     sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{"font-size":"12px"}}
+                        }
                     //  width:50
                     //events:operateEvents,
                 },

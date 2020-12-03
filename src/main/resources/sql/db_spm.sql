@@ -106,7 +106,7 @@ INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SE
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 13, 'hChartColor', '0', '2020-07-24 17:10:04', '选择chart柱形图图表主题皮肤'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=13);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 14, 'backgroundColor', '0', '2020-07-24 17:10:04', '选择spc系统背景皮肤'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=14);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 15, 'passPcbYeild', '85', '2020-07-24 17:10:04', '看板直通率标准设定值 例如85% 85'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=15);
-INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 16, 'boardView-chartMove', '1', '2020-07-24 17:10:04', '看板动画渲染开关'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=16);
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 16, 'boardView-chartMove', '0', '2020-07-24 17:10:04', '看板动画渲染开关'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=16);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 17, 'showPad2DImageMode', '0', '2020-07-24 17:10:04', '选择查看缺陷图片方式'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=17);
 
 -- ----------------------------
@@ -223,8 +223,8 @@ CREATE TABLE IF NOT EXISTS `db_spm`.`s_pad`  (
   `defectTypeCode` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `defectTypeName` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `padImagePath` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `pad2dImage` blob NULL,
-  `pad3dImage` blob NULL,
+  `pad2dImage` blob null default  NULL,
+  `pad3dImage` blob null default  NULL,
   `height` double NULL DEFAULT NULL,
   `area` double NULL DEFAULT NULL,
   `volume` double NULL DEFAULT NULL,
@@ -277,13 +277,13 @@ CREATE TABLE IF NOT EXISTS `db_spm`.`s_pcb`  (
   `inspectEndtime` datetime NULL DEFAULT NULL,
   `boardWidth` double NULL DEFAULT NULL,
   `boardLength` double NULL DEFAULT NULL,
-  `boardBarcode` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `boardBarcode` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `componentTableName` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `padTableName` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `arrayBarcode` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `arrayWidth` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `arrayLength` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `arrayinspectResult` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `arrayBarcode` varchar(10000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `arrayWidth` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `arrayLength` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `arrayinspectResult` varchar(10000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `totalpadCount` int(11) NULL DEFAULT NULL,
   `passpadCount` int(11) NULL DEFAULT NULL,
   `ngpadCount` int(11) NULL DEFAULT NULL,

@@ -44,7 +44,7 @@ public  class ConstParam {
     /**
      * standCPK  CPK设置标准值1
      */
-    public static int DEFAULTSETTING_standCPK=0;
+    public static double DEFAULTSETTING_standCPK=0;
 
     /**
      * FrequencyStart  班次设置值
@@ -78,4 +78,7 @@ public  class ConstParam {
      * showPad2DImageMode  看2D图片方式  0:中间层(autoapp)直接插入sql方式   1:中间层(autoapp)调用web接口传入base64方式   2:中间层(autoapp)调用web传入图片路径方式
      */
     public static int DEFAULTSETTING_showPad2DImageMode=0;
+
+
+    //public static String CONST_RESOUCE_IMAGEPATH = "file://192.168.1.123/AOI_DB/";
 }

@@ -30,60 +30,42 @@
 	<body>
     <nav>
 		<%@include file="../header.jsp"  %>
-		<div class="row" style=" text-align: left;">
+		<div class="row" style=" text-align: left;margin-top: -5px">
 			<div class="col-md-14">
-				<ol class="breadcrumb"  style="float: left;margin: 0px">
+				<ol class="breadcrumb">
 					<li><a href="${basePath}/Home/pcbHome">Home</a></li>
-					<li class="active"><a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/aLine/pcbLine">spi</a></li>
+					<li class="active"><a  data-toggle="tooltip" data-placement="bottom" title="点击切换至spi" href="${basePath}/sLine/pcbLine">aoi</a></li>
 					<li class="active">line</li>
-					<li>
-						<div class="btn-group" role="group" aria-label="...">
-							<button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart(0)">Hour</button>
-							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按线体排序" onclick="choiceChart(1)">Lines</button>
-							<button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析"  onclick="choicePcb(1)">pcb</button>
-							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="choicePcb(2)">array</button>
-							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按点位焊盘分析" onclick="choicePcb(3)">pad</button>
-						</div>
-					</li>
 				</ol>
-				<div style="float: left;margin-left: 21%;padding: 5px" id="sandBox-container">
-					<!-- glyphicon glyphicon-time   col-lg-offset-4-->
-					<%--<span class="glyphicon glyphicon-time" aria-hidden="true"></span>--%>
-					<span  style="margin-left: -19px;" class="glyphicon glyphicon-calendar"></span>
-					<input size="12" type="text" value="" readonly class="form-date" id="startTime" /> -
-					<input  size="12"  type="text"  value="" readonly class="form-date" id="endTime"/>
-					<!-- glyphicon glyphicon-search-->
-					<button type="button" class="btn  btn-info btn-xs"  onclick="areaYeildChartPcbCount()">
-						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
-					</button>
-				</div>
 			</div>
 		</div>
-		<%--<div class="row" style="margin-top: -6px;">
-           &lt;%&ndash; <div class="col-md-1 col-md-offset-0" style="text-align: left;margin-top: 5px"><i>良率分组:</i></div>&ndash;%&gt;
+		<div class="row" style="margin-top: -6px;">
+           <%-- <div class="col-md-1 col-md-offset-0" style="text-align: left;margin-top: 5px"><i>良率分组:</i></div>--%>
             <div class="col-md-2" style="text-align: left;">
-                &lt;%&ndash;<div class="btn-group" role="group" aria-label="...">
+                <div class="btn-group" role="group" aria-label="...">
                     <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart(0)">Hour</button>
                     <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按线体排序" onclick="choiceChart(1)">Lines</button>
                     <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析"  onclick="choicePcb(1)">pcb</button>
                     <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="choicePcb(2)">array</button>
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按点位焊盘分析" onclick="choicePcb(3)">pad</button>
-                </div>&ndash;%&gt;
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按元器件分析" onclick="choicePcb(3)">position</button>
+                </div>
             </div>
 			<div class="col-md-4 col-md-offset-2"  id="sandBox-container">
+				<!-- glyphicon glyphicon-time   col-lg-offset-4-->
+				<%--<span class="glyphicon glyphicon-time" aria-hidden="true"></span>--%>
                 <span  style="margin-left: -19px;" class="glyphicon glyphicon-calendar"></span>
                 <input size="12" type="text" value="" readonly class="form-date" id="startTime" /> -
 				<input  size="12"  type="text"  value="" readonly class="form-date" id="endTime"/>
 				 <!-- glyphicon glyphicon-search-->
-				<button type="button" class="btn  btn-info btn-xs"  onclick="areaYeildChartPcbCount()">
+				<button type="button" class="btn  btn-info btn-xs"> <%--  onclick="areaYeildChartPcbCount()">--%>
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
 				</button>
 			</div>
-		</div>--%>
+		</div>
 		<%--<hr style= "border:1px dotted  #ffffff"  />--%>
 		<%--<div class="row row-border"  >
 		</div>--%>
-        <div class="row row-border" style="padding: 0px;margin: 0px">
+        <div class="row row-border" >
             <div class="col-md-14">
                 <div class="right-wap" style="height: 38vh;">
                     <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
@@ -93,9 +75,9 @@
         </div>
 		<%--<div class="row row-border" >
 		</div>--%>
-		<div class="row row-border" style="padding: 0px;margin: 0px">
+		<div class="row row-border" >
 			<div class="col-md-14">
-				<div class="right-wap" style="height: 32vh;">
+				<div class="right-wap" style="height: 38vh;">
 					<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
 					<div id="container-lineFn" style="min-width: 310px; height: 100%; margin: 0 auto"></div>
 				</div>
@@ -103,8 +85,8 @@
 		</div>
 		<%--<div class="row row-border" >
 		</div>--%>
-		<div class="row row-border" style="padding: 0px;margin: 0px">
-			<table  class="table" id="pcbline_table" >
+		<div class="row row-border" >
+			<table  class="table" id="pcbline_table">
 			</table>
 		</div>
 		<div id="lineToolbar">
@@ -118,7 +100,7 @@
 				window.open("${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+row.inspectStarttime + "&inspectEndtime="+ row.inspectEndtime +"&pcbType="+ichoicePcb);
 			}
 		};
-		var iGroupMode = 1;
+		var iGroupMode = 0;
 		var ichoicePcb =1;
 		var nowDate = new Date();
 		var dStart = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd');
@@ -180,7 +162,7 @@
 				sortOrder: "asc",                   //排序方式
 				sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
 				pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-				pageSize: 5,                     //每页的记录行数（*）
+				pageSize: 10,                     //每页的记录行数（*）
 				pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
 				search: true,                      //是否显示表格搜索
 				strictSearch: false,
@@ -189,26 +171,28 @@
                 //showColumnsToggleAll:true,
                // minimumCountColumns: 0,             //最少允许的列数
 				clickToSelect: true,                //是否启用点击选中行
-				height: 400,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+				//height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 				uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
 				showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
 				cardView: false,                    //是否显示详细视图
 				detailView: false,                  //是否显示父子表
 				classes:'table table-striped table-hover',
 				rowStyle: function(row, index) {
+					var classes = [
+						'bg-blue',
+						'bg-green',
+						'bg-red'
+					]
 					if (index % 2 == 0 ) {
 						return {
-							classes: 'success',
+							classes: 'success'
 						}
 					}else{
 						return {
-							classes: 'info ',
+							classes: 'info '
 						}
 					}
 				},
-				/*cellStyle: function (value, row, index){
-					return {css:{'font-size':'9px','padding':'0px'}}
-				},*/
 				//得到查询的参数
 				queryParams : function (params) {
 					//这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
@@ -232,10 +216,7 @@
 					title: 'lineNo',
 					width:50,
 					align:'center',
-					sortable: true,
-					cellStyle: function (value, row, index){
-						return {css:{'font-size':'9px','padding':'0px'}}
-					},
+					sortable: true
 				}, {
 					field: 'goodPcbYeild',
 					title: 'PassPcbYeild',
@@ -256,9 +237,7 @@
 							return '<span>'+(goodCount/Count*100).toFixed(2)+'</span>';
 						}
 
-					},cellStyle: function (value, row, index){
-							return {css:{'font-size':'9px','padding':'0px'}}
-						},
+					},
 					sortable: true
 				},{
 					field: 'passPcbYeild',
@@ -282,9 +261,6 @@
 							return '<span>'+(passCount/Count*100).toFixed(2)+'</span>';
 						}
 					},
-						cellStyle: function (value, row, index){
-							return {css:{'font-size':'9px','padding':'0px'}}
-						},
 					//formatter: linkFormatter
 				}, {
 					field: 'ngPcbYeild',
@@ -308,9 +284,6 @@
 							return '<span>'+(ngCount/Count*100).toFixed(2)+'</span>';
 						}
 					},
-						cellStyle: function (value, row, index){
-							return {css:{'font-size':'9px','padding':'0px'}}
-						},
 					//events:operateEvents,
 				}, {
 					field: 'total',
@@ -328,9 +301,6 @@
 						}
 
 					},
-						cellStyle: function (value, row, index){
-							return {css:{'font-size':'9px','padding':'0px'}}
-						},
 				}, {
 					field: 'ngPcbCount',
 					title:  'ngPcbCount',
@@ -347,9 +317,6 @@
 						}
 
 					},
-						cellStyle: function (value, row, index){
-							return {css:{'font-size':'9px','padding':'0px'}}
-						},
 				}, {
 					field: 'passPcbCount',
 					title:  'RePassPcbCount',
@@ -366,9 +333,6 @@
 						}
 
 					},
-						cellStyle: function (value, row, index){
-							return {css:{'font-size':'9px','padding':'0px'}}
-						},
 				}, {
 					field:  'ngpadCount',
 					title:  'ngpadCount',
@@ -385,9 +349,6 @@
 						}
 
 					},
-						cellStyle: function (value, row, index){
-							return {css:{'font-size':'9px','padding':'0px'}}
-						},
 				}, {
 					field: 'Date',
 					title:  'Date',
@@ -397,10 +358,7 @@
 					formatter:function(value,row,index){
 						var html='<span>'+row.inspectStarttime+ '-' +row.inspectEndtime +'</span>';
 						return html;
-					},
-						cellStyle: function (value, row, index){
-							return {css:{'font-size':'9px','padding':'0px'}}
-						},
+					}
 				},{
 					field: 'operation',
 					title:  'operation',
@@ -408,10 +366,7 @@
 					//sortable: true,
 					width:50,
 					events: operateEventsPcbLineData,//给按钮注册事件
-					formatter: addFunctionAltyPcbLineData,//表格中增加按钮
-						cellStyle: function (value, row, index){
-							return {css:{'font-size':'9px','padding':'0px'}}
-						},
+					formatter: addFunctionAltyPcbLineData//表格中增加按钮
 
 				}],
 				onLoadSuccess: function (sta) {
@@ -490,26 +445,14 @@
 							},
 							pointPadding: 0.3,
 							borderWidth: 0,
-							dataLabels:{enabled:true,useHTML: true,
-								formatter: function() {
-									return (this.y)+'%';
-								},}
+							dataLabels:{enabled:true}
 						},
 						column: {
 							grouping: true,
 							shadow: true,
 							borderWidth: 0,
 							stacking:'normal',
-							dataLabels:{enabled:true,useHTML: true,
-								formatter: function() {
-									return (this.y)+'%';
-								},}
-						},
-						spline:{
-							dataLabels:{enabled:true,useHTML: true,
-								formatter: function() {
-									return (this.y)+'%';
-								},}
+							dataLabels:{enabled:true}
 						}
 					};
 					//alert(json);
@@ -543,43 +486,7 @@
 						enabled:false
 					};
 					jsonContainerline.series=req.rows.series;
-					jsonContainerline.plotOptions = {
-						areaspline: {
-							pointStart: 0,
-							marker: {
-								enabled: true,
-								symbol: 'triangle-down',
-								radius: 1,
-								states: {
-									hover: {
-										enabled: true
-									}
-								}
-							},
-							pointPadding: 0.3,
-							borderWidth: 0,
-							dataLabels:{enabled:true,useHTML: true,
-								formatter: function() {
-									return (this.y)+'pcs';
-								},}
-						},
-						column: {
-							grouping: true,
-							shadow: true,
-							borderWidth: 0,
-							stacking:'normal',
-							dataLabels:{enabled:true,useHTML: true,
-								formatter: function() {
-									return (this.y)+'pcs';
-								},}
-						},
-						spline:{
-							dataLabels:{enabled:true,useHTML: true,
-								formatter: function() {
-									return (this.y)+'pcs';
-								},}
-						}
-					};
+					jsonContainerline.plotOptions = jsonYeildHour.plotOptions;
 					//alert(json);
 					$('#container-lineFn').highcharts(jsonContainerline);
 				},

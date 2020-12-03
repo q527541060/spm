@@ -1,6 +1,7 @@
 package com.sinictek.spm.api;
 
 
+import com.baomidou.mybatisplus.mapper.Condition;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.JsonchartModel.*;
 import com.sinictek.spm.model.SPcb;
@@ -43,7 +44,16 @@ public class SPcbController {
     @ResponseBody
     @GetMapping("pcbList")
     public ModelMap getPchList(){
-        ModelAndView mav = new ModelAndView("/sPcb/pcbList");
+
+        //boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();
+        String viewName = "/sPcb/pcbList";
+       /* if(true){
+        }else{
+            viewName = "error/comBoxExpire";
+        }*/
+        ModelAndView mav = new ModelAndView(viewName);
+
+        //ModelAndView mav = new ModelAndView("/sPcb/pcbList");
         List<SPcb> lstPCB = sPcbService.selectList(null);
         mav.addObject("pcbList",lstPCB) ;
         ModelMap map = mav.getModelMap();
@@ -51,6 +61,18 @@ public class SPcbController {
         lstPCB = null;
         System.gc();
         return map;
+    }
+
+    @GetMapping("pcbListByLineNoAndCheckTime")
+    @ResponseBody
+    public ApiResponse pcbListByLineNoAndCheckTimek(@RequestParam("inspectStarttime") String inspectStarttime,
+                                                    @RequestParam("inspectEndtime") String inspectEndtime,
+                                                    @RequestParam("lineNo") String lineNo){
+
+        List<SPcb> lstSpcb = sPcbService.selectList(Condition.create().gt("inspectStarttime",inspectStarttime).and()
+                .lt("inspectEndtime",inspectEndtime).and().eq("lineNo",lineNo));
+
+        return new ApiResponse(true,"","",lstSpcb);
     }
 
     @ResponseBody

@@ -31,7 +31,7 @@
 <body>
     <nav>
         <%@include file="header.jsp" %>
-        <div class="row" style="text-align: left;margin-top: -15px; ">
+        <div class="row" style="text-align: left;margin-top: -15px;padding: 0px ">
             <div class="col-md-14">
                 <ol class="breadcrumb">
                     <li><a href="${basePath}/Home/pcbHome">Home</a></li>
@@ -41,13 +41,13 @@
             </div>
         </div>
         <!--  Default参数设置 -->
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+        <div class="row" style="margin-top: -2vh">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         Default参数设置
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" style="padding: 0px">
                         <div id="table_default" ></div>
                     </div>
                 </div>
@@ -55,30 +55,26 @@
         </div>
         <!--  线体 设置  -->
         <div class="row" >
-            <div class="col-md-8 col-md-offset-2" >
+            <div class="col-md-10 col-md-offset-1" >
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         SPI线体信息变更
                     </div>
-                    <div class="panel-body">
-                        <div class="panel-body">
-                            <div id="table_line"></div>
-                        </div>
+                    <div class="panel-body" style="padding: 0px">
+                        <div id="table_line"></div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         AOI线体信息变更
                     </div>
-                    <div class="panel-body">
-                        <div class="panel-body">
+                        <div class="panel-body" style="padding: 0px">
                            <%-- <div id="table_line"></div>--%>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -162,6 +158,11 @@
         </div>
     </nav>
 
+    <style>
+        .col-md-11{
+            margin: 0 auto;
+        }
+    </style>
     <script type="text/javascript">
         window.operateEventsSettingLine={
             "click #EditSettingLine" :function(e,value, row, index){
@@ -866,7 +867,7 @@
                     title:  '说明',
                     align:'center',
                     sortable: true,
-                    width:300,
+                    width:600,
                 },{
                     field: 'oper',
                     title:  'op',

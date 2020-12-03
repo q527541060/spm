@@ -1,6 +1,8 @@
 package com.sinictek.spm.api;
 
 import com.sinictek.spm.model.AStatus;
+import com.sinictek.spm.model.ConstClasses.ConstController;
+import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
 import com.sinictek.spm.model.SStatus;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
 import com.sinictek.spm.service.AStatusService;
@@ -18,15 +20,22 @@ import java.util.List;
  * @Version 1.0
  */
 @Controller
-@RequestMapping("/Status")
+@RequestMapping("/aStatus")
 public class AStatusController {
 
     @Autowired
     AStatusService aStatusService;
 
-    @RequestMapping("aoi/pcbMonitorview")
+    @RequestMapping("pcbMonitorview_realLineView")
     public ModelAndView ShowPcbMonitorView_AOI(){
-        ModelAndView mv = new ModelAndView("aoi/pcbMonitorview_aoi");
+        ConstController.constController.iniDefaultParamSetting();
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "aoi/pcbMonitorview_realLineView_aoi";
+        if(bCmBoxs){
+        }else{
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
         return  mv;
     }
 

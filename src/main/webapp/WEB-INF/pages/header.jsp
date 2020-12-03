@@ -43,8 +43,20 @@
 		<script  src="${staticPath}/bootstrap/js/tableExport.js"></script>
 		<script src="${staticPath}/bootstrap/js/bootstrap-table-export.js"></script>
 
+		<!-- bootstrap-treeview -->
+		<%--<script src="${staticPath}/bootstrap/js/bootstrap-treeview.js"></script>
+		<script src="${staticPath}/bootstrap/css/bootstrap-treeview.css"></script>--%>
+
 		<script src="${staticPath}/js/static/pcbLineData.js"></script>
 		<script src="${staticPath}/js/static/publicJs.js"></script>
+        <script  src="${staticPath}/js/pcbfovImageView_aoi.js"></script>
+		<script  src="${staticPath}/js/threePointAsClose.js"></script>
+
+		<!-- echart -->
+		<script src="${staticPath}/echart/echarts.min.js"></script>
+		<script src="${staticPath}/echart/echarts-gl.min.js"></script>
+		<%--<script src="${staticPath}/echart/canyon.hdr"></script>--%>
+
 
 		<script src="${staticPath}/exportjs/jszip.min.js"></script>
 		<script src="${staticPath}/exportjs/FileSaver.js"></script>
@@ -52,6 +64,11 @@
 		<script src="${staticPath}/exportjs/demo.page.js"></script>
 
 		<style type="text/css">
+			body{
+				/*zoom: 0.95;   /*设定页面缩放*!*/
+				/*zoom:0.9;*/
+			/*	transform:scale(0.9);*/
+			}
 			ul{
 				padding: 0px;
 				margin: 0px;
@@ -80,28 +97,92 @@
 			.bootstrap-table .fixed-table-toolbar .pull-right .dropdown-menu {
 				height: max-content;
 			}
+			.nav-pills>li>a {
+				border-radius: 4px;
+				padding: 3px;
+			}
+			.dropdown-menu-dataInfo{
+				height: 10.9vh;
+				margin: 0px;
+				padding: 0px;
+				opacity:0.9;
+				list-style: none;
+			}
+			.dropdown-menu-dataInfo>li>a{
+				text-align: center;
+				background-color: #EEEEEE;
+				transition: all 0.3s;
+				font-size: 12px;
+			}
+			.dropdown-menu-dataInfo >li>a:hover{
+				background-color: rgba(122, 163, 53, 0.2);
+				font-size: 15px;
+				color: #23527C;
+				font-weight: 600;
+				/*font-family: "Microsoft YaHei UI";*/
+				/*transform: scale(1);*/
+			}
 		</style>
-
 	</head>
 	<body>
-
 			<!--头部信息-->
 			<div class="row">
-				 <div class="col-md-14">
-					<ul class="nav nav-pills" >
+				 <div class="col-md-14 " id="header-col-mod-14">
+					 <ul class="nav nav-pills header-view">
+						 <!-- home -->
+						 <li role="presentation" style="text-align: left;">
+							 <button type="button" class="btn btn-primary" onclick="showHome()" aria-label="Left Align"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></button>
+						 </li>
+						 <!-- homePage -->
+						 <li role="presentation">
+							 <a href="${basePath}/Home/pcbHome"><img  src="${staticPath}/img/zz.png">HomePage</a>
+						 </li>
+						<!-- dataInfo -->
+						 <li role="presentation" class="dropdown">
+							 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								 <img  src="${staticPath}/img/VD_001.png">DataInfo <span class="caret"></span>
+							 </a>
+							 <ul class="dropdown-menu dropdown-menu-dataInfo">
+								 <li><a href="${basePath}/sLine/pcbLine">SPI</a></li>
+								 <li><a href="${basePath}/aLine/pcbLine">PRE-AOI</a></li>
+								 <li><a href="${basePath}/aLine/pcbLine">POST-AOI</a></li>
+							 </ul>
+						 </li>
+						<!-- Monitoring-->
+						 <li role="presentation" class="dropdown">
+							 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								 <img  src="${staticPath}/img/zz04.png">Monitoring <span class="caret"></span>
+							 </a>
+							 <ul class="dropdown-menu dropdown-menu-dataInfo">
+								 <li><a href="${basePath}/sStatus/pcbMonitorview_realLineView">SPI</a></li>
+								 <li><a href="${basePath}/aStatus/pcbMonitorview_realLineView">PRE-AOI</a></li>
+								 <li><a href="${basePath}/aStatus/pcbMonitorview_realLineView">POST-AOI</a></li>
+							 </ul>
+						 </li>
+						 <!-- setting -->
+						 <li role="presentation"><a href="${basePath}/sDefaultsetting/setting"><img  src="${staticPath}/img/DL.png">Setting</a></li>
+
+					 </ul>
+					<%--<ul class="nav nav-pills" >
 					  <li role="presentation" style="text-align: left;">
 						  <button type="button" class="btn btn-primary" onclick="showHome()" aria-label="Left Align"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></button>
 					  </li>
-					  <li role="presentation"><a href="${basePath}/Home/pcbHome"><img  src="${staticPath}/img/zz.png">HomePage</a></li>
+					  <li role="presentation">
+						 <a href="${basePath}/Home/pcbHome"><img  src="${staticPath}/img/zz.png">HomePage</a>
+					  </li>
 					  <li role="presentation"><a href="${basePath}/sLine/pcbLine"><img  src="${staticPath}/img/VD_001.png">DataInfo</a></li>
 					  <li role="presentation"><a href="${basePath}/Status/pcbMonitorview_realLineView"><img  src="${staticPath}/img/zz04.png">Monitoring</a></li><li role="presentation"><a href="${basePath}/sDefaultsetting/setting"><img  src="${staticPath}/img/DL.png">Setting</a></li>
-					</ul>
+					</ul>--%>
 					 <input  type="hidden" id="chartColor" value="${hChartColor}"/>
                      <input type="hidden" id="backgroundColor" value="${backgroundColor}">
                  </div>
 			</div>
 
 			<script type="text/javascript">
+				/*$("body").css({
+					"zoom":"0.9",
+				//	"transform":"scale(0.9)"
+				});*/
 				function showHome(){
 					window.location.href="${basePath}/Home/pcbHome";
 				}

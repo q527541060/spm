@@ -4,6 +4,7 @@ package com.sinictek.spm.api;
 import com.alibaba.druid.util.StringUtils;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
+import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
 import com.sinictek.spm.model.JsonchartModel.*;
 import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
@@ -38,7 +39,14 @@ public class SLineController {
     @GetMapping("pcbLine")
     public ModelAndView showPcbLine()  {
         ConstController.constController.iniDefaultParamSetting();
-        ModelAndView mv = new ModelAndView("spi/pcbLineData");
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "spi/pcbLineData";
+        if(bCmBoxs){
+        }else {
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+        //ModelAndView mv = new ModelAndView("spi/pcbLineData");
         mv.addObject("hChartColor", ConstParam.DEFAULTSETTING_hChartColor);
         mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
         return  mv;
@@ -389,7 +397,14 @@ public class SLineController {
                                            @RequestParam("inspectStarttime") String inspectStarttime,
                                            @RequestParam("inspectEndtime") String inspectEndtime,
                                            @RequestParam("pcbType") String pcbType){
-        ModelAndView mv = new ModelAndView("spi/pcbDataDetails");
+
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "spi/pcbDataDetails";
+        if(bCmBoxs){
+        }else {
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
         mv.addObject("pcbType",pcbType);
         mv.addObject("lineNo",lineNo);
         mv.addObject("inspectStarttime",inspectStarttime);

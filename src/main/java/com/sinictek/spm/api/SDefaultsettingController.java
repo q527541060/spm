@@ -4,6 +4,7 @@ package com.sinictek.spm.api;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
+import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
 import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.model.SLine;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
@@ -121,7 +122,16 @@ public class SDefaultsettingController {
     @GetMapping("setting")
     public ModelAndView showSetting(){
         ConstController.constController.iniDefaultParamSetting();
-        ModelAndView mv = new ModelAndView("setting");
+
+
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "setting";
+        if(bCmBoxs){
+        }else{
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+
         mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
         mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
         mv.addObject("boardView_chartMove",ConstParam.DEFAULTSETTING_boardViewChartMove);

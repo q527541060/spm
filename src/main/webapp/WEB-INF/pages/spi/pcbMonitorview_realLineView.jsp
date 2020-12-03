@@ -49,7 +49,7 @@
 				<div class="col-md-14" >
                         <ol class="breadcrumb" >
                             <li><a href="${basePath}/Home/pcbHome">Home</a></li>
-                            <li class="active" ><a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/Status/aoi/pcbMonitorview">spi</a></li>
+                            <li class="active" ><a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/aStatus/pcbMonitorview_realLineView">spi</a></li>
                             <li class="active">Board-Machine-RealLineView</li>
                             <li>
                                 <div  class="btn-group" role="group" aria-label="..." >
@@ -71,7 +71,7 @@
                         <div class="col-md-14">
                            <%-- <div class="right-wap" >--%>  <%--style="height: 350px;"--%>
                                 <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-                                <div id="container-FPY" style="max-height: 48vh;height: 48vh;overflow:auto;">
+                                <div id="container-FPY" style="max-height: 50vh;height: 50vh;overflow:auto;">
                                 </div>
                           <%-- </div>--%>
 
@@ -91,7 +91,7 @@
                         <div class="col-md-14" >
                             <%-- <div class="right-wap" > --%> <%--style="height: 200px;">--%>
                             <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-                            <div id="container-CPK" style="max-height: 18vh;height: 18vh;overflow:auto;">
+                            <div id="container-CPK" style="max-height: 19vh;height: 19vh;overflow:auto;">
 
                             </div>
                             <%-- </div>--%>
@@ -189,17 +189,17 @@
                 var nowDate = new Date();
                 var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
                 var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
-                window.location.href="${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+1;
+                window.open("${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode);
             },
             "click #MachineListNo_i" :function(e,value, row, index){
                 var Frequency_start = $('#Frequency-start').val();
                 var nowDate = new Date();
                 var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
                 var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
-                window.location.href="${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+1;
+                window.open("${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode);
             }
         };
-        var StatusQueryUrl = '${basePath}/Status/pcbMonitorJson';
+        var StatusQueryUrl = '${basePath}/sStatus/pcbMonitorJson';
         var vValue=1;
         var refreshSecon = $('#boardMachineRefreshTime').val();
         var passPcbYeild = $('#passPcbYeild').val();
@@ -232,7 +232,7 @@
            // alert(value+mode);
             var json = {};
             $.ajax({
-                url: "${basePath}/Status/pcbMonitorview_realLineViewJson?aValue="+value+"&mode="+mode,
+                url: "${basePath}/sStatus/pcbMonitorview_realLineViewJson?aValue="+value+"&mode="+mode,
                 dataType:"json",   //返回格式为json
                 async:true,//请求是否异步，默认为异步，这也是ajax重要特性
                 data:'',    //参数值
@@ -307,7 +307,7 @@
                                     return (this.series.name)+ ':' +(this.y);
                                 },
                                 style:{
-                                    fontSize:'5px',
+                                    fontSize:'12px',
                                     fontWeight:'bold',
                                     color:'#141328'
                                 },
@@ -385,7 +385,7 @@
                         //animation:true,
                         formatter: function () {
                             return '<b>' + this.x + '</b><br/>' +
-                                this.series.name + ': ' + this.y ;//+ '<br/>' +
+                                this.series.name + ':' + this.y ;//+ '<br/>' +
                             //'value: ' + this.point.stackTotal;
                         }
                         //shared: true
@@ -557,7 +557,7 @@
                                     return (this.series.name)+ ':' +(this.y);
                                 },
                                 style:{
-                                    fontSize:'5px',
+                                    fontSize:'12px',
                                     fontWeight:'bold',
                                     color:'#141328'
                                 },

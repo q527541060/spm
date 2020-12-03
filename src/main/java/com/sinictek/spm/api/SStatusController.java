@@ -37,7 +37,7 @@ import java.util.*;
  * @since 2020-06-09
  */
 @Controller
-@RequestMapping("/Status")
+@RequestMapping("/sStatus")
 public class SStatusController {
 
     //@Autowired
@@ -54,7 +54,15 @@ public class SStatusController {
     @GetMapping("pcbMonitorview")
     public ModelAndView ShowPcbMonitorView(){
         ConstController.constController.iniDefaultParamSetting();
-        ModelAndView mv = new ModelAndView("spi/pcbMonitorview");
+
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "spi/pcbMonitorview";
+        if(bCmBoxs){
+        }else{
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+        //ModelAndView mv = new ModelAndView("spi/pcbMonitorview");
         // ini defaultsetting
         return  mv;
     }
@@ -62,7 +70,16 @@ public class SStatusController {
     @GetMapping("sigSpiPcbMonitorview")
     public ModelAndView ShowSigSpiPcbMonitorview(@RequestParam("lineNo")String lineNo){
         ConstController.constController.iniDefaultParamSetting();
-        ModelAndView mv = new ModelAndView("spi/sigSpiPcbMonitorview");
+
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "spi/sigSpiPcbMonitorview";
+        if(bCmBoxs){
+        }else{
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+
+        //ModelAndView mv = new ModelAndView("spi/sigSpiPcbMonitorview");
         // ini defaultsetting
         mv.addObject("lineNo",lineNo);
         return  mv;
@@ -148,7 +165,15 @@ public class SStatusController {
     @GetMapping("pcbMonitorview_realLineView")
     public ModelAndView ShowpcbMonitorview_realLineView(){
         ConstController.constController.iniDefaultParamSetting();
-        ModelAndView mv = new ModelAndView("spi/pcbMonitorview_realLineView");
+
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "spi/pcbMonitorview_realLineView";
+        if(bCmBoxs){
+        }else{
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+        //ModelAndView mv = new ModelAndView("spi/pcbMonitorview_realLineView");
         // ini defaultsetting
         mv.addObject("boardMachineRefreshTime",ConstParam.DEFAULTSETTING_boardMachineRefreshTime);
         mv.addObject("Frequency_start",ConstParam.DEFAULTSETTING_FrequencyStart);
@@ -387,27 +412,16 @@ public class SStatusController {
         Map<String,String> mapData = new HashMap<String,String>();
         //int iTotal =0,iPcbTmp=0;
         List<Map<Integer,Integer>> realLst = new ArrayList<Map<Integer,Integer>>();
+        List<Integer> lstComto = new ArrayList<Integer>();
        if (lstPcb != null && lstPcb.size() > 0) {
             for (int i = 0; i < lstPcb.size(); i++) {
-               /* if(StringUtils.equals("1",iMode)){
-                    iPcbTmp = lstPcb.get(i).getTotal()==null?0:Integer.parseInt(lstPcb.get(i).getTotal());
-                }else if(StringUtils.equals("2",iMode)){
-
-                }else{
-                    iPcbTmp = lstPcb.get(i).getTotalpadCount()==null?0:lstPcb.get(i).getTotalpadCount();
-                }
-                if(iTotal<iPcbTmp){
-                    iTotal=iPcbTmp;
-                }*/
-                //List<Integer> lstPadCount = new ArrayList<Integer>();
                 Map<Integer,Integer> mapsort = new HashMap<Integer, Integer>();
                 Map<Integer,Integer> realMap = new HashMap<Integer, Integer>();
                 for (int j = 0; j <15 ; j++) {
-                    //int iPadCount = ;
                     mapsort.put(j,ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(i),j));
-                    //lstPadCount.add(ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(i),j));
                 }
-                ConstPublicClassUtil.sortByValue(mapsort,true);
+                //mapsort = ConstPublicClassUtil.sortMapByValue(mapsort);
+                mapsort = ConstPublicClassUtil.sortByValue(mapsort,true);
                 //lst.add(mapsort);
                 int iTmp =0;
                 for(Integer key : mapsort.keySet()){
@@ -418,48 +432,8 @@ public class SStatusController {
                     realMap.put(key,mapsort.get(key));
                 }
                 realLst.add(realMap);
-                //Collections.sort(lstPadCount);
-                //lst.add(lstPadCount);
-               /*Collections.sort(lstPadCount);
-                top5Series = new Series();
-                top5Series.setType("column");
-                top5Series.setName(ConstPublicClassUtil.getErrorCodeString(i));
-                top5Series.setStacking("normal");
-                top5SeriesList = new ArrayList<Data>();
-                for (int j = lstPadCount.size(); j > 9; j-- ){
-                    data = new Data();
-                    data.setY( lstPadCount.get(j));
-                    top5SeriesList.add(data);
-                }
-                top5Series.setData(top5SeriesList);
-                //top5Series.setColor("#F5A96A");
-                lstTop5Series.add(top5Series);*/
             }
         }
-        //for(Map.Entry<String, String> entry : map.entrySet()){
-       /* for (int i = 0; i <5 ; i++) {
-            top5Series = new Series();
-            if (lstPcb != null && lstPcb.size() > 0) {
-                top5Series.setType("column");
-                top5Series.setName(ConstPublicClassUtil.getErrorCodeString(i));
-                top5Series.setStacking("normal");
-                top5SeriesList = new ArrayList<Data>();
-                for (int y = 0; y < realLst.size(); y++) {
-                    data = new Data();
-
-                    for(Map.Entry<Integer, Integer> entry : realLst.get(y).entrySet()) {
-                    }
-                    lst.get(y)
-                    data.setY( ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(y),i));
-                    //data.setColor("#F5A96A");
-                    top5SeriesList.add(data);
-                }
-                top5Series.setData(top5SeriesList);
-                //top5Series.setColor("#F5A96A");
-                lstTop5Series.add(top5Series);
-            }
-        }*/
-
         //top5
         for (int i = 0; i < 15; i++) {
             top5Series = new Series();
@@ -469,12 +443,12 @@ public class SStatusController {
                 top5Series.setStacking("normal");
                 top5SeriesList = new ArrayList<Data>();
                 for (int y = 0; y < lstPcb.size(); y++) {
+                    data = new Data();
                     if(realLst.get(y).keySet().contains(i)) {
-                        data = new Data();
-                        data.setY(ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(y), i));
+                        data.setY(ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(y), i));//ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(y), i));
                         //data.setColor("#F5A96A");
-                        top5SeriesList.add(data);
                     }
+                    top5SeriesList.add(data);
                 }
             }
             top5Series.setData(top5SeriesList);
@@ -565,6 +539,10 @@ public class SStatusController {
         lstJsonChartsBean.add(jsonChartsBean_Top5);
         mapData.put("iTotal",iTotal+"");
         mapData.put("standCPK",ConstParam.DEFAULTSETTING_standCPK+"");
+        //如果最大cpk低于标准值
+        if(maxCpk<ConstParam.DEFAULTSETTING_standCPK){
+            maxCpk = ConstParam.DEFAULTSETTING_standCPK;
+        }
         mapData.put("maxCpk",maxCpk+"");
         return  new ApiResponse(true,null,lstJsonChartsBean,mapData);
     }

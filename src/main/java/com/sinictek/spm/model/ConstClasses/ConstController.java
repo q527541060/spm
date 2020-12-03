@@ -82,7 +82,7 @@ public class ConstController {
                         ConstParam.DEFAULTSETTING_FrequencyStart=strSettingValue==null?8:Integer.parseInt(strSettingValue);
                     }
                     if("standCPK".equals(strSettingName)) {
-                        ConstParam.DEFAULTSETTING_standCPK=strSettingValue==null?1:Integer.parseInt(strSettingValue);
+                        ConstParam.DEFAULTSETTING_standCPK=strSettingValue==null?1:Double.parseDouble(strSettingValue);
                     }
                     if("autoDelete-MaxDays".equals(strSettingName)){
                         ConstParam.DEFAULTSETTING_autoDeleteMaxDays=strSettingValue==null?365:Integer.parseInt(strSettingValue);

@@ -73,8 +73,9 @@ public class SPad implements Serializable {
     private Long padTableID;
     private Long componentTableID;
     private String remark;
-
+    //@TableField(exist = false)
     private String pad2dImageBase64;
+    //@TableField(exist = false)
     private String pad3dImageBase64;
 
 

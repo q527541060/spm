@@ -31,10 +31,14 @@ public interface SPadMapper extends BaseMapper<SPad> {
                                                  @Param("defectTypeCode") String defectTypeCode);
 
     @Select({
-            "<script> SELECT pad.pad2dImage pad2dImage,pad.remark remark,pad.pad2dImageBase64 pad2dImageBase64,pad.pad3dImageBase64 pad3dImageBase64 FROM ${padTableName} pad  " +
+            /*"<script> SELECT pad.pad2dImage pad2dImage,pad.remark remark,pad.pad2dImageBase64 pad2dImageBase64,pad.pad3dImageBase64 pad3dImageBase64 FROM ${padTableName} pad  " +
                     "<where>  pad.pcbidLine=#{pcbidLine} and pad.padId=#{padId}   " +
                     "</where>" +
-            " </script>"
+            " </script>"*/
+            "<script> SELECT pad.pad2dImage pad2dImage,pad.remark remark FROM ${padTableName} pad  " +
+                    "<where>  pad.pcbidLine=#{pcbidLine} and pad.padId=#{padId}   " +
+                    "</where>" +
+                    " </script>"
     })
     public SPad getPadWithPCbidLineDao(@Param("padTableName") String padTableName,@Param("pcbidLine") String pcbIdLine,@Param("padId")String padId);
 

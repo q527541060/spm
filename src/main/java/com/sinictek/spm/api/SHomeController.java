@@ -1,19 +1,23 @@
 package com.sinictek.spm.api;
 
+import com.baomidou.mybatisplus.mapper.Condition;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
+import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
 import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.SDefaultsettingService;
 import com.sinictek.spm.service.SLineService;
 import com.sinictek.spm.service.SPcbService;
+import com.sinictek.spm.service.SStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +36,9 @@ public class SHomeController {
     @Autowired
     SLineService sLineService;
 
+    @Autowired
+    SStatusService sStatusService;
+
     @GetMapping("/pcbHome")
     public ModelAndView showHome(){
         String strStartTime = "1900-01-01 00:00:00";
@@ -39,10 +46,31 @@ public class SHomeController {
         //过程数据
         SPcb sPcb = sPcbService.getPcbListWithALLLineByDateNoGroup(strStartTime,StringTimeUtils.getTimeDateToString(new Date()));
         ConstController.constController.iniDefaultParamSetting();
-        ModelAndView mv = new ModelAndView("pcbHome");
+
+        //活动线体
+        int iStatusCount = sStatusService.getAllStatusWithLineNoLimt("").size();
+        if(iStatusCount>0){
+            int iOneCount = sStatusService.getAllStatusWithLineNoLimt("0").size();
+            int iTwoCount = sStatusService.getAllStatusWithLineNoLimt("1").size();
+            if(iOneCount>iTwoCount){
+                iStatusCount = iOneCount;
+            }else{
+                iStatusCount = iTwoCount;
+            }
+        }
+
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "pcbHome";
+        if(bCmBoxs){
+        }else{
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+
         mv.addObject("spi_dataCount",sPcb.getTotalpadCount());
         mv.addObject("spi_barcodeCount",sPcb.getTotal());
-        mv.addObject("spi_lineCount",sLineService.selectCount(null));
+        mv.addObject("spi_lineCount",iStatusCount);
+                //sLineService.selectCount(Condition.create().gt("updateDate",StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-24))));
         mv.addObject("spi_fovCount",0);
         mv.addObject("spi_pcbCount",0);
         mv.addObject("spi_componentCount",0);
