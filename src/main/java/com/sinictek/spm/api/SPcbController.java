@@ -45,7 +45,7 @@ public class SPcbController {
     @GetMapping("pcbList")
     public ModelMap getPchList(){
 
-        //boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();
+        //boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
         String viewName = "/sPcb/pcbList";
        /* if(true){
         }else{

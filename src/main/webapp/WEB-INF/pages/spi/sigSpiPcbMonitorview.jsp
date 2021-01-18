@@ -13,7 +13,9 @@
 		<meta charset="utf-8">
 		<title>Board-Machine-View</title>
 		<meta name="viewport"  />
-		<%--content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"--%>
+		<link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
+
+	<%--content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"--%>
 		<style>
 			body{
 				margin: 0px;

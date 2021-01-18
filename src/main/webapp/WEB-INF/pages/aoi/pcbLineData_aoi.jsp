@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="zh-CN">
 	<head>
 		<meta charset="utf-8" >
 		<%--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">--%>
 		<title>pcbLineData</title>
+		<link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
 		<style>
 			body{
 				margin: 0px;
 				padding: 0px;
-
 				/*background-color: #ECF0F5;*/
                /* background: url("$staticPath}/static/img/home6.jpg")  ;*/
              /*   background-size:cover;*/
@@ -17,98 +18,103 @@
 			.row{
 				text-align: center;
 				margin: 0px;
-
 			}
 			.row-border{
 				/*background-color: #F5F5F5;color: #F5F5F5;height: 25px*/
                 margin-top: 15px;
 			}
-
 		</style>
-
 	</head>
 	<body>
     <nav>
 		<%@include file="../header.jsp"  %>
-		<div class="row" style=" text-align: left;margin-top: -5px">
-			<div class="col-md-14">
-				<ol class="breadcrumb">
+		<div class="row" style=" text-align: left;">
+			<div class="col-md-4" style="padding: 0px">
+				<ol class="breadcrumb"  style="float: left;margin: 0px">
 					<li><a href="${basePath}/Home/pcbHome">Home</a></li>
-					<li class="active"><a  data-toggle="tooltip" data-placement="bottom" title="点击切换至spi" href="${basePath}/sLine/pcbLine">aoi</a></li>
-					<li class="active">line</li>
+					<li class="active"><c:if test="${aoiType==1}">pre-aoi</c:if><c:if test="${aoiType==2}">post-aoi</c:if><%--<a  data-toggle="tooltip" data-placement="bottom" title="点击切换至spi" href="${basePath}/Home/pcbHome">pre-aoi</a>--%></li>
+					<%--<li class="active">line</li>--%>
+					<li class="active">dataInfo</li>
+					<li>
+						<div class="btn-group" role="group" aria-label="...">
+							<button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart_PreAoi(0)">Hour</button>
+							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按线体排序" onclick="choiceChart_PreAoi(1)">Lines</button>
+							<button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析"  onclick="choicePcb_PreAoi(1)">pcb</button>
+							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="choicePcb_PreAoi(2)">array</button>
+							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按元器件分析" onclick="choicePcb_PreAoi(3)">position</button>
+						</div>
+					</li>
 				</ol>
+				<%--<div style="float: left;margin-left: 16%;padding: 5px" id="sandBox-container">
+					<!-- glyphicon glyphicon-time   col-lg-offset-4-->
+					&lt;%&ndash;<span class="glyphicon glyphicon-time" aria-hidden="true"></span>&ndash;%&gt;
+					<span  style="margin-left: -19px;" class="glyphicon glyphicon-calendar"></span>
+					<input size="12" type="text" value="" readonly class="form-date" id="startTime" /> -
+					<input  size="12"  type="text"  value="" readonly class="form-date" id="endTime"/>
+					<!-- glyphicon glyphicon-search-->
+					<button type="button" class="btn  btn-info btn-xs"  onclick="areaYeildChartPcbCount_PreAoi()">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+					</button>
+				</div>--%>
+			</div>
+			<div class="col-md-4">
+				<div style="text-align: center;padding: 5px" id="sandBox-container">
+					<%--<span class="glyphicon glyphicon-time" aria-hidden="true"></span>--%>
+					<span  style="margin-left: -19px;" class="glyphicon glyphicon-calendar"></span>
+					<input size="16" type="text"  readonly  id="startTime" /> -
+					<input  size="16"  type="text"   readonly  id="endTime"/>
+					<!-- glyphicon glyphicon-search-->
+					<button type="button" class="btn  btn-info btn-xs"  onclick="areaYeildChartPcbCount_PreAoi()">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+					</button>
+				</div>
 			</div>
 		</div>
-		<div class="row" style="margin-top: -6px;">
-           <%-- <div class="col-md-1 col-md-offset-0" style="text-align: left;margin-top: 5px"><i>良率分组:</i></div>--%>
-            <div class="col-md-2" style="text-align: left;">
-                <div class="btn-group" role="group" aria-label="...">
-                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart(0)">Hour</button>
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按线体排序" onclick="choiceChart(1)">Lines</button>
-                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析"  onclick="choicePcb(1)">pcb</button>
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="choicePcb(2)">array</button>
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按元器件分析" onclick="choicePcb(3)">position</button>
-                </div>
-            </div>
-			<div class="col-md-4 col-md-offset-2"  id="sandBox-container">
-				<!-- glyphicon glyphicon-time   col-lg-offset-4-->
-				<%--<span class="glyphicon glyphicon-time" aria-hidden="true"></span>--%>
-                <span  style="margin-left: -19px;" class="glyphicon glyphicon-calendar"></span>
-                <input size="12" type="text" value="" readonly class="form-date" id="startTime" /> -
-				<input  size="12"  type="text"  value="" readonly class="form-date" id="endTime"/>
-				 <!-- glyphicon glyphicon-search-->
-				<button type="button" class="btn  btn-info btn-xs"> <%--  onclick="areaYeildChartPcbCount()">--%>
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
-				</button>
-			</div>
-		</div>
-		<%--<hr style= "border:1px dotted  #ffffff"  />--%>
-		<%--<div class="row row-border"  >
-		</div>--%>
-        <div class="row row-border" >
+        <div class="row row-border" style="padding: 0px;margin: 0px">
             <div class="col-md-14">
-                <div class="right-wap" style="height: 38vh;">
-                    <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-                    <div id="container-linePcbYeild" style="min-width: 310px; height: 100%; margin: 0 auto"></div>
-                </div>
+                    <div id="container-linePcbYeild" style="min-width: 35vh; height: 35vh; margin: 0 auto"></div>
             </div>
         </div>
 		<%--<div class="row row-border" >
 		</div>--%>
-		<div class="row row-border" >
+		<div class="row row-border" style="padding: 0px;margin: 0px">
 			<div class="col-md-14">
-				<div class="right-wap" style="height: 38vh;">
-					<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-					<div id="container-lineFn" style="min-width: 310px; height: 100%; margin: 0 auto"></div>
-				</div>
+					<div id="container-lineFn" style="min-width: 32vh; height: 32vh; margin: 0 auto"></div>
 			</div>
 		</div>
 		<%--<div class="row row-border" >
 		</div>--%>
-		<div class="row row-border" >
+		<div class="row row-border" style="padding: 0px;margin: 0px">
 			<table  class="table" id="pcbline_table">
 			</table>
 		</div>
 		<div id="lineToolbar">
-			<button type="button" class="btn btn-default" >导出</button>
+			<button type="button" class="btn btn-default" >EXP</button>
 		</div>
+		<!-- aoiType input -->
+		<input type="hidden" id="aoiType" value="${aoiType}" />
 	</nav>
-	<script type="text/javascript">
+	<script type="text/javascript" >
+
 		window.operateEventsPcbLineData={
 			"click #TablePcbDataDetails" :function(e,value, row, index){
 				//window.location.href="${basePath}/sLine/pcbLineDetails?lineno="+row.lineNo+"&inspectStarttime="+row.inspectStarttime + "&inspectEndtime="+ row.inspectEndtime;
-				window.open("${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+row.inspectStarttime + "&inspectEndtime="+ row.inspectEndtime +"&pcbType="+ichoicePcb);
+				window.open("${basePath}/aLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+row.inspectStarttime + "&inspectEndtime="+ row.inspectEndtime +"&pcbType="+ichoicePcb+"&aoiType="+aoiType);
 			}
 		};
-		var iGroupMode = 0;
+		var aoiType = $('#aoiType').val();
+		//alert(aoiType);
+		if(aoiType==''||aoiType==null){
+			aoiType=1;
+		}
+		var iGroupMode = 1;
 		var ichoicePcb =1;
 		var nowDate = new Date();
-		var dStart = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd');
-		var dEnd = dateFomate(nowDate.setDate(nowDate.getDate()+1),'yyyy-MM-dd');
-		//var timestamp=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+		var dStart = dateFomate( nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd HH:mm:ss' );
+		var dEnd = dateFomate( nowDate.setDate(nowDate.getDate()+1),'yyyy-MM-dd HH:mm:ss' );
 		$("#startTime").datetimepicker({
-			minView:"month",
-			format: 'yyyy-mm-dd',
+			//minView:"month",
+			format: 'yyyy-mm-dd hh:ii:ss',
 			language:"zh-CN",
 			todayHighlight:true,
 			showMeridian: true,
@@ -116,11 +122,10 @@
 			todayBtn: true,
 			//pickerPosition: "bottom-left"
 			//minuteStep: 1
-
 		});
 		$("#endTime").datetimepicker({
-			minView:"month",
-			format: 'yyyy-mm-dd',
+			//minView:"month",
+			format: 'yyyy-mm-dd hh:ii:ss',
 			language:"zh-CN",
 			todayHighlight:true,
 			showMeridian: true,
@@ -131,27 +136,26 @@
 		});
 		$("#startTime").val(dStart) ;
 		$("#endTime").val(dEnd) ;
+		InitPcbLineDataMainTable_PreAoi();
+		areaYeildChartPcbCount_PreAoi();
 
-		areaYeildChartPcbCount();
-		InitPcbLineDataMainTable();
 		<!--LINE TABLE -->
-
-		function choicePcb(x) {
+		function choicePcb_PreAoi(x) {
 			ichoicePcb = x;
-			areaYeildChartPcbCount();
+			areaYeildChartPcbCount_PreAoi();
 		}
-		function choiceChart(x){
+		function choiceChart_PreAoi(x){
 			iGroupMode = x;
-			areaYeildChartPcbCount();
+			areaYeildChartPcbCount_PreAoi();
 		}
-		function InitPcbLineDataMainTable(){
+		function InitPcbLineDataMainTable_PreAoi(){
 			var startTime = $("#startTime").val().toString();
 			var endTime = $("#endTime").val().toString();
 			$('#pcbline_table').bootstrapTable({
-				url: "${basePath}/sLine/pcbTableLine",//?inspectStarttime="+startTime+"&inspectEndtime="+endTime,                      //请求后台的URL（*）
+				url: "${basePath}/aLine/pcbTableLine?inspectStarttime="+startTime+"&inspectEndtime="+endTime+"&aoiType="+aoiType,                      //请求后台的URL（*）
 				dataType:"json",
 				method: 'GET',                      //请求方式（*）
-				data:{inspectStarttime:startTime,inspectEndtime:endTime},
+				//data:{inspectStarttime:startTime,inspectEndtime:endTime,aoiType:aoiType},
 				toolbar: '#lineToolbar',              //工具按钮用哪个容器
 				toolbarAlign:'right',
 				striped: true,                      //是否显示行间隔色
@@ -162,37 +166,48 @@
 				sortOrder: "asc",                   //排序方式
 				sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
 				pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-				pageSize: 10,                     //每页的记录行数（*）
+				pageSize: 5,                     //每页的记录行数（*）
 				pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
 				search: true,                      //是否显示表格搜索
 				strictSearch: false,
 				showColumns: true,                  //是否显示所有的列（选择显示的列）
-                showRefresh: true,                  //是否显示刷新按钮
-                //showColumnsToggleAll:true,
-               // minimumCountColumns: 0,             //最少允许的列数
+				showRefresh: true,                  //是否显示刷新按钮
+				//showColumnsToggleAll:true,
+				// minimumCountColumns: 0,             //最少允许的列数
 				clickToSelect: true,                //是否启用点击选中行
-				//height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+				height: 400,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 				uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
 				showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
 				cardView: false,                    //是否显示详细视图
 				detailView: false,                  //是否显示父子表
 				classes:'table table-striped table-hover',
+				exportDataType:'all',
+				showExport: true,  //是否显示导出按钮
+				buttonsAlign:"right",  //按钮位置
+				//exportTypes: [ 'csv', 'txt', 'xml', 'excel'],
+				Icons:'glyphicon-export icon-share',
+				exportOptions:{
+					//ignoreColumn: [0],  //忽略某一列的索引
+					fileName: ($('#aoiType').val()==1?'pre-aoi_':'post-aoi_')+$("#startTime").val()+ "_"+$("#endTime").val()+ "_line.csv",  //文件名称设置
+					worksheetName: 'sheet1',  //表格工作区名称
+					tableName: '缺陷',
+					excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+					//onMsoNumberFormat: DoOnMsoNumberFormat
+				},
 				rowStyle: function(row, index) {
-					var classes = [
-						'bg-blue',
-						'bg-green',
-						'bg-red'
-					]
 					if (index % 2 == 0 ) {
 						return {
-							classes: 'success'
+							classes: 'success',
 						}
 					}else{
 						return {
-							classes: 'info '
+							classes: 'info ',
 						}
 					}
 				},
+				/*cellStyle: function (value, row, index){
+					return {css:{'font-size':'9px','padding':'0px'}}
+				},*/
 				//得到查询的参数
 				queryParams : function (params) {
 					//这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
@@ -205,170 +220,199 @@
 					};
 				},
 				columns: [
-						/*{
-					checkbox: true,
-					align:'center',
-					visible: true
-					//是否显示复选框
-				}, */
+					/*{
+                checkbox: true,
+                align:'center',
+                visible: true
+                //是否显示复选框
+            }, */
 					{
-					field: 'lineNo',
-					title: 'lineNo',
-					width:50,
-					align:'center',
-					sortable: true
-				}, {
-					field: 'goodPcbYeild',
-					title: 'PassPcbYeild',
-					align:'center',
-					width:50,
-					formatter:function(value,row,index){
-						var goodCount =row.goodarrayCount;
-						var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
-						if(ichoicePcb==1){
-							return '<span>'+row.goodPcbYeild+'</span>';
-						}else if(ichoicePcb==2){
-							goodCount =row.goodarrayCount;
-							Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
-							return '<span>'+(goodCount/Count*100).toFixed(2)+'</span>';
-						}else{
-							goodCount =row.goodpadCount;
-							Count=row.totalpadCount;
-							return '<span>'+(goodCount/Count*100).toFixed(2)+'</span>';
-						}
+						field: 'lineNo',
+						title: 'lineNo',
+						width:50,
+						align:'center',
+						sortable: true,
+						cellStyle: function (value, row, index){
+							return {css:{'font-size':'9px','padding':'0px'}}
+						},
+					}, {
+						field: 'goodPcbYeildAoi',
+						title: 'PassPcbYeildAoi',
+						align:'center',
+						width:50,
+						formatter:function(value,row,index){
+							var goodCount =row.goodarrayCount;
+							var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+							if(ichoicePcb==1){
+								return '<span>'+row.goodPcbYeildAoi+'</span>';
+							}else if(ichoicePcb==2){
+								goodCount =row.goodarrayCount;
+								Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+								return '<span>'+(goodCount/Count*100).toFixed(2)+'</span>';
+							}else{
+								goodCount =row.goodComponentCount;
+								Count=row.totalComponentCount;
+								return '<span>'+(goodCount/Count*100).toFixed(2)+'</span>';
+							}
 
-					},
-					sortable: true
-				},{
-					field: 'passPcbYeild',
-					title: 'RePassPcbYeild',
-					align:'center',
-					sortable:true,
-					width:50,
-					formatter:function(value,row,index){
-						var passCount =row.passarrayCount;
-						var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
-						//var ngarrayCount=row.ngarrayCount;
-						if(ichoicePcb==1){
-							return '<span>'+row.passPcbYeild+'</span>';
-						}else if(ichoicePcb==2){
-							passCount =row.passarrayCount;
-							Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
-							return '<span>'+(passCount/Count*100).toFixed(2)+'</span>';
-						}else{
-							passCount =row.passpadCount;
-							Count=row.totalpadCount;
-							return '<span>'+(passCount/Count*100).toFixed(2)+'</span>';
-						}
-					},
-					//formatter: linkFormatter
-				}, {
-					field: 'ngPcbYeild',
-					title:  'ngPcbYeild',
-					align:'center',
-					sortable: true,
-					width:50,
-					formatter:function(value,row,index){
-						var ngCount =row.ngarrayCount;
-						var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
-						//var ngarrayCount=row.ngarrayCount;
-						if(ichoicePcb==1){
-							return '<span>'+row.ngPcbYeild+'</span>';
-						}else if(ichoicePcb==2){
-							ngCount =row.ngarrayCount;
-							Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
-							return '<span>'+(ngCount/Count*100).toFixed(2)+'</span>';
-						}else{
-							ngCount =row.ngpadCount;
-							Count=row.totalpadCount;
-							return '<span>'+(ngCount/Count*100).toFixed(2)+'</span>';
-						}
-					},
-					//events:operateEvents,
-				}, {
-					field: 'total',
-					title:  'pcbTotal',
-					align:'center',
-					sortable: true,
-					width:50,
-					formatter:function(value,row,index){
-						if(ichoicePcb==1){
-							return '<span>'+row.total+'</span>';
-						}else if(ichoicePcb==2){
-							return '<span>'+(parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount))+'</span>';
-						}else{
-							return '<span>'+row.total+'</span>';
-						}
+						},cellStyle: function (value, row, index){
+							return {css:{'font-size':'9px','padding':'0px'}}
+						},
+						sortable: true
+					},{
+						field: 'passPcbYeildAoi',
+						title: 'RePassPcbYeildAoi',
+						align:'center',
+						sortable:true,
+						width:50,
+						formatter:function(value,row,index){
+							var passCount =row.passarrayCount;
+							var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+							//var ngarrayCount=row.ngarrayCount;
+							if(ichoicePcb==1){
+								return '<span>'+row.passPcbYeildAoi+'</span>';
+							}else if(ichoicePcb==2){
+								passCount =row.passarrayCount;
+								Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+								return '<span>'+(passCount/Count*100).toFixed(2)+'</span>';
+							}else{
+								passCount =row.passComponentCount;
+								Count=row.totalComponentCount;
+								return '<span>'+(passCount/Count*100).toFixed(2)+'</span>';
+							}
+						},
+						cellStyle: function (value, row, index){
+							return {css:{'font-size':'9px','padding':'0px'}}
+						},
+						//formatter: linkFormatter
+					}, {
+						field: 'ngPcbYeildAoi',
+						title:  'ngPcbYeildAoi',
+						align:'center',
+						sortable: true,
+						width:50,
+						formatter:function(value,row,index){
+							var ngCount =row.ngarrayCount;
+							var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+							//var ngarrayCount=row.ngarrayCount;
+							if(ichoicePcb==1){
+								return '<span>'+row.ngPcbYeildAoi+'</span>';
+							}else if(ichoicePcb==2){
+								ngCount =row.ngarrayCount;
+								Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+								return '<span>'+(ngCount/Count*100).toFixed(2)+'</span>';
+							}else{
+								ngCount =row.ngComponentCount;
+								Count=row.totalComponentCount;
+								return '<span>'+(ngCount/Count*100).toFixed(2)+'</span>';
+							}
+						},
+						cellStyle: function (value, row, index){
+							return {css:{'font-size':'9px','padding':'0px'}}
+						},
+						//events:operateEvents,
+					}, {
+						field: 'totalAoi',
+						title:  'pcbTotalAoi',
+						align:'center',
+						sortable: true,
+						width:50,
+						formatter:function(value,row,index){
+							if(ichoicePcb==1){
+								return '<span>'+row.totalAoi+'</span>';
+							}else if(ichoicePcb==2){
+								return '<span>'+(parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount))+'</span>';
+							}else{
+								return '<span>'+row.totalAoi+'</span>';
+							}
 
-					},
-				}, {
-					field: 'ngPcbCount',
-					title:  'ngPcbCount',
-					align:'center',
-					sortable: true,
-					width:50,
-					formatter:function(value,row,index){
-						if(ichoicePcb==1){
-							return '<span>'+row.ngPcbCount+'</span>';
-						}else if(ichoicePcb==2){
-							return '<span>'+row.ngarrayCount+'</span>';
-						}else{
-							return '<span>'+row.ngPcbCount+'</span>';
-						}
+						},
+						cellStyle: function (value, row, index){
+							return {css:{'font-size':'9px','padding':'0px'}}
+						},
+					}, {
+						field: 'ngPcbCountAoi',
+						title:  'ngPcbCountAoi',
+						align:'center',
+						sortable: true,
+						width:50,
+						formatter:function(value,row,index){
+							if(ichoicePcb==1){
+								return '<span>'+row.ngPcbCountAoi+'</span>';
+							}else if(ichoicePcb==2){
+								return '<span>'+row.ngarrayCount+'</span>';
+							}else{
+								return '<span>'+row.ngPcbCountAoi+'</span>';
+							}
 
-					},
-				}, {
-					field: 'passPcbCount',
-					title:  'RePassPcbCount',
-					align:'center',
-					sortable: true,
-					width:50,
-					formatter:function(value,row,index){
-						if(ichoicePcb==1){
-							return '<span>'+row.passPcbCount+'</span>';
-						}else if(ichoicePcb==2){
-							return '<span>'+row.passarrayCount+'</span>';
-						}else{
-							return '<span>'+row.passPcbCount+'</span>';
-						}
+						},
+						cellStyle: function (value, row, index){
+							return {css:{'font-size':'9px','padding':'0px'}}
+						},
+					}, {
+						field: 'passPcbCountAoi',
+						title:  'RePassPcbCountAoi',
+						align:'center',
+						sortable: true,
+						width:50,
+						formatter:function(value,row,index){
+							if(ichoicePcb==1){
+								return '<span>'+row.passPcbCountAoi+'</span>';
+							}else if(ichoicePcb==2){
+								return '<span>'+row.passarrayCountAoi+'</span>';
+							}else{
+								return '<span>'+row.passPcbCountAoi+'</span>';
+							}
 
-					},
-				}, {
-					field:  'ngpadCount',
-					title:  'ngpadCount',
-					align:  'center',
-					sortable: true,
-					width:50,
-					formatter:function(value,row,index){
-						if(ichoicePcb==1){
-							return '<span>'+row.ngpadCount+'</span>';
-						}else if(ichoicePcb==2){
-							return '<span>'+row.ngarrayCount+'</span>';
-						}else{
-							return '<span>'+row.ngpadCount+'</span>';
-						}
+						},
+						cellStyle: function (value, row, index){
+							return {css:{'font-size':'9px','padding':'0px'}}
+						},
+					}, {
+						field:  'ngComponentCount',
+						title:  'ngComponentCount',
+						align:  'center',
+						sortable: true,
+						width:50,
+						formatter:function(value,row,index){
+							if(ichoicePcb==1){
+								return '<span>'+row.ngComponentCount+'</span>';
+							}else if(ichoicePcb==2){
+								return '<span>'+row.ngComponentCount+'</span>';
+							}else{
+								return '<span>'+row.ngComponentCount+'</span>';
+							}
 
-					},
-				}, {
-					field: 'Date',
-					title:  'Date',
-					align:'center',
-					//sortable: true,
-					width:200,
-					formatter:function(value,row,index){
-						var html='<span>'+row.inspectStarttime+ '-' +row.inspectEndtime +'</span>';
-						return html;
-					}
-				},{
-					field: 'operation',
-					title:  'operation',
-					align:'center',
-					//sortable: true,
-					width:50,
-					events: operateEventsPcbLineData,//给按钮注册事件
-					formatter: addFunctionAltyPcbLineData//表格中增加按钮
+						},
+						cellStyle: function (value, row, index){
+							return {css:{'font-size':'9px','padding':'0px'}}
+						},
+					}, {
+						field: 'Date',
+						title:  'Date',
+						align:'center',
+						//sortable: true,
+						width:200,
+						formatter:function(value,row,index){
+							var html='<span>'+row.inspectStarttime+ '-' +row.inspectEndtime +'</span>';
+							return html;
+						},
+						cellStyle: function (value, row, index){
+							return {css:{'font-size':'9px','padding':'0px'}}
+						},
+					},{
+						field: 'operation',
+						title:  'operation',
+						align:'center',
+						//sortable: true,
+						width:50,
+						events: operateEventsPcbLineData,//给按钮注册事件
+						formatter: addFunctionAltyPcbLineData,//表格中增加按钮
+						cellStyle: function (value, row, index){
+							return {css:{'font-size':'9px','padding':'0px'}}
+						},
 
-				}],
+					}],
 				onLoadSuccess: function (sta) {
 				},
 				onLoadError: function (status,res) {
@@ -384,7 +428,7 @@
 				}
 			});
 		}
-		function areaYeildChartPcbCount(){
+		function areaYeildChartPcbCount_PreAoi(){
 			// alert($("#startTime").val());
 			var startTime = $("#startTime").val()+' 00:00:00';
 			var endTime = $("#endTime").val()+' 00:00:00';
@@ -392,10 +436,10 @@
 			var jsonYeildHour={};
 			var jsonContainerline={};
 			$.ajax({
-				url:"${basePath}/sLine/jsonPcbLine",
+				url:"${basePath}/aLine/jsonPcbLine",
 				dataType:"json",
 				async:true,
-				data:{inspectStarttime:startTime,inspectEndtime:endTime,mode:iGroupMode,pcbType:ichoicePcb},
+				data:{inspectStarttime:startTime,inspectEndtime:endTime,mode:iGroupMode,pcbType:ichoicePcb,aoiType:aoiType},
 				scriptCharset: 'utf-8',
 				type:"GET",
 
@@ -422,6 +466,7 @@
 						max:100,labels: {
 						},
 						opposite: false,
+                        gridLineWidth:0,
 						minorGridLineWidth:0
 
 
@@ -433,6 +478,7 @@
 					jsonYeildHour.plotOptions = {
 						areaspline: {
 							pointStart: 0,
+                            shadow: false,
 							marker: {
 								enabled: true,
 								symbol: 'triangle-down',
@@ -445,20 +491,43 @@
 							},
 							pointPadding: 0.3,
 							borderWidth: 0,
-							dataLabels:{enabled:true}
+							dataLabels:{enabled:true,useHTML: true,
+								formatter: function() {
+                                    return this.series.name+':'+this.y+"%";
+								},}
 						},
 						column: {
+							cursor:'pointer',
 							grouping: true,
-							shadow: true,
+							shadow: false,
 							borderWidth: 0,
 							stacking:'normal',
-							dataLabels:{enabled:true}
+							dataLabels:{enabled:true,useHTML: true,
+								formatter: function() {
+                                    return this.series.name+':'+this.y+"%";
+								},},
+							events:{
+								click:function (e) {
+									var startTime = $("#startTime").val();
+									var endTime = $("#endTime").val();
+									window.open("${basePath}/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime+ "&inspectEndtime="+ endTime +"&pcbType="+ichoicePcb+"&aoiType="+aoiType);
+
+								}
+							}
+						},
+						spline:{
+							dataLabels:{enabled:true,useHTML: true,
+								formatter: function() {
+                                    return this.series.name+':'+this.y+"%";
+								},}
 						}
 					};
+                    jsonYeildHour.credits={enabled: false };
+                    jsonYeildHour.legend = {
+                        enabled:false,
+                    };
 					//alert(json);
 					$('#container-linePcbYeild').highcharts(jsonYeildHour);
-
-
 					jsonContainerline.chart = {
 					};
 					jsonContainerline.title ={
@@ -472,6 +541,10 @@
 					jsonContainerline.credits={enabled: false };
 
 					jsonContainerline.xAxis = req.data.xaxis;
+					var vYaxisType ='logarithmic';
+					if(req.data.xaxis.categories.length==1){
+						vYaxisType = 'linear';
+					}
 					jsonContainerline.yAxis =
 							{
 								title: {
@@ -479,6 +552,8 @@
 								},
 								labels: {
 								},
+								type:vYaxisType,
+								gridLineWidth:0,
 								minorGridLineWidth:0
 
 							};
@@ -486,7 +561,57 @@
 						enabled:false
 					};
 					jsonContainerline.series=req.rows.series;
-					jsonContainerline.plotOptions = jsonYeildHour.plotOptions;
+					jsonContainerline.plotOptions = {
+						areaspline: {
+							pointStart: 0,
+                            shadow: false,
+							marker: {
+								enabled: true,
+								symbol: 'triangle-down',
+								radius: 1,
+								states: {
+									hover: {
+										enabled: true
+									}
+								}
+							},
+							pointPadding: 0.3,
+							borderWidth: 0,
+							dataLabels:{enabled:true,useHTML: true,
+								formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+								},}
+						},
+						column: {
+							cursor:'pointer',
+							grouping: true,
+							shadow: false,
+							borderWidth: 0,
+							stacking:'normal',
+							dataLabels:{enabled:true,useHTML: true,
+								formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+								},},
+							events:{
+								click:function (e) {
+									var startTime = $("#startTime").val();
+									var endTime = $("#endTime").val();
+									window.open("${basePath}/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime+ "&inspectEndtime="+ endTime +"&pcbType="+ichoicePcb+"&aoiType="+aoiType);
+
+								}
+							}
+						},
+						spline:{
+							dataLabels:{enabled:true,useHTML: true,
+								formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+								},}
+						}
+					};
+                    jsonContainerline.credits={enabled: false };
+                    jsonContainerline.legend = {
+                        enabled:false,
+                    };
 					//alert(json);
 					$('#container-lineFn').highcharts(jsonContainerline);
 				},
@@ -497,11 +622,11 @@
 					//console.log(data);
 				}
 			});
-			refreshTable(startTime,endTime);
+			refreshTable_PreAoi(startTime,endTime);
 		}
-		function refreshTable(startTime,endTime){
+		function refreshTable_PreAoi(startTime,endTime){
 			var opt = {
-				url: "${basePath}/sLine/pcbTableLine?inspectStarttime="+startTime+"&inspectEndtime="+endTime,
+				url: "${basePath}/aLine/pcbTableLine?inspectStarttime="+startTime+"&inspectEndtime="+endTime+"&aoiType="+aoiType,
 				silent: true,
 				query:{
 					type:1,

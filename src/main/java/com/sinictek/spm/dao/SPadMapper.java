@@ -35,7 +35,7 @@ public interface SPadMapper extends BaseMapper<SPad> {
                     "<where>  pad.pcbidLine=#{pcbidLine} and pad.padId=#{padId}   " +
                     "</where>" +
             " </script>"*/
-            "<script> SELECT pad.pad2dImage pad2dImage,pad.remark remark FROM ${padTableName} pad  " +
+            "<script> SELECT pad.pad2dImage pad2dImage,pad.pad2dImageBase64 pad2dImageBase64,pad.pad3dImageBase64 pad3dImageBase64,pad.remark remark FROM ${padTableName} pad  " +
                     "<where>  pad.pcbidLine=#{pcbidLine} and pad.padId=#{padId}   " +
                     "</where>" +
                     " </script>"

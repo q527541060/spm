@@ -5,7 +5,9 @@
 		<meta charset="utf-8">
 		<title>Board-Machine-View</title>
 		<meta name="viewport"  />
-		<%--content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"--%>
+        <link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
+
+    <%--content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"--%>
 		<style>
 			body{
 				margin: 0px;
@@ -44,12 +46,11 @@
             <%@include file="../header.jsp"%>
            <%-- <jsp:include page="header.jsp"></jsp:include>--%>
             <%--<%@include file="header.jsp" %>--%>
-
 			<div class="row" style="text-align: left;margin-top: -5px">
 				<div class="col-md-14" >
                         <ol class="breadcrumb" >
                             <li><a href="${basePath}/Home/pcbHome">Home</a></li>
-                            <li class="active" ><a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/aStatus/pcbMonitorview_realLineView">spi</a></li>
+                            <li class="active" >spi<%--<a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/aStatus/pcbMonitorview_realLineView">spi</a>--%></li>
                             <li class="active">Board-Machine-RealLineView</li>
                             <li>
                                 <div  class="btn-group" role="group" aria-label="..." >
@@ -185,18 +186,10 @@
         var mode = 1;
         window.operateEventsRealLineView={
             "click #MachineListNo" :function(e,value, row, index){
-                var Frequency_start = $('#Frequency-start').val();
-                var nowDate = new Date();
-                var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
-                var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
-                window.open("${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode);
+                window.open("${basePath}/sStatus/historicalList?lineNo="+row.lineNo);
             },
             "click #MachineListNo_i" :function(e,value, row, index){
-                var Frequency_start = $('#Frequency-start').val();
-                var nowDate = new Date();
-                var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
-                var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
-                window.open("${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode);
+                window.open("${basePath}/sStatus/historicalList?lineNo="+row.lineNo);
             }
         };
         var StatusQueryUrl = '${basePath}/sStatus/pcbMonitorJson';
@@ -285,8 +278,9 @@
                                         enabled:true,
                                     }
                                 }
-                            }
+                            },
                             //fontSize:"22px",
+
                         },
                         spline:{
                             dataLabels:{enabled:true,useHTML: true,
@@ -298,6 +292,7 @@
                             //borderColor:'#ff2514',
                             //borderWidth:10,
                             //selected:true,
+                            cursor: 'pointer',
                             pointPadding: 0,
                             borderWidth: 0,
                             dataLabels:{
@@ -311,7 +306,23 @@
                                     fontWeight:'bold',
                                     color:'#141328'
                                 },
-                            }//,color:'#ff0816'
+                            },//,color:'#ff0816'
+                            events:{
+                                click:function (e) {
+                                    //alert(this.xAxis.categories[e.point.x]);
+                                    //进入质量分析
+                                    var Frequency_start = $('#Frequency-start').val();
+                                    var nowDate = new Date();
+                                    var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    if(Frequency_start>100){
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd') +" "+Frequency_start.substring(0,Frequency_start.length-2)+":00:00";
+                                    }else{
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    }
+                                    var endTime =  dateFomate(nowDate,'yyyy-MM-dd HH:mm:ss');
+                                    window.open("${basePath}/sLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode);
+                                }
+                            },
                         },
 
 
@@ -549,6 +560,7 @@
                             pointPadding : 0
                         },
                         column:{
+                            cursor: 'pointer',
                             borderWidth: 0,
                             dataLabels:{
                                 useHTML: true,
@@ -562,6 +574,22 @@
                                     color:'#141328'
                                 },
                             },//,color:'#ff0816'
+                            events:{
+                                click:function (e) {
+                                    //alert(this.xAxis.categories[e.point.x]);
+                                    //进入质量分析
+                                    var Frequency_start = $('#Frequency-start').val();
+                                    var nowDate = new Date();
+                                    var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    if(Frequency_start>100){
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd') +" "+Frequency_start.substring(0,Frequency_start.length-2)+":00:00";
+                                    }else{
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    }
+                                    var endTime =  dateFomate(nowDate,'yyyy-MM-dd HH:mm:ss');
+                                    window.open("${basePath}/sLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode);
+                                }
+                            },
                         },
                     };
                     //console.log(JSON.stringify(json));

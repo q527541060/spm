@@ -113,7 +113,9 @@ public class AStatus implements Serializable {
      * remark
      */
     private String remark;
-
-
+    /**
+     * aoiMode
+     */
+    private Integer aoiMode;
 
 }

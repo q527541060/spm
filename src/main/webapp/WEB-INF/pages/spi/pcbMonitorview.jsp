@@ -12,6 +12,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Board-Machine-View</title>
+		<link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
+		<link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
+
 		<meta name="viewport"  />
 		<%--content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"--%>
 		<style>

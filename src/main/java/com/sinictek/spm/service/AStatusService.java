@@ -2,6 +2,8 @@ package com.sinictek.spm.service;
 
 import com.sinictek.spm.model.AStatus;
 import com.baomidou.mybatisplus.service.IService;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -17,4 +19,7 @@ public interface AStatusService extends IService<AStatus> {
 
 
     public List<AStatus> getAllStatusWithLineNoLimt_AOI();
+    public List<AStatus> getAllStatusWithLineNoLimt(String lane , String aoiType);
+    public AStatus getStatusWithLineNo( String lineNo,String aoiType);
+
 }

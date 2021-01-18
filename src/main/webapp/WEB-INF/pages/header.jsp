@@ -11,7 +11,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title></title>
+		<link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
 
+	<%--<link rel="stylesheet" href="${staticPath}/img/logo.png">--%>
 
 		<%--<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">--%>
 		<link rel="stylesheet" href="${staticPath}/bootstrap/css/bootstrap-table.min.css">
@@ -20,8 +22,11 @@
 		<link rel="stylesheet" href="${staticPath}/bootstrap/css/bootstrap-select.min.css" />
 		<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 		<script type="text/javascript" src="${staticPath}/jquery/jQuery-2.2.0.min.js"></script>
+
 		<script type="text/javascript" src="${staticPath}/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="${staticPath}/bootstrap/js/bootstrap-select.min.js"></script>
+
+		<script type="text/javascript" src="${staticPath}/jquery/jquery.maphilight.js"></script>
 
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="${staticPath}/bootstrap/js/bootstrap-table.min.js"></script>
@@ -46,17 +51,14 @@
 		<!-- bootstrap-treeview -->
 		<%--<script src="${staticPath}/bootstrap/js/bootstrap-treeview.js"></script>
 		<script src="${staticPath}/bootstrap/css/bootstrap-treeview.css"></script>--%>
-
 		<script src="${staticPath}/js/static/pcbLineData.js"></script>
 		<script src="${staticPath}/js/static/publicJs.js"></script>
         <script  src="${staticPath}/js/pcbfovImageView_aoi.js"></script>
 		<script  src="${staticPath}/js/threePointAsClose.js"></script>
-
 		<!-- echart -->
 		<script src="${staticPath}/echart/echarts.min.js"></script>
 		<script src="${staticPath}/echart/echarts-gl.min.js"></script>
 		<%--<script src="${staticPath}/echart/canyon.hdr"></script>--%>
-
 
 		<script src="${staticPath}/exportjs/jszip.min.js"></script>
 		<script src="${staticPath}/exportjs/FileSaver.js"></script>
@@ -126,7 +128,7 @@
 	</head>
 	<body>
 			<!--头部信息-->
-			<div class="row">
+			<div class="row" >
 				 <div class="col-md-14 " id="header-col-mod-14">
 					 <ul class="nav nav-pills header-view">
 						 <!-- home -->
@@ -144,8 +146,8 @@
 							 </a>
 							 <ul class="dropdown-menu dropdown-menu-dataInfo">
 								 <li><a href="${basePath}/sLine/pcbLine">SPI</a></li>
-								 <li><a href="${basePath}/aLine/pcbLine">PRE-AOI</a></li>
-								 <li><a href="${basePath}/aLine/pcbLine">POST-AOI</a></li>
+								 <li><a href="${basePath}/aLine/pcbLine?aoiType=1">PRE-AOI</a></li>
+								 <li><a href="${basePath}/aLine/pcbLine?aoiType=2">POST-AOI</a></li>
 							 </ul>
 						 </li>
 						<!-- Monitoring-->
@@ -155,8 +157,8 @@
 							 </a>
 							 <ul class="dropdown-menu dropdown-menu-dataInfo">
 								 <li><a href="${basePath}/sStatus/pcbMonitorview_realLineView">SPI</a></li>
-								 <li><a href="${basePath}/aStatus/pcbMonitorview_realLineView">PRE-AOI</a></li>
-								 <li><a href="${basePath}/aStatus/pcbMonitorview_realLineView">POST-AOI</a></li>
+								 <li><a href="${basePath}/aStatus/pcbMonitorview_realLineView?aoiType=1">PRE-AOI</a></li>
+								 <li><a href="${basePath}/aStatus/pcbMonitorview_realLineView?aoiType=2">POST-AOI</a></li>
 							 </ul>
 						 </li>
 						 <!-- setting -->
@@ -284,7 +286,7 @@
                     case '10':
                     case '11':
                     default :{
-                        $("body").css({'background-image':'url("${staticPath}/img/home6.png")','background-size':'cover'});
+                        $("body").css({'background-image':'url("${staticPath}/img/zzbg.png")','background-size':'cover'});
                         break;
                     }
                 }

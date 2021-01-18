@@ -20,3 +20,24 @@ function arrpcbResultToStandResult(arrResult){
     }
     return result;
 }
+
+function arrpcbResultToStandResult_WITH_AOI(arrResult){
+    var result ='';
+    switch (arrResult) {
+        case '1':
+        case 1:
+            result = 'NG';
+            break;
+        case  '2':
+        case  2:
+            result = 'REPASS';
+            break;
+        case '0':
+        case 0:
+            result = 'PASS';
+            break;
+        default :
+            break;
+    }
+    return result;
+}

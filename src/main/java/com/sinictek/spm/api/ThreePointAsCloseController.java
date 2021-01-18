@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONPObject;
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
+import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
 import com.sinictek.spm.model.SLine;
 import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
@@ -40,7 +42,19 @@ public class ThreePointAsCloseController {
 
     @GetMapping("showThreePointClose")
     public ModelAndView threepointascloseView() {
-        ModelAndView mv = new ModelAndView("pubPages/threePointAsClose");
+        ConstController.constController.iniDefaultParamSetting();
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "pubPages/threePointAsClose";
+        if(bCmBoxs){
+        }else {
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+        //ModelAndView mv = new ModelAndView("spi/pcbLineData");
+        mv.addObject("hChartColor", ConstParam.DEFAULTSETTING_hChartColor);
+        mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
+       // mv.addObject("aoiType",aoiType);
+        //ModelAndView mv = new ModelAndView("pubPages/threePointAsClose");
         return mv;
     }
 

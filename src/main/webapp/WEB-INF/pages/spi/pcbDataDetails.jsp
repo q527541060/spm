@@ -3,7 +3,9 @@
 <html lang="zh-CN">
 <head>
     <title>dataDetails</title>
-     <style>
+    <link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
+
+    <style>
          body{
              margin: 0px;
              padding: 0px;
@@ -30,16 +32,16 @@
             <div class="col-md-14">
                 <ol class="breadcrumb">
                     <li><a href="${basePath}/Home/pcbHome">Home</a></li>
-                   <%-- <li><a href="#">spi</a></li>--%>
-                    <li><a href="${basePath}/sLine/pcbLine">line</a></li>
-                    <li class="active">lineDetail</li>
+                    <li class="active">spi</li>
+                    <li class="active">dataInfo</li>
+                    <li class="active">dataInfoDetail</li>
                 </ol>
             </div>
         </div>
         <!-- s饼图详情-->
-        <div class="row" style="margin-top: -40px; ">
+        <div class="row" style="margin-top: -20px;; padding: 0px;">
             <div class="col-md-12">
-                <h2> ${lineNo}线质量统计分析 </h2>
+                <h4 style="margin: 0px"> ${lineNo}线质量统计分析 </h4>
                 <input id="lineNo" type="hidden" value="${lineNo}">
                 <input id="inspectStarttime" type="hidden" value="${inspectStarttime}">
                 <input id="inspectEndtime" type="hidden" value="${inspectEndtime}">
@@ -48,12 +50,12 @@
             </div>
         </div>
         <!--  饼图缺陷  -->
-        <div class="row">
+        <div class="row" style="margin: 0px">
             <div class="col-md-6">
-                <div id="container_pcb" style="min-width:40%;height:350px"></div>
+                <div id="container_pcb" style="min-height:43vh;height:43vh"></div>
             </div>
             <div class="col-md-6">
-                <div id="container_pad" style="min-width:40%;height:350px"></div>
+                <div id="container_pad" style="min-height:43vh;height:43vh"></div>
 
             </div>
         </div>
@@ -65,10 +67,10 @@
                 <table id="table_padList"></table>
             </div>
             <div id="pcbToolbar">
-                <button  type="button" class="btn btn-default">导出</button>
+                <button  type="button" class="btn btn-default">EXP</button>
             </div>
             <div id="padToolbar">
-                <button  type="button" class="btn btn-default ">导出</button>
+                <button  type="button" class="btn btn-default ">EXP</button>
             </div>
         </div>
 
@@ -240,7 +242,10 @@
                             data:JSON.parse(req.data)
                         }
                     ];
-
+                    padCountpieJson.credits={enabled: false };
+                    padCountpieJson.legend = {
+                        enabled:false,
+                    };
                     $('#container_pad').highcharts(padCountpieJson);
                 }
             });
@@ -343,6 +348,10 @@
                     pcbCountpieJson.exporting={
                         enabled:false
                     };
+                    pcbCountpieJson.credits={enabled: false };
+                    pcbCountpieJson.legend = {
+                        enabled:false,
+                    };
                     $('#container_pcb').highcharts(pcbCountpieJson);
 
                 },
@@ -355,10 +364,11 @@
         var  $Pcbtable;
         window.operateEventslineDetailsLeftChart={
             "click #TableNGImage" :function(e,value, row, index){
+                showPadImageModal(row.pad2dImageBase64);
                 // window.location.href="${basePath}/sLine/pcbLineDetails?lineNo="+row.lineNo;
                 //alert(row.pad2dImage);
                 //byte[] out =
-                var pcbidLine = row.pcbidLine;
+               /* var pcbidLine = row.pcbidLine;
                 pcbidLine.replace("#","=====");
                 var padid = row.padId;
                 $.ajax({
@@ -374,7 +384,7 @@
                     error:function (data) {
                         //alert('error:'+data);
                     }
-                });
+                });*/
 
 
 
@@ -431,13 +441,13 @@
                 detailView: false,                  //是否显示父子表
                 classes:'table table-striped table-hover',
                 exportDataType:'all',
-                showExport: false,  //是否显示导出按钮
+                showExport: true,  //是否显示导出按钮
                 showLoading:true,
-                exportTypes: [ 'csv', 'txt', 'xml', 'excel'],
+                //exportTypes: [ 'csv', 'txt', 'xml', 'excel'],
                 Icons:'glyphicon-export',
                 exportOptions:{
-                    ignoreColumn: [0],  //忽略某一列的索引
-                    fileName: '线体',  //文件名称设置
+                    //ignoreColumn: [0],  //忽略某一列的索引
+                    fileName: "spi_"+$("#inspectStarttime").val()+"-"+$("#inspectEndtime").val()+ "_pcb",  //文件名称设置
                     worksheetName: 'sheet1',  //表格工作区名称
                     tableName: '线体',
                     excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
@@ -485,7 +495,7 @@
                         align:'center',
                         sortable: true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     }, {
                         field: 'lineNo',
@@ -494,7 +504,7 @@
                         width:10,
                         sortable: true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     },
                     {
@@ -503,7 +513,7 @@
                         align:'center',
                         sortable: true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                         //  width:50
                         //events:operateEvents,
@@ -527,7 +537,7 @@
                             }
                         },
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     }, {
                         field: 'arrayBarcode',
@@ -557,7 +567,7 @@
 
                         },
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                         //  width:50
                     },{
@@ -574,7 +584,7 @@
                                 ';shithyCpk:'+row.shithyCpk.toFixed(3) +'</span>';
                         },
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     },{
                         field: 'ngpadCount',
@@ -583,7 +593,7 @@
                         sortable: true,
                         width:10,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     },
                     /* {
@@ -600,7 +610,7 @@
                         sortable: true,
                         width:2,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     },{
                         field: 'inspectStarttime',
@@ -609,7 +619,7 @@
                         sortable: true,
                         width:10,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                         //events: operateEventslineDetailsLeftChart,//给按钮注册事件
                         //formatter: addFunctionAltylineDetailsLeftChart//表格中增加按钮
@@ -620,7 +630,7 @@
                         align:'center',
                         sortable: true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                         //   width:50
                     },
@@ -761,13 +771,13 @@
                 height: 380,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
                 //uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
                 exportDataType:'all',
-                showExport: false,  //是否显示导出按钮
+                showExport: true,  //是否显示导出按钮
                 buttonsAlign:"right",  //按钮位置
-                exportTypes: [ 'csv', 'txt', 'xml', 'excel'],
+                //exportTypes: [ 'csv', 'txt', 'xml', 'excel'],
                 Icons:'glyphicon-export',
                 exportOptions:{
-                    ignoreColumn: [0],  //忽略某一列的索引
-                    fileName: 'padE',  //文件名称设置
+                    //ignoreColumn: [0],  //忽略某一列的索引
+                    fileName: "spi_"+lineNo+"_"+$("#inspectStarttime").val()+"-"+$("#inspectEndtime").val()+"_pad",  //文件名称设置
                     //worksheetName: 'sheet1',  //表格工作区名称
                     //tableName: '缺陷',
                     //excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
@@ -821,7 +831,7 @@
                         return barcode;
                     },
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                 },{
                     field: 'padBarcode',
@@ -841,17 +851,17 @@
                        return barcode;
                     },
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                 },
                     {
-                    field: 'padId',
+                    field: 'padIndex',
                     title: 'padId',
                     // width:50,
                     align:'center',
                     sortable: true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                 },{
                         field: 'padImage',
@@ -860,9 +870,11 @@
                         sortable: true,
                         //  width:100,
                         events: operateEventslineDetailsLeftChart,
-                        formatter: addFunctionAltylineDetailsLeftChart,
+                        formatter:function(value,row,index){
+                            return '<image id="TableNGImage" width="30px" height="30px" style="cursor: pointer" src='+'data:image/jpeg;base64,'+ row.pad2dImageBase64+'  >';
+                        },
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                 },{
                         field: 'position',
@@ -873,7 +885,7 @@
                             return row.arrayId+ '_'+row.componentId;
                         },
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     },{
                         field: 'padInspectResult',
@@ -894,7 +906,7 @@
                            //return ;
                         },
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     },{
                         field: 'defectTypeName',
@@ -902,7 +914,7 @@
                         align:'center',
                         sortable: true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                         //    width:100
                     },{
@@ -912,7 +924,7 @@
                     //  width:100,
                     sortable: true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                 },{
                     field: 'area',
@@ -920,7 +932,7 @@
                     align:'center',
                     sortable:true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     //  width:100
                     //formatter: linkFormatter
@@ -930,7 +942,7 @@
                     align:'center',
                     sortable: true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     //  width:50
                     //events:operateEvents,
@@ -940,7 +952,7 @@
                     align:'center',
                     sortable: true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     //  width:50
                     //events:operateEvents,
@@ -950,7 +962,7 @@
                     align:'center',
                     sortable: true,
                         cellStyle: function (value, row, index){
-                            return {css:{"font-size":"12px"}}
+                            return {css:{'font-size':'9px','padding':'0px'}}
                         }
                     //  width:50
                     //events:operateEvents,

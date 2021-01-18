@@ -80,22 +80,22 @@ public class SLineController {
         List<Series> lstSeries = new ArrayList<Series>();
 
         Series goodSeries = new Series();
-        goodSeries.setName("PCB直通率(%)");
+        goodSeries.setName("直通率");
         Series ngSeries = new Series();
-        ngSeries.setName("不良率(%)");
+        ngSeries.setName("不良率");
         Series passSeries = new Series();
-        passSeries.setName("误报率(%)");
+        passSeries.setName("误报率");
         List<Data> lstGoodSeriesData = new ArrayList<Data>();
         List<Data> lstNgSeriesData = new ArrayList<Data>();
         List<Data> lstPassSeriesData = new ArrayList<Data>();
 
         List<Series> lstPcbSeries = new ArrayList<Series>();
         Series pcbCountSeries = new Series();
-        pcbCountSeries.setName("总PCB个数");
+        pcbCountSeries.setName("总板");
         Series passPcbCountSeries = new Series();
-        passPcbCountSeries.setName("复判PASS-PCB个数");
+        passPcbCountSeries.setName("复判板");
         Series ngPadCountSeries = new Series();
-        ngPadCountSeries.setName("不良点个数");
+        ngPadCountSeries.setName("缺陷点");
         List<Data> lstpcbCountSeriesData = new ArrayList<Data>();
         List<Data> lstpassPcbCountSeriesData = new ArrayList<Data>();
         List<Data> lstngPadCountSeriesData = new ArrayList<Data>();
@@ -397,7 +397,7 @@ public class SLineController {
                                            @RequestParam("inspectStarttime") String inspectStarttime,
                                            @RequestParam("inspectEndtime") String inspectEndtime,
                                            @RequestParam("pcbType") String pcbType){
-
+        ConstController.constController.iniDefaultParamSetting();
         boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
         String viewName = "spi/pcbDataDetails";
         if(bCmBoxs){

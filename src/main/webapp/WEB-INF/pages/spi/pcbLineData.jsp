@@ -5,6 +5,8 @@
 		<meta charset="utf-8" >
 		<%--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">--%>
 		<title>pcbLineData</title>
+		<link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
+
 		<style>
 			body{
 				margin: 0px;
@@ -31,11 +33,12 @@
     <nav>
 		<%@include file="../header.jsp"  %>
 		<div class="row" style=" text-align: left;">
-			<div class="col-md-14">
+			<div class="col-md-3" style="padding: 0px">
 				<ol class="breadcrumb"  style="float: left;margin: 0px">
 					<li><a href="${basePath}/Home/pcbHome">Home</a></li>
-					<li class="active"><a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/aLine/pcbLine">spi</a></li>
-					<li class="active">line</li>
+					<li class="active">spi<%--<a  data-toggle="tooltip" data-placement="bottom" title="过程数据大分析" href="${basePath}/Home/pcbHome">spi-dataInfo</a>--%></li>
+					<%--<li class="active">line</li>--%>
+                    <li class="active">dataInfo</li>
 					<li>
 						<div class="btn-group" role="group" aria-label="...">
 							<button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart(0)">Hour</button>
@@ -46,12 +49,24 @@
 						</div>
 					</li>
 				</ol>
-				<div style="float: left;margin-left: 21%;padding: 5px" id="sandBox-container">
+				<%--<div style="float: left;margin-left: 21%;padding: 5px" id="sandBox-container">
 					<!-- glyphicon glyphicon-time   col-lg-offset-4-->
+					&lt;%&ndash;<span class="glyphicon glyphicon-time" aria-hidden="true"></span>&ndash;%&gt;
+					<span  style="margin-left: -19px;" class="glyphicon glyphicon-calendar"></span>
+					<input size="16" type="text" value="" readonly class="form-date" id="startTime" /> -
+					<input  size="16"  type="text"  value="" readonly class="form-date" id="endTime"/>
+					<!-- glyphicon glyphicon-search-->
+					<button type="button" class="btn  btn-info btn-xs"  onclick="areaYeildChartPcbCount()">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+					</button>
+				</div>--%>
+			</div>
+			<div class="col-md-6">
+				<div style="text-align: center;padding: 5px" id="sandBox-container">
 					<%--<span class="glyphicon glyphicon-time" aria-hidden="true"></span>--%>
 					<span  style="margin-left: -19px;" class="glyphicon glyphicon-calendar"></span>
-					<input size="12" type="text" value="" readonly class="form-date" id="startTime" /> -
-					<input  size="12"  type="text"  value="" readonly class="form-date" id="endTime"/>
+					<input size="16" type="text"  readonly  id="startTime" /> -
+					<input  size="16"  type="text"   readonly  id="endTime"/>
 					<!-- glyphicon glyphicon-search-->
 					<button type="button" class="btn  btn-info btn-xs"  onclick="areaYeildChartPcbCount()">
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
@@ -59,46 +74,16 @@
 				</div>
 			</div>
 		</div>
-		<%--<div class="row" style="margin-top: -6px;">
-           &lt;%&ndash; <div class="col-md-1 col-md-offset-0" style="text-align: left;margin-top: 5px"><i>良率分组:</i></div>&ndash;%&gt;
-            <div class="col-md-2" style="text-align: left;">
-                &lt;%&ndash;<div class="btn-group" role="group" aria-label="...">
-                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart(0)">Hour</button>
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按线体排序" onclick="choiceChart(1)">Lines</button>
-                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析"  onclick="choicePcb(1)">pcb</button>
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="choicePcb(2)">array</button>
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按点位焊盘分析" onclick="choicePcb(3)">pad</button>
-                </div>&ndash;%&gt;
-            </div>
-			<div class="col-md-4 col-md-offset-2"  id="sandBox-container">
-                <span  style="margin-left: -19px;" class="glyphicon glyphicon-calendar"></span>
-                <input size="12" type="text" value="" readonly class="form-date" id="startTime" /> -
-				<input  size="12"  type="text"  value="" readonly class="form-date" id="endTime"/>
-				 <!-- glyphicon glyphicon-search-->
-				<button type="button" class="btn  btn-info btn-xs"  onclick="areaYeildChartPcbCount()">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
-				</button>
-			</div>
-		</div>--%>
-		<%--<hr style= "border:1px dotted  #ffffff"  />--%>
-		<%--<div class="row row-border"  >
-		</div>--%>
         <div class="row row-border" style="padding: 0px;margin: 0px">
             <div class="col-md-14">
-                <div class="right-wap" style="height: 38vh;">
-                    <!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-                    <div id="container-linePcbYeild" style="min-width: 310px; height: 100%; margin: 0 auto"></div>
-                </div>
+                    <div id="container-linePcbYeild" style="min-width: 35vh; height: 35vh; margin: 0 auto"></div>
             </div>
         </div>
 		<%--<div class="row row-border" >
 		</div>--%>
 		<div class="row row-border" style="padding: 0px;margin: 0px">
 			<div class="col-md-14">
-				<div class="right-wap" style="height: 32vh;">
-					<!-- <div id="container-product" style="min-width: 310px; height: 100%; margin: 0 auto"></div> -->
-					<div id="container-lineFn" style="min-width: 310px; height: 100%; margin: 0 auto"></div>
-				</div>
+					<div id="container-lineFn" style="min-width: 32vh; height: 32vh; margin: 0 auto"></div>
 			</div>
 		</div>
 		<%--<div class="row row-border" >
@@ -108,7 +93,7 @@
 			</table>
 		</div>
 		<div id="lineToolbar">
-			<button type="button" class="btn btn-default" >导出</button>
+			<button type="button" class="btn btn-default" >EXP</button>
 		</div>
 	</nav>
 	<script type="text/javascript">
@@ -121,12 +106,11 @@
 		var iGroupMode = 1;
 		var ichoicePcb =1;
 		var nowDate = new Date();
-		var dStart = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd');
-		var dEnd = dateFomate(nowDate.setDate(nowDate.getDate()+1),'yyyy-MM-dd');
-		//var timestamp=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+		var dStart = dateFomate( nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd HH:mm:ss' );
+		var dEnd = dateFomate( nowDate.setDate(nowDate.getDate()+1),'yyyy-MM-dd HH:mm:ss' );
 		$("#startTime").datetimepicker({
-			minView:"month",
-			format: 'yyyy-mm-dd',
+			//minView:"month",
+			format: 'yyyy-mm-dd hh:ii:ss',
 			language:"zh-CN",
 			todayHighlight:true,
 			showMeridian: true,
@@ -134,11 +118,10 @@
 			todayBtn: true,
 			//pickerPosition: "bottom-left"
 			//minuteStep: 1
-
 		});
 		$("#endTime").datetimepicker({
-			minView:"month",
-			format: 'yyyy-mm-dd',
+			//minView:"month",
+			format: 'yyyy-mm-dd hh:ii:ss',
 			language:"zh-CN",
 			todayHighlight:true,
 			showMeridian: true,
@@ -166,10 +149,10 @@
 			var startTime = $("#startTime").val().toString();
 			var endTime = $("#endTime").val().toString();
 			$('#pcbline_table').bootstrapTable({
-				url: "${basePath}/sLine/pcbTableLine",//?inspectStarttime="+startTime+"&inspectEndtime="+endTime,                      //请求后台的URL（*）
+				url: "${basePath}/sLine/pcbTableLine?inspectStarttime="+startTime+"&inspectEndtime="+endTime,                      //请求后台的URL（*）
 				dataType:"json",
 				method: 'GET',                      //请求方式（*）
-				data:{inspectStarttime:startTime,inspectEndtime:endTime},
+				//data:{inspectStarttime:startTime,inspectEndtime:endTime},
 				toolbar: '#lineToolbar',              //工具按钮用哪个容器
 				toolbarAlign:'right',
 				striped: true,                      //是否显示行间隔色
@@ -195,6 +178,19 @@
 				cardView: false,                    //是否显示详细视图
 				detailView: false,                  //是否显示父子表
 				classes:'table table-striped table-hover',
+				exportDataType:'all',
+				showExport: true,  //是否显示导出按钮
+				buttonsAlign:"right",  //按钮位置
+				//exportTypes: [ 'csv', 'txt', 'xml', 'excel'],
+				Icons:'glyphicon-export icon-share',
+				exportOptions:{
+					//ignoreColumn: [0],  //忽略某一列的索引
+					fileName: "spi_"+$("#startTime").val()+ "_"+$("#endTime").val()+ "_line.csv",  //文件名称设置
+					worksheetName: 'sheet1',  //表格工作区名称
+					tableName: '缺陷',
+					excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+					//onMsoNumberFormat: DoOnMsoNumberFormat
+				},
 				rowStyle: function(row, index) {
 					if (index % 2 == 0 ) {
 						return {
@@ -464,11 +460,14 @@
 						title: {
 							text: 'yeild%',
 						},min:0,
-						max:100,labels: {
+						max:100,
+						labels: {
 						},
+						//type: 'datetime',
+						gridLineWidth:0,
+						minorGridLineWidth:0,
 						opposite: false,
-						minorGridLineWidth:0
-
+						//type:'logarithmic'
 
 					};
 					jsonYeildHour.exporting={
@@ -478,6 +477,7 @@
 					jsonYeildHour.plotOptions = {
 						areaspline: {
 							pointStart: 0,
+							shadow: false,
 							marker: {
 								enabled: true,
 								symbol: 'triangle-down',
@@ -492,27 +492,41 @@
 							borderWidth: 0,
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-									return (this.y)+'%';
+									return this.series.name+':'+this.y+"%";
 								},}
 						},
 						column: {
+							cursor:'pointer',
 							grouping: true,
-							shadow: true,
+							shadow: false,
 							borderWidth: 0,
+							pointPadding: 0,
 							stacking:'normal',
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-									return (this.y)+'%';
-								},}
+									return this.series.name+':'+this.y+"%";
+								},},
+							events: {
+								click:function(e){
+									var startTime = $("#startTime").val();
+									var endTime = $("#endTime").val();
+									window.open("${basePath}/sLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime+ "&inspectEndtime="+ endTime +"&pcbType="+ichoicePcb);
+								}
+
+							}
 						},
 						spline:{
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-									return (this.y)+'%';
+									return this.series.name+':'+this.y+"%";
 								},}
 						}
 					};
 					//alert(json);
+					jsonYeildHour.credits={enabled: false };
+					jsonYeildHour.legend = {
+						enabled:false,
+					};
 					$('#container-linePcbYeild').highcharts(jsonYeildHour);
 
 
@@ -529,6 +543,10 @@
 					jsonContainerline.credits={enabled: false };
 
 					jsonContainerline.xAxis = req.data.xaxis;
+					var vYaxisType ='logarithmic';
+					if(req.data.xaxis.categories.length==1){
+						vYaxisType = 'linear';
+					}
 					jsonContainerline.yAxis =
 							{
 								title: {
@@ -536,6 +554,8 @@
 								},
 								labels: {
 								},
+								type:vYaxisType,
+								gridLineWidth:0,
 								minorGridLineWidth:0
 
 							};
@@ -546,6 +566,7 @@
 					jsonContainerline.plotOptions = {
 						areaspline: {
 							pointStart: 0,
+							shadow: false,
 							marker: {
 								enabled: true,
 								symbol: 'triangle-down',
@@ -560,18 +581,35 @@
 							borderWidth: 0,
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-									return (this.y)+'pcs';
+									return (this.series.name)+ ':' +(this.y);
 								},}
 						},
 						column: {
 							grouping: true,
-							shadow: true,
+							shadow: false,
+							cursor:'pointer',
+							pointPadding: 0,
 							borderWidth: 0,
-							stacking:'normal',
-							dataLabels:{enabled:true,useHTML: true,
+							dataLabels:{
+								useHTML: true,
+								enabled:true,
 								formatter: function() {
-									return (this.y)+'pcs';
-								},}
+									return (this.series.name)+ ':' +(this.y);
+								},
+								style:{
+									fontSize:'12px',
+									fontWeight:'bold',
+									color:'#141328'
+								},
+							},//,color:'#ff0816'
+							events: {
+								click:function(e){
+									var startTime = $("#startTime").val();
+									var endTime = $("#endTime").val();
+									window.open("${basePath}/sLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime+ "&inspectEndtime="+ endTime +"&pcbType="+ichoicePcb);
+								}
+
+							}
 						},
 						spline:{
 							dataLabels:{enabled:true,useHTML: true,
@@ -579,6 +617,10 @@
 									return (this.y)+'pcs';
 								},}
 						}
+					};
+					jsonContainerline.credits={enabled: false };
+					jsonContainerline.legend = {
+						enabled:false,
 					};
 					//alert(json);
 					$('#container-lineFn').highcharts(jsonContainerline);

@@ -1,6 +1,7 @@
 package com.sinictek.spm.model.ConstClasses;
 
 import com.alibaba.druid.util.StringUtils;
+import com.sinictek.spm.model.APcb;
 import com.sinictek.spm.model.SPcb;
 
 import java.io.File;
@@ -132,6 +133,135 @@ public class ConstPublicClassUtil {
         return  i;
     }
 
+    public static int getPadErrorCodeCountAoi(APcb sPcbList, int iJuResult){
+
+        int i=0;
+        switch (iJuResult){
+            case 0:{
+                i = sPcbList.getMissingCount()==null?0:sPcbList.getMissingCount();
+                break;
+            }
+            case 1:
+            {
+                i = sPcbList.getCustomCount()==null?0:sPcbList.getCustomCount();
+                break;
+            }
+            case 2:
+            {
+                i = sPcbList.getDefaultCount()==null?0:sPcbList.getDefaultCount();
+                break;
+            }
+            case 3:
+            {
+                i = sPcbList.getShiftXCount()==null?0:sPcbList.getShiftXCount();
+                break;
+            }
+            case 4:
+            {
+                i = sPcbList.getShiftYCount()==null?0:sPcbList.getShiftYCount();
+                break;
+            }
+            case 5:
+            {
+                i = sPcbList.getRotationCount()==null?0:sPcbList.getRotationCount();
+                break;
+            }
+            case 6:
+            {
+                i = sPcbList.getBridgeCount()==null?0:sPcbList.getBridgeCount();
+                break;
+            }
+            case 7:
+            {
+                i = sPcbList.getVoidCount()==null?0:sPcbList.getVoidCount();
+                break;
+            }
+            case 8:
+            {
+                i = sPcbList.getTombStoneCount()==null?0:sPcbList.getTombStoneCount();
+                break;
+            }
+            case 9:
+            {
+                i = sPcbList.getPinLiftCount()==null?0:sPcbList.getPinLiftCount();
+                break;
+            }
+            case 10:
+            {
+                i = sPcbList.getSolderBeadCount()==null?0:sPcbList.getSolderBeadCount();
+                break;
+            }
+            case 11:
+            {
+                i = sPcbList.getSmearCount()==null?0:sPcbList.getSmearCount();
+                break;
+            }
+            case 12:
+            {
+                i = sPcbList.getPolarityCount()==null?0:sPcbList.getPolarityCount();
+                break;
+            }
+            case 13:
+            {
+                i = sPcbList.getReverseCount()==null?0:sPcbList.getReverseCount();
+                break;
+            }
+            case 14:
+            {
+                i = sPcbList.getWrongPartCount()==null?0:sPcbList.getWrongPartCount();
+                break;
+            }
+            case 15:
+            {
+                i = sPcbList.getNoSolderCount()==null?0:sPcbList.getNoSolderCount();
+                break;
+            }
+            case 16:
+            {
+                i = sPcbList.getCopperExposureCount()==null?0:sPcbList.getCopperExposureCount();
+                break;
+            }
+            case 17:
+            {
+                i = sPcbList.getExcessPartsCount()==null?0:sPcbList.getExcessPartsCount();
+                break;
+            }
+            case 18:
+            {
+                i = sPcbList.getSolderingCount()==null?0:sPcbList.getSolderingCount();
+                break;
+            }
+            case 19:
+            {
+                i = sPcbList.getExcessPartsCount()==null?0:sPcbList.getExcessPartsCount();
+                break;
+            }
+            default:{
+                i = sPcbList.getMissingCount()==null?0:sPcbList.getMissingCount();
+                break;
+            }
+                   /* Missing = 0,
+                   Insufficient = 1,
+                   Excess = 2,
+                   OverHeight = 3,
+                   LowHeight = 4,
+                   OverArea = 5,
+                   LowArea = 6,
+                   ShiftX = 7,
+                   ShiftY = 8,
+                   Bridge = 9,
+                   ShapeError = 10,
+                   Smeared = 11,
+                   Coplanarity = 12,
+                   PreBridge = 13,
+                   PadAreaError = 14,
+                   WarpError = 15,*/
+        }
+
+        return  i;
+    }
+
+
     public static String[] getDefaultTypeArray(){
         if(ConstParam.DEFAULTSETTING_defaultType==""){
             ConstParam.DEFAULTSETTING_defaultType="0;1;2;3;4";
@@ -214,6 +344,93 @@ public class ConstPublicClassUtil {
         return  str;
     }
 
+    public static String getErrorCodeStringAoi(int iJuResult) {
+        String str = "";
+        switch (iJuResult) {
+            case 0: {
+                str = "Missing";
+                break;
+            }
+            case 1: {
+                str = "Custom";
+                break;
+            }
+            case 2: {
+                str = "Default";
+                break;
+            }
+            case 3: {
+                str = "ShiftX";
+                break;
+            }
+            case 4: {
+                str = "ShiftY";
+                break;
+            }
+            case 5: {
+                str = "Rotation";
+                break;
+            }
+            case 6: {
+                str = "Bridge";
+                break;
+            }
+            case 7: {
+                str = "Void";
+                break;
+            }
+            case 8: {
+                str = "TombStone";
+                break;
+            }
+            case 9: {
+                str = "PinLift";
+                break;
+            }
+            case 10: {
+                str = "SolderBead";
+                break;
+            }
+            case 11: {
+                str = "Smear";
+                break;
+            }
+            case 12: {
+                str = "Polarity";
+                break;
+            }
+            case 13: {
+                str = "Reverse";
+                break;
+            }
+            case 14: {
+                str = "WrongPart";
+                break;
+            }
+            case 15: {
+                str = "NoSolder";
+                break;
+            }case 16: {
+                str = "CopperExposure";
+                break;
+            }case 17: {
+                str = "ExcessParts";
+                break;
+            }case 18: {
+                str = "Soldering";
+                break;
+            }case 19: {
+                str = "ExcessParts";
+                break;
+            }
+            default: {
+                str = "Missing";
+                break;
+            }
+
+        }
+        return  str;
+    }
 
     public static String getErrorCodeChinase(int iJuResult) {
         String str = "";
@@ -291,6 +508,93 @@ public class ConstPublicClassUtil {
         return  str;
     }
 
+    public static String getErrorCodeChinaseAoi(int iJuResult) {
+        String str = "";
+        switch (iJuResult) {
+            case 0: {
+                str = "Missing";
+                break;
+            }
+            case 1: {
+                str = "Custom";
+                break;
+            }
+            case 2: {
+                str = "Default";
+                break;
+            }
+            case 3: {
+                str = "ShiftX";
+                break;
+            }
+            case 4: {
+                str = "ShiftY";
+                break;
+            }
+            case 5: {
+                str = "Rotation";
+                break;
+            }
+            case 6: {
+                str = "Bridge";
+                break;
+            }
+            case 7: {
+                str = "Void";
+                break;
+            }
+            case 8: {
+                str = "TombStone";
+                break;
+            }
+            case 9: {
+                str = "PinLift";
+                break;
+            }
+            case 10: {
+                str = "SolderBead";
+                break;
+            }
+            case 11: {
+                str = "Smear";
+                break;
+            }
+            case 12: {
+                str = "Polarity";
+                break;
+            }
+            case 13: {
+                str = "Reverse";
+                break;
+            }
+            case 14: {
+                str = "WrongPart";
+                break;
+            }
+            case 15: {
+                str = "NoSolder";
+                break;
+            }case 16: {
+                str = "CopperExposure";
+                break;
+            }case 17: {
+                str = "ExcessParts";
+                break;
+            }case 18: {
+                str = "Soldering";
+                break;
+            }case 19: {
+                str = "ExcessParts";
+                break;
+            }
+            default: {
+                str = "Missing";
+                break;
+            }
+
+        }
+        return  str;
+    }
 
 
 

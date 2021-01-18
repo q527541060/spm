@@ -1,4 +1,5 @@
 // pcb图
+const img = document.getElementById("svgImage")
 function showPcbImage(basePath){
     var pcbPath= '//127.0.0.1/AOI_DB/WholeImage/BoardImage.jpg';
     $.ajax({
@@ -10,15 +11,49 @@ function showPcbImage(basePath){
         beforeSend:function(){
         },
         success:function(req){
-            $("<img class='svgImage' style='width: 100%;height:400px; object-fit: cover;' src='data:image/jpeg;base64,"+ req.data+"  '>").addClass("img-thumbnail").appendTo("#pcbImage");
-            //var pcbImgHtml = $('<img/>').addClass("img-thumbnail").attr("height","300px").attr("width","400px").attr("src",)
-           InitPcbTable(basePath);
+
+           /*var img = $("<img class='svgImage' style='width: 100%;height:400px; object-fit: cover;' src='data:image/jpeg;base64,"+ req.data+"  '>")
+                .addClass("img-thumbnail");*/
+               // .appendTo("#pcbImage");
+            var iSrc = 'data:image/jpeg;base64,'+ req.data;
+
+            canvasPCBPart(iSrc);
+            InitPcbTable(basePath);
+
         },
         error:function(req){
             alert(req);
         }
     });
 
+}
+function canvasPCBPart(srcImg) {
+    var canvas = document.getElementById("pcbImage-canvas");
+    var ctx = canvas.getContext("2d");
+    var img = new Image();
+    // 这里可以放 图片路径 "./test.jpg"  || base64图片 || 图片链接
+    img.src = srcImg;
+    //console.log(img, 'SRC', srcImg);
+    img.onload = function () {
+        //算出压缩比
+        let xRate = canvas.width/img.width;
+        let yRate = canvas.height/img.height;
+        // 设置图片在canvas上 前面两个0,0是边距, 后面是宽高
+        //'width: 100%;height:400px;
+        ctx.drawImage(img, 0, 0,img.width*xRate,img.height*yRate);
+
+        // 添加文字 后面两个数字是坐标
+        ctx.font = "20px sans-serif"
+        ctx.fillStyle = '#e22018'
+        ctx.fillText("ArrayID_02", 135, 55);
+
+        // 画矩形 前两个数字是坐标, 后面是矩形的宽高 fillRect是填充的
+        ctx.strokeStyle = '#e22018'
+        ctx.strokeRect(125, 10, 115, 119);
+
+        /*ctx.strokeStyle = 'pink'
+        ctx.strokeRect(240, 245, 248, 248);*/
+    }
 }
 //fov
 function showFovImage(basePath){
@@ -32,8 +67,11 @@ function showFovImage(basePath){
         beforeSend:function(){
         },
         success:function(req){
-            $("<img class='svgImage' style='width: 100%;height:400px; object-fit: cover;' src='data:image/jpeg;base64,"+ req.data+"  '>").addClass("img-thumbnail").appendTo("#fovImage");
+            //$("<img class='svgImage' style='width: 100%;height:400px; object-fit: cover;' src='data:image/jpeg;base64,"+ req.data+"  '>").addClass("img-thumbnail").appendTo("#fovImage");
             //var pcbImgHtml = $('<img/>').addClass("img-thumbnail").attr("height","300px").attr("width","400px").attr("src",)
+            var iSrc = 'data:image/jpeg;base64,'+ req.data;
+
+            canvasFOVPart(iSrc);
            InitFovTable(basePath);
         },
         error:function(req){
@@ -41,6 +79,67 @@ function showFovImage(basePath){
         }
 
     });
+}
+function canvasFOVPart(srcImg) {
+    var canvas = document.getElementById("fovImage-canvas");
+    var ctx = canvas.getContext("2d");
+    var img = new Image();
+    // 这里可以放 图片路径 "./test.jpg"  || base64图片 || 图片链接
+    img.src = srcImg;
+    const path1 = new Path2D();
+    const path2 = new Path2D();
+    img.onload = function () {
+        //算出压缩比
+        let xRate = canvas.width/img.width;
+        let yRate = canvas.height/img.height;
+        // 设置图片在canvas上 前面两个0,0是边距, 后面是宽高
+        //'width: 100%;height:400px;
+        ctx.drawImage(img, 0, 0,img.width*xRate,img.height*yRate);
+        // 添加文字 后面两个数字是坐标
+        ctx.font = "18px sans-serif";
+        ctx.fillStyle = '#e22018';
+        ctx.fillText("F3_21", 370, 130);
+        //画实例矩形
+        ctx.strokeStyle = '#e22018';
+        path1.rect(375, 135, 25,15);
+        ctx.stroke(path1);
+        ctx.closePath();
+
+        //画对角线
+        ctx.beginPath();
+        //ctx.beginPath();
+        path2.moveTo(375,135);
+        path2.lineTo(400,150);
+        path2.moveTo(375,150);
+        path2.lineTo(400,135);
+        ctx.stroke(path2);
+        ctx.closePath();
+        // 画矩形 前两个数字是坐标, 后面是矩形的宽高 fillRect是填充的
+        //ctx.strokeStyle = '#e22018';
+        //ctx.strokeRect(375, 135, 25, 15);
+
+        //console.log(ctx.isPointInPath(path1,10,10));
+        canvas.addEventListener('click', function (e) {
+            var p = getEventPosition(e);
+            if(ctx.isPointInPath(path1,p.x+28,p.y)){
+                alert('F3_21-NG-50pcs');
+            }else{
+                //alert('我是矩形外面勒');
+            };
+        },false);
+    };
+
+}
+function getEventPosition(ev){
+    var x, y;
+    if (ev.layerX || ev.layerX == 0) {
+        x = ev.layerX;
+        y = ev.layerY;
+    } else if (ev.offsetX || ev.offsetX == 0) { // Opera
+        x = ev.offsetX;
+        y = ev.offsetY;
+    }
+    return {x: x, y: y};
 }
 //component
 function showComponentImage(basePath,staticPath){
@@ -377,7 +476,7 @@ function InitPcbTable (basePath) {
         },
         onClickRow: function (row, $element) {
             $('.danger').removeClass('danger');
-            $($element).addClass('danger')
+            $($element).addClass('danger');
         },
     });
 };

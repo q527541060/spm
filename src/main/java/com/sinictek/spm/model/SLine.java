@@ -39,6 +39,8 @@ public class SLine implements Serializable {
     private String createDateStr;
     @TableField(exist = false)
     private String updateDateStr;
+    @TableField(exist = false)
+    private Integer modeType;
 
 
 }

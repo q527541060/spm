@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <title>three-point as close</title>
+    <link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
+
     <style type="text/css">
 
         body{

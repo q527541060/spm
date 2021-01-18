@@ -17,52 +17,6 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- ----------------------------
--- Table structure for a_line
--- ----------------------------
-
-CREATE TABLE IF NOT EXISTS `db_spm`.`a_line`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '线体ID',
-  `LineNo` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '线体编号',
-  `lineContent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '线体说明',
-  `createDate` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `updateDate` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'remark',
-  PRIMARY KEY (`id`, `LineNo`) USING BTREE,
-  UNIQUE INDEX `LineNo`(`LineNo`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 459 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '线体总表' ROW_FORMAT = Compact;
-
--- ----------------------------
--- Table structure for a_status
--- ----------------------------
-
-CREATE TABLE IF NOT EXISTS `db_spm`.`a_status`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'aoi机器状态数据ID',
-  `lineNo` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'aoi机器线体',
-  `barcode` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '当前条码或上一片条码',
-  `ipAddress` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '当前设备局域网IP',
-  `equipmentNo` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '设备编号',
-  `loft` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '设备楼层',
-  `factory` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '设备厂区',
-  `lane` int(11) NULL DEFAULT NULL COMMENT '设备轨道号',
-  `customer` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户名',
-  `start` smallint(1) NULL DEFAULT NULL COMMENT '设备开启',
-  `run` smallint(1) NULL DEFAULT NULL COMMENT '设备运行',
-  `stop` smallint(1) NULL DEFAULT NULL COMMENT '设备停止',
-  `idle` smallint(1) NULL DEFAULT NULL COMMENT '设备闲置',
-  `init` smallint(1) NULL DEFAULT NULL COMMENT '设备初始化',
-  `error` smallint(1) NULL DEFAULT NULL COMMENT '设备报警',
-  `towerR` smallint(1) NULL DEFAULT NULL COMMENT '红灯',
-  `towerG` smallint(1) NULL DEFAULT NULL COMMENT '绿灯',
-  `towerY` smallint(1) NULL DEFAULT NULL COMMENT '黄灯',
-  `status` smallint(1) NULL DEFAULT NULL COMMENT '预留',
-  `errContent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '报警详细信息',
-  `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'remark',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `status_line_lineNo_aoi`(`lineNo`) USING BTREE,
-  CONSTRAINT `status_line_lineNo_aoi` FOREIGN KEY (`lineNo`) REFERENCES `a_line` (`LineNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 358 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'aoi-设备状态' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for s_component
@@ -104,7 +58,7 @@ INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SE
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 11, 'Frequency-start', '8', '2020-07-24 17:10:04', '班次设置值(例如早上八点:8   24小时制)'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=11);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 12, 'autoDelete-MaxDays', '365', '2020-07-24 17:10:04', '自动删除最大上限设置天数(一般不设置,如果需要删除天数大于365天请修改天数 例如500天 500)'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=12);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 13, 'hChartColor', '0', '2020-07-24 17:10:04', '选择chart柱形图图表主题皮肤'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=13);
-INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 14, 'backgroundColor', '0', '2020-07-24 17:10:04', '选择spc系统背景皮肤'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=14);
+INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 14, 'backgroundColor', '2', '2020-07-24 17:10:04', '选择spc系统背景皮肤'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=14);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 15, 'passPcbYeild', '85', '2020-07-24 17:10:04', '看板直通率标准设定值 例如85% 85'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=15);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 16, 'boardView-chartMove', '0', '2020-07-24 17:10:04', '看板动画渲染开关'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=16);
 INSERT INTO `s_defaultSetting`(id,settingName,settingValue,updateTime,remark) SELECT 17, 'showPad2DImageMode', '0', '2020-07-24 17:10:04', '选择查看缺陷图片方式'FROM DUAL WHERE NOT EXISTS ( SELECT * FROM s_defaultSetting where id=17);
@@ -367,7 +321,244 @@ CREATE TABLE IF NOT EXISTS `db_spm`.`s_user`  (
   INDEX `lineWithUser`(`lineNoStr`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
+-- ----------------------------
+-- Table structure for a_line
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `db_spm`.`a_line`  (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '线体ID',
+    `aoiMode` int(1) NULL DEFAULT NULL,
+    `LineNo` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '线体编号',
+    `lineContent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '线体说明',
+    `createDate` datetime NULL DEFAULT NULL COMMENT '创建时间',
+    `updateDate` datetime NULL DEFAULT NULL COMMENT '更新时间',
+    `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'remark',
+    PRIMARY KEY (`id`, `LineNo`) USING BTREE,
+    UNIQUE INDEX `LineNo`(`LineNo`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 459 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '线体总表' ROW_FORMAT = Compact;
 
+CREATE TABLE IF NOT EXISTS `db_spm`.`a_job`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `jobName` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `jobVersion` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `lineNo` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `creatDate` datetime NULL DEFAULT NULL,
+  `updateDate` datetime NULL DEFAULT NULL,
+  `remark` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `aoiMode` int(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `jobName`) USING BTREE,
+  UNIQUE INDEX `ajobName`(`jobName`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+CREATE TABLE IF NOT EXISTS `db_spm`.`a_status`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `lineNo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `barcode` varbinary(55) NULL DEFAULT NULL,
+  `customer` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `equipmentNo` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `status` smallint(1) NULL DEFAULT NULL,
+  `errContent` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `error` int(1) NULL DEFAULT NULL,
+  `factory` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `idle` int(1) NULL DEFAULT NULL,
+  `init` int(1) NULL DEFAULT NULL,
+  `ipAddress` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `lane` int(1) NULL DEFAULT NULL,
+  `loft` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `run` int(1) NULL DEFAULT NULL,
+  `start` int(1) NULL DEFAULT NULL,
+  `stop` int(1) NULL DEFAULT NULL,
+  `towerG` int(1) NULL DEFAULT NULL,
+  `towerR` int(1) NULL DEFAULT NULL,
+  `towerY` int(1) NULL DEFAULT NULL,
+  `updateTime` datetime NULL DEFAULT NULL,
+  `aoiMode` int(1) NULL DEFAULT NULL,
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `FK_Reference_astatus_lineNo_aline`(`lineNo`) USING BTREE,
+  CONSTRAINT `FK_Reference_astatus_lineNo_aline` FOREIGN KEY (`lineNo`) REFERENCES `db_spm`.`a_line` (`LineNo`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+CREATE TABLE IF NOT EXISTS `db_spm`.`a_pcb`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `lineNo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `jobName` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `aoiMode` int(1) NULL DEFAULT NULL,
+  `jobversion` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `jobmodifyDate` datetime NULL DEFAULT NULL,
+  `inspectStarttime` datetime NULL DEFAULT NULL,
+  `inspectEndtime` datetime NULL DEFAULT NULL,
+  `inspectResult` int(1) NULL DEFAULT NULL,
+  `laneNo` int(1) NULL DEFAULT NULL,
+  `pcbIdLine` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `carrierbarcode` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `boardBarcode` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `arrayInfo` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `componentTableName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `fovTableName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `windowTableName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `totalArrayCount` int(11) NULL DEFAULT NULL,
+  `goodArrayCount` int(11) NULL DEFAULT NULL,
+  `ngArrayCount` int(11) NULL DEFAULT NULL,
+  `passArrayCount` int(11) NULL DEFAULT NULL,
+  `otherArrayCount` int(11) NULL DEFAULT NULL,
+  `totalComponentCount` int(11) NULL DEFAULT NULL,
+  `goodComponentCount` int(11) NULL DEFAULT NULL,
+  `passComponentCount` int(11) NULL DEFAULT NULL,
+  `ngComponentCount` int(11) NULL DEFAULT NULL,
+  `otherComponentCount` int(11) NULL DEFAULT NULL,
+  `customCount` int(11) NULL DEFAULT NULL,
+  `defaultCount` int(11) NULL DEFAULT NULL,
+  `missingCount` int(11) NULL DEFAULT NULL,
+  `shiftXCount` int(11) NULL DEFAULT NULL,
+  `shiftYCount` int(11) NULL DEFAULT NULL,
+  `rotationCount` int(11) NULL DEFAULT NULL,
+  `bridgeCount` int(11) NULL DEFAULT NULL,
+  `voidCount` int(11) NULL DEFAULT NULL,
+  `tombStoneCount` int(11) NULL DEFAULT NULL,
+  `pinLiftCount` int(11) NULL DEFAULT NULL,
+  `solderBeadCount` int(11) NULL DEFAULT NULL,
+  `smearCount` int(11) NULL DEFAULT NULL,
+  `polarityCount` int(11) NULL DEFAULT NULL,
+  `reverseCount` int(11) NULL DEFAULT NULL,
+  `wrongPartCount` int(11) NULL DEFAULT NULL,
+  `noSolderCount` int(11) NULL DEFAULT NULL,
+  `copperExposureCount` int(11) NULL DEFAULT NULL,
+  `excessSolderCount` int(11) NULL DEFAULT NULL,
+  `solderingCount` int(11) NULL DEFAULT NULL,
+  `excessPartsCount` int(11) NULL DEFAULT NULL,
+  `barcodeCount` int(11) NULL DEFAULT NULL,
+  `eNM_Defect_Type_ENMMaxLengthCount` int(11) NULL DEFAULT NULL,
+  `hCpk` double NULL DEFAULT NULL,
+  `aCpk` double NULL DEFAULT NULL,
+  `vcpk` double NULL DEFAULT NULL,
+  `shithxCpk` double NULL DEFAULT NULL,
+  `shithyCpk` double NULL DEFAULT NULL,
+  `lcl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `ucl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `pcbIdLine`) USING BTREE,
+  INDEX `pcbIdLine`(`pcbIdLine`) USING BTREE,
+  INDEX `FK_Reference_apcb_jobName_ajob`(`jobName`) USING BTREE,
+  INDEX `FK_Reference__apcb_lineNo_aline`(`lineNo`) USING BTREE,
+  INDEX `aoiMode`(`aoiMode`) USING BTREE,
+  CONSTRAINT `FK_Reference_apcb_jobName_ajob` FOREIGN KEY (`jobName`) REFERENCES `db_spm`.`a_job` (`jobName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_Reference__apcb_lineNo_aline` FOREIGN KEY (`lineNo`) REFERENCES `db_spm`.`a_line` (`LineNo`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+CREATE TABLE IF NOT EXISTS `db_spm`.`a_fov`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `pcbIdLine` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `aoiMode` int(1) NULL DEFAULT NULL,
+  `pcbImagePath` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `boardposition` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `pcbImageBase64` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `fovIndex` int(11) NULL DEFAULT NULL,
+  `fovposition` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `fovimageInfo` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `fovimageBase64` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `fov3dImageBase64` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `inspectStarttime` datetime NULL DEFAULT NULL,
+  `inspectEndtime` datetime NULL DEFAULT NULL,
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `FK_Reference_afov_pcbIdLine_apcb`(`pcbIdLine`) USING BTREE,
+  CONSTRAINT `FK_Reference_afov_pcbIdLine_apcb` FOREIGN KEY (`pcbIdLine`) REFERENCES `db_spm`.`a_pcb` (`pcbIdLine`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+CREATE TABLE IF NOT EXISTS `db_spm`.`a_component`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `pcbIdLine` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `aoiMode` int(1) NULL DEFAULT NULL,
+  `arrayIndex` int(5) NULL DEFAULT NULL,
+  `fovIndex` int(5) NULL DEFAULT NULL,
+  `partdesignate` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `partno` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `packagetype` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `componentposition` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `componentType` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `result` int(1) NULL DEFAULT NULL,
+  `defectType` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `imageInfo` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `valueInfo` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `height` double NULL DEFAULT NULL,
+  `perheight` double NULL DEFAULT NULL,
+  `xshift` double NULL DEFAULT NULL,
+  `perxshift` double NULL DEFAULT NULL,
+  `yshift` double NULL DEFAULT NULL,
+  `peryshift` double NULL DEFAULT NULL,
+  `angle` double NULL DEFAULT NULL,
+  `perangle` double NULL DEFAULT NULL,
+  `volume` double NULL DEFAULT NULL,
+  `bigvolume` double NULL DEFAULT NULL,
+  `planeness` double NULL DEFAULT NULL,
+  `uplanenesswindowid` double NULL DEFAULT NULL,
+  `lplanenesswindowid` double NULL DEFAULT NULL,
+  `linearity` double NULL DEFAULT NULL,
+  `ulinearitywindowid` double NULL DEFAULT NULL,
+  `llinearitywindowid` double NULL DEFAULT NULL,
+  `similarity` double NULL DEFAULT NULL,
+  `polarity` double NULL DEFAULT NULL,
+  `area` double NULL DEFAULT NULL,
+  `bigarea` double NULL DEFAULT NULL,
+  `perarea` double NULL DEFAULT NULL,
+  `inspectStarttime` datetime NULL DEFAULT NULL,
+  `inspectEndtime` datetime NULL DEFAULT NULL,
+  `comImageBase64` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `com3dImageBase64` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `historyDefectRecord` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `FK_Reference_acomponent_pcbIdLine_apcb`(`pcbIdLine`) USING BTREE,
+  CONSTRAINT `FK_Reference_acomponent_pcbIdLine_apcb` FOREIGN KEY (`pcbIdLine`) REFERENCES `db_spm`.`a_pcb` (`pcbIdLine`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+CREATE TABLE IF NOT EXISTS `db_spm`.`a_window`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `comid` bigint(20) NULL DEFAULT NULL,
+  `pcbIdLine` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `aoiMode` int(1) NULL DEFAULT NULL,
+  `arrayIndex` int(5) NULL DEFAULT NULL,
+  `fovIndex` int(5) NULL DEFAULT NULL,
+  `partdesignate` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `windowIndex` int(20) NULL DEFAULT NULL,
+  `result` int(1) NULL DEFAULT NULL,
+  `windowposition` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `valueInfo` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `height` double NULL DEFAULT NULL,
+  `perheight` double NULL DEFAULT NULL,
+  `xshift` double NULL DEFAULT NULL,
+  `perxshift` double NULL DEFAULT NULL,
+  `yshift` double NULL DEFAULT NULL,
+  `peryshift` double NULL DEFAULT NULL,
+  `angle` double NULL DEFAULT NULL,
+  `perangle` double NULL DEFAULT NULL,
+  `volume` double NULL DEFAULT NULL,
+  `bigvolume` double NULL DEFAULT NULL,
+  `pervolume` double NULL DEFAULT NULL,
+  `planeness` double NULL DEFAULT NULL,
+  `uplanenesswindowid` double NULL DEFAULT NULL,
+  `lplanenesswindowid` double NULL DEFAULT NULL,
+  `linearity` double NULL DEFAULT NULL,
+  `ulinearitywindowid` double NULL DEFAULT NULL,
+  `llinearitywindowid` double NULL DEFAULT NULL,
+  `similarity` double NULL DEFAULT NULL,
+  `polarity` double NULL DEFAULT NULL,
+  `area` double NULL DEFAULT NULL,
+  `bigarea` double NULL DEFAULT NULL,
+  `perarea` double NULL DEFAULT NULL,
+  `algorithmparam` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `winImageBase64` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `win3dImageBase64` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `historyDefectRecord` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+ INDEX `FK_Reference_awindow_pcbIdLine_apcb`(`pcbIdLine`) USING BTREE,
+  CONSTRAINT `FK_Reference_awindow_pcbIdLine_apcb` FOREIGN KEY (`pcbIdLine`) REFERENCES `db_spm`.`a_pcb` (`pcbIdLine`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+CREATE TABLE IF NOT EXISTS `db_spm`.`a_defaultType`  (
+  `errorcode` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 SET FOREIGN_KEY_CHECKS = 1;
 

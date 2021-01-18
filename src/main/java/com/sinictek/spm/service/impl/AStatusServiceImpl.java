@@ -1,5 +1,6 @@
 package com.sinictek.spm.service.impl;
 
+import com.baomidou.mybatisplus.mapper.Condition;
 import com.sinictek.spm.model.AStatus;
 import com.sinictek.spm.dao.AStatusMapper;
 import com.sinictek.spm.service.AStatusService;
@@ -27,5 +28,15 @@ public class AStatusServiceImpl extends ServiceImpl<AStatusMapper, AStatus> impl
     @Override
     public List<AStatus> getAllStatusWithLineNoLimt_AOI() {
         return aStatusMapper.getAllStatusWithLineNoLimt_AOI();
+    }
+
+    @Override
+    public List<AStatus> getAllStatusWithLineNoLimt(String lane, String aoiType) {
+        return aStatusMapper.getAllStatusWithLineNoLimt(lane,aoiType);
+    }
+
+    @Override
+    public AStatus getStatusWithLineNo(String lineNo, String aoiType) {
+        return aStatusMapper.getStatusWithLineNo(lineNo,aoiType);
     }
 }

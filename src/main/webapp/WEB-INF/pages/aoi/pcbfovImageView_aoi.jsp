@@ -4,6 +4,8 @@
 	<head>
 		<meta charset="utf-8" >
 		<title>pcbfovImageViewAoi</title>
+		<link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
+
 		<style>
 			body{
 				margin: 0px;
@@ -68,8 +70,14 @@
 								<span >PCB-Picture &nbsp;&nbsp;&nbsp;  Barcode:BV982HIJ87 &nbsp;&nbsp;  Result:<label style="color: red;margin: 0px;padding: 0px">NG</label></span>
 							</div>
 						</div>
-						<div id="pcbImage" style="margin-top: -20px"></div>
+						<div id="pcbImage" style="margin-top: -20px;">
+							<canvas id="pcbImage-canvas" width="600" height="400" style="height: 400px;width: 100%">
+							</canvas>
+							<%--<img id="svgImage" class="img-thumbnail" style="width: 100%;height:400px; object-fit: cover;" />--%>
+						</div>
 						<div id="pcbTable" style="height: 40vh"></div>
+						<%--<canvas id="pcbImage-canvas" style="margin-top: -20px" width="100%" height="400px"></canvas>
+						<div id="pcbTable" style="height: 40vh"></div>--%>
 					</div>
                     <div class="col-md-4" style="padding: 2px">
                         <!-- fov -->
@@ -78,7 +86,10 @@
                                 <span >FOV-Picture &nbsp;&nbsp;&nbsp;  Barcode:BV982HIJ87 &nbsp;&nbsp;  Result:<label style="color: red;margin: 0px;padding: 0px">NG</label> &nbsp;&nbsp; FovIndex:1 </span>
                             </div>
                         </div>
-                        <div id="fovImage" style="margin-top: -20px"></div>
+                        <div id="fovImage" style="margin-top: -20px">
+							<canvas id="fovImage-canvas" width="500" height="400" style="height: 400px;width: 100%;">
+							</canvas>
+						</div>
 						<div id="fovTable"style="height: 45vh"></div>
                     </div>
                     <div class="col-md-3" style="padding: 2px">

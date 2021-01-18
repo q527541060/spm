@@ -29,7 +29,8 @@ public class ConstController {
     }
     public void iniDefaultParamSetting(){
 
-        if(ConstParam.DEFAULTSETTING_boardMachineTimeLimit==0||
+        if(
+               ConstParam.DEFAULTSETTING_boardMachineTimeLimit==0||
                 ConstParam.DEFAULTSETTING_boardMachineRefreshTime==0||
                 ConstParam.DEFAULTSETTING_autoDeleteDays==0||
                 ConstParam.DEFAULTSETTING_FPY==0||
@@ -99,6 +100,7 @@ public class ConstController {
                     if("boardView-chartMove".equals(strSettingName)){     //看板动画渲染开关
                         ConstParam.DEFAULTSETTING_boardViewChartMove= strSettingValue==null?1:Integer.parseInt(strSettingValue);
                     }
+
                     if("showPad2DImageMode".equals(strSettingName)){     //看图方式
                         ConstParam.DEFAULTSETTING_showPad2DImageMode= strSettingValue==null?0:Integer.parseInt(strSettingValue);
                     }

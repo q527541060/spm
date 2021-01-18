@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>setting</title>
+    <link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
     <style>
         body{
             margin: 0px;
@@ -73,7 +74,7 @@
                         AOI线体信息变更
                     </div>
                         <div class="panel-body" style="padding: 0px">
-                           <%-- <div id="table_line"></div>--%>
+                          <div id="table_line_aoi"></div>
                         </div>
                 </div>
             </div>
@@ -106,6 +107,7 @@
                                 <div class="form-group">
                                     <label for="message-text" class="control-label">lineUpdateDate:</label>
                                     <input  name="updateDateStr" class="form-control updateDate" id="message-text" readonly>
+                                    <input type="hidden" name="modeType" class="modeType" >
                                 </div>
                             </form>
                         </div>
@@ -164,13 +166,16 @@
         }
     </style>
     <script type="text/javascript">
+        var _mode = 1;
         window.operateEventsSettingLine={
             "click #EditSettingLine" :function(e,value, row, index){
                 //alert(row.id);
+                _mode=1;
                 var lineId = row.id;
                 show_edit_SettingLine(lineId);
             },
             "click #deleteSettingLine" :function(e,value, row, index){
+                _mode=1;
                 var lineId = row.id;
                 if(confirm("确定删除吗?   删除后线体["+row.lineNo+"]的所有数据将清空!")){
                     delete_SettingLine(lineId);
@@ -178,13 +183,37 @@
                     alert('取消删除!');
                 }
             },"click #EditDefault" :function(e,value, row, index){
+                _mode=1;
+                var lineId = row.id;
+                show_Default(lineId,1);
+            },
+        }
+        window.operateEventsSettingLineAoi={
+            "click #EditSettingLine" :function(e,value, row, index){
+                _mode=2;
+                //alert(row.id);
+                var lineId = row.id;
+                show_edit_SettingLine(lineId);
+            },
+            "click #deleteSettingLine" :function(e,value, row, index){
+                _mode=2;
+                var lineId = row.id;
+                if(confirm("确定删除吗?   删除后线体["+row.lineNo+"]的所有数据将清空!")){
+                    delete_SettingLine(lineId);
+                }else{
+                    alert('取消删除!');
+                }
+            },"click #EditDefault" :function(e,value, row, index){
+                _mode=2;
                 var lineId = row.id;
                 show_Default(lineId);
             },
         }
 
         InitEquipmentTable();
+        InitEquipmentTable_Aoi();
         InitDefaultTable();
+
         function show_Default(lineId) {
             $.ajax({
                 url:"${basePath}/sDefaultsetting/default",
@@ -516,7 +545,7 @@
                 url:"${basePath}/sDefaultsetting/lineSetting",
                 dataType:"json",
                 async:true,
-                data:{lineId:lineId},
+                data:{lineId:lineId,mode:_mode},
                 type:"GET",
                 beforeSend:function(){
                 },
@@ -526,6 +555,7 @@
                     $('.createDate').val(req.data.createDate);
                     $('.updateDate').val(req.data.updateDate);
                     $('#lineNo_hidden').val(req.data.id);
+                    $('.modeType').val(_mode);
                 }
             });
 
@@ -544,8 +574,15 @@
                 beforeSend:function(){
                 },
                 success:function(data) {
-                    refreshEquipmentTable();
-                        alert(data.message);
+                    switch (_mode) {
+                        case 1:
+                            refreshEquipmentTable();
+                            break;
+                        case 2:
+                            refreshEquipmentTable_Aoi();
+                            break;
+                    }
+                    alert(data.message);
                 },
                 error:function (data) {
                     //alert(data.message);
@@ -557,12 +594,19 @@
         function delete_SettingLine(lineId) {
             $.ajax({
                 url:"${basePath}/sDefaultsetting/deleteLineSetting",
-                data:{id:lineId},
+                data:{id:lineId,mode:_mode},
                 type:"GET",
                 beforeSend:function(){
                 },
                 success:function(data) {
-                    refreshEquipmentTable();
+                    switch (_mode) {
+                        case 1:
+                            refreshEquipmentTable();
+                            break;
+                        case 2:
+                            refreshEquipmentTable_Aoi();
+                            break;
+                    }
                     alert(data.message);
                 },
                 error:function (data) {
@@ -571,6 +615,7 @@
             });
         }
 
+        //spi
         function InitEquipmentTable () {
             //alert(lineNo);
             //记录页面bootstrap-table全局变量$table，方便应用
@@ -683,6 +728,7 @@
                 }
             });
         };
+
         function refreshEquipmentTable(){
             var opt = {
                 url:"${basePath}/sDefaultsetting/listline",
@@ -693,6 +739,131 @@
                 }
             };
             $("#table_line").bootstrapTable('refresh', opt);
+        }
+
+        //aoi  table_line_aoi
+        function InitEquipmentTable_Aoi () {
+            //alert(lineNo);
+            //记录页面bootstrap-table全局变量$table，方便应用
+            var $Equipmenttable = $('#table_line_aoi').bootstrapTable({
+                url:"${basePath}/sDefaultsetting/listlineAoi",
+                dataType:"json",
+                method: 'GET',                      //请求方式（*）
+                striped: true,                      //是否显示行间隔色
+                cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                sortOrder: "desc",                   //排序方式
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                pageSize: 5,                     //每页的记录行数（*）
+                pageList: [15, 20, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                      //是否显示表格搜索
+                strictSearch: false,
+                showColumns: false,                  //是否显示所有的列（选择显示的列）
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: false,                //是否启用点击选中行
+                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                classes:'table table-striped table-hover',
+                showLoading:false,
+                showExport:false,
+                rowStyle: function(row, index) {
+                    var classes = [
+                        'bg-blue',
+                        'bg-green',
+                        'bg-red'
+                    ]
+                    if (index % 2 == 0 ) {
+                        return {
+                            classes: 'success'
+                        }
+                    }else{
+                        return {
+                            classes: 'warning'
+                        }
+                    }
+                },
+                //得到查询的参数
+                queryParams : function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    return {
+                        pageSize: params.limit,               //页面大小
+                        pageNumber: params.offset/params.limit+1,  //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order //排位命令（desc，asc）
+                    };
+                },
+                columns: [{
+                    checkbox: false,
+                    align:'center',
+                    visible: false
+                    //是否显示复选框
+                },  {
+                    field: 'id',
+                    title: '序号',
+                    align:'center',
+                    width:50,
+                    sortable: true,
+                    formatter:function (value,row,index) {
+                        return index+1;
+                    }
+                },{
+                    field: 'lineNo',
+                    title: 'lineNo',
+                    align:'center',
+                    width:300,
+                    sortable: true,
+                }, {
+                    field: 'lineContent',
+                    title:  'lineContent',
+                    align:'center',
+                    width:300,
+                    sortable: true,
+                }, {
+                    field: 'createDate',
+                    title:  'createDate',
+                    align:'center',
+                    sortable: true,
+                    width:300,
+                }, {
+                    field: 'updateDate',
+                    title:  'updateDate',
+                    align:'center',
+                    sortable: true,
+                    width:300,
+                },{
+                    field: 'oper',
+                    title:  'op',
+                    align:'center',
+                    width:300,
+                    events: operateEventsSettingLineAoi,//给按钮注册事件
+                    formatter: addFunctionAltySettingLine//表格中增加按钮
+                }
+                ],
+                formatLoadingMessage:function(){
+                    return "请稍等,正在加载中.........";
+                },
+                onLoadSuccess: function (data,$element) {
+                },
+                onLoadError: function (status,res) {
+                }
+            });
+        };
+        function refreshEquipmentTable_Aoi(){
+            var opt = {
+                url:"${basePath}/sDefaultsetting/listlineAoi",
+                silent: true,
+                query:{
+                    type:1,
+                    level:2
+                }
+            };
+            $("#table_line_aoi").bootstrapTable('refresh', opt);
         }
 
         function addFunctionAltySettingLine(){
@@ -706,6 +877,7 @@
         }
 
         //addFunctionAltyDefault
+
 
         function InitDefaultTable () {
             //alert(lineNo);

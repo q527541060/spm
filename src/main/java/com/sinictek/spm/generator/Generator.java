@@ -24,7 +24,11 @@ public class Generator {
         String packageName = "com.sinictek.spm";
         boolean srtviceNameStartWithI=false;  //iservice
 
-        /*generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","a_line","a_status");*/
+        generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm",
+                "a_line",
+                "a_status",
+                "a_component",
+                "a_defaultType","a_fov","a_job","a_pcb","a_window");
        /* generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_defaultSetting");*/
         /* generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_component");
         generatorByTables(srtviceNameStartWithI,packageName,"sinictek-pd","db_spm","s_pad");

@@ -10,6 +10,8 @@
 <html>
 <head>
     <title>fovPcbImage</title>
+    <link rel="stylesheet icon" href="${staticPath}/static/img/logo.jpg" type="image/x-icon" media="screen" />
+
     <style>
         body{
             margin: 0px;

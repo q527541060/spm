@@ -5,7 +5,7 @@ project:
   env: development
 #WEB SERVER
 server:
-  port: 80
+  port: 9090
   servlet:
     context-path: /
   tomcat:

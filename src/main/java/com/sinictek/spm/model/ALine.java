@@ -18,6 +18,8 @@ import java.io.Serializable;
  * @since 2020-08-05
  */
 @TableName("a_line")
+@Getter
+@Setter
 public class ALine implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +50,9 @@ public class ALine implements Serializable {
      */
     private String remark;
 
-
+    /**
+     * aoimode
+     */
+    private Integer aoiMode;
 
 }

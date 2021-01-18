@@ -1,6 +1,7 @@
 package com.sinictek.spm.api;
 
 
+import com.alibaba.druid.util.StringUtils;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.SPad;
 import com.sinictek.spm.model.SPcb;
@@ -11,8 +12,10 @@ import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.SPadService;
 import com.sinictek.spm.service.SPcbService;
 //import it.sauronsoftware.base64.Base64;
+import org.apache.logging.log4j.util.Base64Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -81,7 +84,7 @@ public class SPadController {
     @ResponseBody
     @GetMapping("padList")
     public ApiResponse getPadListWithPcbIDline(@RequestParam("pcbIdLine") String pcbIdLine,
-                                               @RequestParam("defectTypeCode") String defectTypeCode){
+                                               @RequestParam("defectTypeCode") String defectTypeCode) throws Exception{
 
         pcbIdLine = pcbIdLine.replace("=====","#");
         Map<String,Object> pcbListMap = new HashMap<String,Object>();
@@ -95,6 +98,59 @@ public class SPadController {
         }
         List<SPad> lstPad = sPadService.getPadListWithPCbidLineService(padTableName ,pcbIdLine,defectTypeCode);
 
+        if(lstPad!=null && lstPad.size()>0){
+            String base64Str =null;
+            switch (ConstParam.DEFAULTSETTING_showPad2DImageMode){
+                case 1:
+                    //base64Str = lstPad.getPad2dImageBase64();//Base64Helper.decompressData(sPad.getPad2dImageBase64());//
+                    //break;
+                case 2:
+                    //调用路径
+                    for (int i = 0; i < lstPad.size(); i++) {
+                        if(StringUtils.isEmpty(lstPad.get(i).getPad2dImageBase64()) ==false){
+                            try {
+                                //net.iharder.Base64.decode()
+                                //Base64Utils.decodeFromString(lstPad.get(i).getPad2dImageBase64());
+                                //byte[] byte64 = ;
+                                //byte[] byte641 = Base64Utils.decodeFromString(lstPad.get(i).getPad2dImageBase64());
+                                lstPad.get(i).setPad2dImageBase64(
+                                        Base64.getEncoder().encodeToString(QuickLZ.decompress(
+                                                net.iharder.Base64.decode(net.iharder.Base64.decode(lstPad.get(i).getPad2dImageBase64()))
+                                        ))
+                                );
+                                //Base64.Decoder()
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+
+                    break;
+                case 0:
+                default:
+                    for (int i = 0; i < lstPad.size(); i++) {
+                        if(lstPad.get(i).getPad2dImage()!=null && lstPad.get(i).getPad2dImage().length>0){
+                            try {
+                                //net.iharder.Base64.decode()
+                                byte[] byte64 = net.iharder.Base64.decode(lstPad.get(i).getPad2dImage());
+                                lstPad.get(i).setPad2dImageBase64(
+                                        Base64.getEncoder().encodeToString(QuickLZ.decompress(
+                                                net.iharder.Base64.decode(lstPad.get(i).getPad2dImage())
+                                        ))
+                                );
+                                //Base64.Decoder()
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                    //byte[] byte64 = net.iharder.Base64.decode(sPad.getPad2dImage()); //net.iharder.Base64.decode(sPad.getPad2dImage());
+                    //base64Str = Base64.getEncoder().encodeToString(QuickLZ.decompress(byte64));//QuickLZ.decompress(byte64));
+                    break;
+            }
+        }
         return  new ApiResponse(true,null,null,lstPad);
     }
 
