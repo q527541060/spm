@@ -153,7 +153,15 @@
         showComponentImage("${basePath}","${staticPath}");
 		//InitComponentTable("${basePath}");
 		InitLineDataMainTable("${basePath}");
+
+
+
+
+
 	</script>
+    <script>
+
+    </script>
 	<style>
 		/*.bootstrap-table .fixed-table-toolbar .columns-left {
 			margin: 0px;

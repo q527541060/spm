@@ -177,21 +177,21 @@
             }, {
                 field: 'equipmentNo',
                 title: 'Machine',
-                //width:50,
+                width:400,
                 align:'center',
                 sortable: true
             }, {
                 field: 'lineNo',
                 title: 'LaneNo',
                 align:'center',
-                width:200,
+                width:400,
 
                 sortable: true
             }, {
                 field: 'status',
                 title: 'Status',
                 align:'center',
-                width:200,
+                width:400,
                 sortable: true,
                 cellStyle: function (value, row, index){
                     if(row.status == 1) { return {css:{"background-color":"D9534F"}}  }
@@ -234,14 +234,14 @@
                 title: 'Model',
                 align:'center',
                 sortable:true,
-                width:200
+                width:400
                 //formatter: linkFormatter
             }, {
                 field: 'errContent',
                 title:  'Alarm',
                 align:'center',
                 sortable: true,
-                width:350
+                width:400
                 //events:operateEvents,
 
             },{
@@ -249,7 +249,7 @@
                 title:  'dateTime',
                 align:'center',
                 sortable: true,
-                width:180
+                width:400
             }],
             onLoadSuccess: function (sta) {
             },

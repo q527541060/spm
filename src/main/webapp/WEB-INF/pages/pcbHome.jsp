@@ -42,12 +42,14 @@
 				text-align: center;
 			}
 			#line-win {
-				width: 68%;
+				width:100px;
+                height: 100px;
 				background-color: #87b8cd;/* #F2F2F2; 337AB7  87b8cd*/
-				padding: 2px;
+				padding: 1px;
 				transition: all 0.5s;
                /* margin-left: 280px;*/
                 margin: 0 auto;
+              /* // margin: 20px;*/
                 border-radius:100%;
 			}
 
@@ -69,10 +71,13 @@
 
 			#line-win .line-count{
 				color: #E67964;
-				font-size: 20px;
+				font-size: 15px;
 			}
             td{
-                width: 10%;
+              width: 11%;
+            }
+            th{
+                width: 11%;
             }
             @keyframes changeFrames
             {
@@ -119,7 +124,7 @@
                     case 115:   //炉后
                         window.location.href="${basePath}/aLine/pcbLine?aoiType=2";
                         break;
-                    case 17: //炉后
+                    case 117: //炉后
                         window.location.href="${basePath}/aStatus/pcbMonitorview_realLineView?aoiType=2";
                         break;
                     case 110://炉后
@@ -143,15 +148,15 @@
             <%@include file="header.jsp" %>
             <!-- 设备看板轮询时间 -->
             <input type="hidden" id="boardMachineRefreshTime" value="${boardMachineRefreshTime}"/>
-            <div class="row" style="margin-top: -40px;">
+            <div class="row" style="margin-top: -50px;padding:5px;background-color: #C2CAE1">
                 <h3 style="margin-top: 0px">Statistical Data Control System<span class="label label-default">SINICTEK</span></h3>
-                <div class="col-md-12">
-                    <image  src="${staticPath}/img/spi-aoi.png" style="width:90%;height:30vh;"></image>
+                <div class="col-md-8 col-xs-offset-2" >
+                    <image  src="${staticPath}/img/smt_best.jpg" style="width:70%;height:20vh;"></image>
                 </div>
             </div>
             <div class="row" style="margin-top: -40px;">
-                <div class="col-md-12">
-                    <table data-toggle="table" data-classes="table  table-hover"
+                <div class="col-md-12 table-responsive" >
+                    <table class="table text-nowrap" data-toggle="table" data-classes="table  table-hover"
                            data-row-style="dataRow">
                         <thead>
                         <tr>
@@ -179,8 +184,8 @@
                                 <div id="line-win"  class="line-win-offset-right" onclick="showModel(3)">
                                     <span  id="line-win-logo" class="glyphicon glyphicon-bell spi-line-win-logo"></span>
                                  <%--   <p>SPI看板监控</p>--%>
-                                    <p >良率报警:<span class="badge" id="spi-yeild-count">0</span></p>
-                                    <p >故障报警:<span class="badge" id="spi-status-count">0</span></p>
+                                    <p style="margin: 8px">良率报警:<span class="badge" id="spi-yeild-count">0</span></p>
+                                    <p  style="margin: 4px">故障报警:<span class="badge" id="spi-status-count">0</span></p>
                                     <%--<p> 活动线体/总线体</p>--%>
                                    <%-- <i class="line-count">${spi_lineCount}</i>--%>
                                 </div>
@@ -193,7 +198,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div id="line-win"  class="line-win-offset-left" onclick="showModel(4)">
+                                <div id="line-win"  class="line-win-offset-left" onclick="showModel(10)">
                                     <span id="line-win-logo" class="glyphicon glyphicon-folder-close"></span>
                                     <p> FOV/PCB</p>
                                     <i class="line-count"> ${spi_fovCount}/${spi_pcbCount}</i>
@@ -234,12 +239,12 @@
                                 <span id="line-win-logo" class="glyphicon glyphicon-bell AoiPre-line-win-logo"></span>
                                 <%--<p> 炉前看板查询</p>
                                 <i class="line-count">0</i>--%>
-                                <p >良率报警:<span class="badge" id="preaoi-yeild-count">0</span></p>
-                                <p >故障报警:<span class="badge" id="preaoi-status-count">0</span></p>
+                                <p style="margin: 8px" >良率报警:<span class="badge" id="preaoi-yeild-count">0</span></p>
+                                <p style="margin: 4px">故障报警:<span class="badge" id="preaoi-status-count">0</span></p>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(8)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-list-alt"></span>
-                                <p> 炉前质量分析</p>
+                                <p> 炉前分析</p>
                                 <i class="line-count">0</i>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(10)">
@@ -277,12 +282,12 @@
                                 <span id="line-win-logo" class="glyphicon glyphicon-bell AoiPost-line-win-logo"></span>
                                 <%--<p>炉后看板查询</p>
                                 <i class="line-count">0</i>--%>
-                                <p >良率报警:<span class="badge" id="postaoi-yeild-count">0</span></p>
-                                <p >故障报警:<span class="badge" id="postaoi-status-count">0</span></p>
+                                <p style="margin: 8px">良率报警:<span class="badge" id="postaoi-yeild-count">0</span></p>
+                                <p style="margin: 4px">故障报警:<span class="badge" id="postaoi-status-count">0</span></p>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(118)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-list-alt"></span>
-                                <p> 炉后缺陷分析</p>
+                                <p> 炉后分析</p>
                                 <i class="line-count">0</i>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(110)">
@@ -313,169 +318,18 @@
                 </div>
             </div>
 
-            <!--  SPI -->
-			<%--<div class="row" >
-				    <h3>  SPI  </h3>
-                    <div class="col-md-10 col-md-offset-1">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div id="line-win"  onclick="showModel(2)">
-                                    <span  class="glyphicon glyphicon-star-empty"></span>
-                                    <p> 过程分析大数据</p>
-                                    <i class="line-count"> ${spi_dataCount}</i>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div id="line-win"  class="line-win-offset-right" onclick="showModel(3)">
-                                    <span  class="glyphicon glyphicon-bell"></span>
-                                    <p>活动总线实时监控</p>
-                                    &lt;%&ndash;<p> 活动线体/总线体</p>&ndash;%&gt;
-                                    <i class="line-count">${spi_lineCount}</i>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div id="line-win"  class="line-win-offset-right" onclick="showModel(4)">
-                                    <span  class="glyphicon glyphicon-exclamation-sign"></span>
-                                    <p> 条码追溯</p>
-                                    <i class="line-count">${spi_barcodeCount}</i>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div id="line-win"  class="line-win-offset-left" onclick="showModel(4)">
-                                    <span  class="glyphicon glyphicon-modal-window"></span>
-                                    <p> FOV/PCB分析</p>
-                                    <i class="line-count"> ${spi_fovCount}/${spi_pcbCount}</i>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div id="line-win"  class="line-win-offset-left" onclick="showModel(11)">
-                                    <span  class="glyphicon glyphicon-copyright-mark"></span>
-                                    <p>component分析</p>
-                                    <i class="line-count">${spi_componentCount}</i>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div id="line-win"  class="line-win-offset-left" onclick="showModel(6)">
-                                    <span  class="glyphicon glyphicon-exclamation-sign"></span>
-                                    <p> 预留</p>
-                                    <i class="line-count">2333</i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-			</div>
---%>
-			<!-- Pre-AOI -->
-			<%--<div class="row">
-				<h3> PRE-AOI</h3>
-                <div class="col-md-10 col-md-offset-1">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(5)">
-                                <span  class="glyphicon glyphicon-star-empty"></span>
-                                <p> 活动线体/总线体</p>
-                                <i class="line-count">0/0</i>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(7)">
-                                <span  class="glyphicon glyphicon-bell"></span>
-                                <p> 故障报警数</p>
-                                <i class="line-count">0</i>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(8)">
-                                <span  class="glyphicon glyphicon-exclamation-sign"></span>
-                                <p> 炉前质量分析</p>
-                                <i class="line-count">0</i>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(10)">
-                                <span  class="glyphicon glyphicon-modal-window"></span>
-                                <p> FOV/PCB分析</p>
-                                <i class="line-count"> 0/0</i>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(11)">
-                                <span  class="glyphicon glyphicon-copyright-mark"></span>
-                                <p>component分析</p>
-                                &lt;%&ndash;<p> 活动线体/总线体</p>&ndash;%&gt;
-                                <i class="line-count">0</i>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(6)">
-                                <span  class="glyphicon glyphicon-exclamation-sign"></span>
-                                <p> 预留</p>
-                                <i class="line-count">0</i>
-                            </div>
-                        </div>
-                    </div>
+            <div class="row" style="text-align: center">
+                <div class="col-md-12">
+                    <span>©2021 Sinic-Tek intelligent Technology Co.,Ltd 版权所有</span>
                 </div>
 
-		    </div>--%>
-
-			<!-- Post-Aoi -->
-			<%--<div class="row">
-				<h3> POST-AOI</h3>
-                <div class="col-md-10 col-md-offset-1">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(5)">
-                                <span  class="glyphicon glyphicon-star-empty"></span>
-                                <p> 活动线体/总线体</p>
-                                <i class="line-count">0/0</i>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(7)">
-                                <span  class="glyphicon glyphicon-bell"></span>
-                                <p> 统计</p>
-                                <i class="line-count">0</i>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(8)">
-                                <span  class="glyphicon glyphicon-exclamation-sign"></span>
-                                <p> 炉后缺陷分析</p>
-                                <i class="line-count">0</i>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(4)">
-                                <span  class="glyphicon glyphicon-modal-window"></span>
-                                <p> FOV/PCB分析</p>
-                                <i class="line-count"> 0/0</i>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(11)">
-                                <span  class="glyphicon glyphicon-copyright-mark"></span>
-                                <p>component分析</p>
-                                &lt;%&ndash;<p> 活动线体/总线体</p>&ndash;%&gt;
-                                <i class="line-count">0</i>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div id="line-win"  onclick="showModel(6)">
-                                <span  class="glyphicon glyphicon-exclamation-sign"></span>
-                                <p> 预留</p>
-                                <i class="line-count">0</i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-			</div>--%>
+            </div>
 
 		</nav>
 
 
     <script>
+
         function dataRow(row, index){
             if (index % 2 == 0 ) {
                 return {
@@ -487,63 +341,14 @@
                 }
             }
         }
-
         //看板轮询时间
         var boardMachineRefreshTime = $("#boardMachineRefreshTime").val();
         if(boardMachineRefreshTime==null || boardMachineRefreshTime=='' ||boardMachineRefreshTime==0){
             boardMachineRefreshTime = 10;
         }
-        homeTimeInterver();
-        //刷新Monitoring
-        function homeTimeInterver(){
-            $.ajax({
-                url: "${basePath}/Home/homeTimeInterver",
-                dataType:"json",   //返回格式为json
-                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:'',    //参数值
-                type:"GET",   //请求方式
-                beforeSend:function(){
-                    //请求前的处理
-                },
-                success:function(req) {
-                    //刷新spi aoi monitoring
-                    //var spi_yeild_count = req.data.iSpiYeildCount;
-                   /* $('#spi-status-count').empty();
-                    $('#preaoi-status-count').empty();
-                    $('#postaoi-status-count').empty();
-                    $('#spi-yeild-count').empty();
-                    $('#preaoi-yeild-count').empty();
-                    $('#postaoi-yeild-count').empty();*/
-
-                    $('#spi-status-count')[0].innerText=req.data.iSpiLineErrorCount;
-                    $('#preaoi-status-count')[0].innerText=req.data.iAoiPreLineErrorCount;
-                    $('#postaoi-status-count')[0].innerText=req.data.iAoiPostLineErrorCount;
-
-                    $('#spi-yeild-count')[0].innerText = req.data.iSpiYeildCount;
-                    $('#preaoi-yeild-count')[0].innerText = req.data.iPreAoiYeildCount;
-                    $('#postaoi-yeild-count')[0].innerText = req.data.iPostAoiYeildCount;
-                    //spi-line-win-logo
-                    if(req.data.iSpiLineErrorCount>0 || req.data.iSpiYeildCount>0) {
-                        $('.spi-line-win-logo').css({'color': '#ff1908','animation':'changeFrames 5s infinite alternate'});
-                    }else{
-                        $('.spi-line-win-logo').css({'color': '#3f3f57','animation':'iniFrames   5s infinite alternate'});
-                    }
-                    if(req.data.iAoiPreLineErrorCount>0 || req.data.iPreAoiYeildCount>0) {
-                        $('.AoiPre-line-win-logo').css({'color': '#ff1908','animation':'changeFrames 5s infinite alternate'});
-                    }else{
-                        $('.AoiPre-line-win-logo').css({'color': '#3f3f57','animation':'iniFrames   5s infinite alternate'});
-                    }
-                    if(req.data.iAoiPostLineErrorCount>0 || req.data.iPostAoiYeildCount>0) {
-                        $('.AoiPost-line-win-logo').css({'color': '#ff1908','animation':'changeFrames 5s infinite alternate'});
-                    }else{
-                        $('.AoiPost-line-win-logo').css({'color': '#3f3f57','animation':'iniFrames   5s infinite alternate'});
-                    }
-                },error:function(data){
-                }
-            });
-        }
+        homeTimeInterver('${basePath}');
         //轮询monitor
-        setInterval(homeTimeInterver,boardMachineRefreshTime*1000);
+        setInterval(function (){homeTimeInterver('${basePath}')},boardMachineRefreshTime*1000,);
     </script>
 	</body>
 </html>

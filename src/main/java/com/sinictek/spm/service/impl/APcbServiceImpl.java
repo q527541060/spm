@@ -24,8 +24,8 @@ public class APcbServiceImpl extends ServiceImpl<APcbMapper, APcb> implements AP
     APcbMapper aPcbMapper;
 
     @Override
-    public List<APcb> getPcbListWithALLLineNoAoiMode(String inspectStarttime, String inspectEndtime) {
-        return aPcbMapper.getPcbListWithALLLineNoAoiMode(inspectStarttime,inspectEndtime);
+    public List<APcb> getPcbListWithALLLineNoAoiMode(String inspectStarttime, String inspectEndtime,String aoiMode) {
+        return aPcbMapper.getPcbListWithALLLineNoAoiMode(inspectStarttime,inspectEndtime,aoiMode);
     }
 
     @Override

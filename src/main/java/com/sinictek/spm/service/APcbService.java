@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2020-12-30
  */
 public interface APcbService extends IService<APcb> {
-    public List<APcb> getPcbListWithALLLineNoAoiMode( String inspectStarttime ,  String inspectEndtime);
+    public List<APcb> getPcbListWithALLLineNoAoiMode( String inspectStarttime ,  String inspectEndtime,String aoiMode);
     public List<APcb> getPcbListWithALLLine( String inspectStarttime ,  String inspectEndtime,String aoiMode);
     public APcb getPcbListWithALLLineByDateNoGroup( String inspectStarttime ,String inspectEndtime,String aoiMode);
     public List<APcb> getPcbListWithDateAndLineNoPcbResult( String lineNo,

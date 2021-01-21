@@ -320,7 +320,7 @@
                                     }else{
                                         startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
                                     }
-                                    var endTime =  dateFomate(nowDate,'yyyy-MM-dd HH:mm:ss');
+                                    var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
                                     window.open("${basePath}/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+aoiType);
                                 }
                             }
@@ -586,7 +586,7 @@
                                     }else{
                                         startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
                                     }
-                                    var endTime =  dateFomate(nowDate,'yyyy-MM-dd HH:mm:ss');
+                                    var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
                                     window.open("${basePath}/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+aoiType);
                                 }
                             }

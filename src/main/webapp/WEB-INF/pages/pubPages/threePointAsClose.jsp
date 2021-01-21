@@ -153,12 +153,7 @@
         }
     };
     var vFirstLineNo = '';
-    function showPcbList(){
-        dStart=$('#startTime').val();
-        dEnd=$('#endTime').val();
-        lineNo = $('#btn-line').val();
-        refreshPcbTable( StatusQueryUrl,dStart,dEnd,lineNo);
-    }
+
     //线体选择
     $.ajax({
         url:"${basePath}/threePointClose/getAllLine",
@@ -181,12 +176,15 @@
                  .attr("type","button").append(va.lineNo).appendTo('#line-ul');
             });
             lineListGroup(vFirstLineNo);
+
+            InitPcbListTable(StatusQueryUrl);
+            InitPreAoiComponentDetailTable(StatusQueryUrl,null);
         }
     });
     //时间选择器
     var nowDate = new Date();
-    var dStart = dateFomate( nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd HH:mm:ss' );
-    var dEnd = dateFomate( nowDate.setDate(nowDate.getDate()+1),'yyyy-MM-dd HH:mm:ss' );
+    var dStart = dateFomate( nowDate.setDate(nowDate.getDate()-188),'yyyy-MM-dd HH:mm:ss' );
+    var dEnd = dateFomate( nowDate.setDate(nowDate.getDate()+188),'yyyy-MM-dd HH:mm:ss' );
     $("#startTime").datetimepicker({
         //minView:"month",
         format: 'yyyy-mm-dd hh:ii:ss',
@@ -211,8 +209,13 @@
     });
     $("#startTime").val(dStart) ;
     $("#endTime").val(dEnd) ;
+    function showPcbList(){
+        dStart=$('#startTime').val();
+        dEnd=$('#endTime').val();
+        lineNo = $('#btn-line').val();
+        refreshPcbTable( StatusQueryUrl,dStart,dEnd,lineNo);
+    }
 
-    InitPreAoiComponentDetailTable(StatusQueryUrl,null);
     var lineNo = $('#btn-line').val();
     var StatusQueryUrl = '${basePath}';
     var StatusStaticPath = '${staticPath}';
@@ -225,7 +228,8 @@
     var pcbListBarcode = '';
     var pcbListPcbID= '';
     var firstPcbID = '';
-    InitPcbListTable(StatusQueryUrl);
+    //InitPcbListTable(StatusQueryUrl);
+    //showPcbList();
     function InitPcbListTable(basePath){
         dStart=$('#startTime').val();
         dEnd=$('#endTime').val();

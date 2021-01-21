@@ -17,6 +17,8 @@ import com.sun.jna.ptr.DoubleByReference;
 import com.sun.jna.ptr.FloatByReference;
 import com.sun.jna.ptr.IntByReference;
 import net.iharder.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -540,16 +542,17 @@ public class ALineController {
             try {
 
                 byte[] arrByte =  ConstPublicClassUtil.getFileByte(path);
-                int[] arrDb=null;
+                int[] arrDb={1};
                 int iMax=0;
                 int iMin=0;
                 //get 3D height
                 if(StringUtils.isEmpty(heigthPath) ==false){
-                    IntByReference intByReferenceHeight = new IntByReference();
+                    // 注释 本地获取3D图高度
+                   /* IntByReference intByReferenceHeight = new IntByReference();
                     IntByReference intByReferenceImage = TestJavaDLLService.TestJavaDLL.instaneDll.get3DHeightByFilePath(heigthPath,intByReferenceHeight);
                     arrDb= intByReferenceImage.getPointer().getIntArray(0,intByReferenceHeight.getValue());
                      iMax=Arrays.stream(arrDb).max().getAsInt();
-                     iMin=Arrays.stream(arrDb).min().getAsInt();
+                     iMin=Arrays.stream(arrDb).min().getAsInt();*/
                 }
                 //double[] arrRealDb = new double[intByReferenceHeight.getValue()];
 

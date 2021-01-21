@@ -133,7 +133,7 @@ public class SPadController {
                         if(lstPad.get(i).getPad2dImage()!=null && lstPad.get(i).getPad2dImage().length>0){
                             try {
                                 //net.iharder.Base64.decode()
-                                byte[] byte64 = net.iharder.Base64.decode(lstPad.get(i).getPad2dImage());
+                                //byte[] byte64 = net.iharder.Base64.decode(lstPad.get(i).getPad2dImage());
                                 lstPad.get(i).setPad2dImageBase64(
                                         Base64.getEncoder().encodeToString(QuickLZ.decompress(
                                                 net.iharder.Base64.decode(lstPad.get(i).getPad2dImage())

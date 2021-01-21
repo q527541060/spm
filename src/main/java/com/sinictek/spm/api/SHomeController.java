@@ -156,21 +156,22 @@ public class SHomeController {
                 }
             }
         }
-        List<APcb> lstAoiPcb =  aPcbService.getPcbListWithALLLineNoAoiMode(stratTime,endTime);
-        if(lstAoiPcb!=null && lstAoiPcb.size()>0){
-            for (int i = 0; i < lstAoiPcb.size(); i++) {
-                if(lstAoiPcb.get(i).getAoiMode()!=null){
-                    if(lstAoiPcb.get(i).getAoiMode() == 2){
-                        if( Double.parseDouble(lstAoiPcb.get(i).getGoodPcbYeildAoi() ) < iDEFAULTSETTING_passPcbYeild){
-                            iPreAoiYeildCount++;  //计算出PreAoi直通率小于标准值报警值加1
-                        }
-                    }else{
-                        if( Double.parseDouble(lstAoiPcb.get(i).getGoodPcbYeildAoi() ) < iDEFAULTSETTING_passPcbYeild){
-                            iPostAoiYeildCount++;  //计算出PostAou直通率小于标准值报警值加1
-                        }
-                    }
+        List<APcb> lstPreAoiPcb =  aPcbService.getPcbListWithALLLineNoAoiMode(stratTime,endTime,"1");
+        if(lstPreAoiPcb!=null && lstPreAoiPcb.size()>0){
+            for (int i = 0; i < lstPreAoiPcb.size(); i++)
+            {
+                if( Double.parseDouble(lstPreAoiPcb.get(i).getGoodPcbYeildAoi() ) < iDEFAULTSETTING_passPcbYeild){
+                    iPreAoiYeildCount++;  //计算出PreAoi直通率小于标准值报警值加1
                 }
-
+            }
+        }
+        List<APcb> lstPostAoiPcb =  aPcbService.getPcbListWithALLLineNoAoiMode(stratTime,endTime,"2");
+        if(lstPostAoiPcb!=null && lstPostAoiPcb.size()>0){
+            for (int i = 0; i < lstPostAoiPcb.size(); i++)
+            {
+                if( Double.parseDouble(lstPostAoiPcb.get(i).getGoodPcbYeildAoi() ) < iDEFAULTSETTING_passPcbYeild){
+                    iPostAoiYeildCount++;  //计算出PostAou直通率小于标准值报警值加1
+                }
             }
         }
         Map<String,Integer> hashMap = new HashMap<String,Integer>();

@@ -21,9 +21,10 @@ public interface APcbMapper extends BaseMapper<APcb> {
             "SUM(pcb.inspectResult = 0)/COUNT(pcb.id)*100  goodPcbYeildAoi  " +
             "FROM  " +
             "a_pcb pcb WHERE  pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   " +
+            "   AND pcb.aoiMode=#{aoiMode}   " +
             "  GROUP BY pcb.lineNo"
     })
-    public List<APcb> getPcbListWithALLLineNoAoiMode(@Param("inspectStarttime") String inspectStarttime , @Param("inspectEndtime") String inspectEndtime);
+    public List<APcb> getPcbListWithALLLineNoAoiMode(@Param("inspectStarttime") String inspectStarttime , @Param("inspectEndtime") String inspectEndtime,@Param("aoiMode")String aoiMode);
 
 
     @Select({"SELECT " +

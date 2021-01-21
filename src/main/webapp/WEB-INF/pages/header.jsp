@@ -51,10 +51,13 @@
 		<!-- bootstrap-treeview -->
 		<%--<script src="${staticPath}/bootstrap/js/bootstrap-treeview.js"></script>
 		<script src="${staticPath}/bootstrap/css/bootstrap-treeview.css"></script>--%>
+		<script src="${staticPath}/js/pcbHome.js"></script>
 		<script src="${staticPath}/js/static/pcbLineData.js"></script>
 		<script src="${staticPath}/js/static/publicJs.js"></script>
         <script  src="${staticPath}/js/pcbfovImageView_aoi.js"></script>
 		<script  src="${staticPath}/js/threePointAsClose.js"></script>
+
+
 		<!-- echart -->
 		<script src="${staticPath}/echart/echarts.min.js"></script>
 		<script src="${staticPath}/echart/echarts-gl.min.js"></script>

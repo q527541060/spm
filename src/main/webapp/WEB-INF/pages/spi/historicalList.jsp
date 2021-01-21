@@ -123,7 +123,7 @@
             showColumns: false,                  //是否显示所有的列（选择显示的列）
             showRefresh: true,                  //是否显示刷新按钮
             clickToSelect: true,                //是否启用点击选中行
-            height: 550,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            height: 600,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
             uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
             showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
@@ -176,21 +176,21 @@
             }, {
                 field: 'equipmentNo',
                 title: 'Machine',
-                //width:50,
+                width:400,
                 align:'center',
                 sortable: true
             }, {
                 field: 'lineNo',
                 title: 'LaneNo',
                 align:'center',
-                width:200,
+                width:400,
 
                 sortable: true
             }, {
                 field: 'status',
                 title: 'Status',
                 align:'center',
-                width:200,
+                width:400,
                 sortable: true,
                 cellStyle: function (value, row, index){
                     if(row.status == 1) { return {css:{"background-color":"D9534F"}}  }
@@ -233,14 +233,14 @@
                 title: 'Model',
                 align:'center',
                 sortable:true,
-                width:200
+                width:400
                 //formatter: linkFormatter
             }, {
                 field: 'errContent',
                 title:  'Alarm',
                 align:'center',
                 sortable: true,
-                width:350
+                width:400
                 //events:operateEvents,
 
             },{
@@ -248,7 +248,7 @@
                 title:  'dateTime',
                 align:'center',
                 sortable: true,
-                width:180
+                width:400
             }],
             onLoadSuccess: function (sta) {
             },
