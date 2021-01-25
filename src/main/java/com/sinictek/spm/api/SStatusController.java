@@ -248,7 +248,7 @@ public class SStatusController {
                    PlotBands plotBands = new PlotBands();
                     plotBands.setFrom(i-0.5);
                     plotBands.setTo(i+0.5);
-                    plotBands.setColor("#ED1B24");
+                    plotBands.setColor("#ED1C24");
                     lstPlotBands.add(plotBands);
                 }
 
@@ -384,7 +384,7 @@ public class SStatusController {
                     data = new Data();
                     if(realLst.get(y).keySet().contains(i)) {
                         data.setY(ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(y), i));//ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(y), i));
-                        //data.setColor("#F5A96A");
+                        data.setColor(ConstPublicClassUtil.getErrorCodeColorSpi(i));
                     }
                     top5SeriesList.add(data);
                 }
@@ -414,21 +414,21 @@ public class SStatusController {
         productGoodSeries.setData(goodFPYProductSeriesList);
         productGoodSeries.setTooltip(productTooltip);
         productGoodSeries.setStacking("normal");
-        productGoodSeries.setColor("#13dd15");
+        productGoodSeries.setColor("#22B14C");
 
         productNGSeries.setType("column");
         productNGSeries.setName("不良");
         productNGSeries.setData(ngFPYProductSeriesList);
         productNGSeries.setTooltip(productTooltip);
         productNGSeries.setStacking("normal");
-        productNGSeries.setColor("#F7A35C");
+        productNGSeries.setColor("#B84A5B");
 
         productPassSeries.setType("column");
         productPassSeries.setName("误判");
         productPassSeries.setData(passFPYProductSeriesList);
         productPassSeries.setTooltip(productTooltip);
         productPassSeries.setStacking("normal");
-        productPassSeries.setColor("#4449dd");
+        productPassSeries.setColor("#007AAE");
 
 
         Tooltip productSplineTooltip = new Tooltip();

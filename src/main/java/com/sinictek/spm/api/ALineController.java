@@ -457,11 +457,11 @@ public class ALineController {
         if(lstPcb!=null && lstPcb.size()>0){
             for (int i = 0; i < lstPcb.size(); i++) {
                 if(pcbType.contains("1") || pcbType.contains("3") ) {
-                    if (lstPcb.get(i).getArrayInfo().contains(":0")) {
+                    if (lstPcb.get(i).getInspectResult()==0) {
                         totleGoodPcb++;
-                    } else if (lstPcb.get(i).getArrayInfo().contains(":1")) {
+                    } else if (lstPcb.get(i).getInspectResult()==1) {
                         totleNgPcb++;
-                    } else if (lstPcb.get(i).getArrayInfo().contains(":2")) {
+                    } else if (lstPcb.get(i).getInspectResult()==2) {
                         totlePassPcb++;
                     }
                 }else{

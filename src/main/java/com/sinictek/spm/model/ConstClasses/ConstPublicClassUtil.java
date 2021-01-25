@@ -262,6 +262,8 @@ public class ConstPublicClassUtil {
     }
 
 
+
+
     public static String[] getDefaultTypeArray(){
         if(ConstParam.DEFAULTSETTING_defaultType==""){
             ConstParam.DEFAULTSETTING_defaultType="0;1;2;3;4";
@@ -589,6 +591,181 @@ public class ConstPublicClassUtil {
             }
             default: {
                 str = "Missing";
+                break;
+            }
+
+        }
+        return  str;
+    }
+
+    public static String getErrorCodeColorAoi(int iJuResult) {
+        String str = "";
+        switch (iJuResult) {
+            case 0: {
+                str = "#D9D9D9";
+                break;
+            }
+            case 1: {
+                str = "#E7B9C0";
+                break;
+            }
+            case 2: {
+                str = "#FBCFD0";
+                break;
+            }
+            case 3: {
+                str = "#FFE5D4";
+                break;
+            }
+            case 4: {
+                str = "#FFFCCC";
+                break;
+            }
+            case 5: {
+                str = "#C8EFD4";
+                break;
+            }
+            case 6: {
+                str = "#C8EBFA";
+                break;
+            }
+            case 7: {
+                str = "#D3D5F5";
+                break;
+            }
+            case 8: {
+                str = "#EDD3ED";
+                break;
+            }
+            case 9: {
+                str = "#CF7C89";
+                break;
+            }
+            case 10: {
+                str = "#F8A1A4";
+                break;
+            }
+            case 11: {
+                str = "#FFCCA9";
+                break;
+            }
+            case 12: {
+                str = "#FFFA99";
+                break;
+            }
+            case 13: {
+                str = "#98E0AD";
+                break;
+            }
+            case 14: {
+                str = "#94D8F6";
+                break;
+            }
+            case 15: {
+                str = "#AAAEEB";
+                break;
+            }case 16: {
+                str = "#DAAADB";
+                break;
+            }case 17: {
+                str = "#AAAEEB";
+                break;
+            }case 18: {
+                str = "#AAAEEB";
+                break;
+            }case 19: {
+                str = "#AAAEEB";
+                break;
+            }
+            default: {
+                str = "#D9D9D9";
+                break;
+            }
+
+        }
+        return  str;
+    }
+    public static String getErrorCodeColorSpi(int iJuResult) {
+        String str = "";
+        switch (iJuResult) {
+            case 0: {
+                str = "#D9D9D9";
+                break;
+            }
+            case 1: {
+                str = "#E7B9C0";
+                break;
+            }
+            case 2: {
+                str = "#FBCFD0";
+                break;
+            }
+            case 3: {
+                str = "#FFE5D4";
+                break;
+            }
+            case 4: {
+                str = "#FFFCCC";
+                break;
+            }
+            case 5: {
+                str = "#C8EFD4";
+                break;
+            }
+            case 6: {
+                str = "#C8EBFA";
+                break;
+            }
+            case 7: {
+                str = "#D3D5F5";
+                break;
+            }
+            case 8: {
+                str = "#EDD3ED";
+                break;
+            }
+            case 9: {
+                str = "#CF7C89";
+                break;
+            }
+            case 10: {
+                str = "#F8A1A4";
+                break;
+            }
+            case 11: {
+                str = "#FFCCA9";
+                break;
+            }
+            case 12: {
+                str = "#FFFA99";
+                break;
+            }
+            case 13: {
+                str = "#98E0AD";
+                break;
+            }
+            case 14: {
+                str = "#94D8F6";
+                break;
+            }
+            case 15: {
+                str = "#AAAEEB";
+                break;
+            }case 16: {
+                str = "#DAAADB";
+                break;
+            }case 17: {
+                str = "#AAAEEB";
+                break;
+            }case 18: {
+                str = "#AAAEEB";
+                break;
+            }case 19: {
+                str = "#AAAEEB";
+                break;
+            }
+            default: {
+                str = "#D9D9D9";
                 break;
             }
 

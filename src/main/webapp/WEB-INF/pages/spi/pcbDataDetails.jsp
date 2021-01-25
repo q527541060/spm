@@ -267,6 +267,7 @@
                 data:{lineNo:lineNo,inspectStarttime:inspectStarttime,inspectEndtime:inspectEndtime,pcbResult:pcbResult,pcbType:pcbType},
                 type:"GET",
                 success:function (req) {
+                    var pieColors=['#007AAE','#B84A5B','#22B14C'];
                     //success
                     pcbCountpieJson.title={
                         text:'PCB分析'
@@ -281,6 +282,7 @@
                     pcbCountpieJson.plotOptions={
                         pie: {
                             allowPointSelect: true,
+                            colors:pieColors,
                             cursor: 'pointer',
                             dataLabels: {
                                 enabled: true,

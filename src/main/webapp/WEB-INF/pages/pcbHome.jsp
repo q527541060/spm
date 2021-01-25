@@ -150,8 +150,8 @@
             <input type="hidden" id="boardMachineRefreshTime" value="${boardMachineRefreshTime}"/>
             <div class="row" style="margin-top: -50px;padding:5px;background-color: #C2CAE1">
                 <h3 style="margin-top: 0px">Statistical Data Control System<span class="label label-default">SINICTEK</span></h3>
-                <div class="col-md-8 col-xs-offset-2" >
-                    <image  src="${staticPath}/img/smt_best.jpg" style="width:70%;height:20vh;"></image>
+                <div class="col-md-12" >
+                    <image  src="${staticPath}/img/smt_best.jpg" style="width:700px;height:150px;"></image>
                 </div>
             </div>
             <div class="row" style="margin-top: -40px;">

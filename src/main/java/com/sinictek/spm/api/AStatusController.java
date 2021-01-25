@@ -223,7 +223,7 @@ public class AStatusController {
                     PlotBands plotBands = new PlotBands();
                     plotBands.setFrom(i-0.5);
                     plotBands.setTo(i+0.5);
-                    plotBands.setColor("#ED1B24");
+                    plotBands.setColor("#ED1C24");
                     lstPlotBands.add(plotBands);
                 }
 
@@ -359,7 +359,7 @@ public class AStatusController {
                     data = new Data();
                     if(realLst.get(y).keySet().contains(i)) {
                         data.setY(ConstPublicClassUtil.getPadErrorCodeCountAoi(lstPcb.get(y), i));//ConstPublicClassUtil.getPadErrorCodeCount(lstPcb.get(y), i));
-                        //data.setColor("#F5A96A");
+                        data.setColor(ConstPublicClassUtil.getErrorCodeColorAoi(i));
                     }
                     top5SeriesList.add(data);
                 }
@@ -389,21 +389,23 @@ public class AStatusController {
         productGoodSeries.setData(goodFPYProductSeriesList);
         productGoodSeries.setTooltip(productTooltip);
         productGoodSeries.setStacking("normal");
-        productGoodSeries.setColor("#13dd15");
+        productGoodSeries.setColor("#22B14C");//22B14C 13dd15
+
 
         productNGSeries.setType("column");
         productNGSeries.setName("不良");
         productNGSeries.setData(ngFPYProductSeriesList);
         productNGSeries.setTooltip(productTooltip);
         productNGSeries.setStacking("normal");
-        productNGSeries.setColor("#F7A35C");
+        productNGSeries.setColor("#B84A5B"); //F47378 F7A35C FF7F27
+        //productNGSeries.setLineWidth(5);
 
         productPassSeries.setType("column");
         productPassSeries.setName("误判");
         productPassSeries.setData(passFPYProductSeriesList);
         productPassSeries.setTooltip(productTooltip);
         productPassSeries.setStacking("normal");
-        productPassSeries.setColor("#4449dd");
+        productPassSeries.setColor("#007AAE");  //60C5F1  4449dd  C8EBFA
 
 
         Tooltip productSplineTooltip = new Tooltip();
@@ -412,7 +414,7 @@ public class AStatusController {
         productSplineSeries.setName("直通率");
         productSplineSeries.setData(goodFPYProductSplineSeriesList);
         productSplineSeries.setTooltip(productSplineTooltip);
-        productSplineSeries.setColor("#7bdd18");
+        productSplineSeries.setColor("#22B14C"); //22B14C 7bdd18
         productSplineSeries.setLineWidth(1.2);
         productSplineSeries.setConnectEnds(true);
         productSplineSeries.setyAxis(1);

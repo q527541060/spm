@@ -234,10 +234,16 @@
                     //请求前的处理
                 },
                 success:function(req){
-
+                    //x轴柱子宽度设定
+                    var pointWidth=undefined;
+                    if(req.data[0].xaxis.categories.length<10){
+                        pointWidth=100;
+                    }else{
+                        pointWidth=undefined;
+                    }
                     //var xAxisjsonData = req.data[0].xaxis;
                     pcbTotal = Number(req.rows.iTotal);
-                    pcbTotal = pcbTotal+pcbTotal/4;
+                    pcbTotal = pcbTotal+pcbTotal/6;
                     //请求成功时处理
                     //json.chart = req.data.chart;
                     json.chart ={
@@ -289,6 +295,7 @@
                                 },} //,color:'#0f100b'
                         },
                         column:{
+                            pointWidth:pointWidth,
                             //borderColor:'#ff2514',
                             //borderWidth:10,
                             //selected:true,
@@ -353,7 +360,7 @@
                                 text: '',
                             },
                             labels: {
-                                format: '{value}p',
+                                format: '{value}',
                                 style: {
                                     //color: Highcharts.getOptions().colors[1],
                                     //fontSize:'16px'
@@ -560,6 +567,7 @@
                             pointPadding : 0
                         },
                         column:{
+                            pointWidth:pointWidth,
                             cursor: 'pointer',
                             borderWidth: 0,
                             dataLabels:{
@@ -848,7 +856,7 @@
 					background-color: #ECF0F5;
 				}
                 i{
-                    font-size: 5px;
+                    font-size: 12px;
                 }
                 /*#TableNGImage{
                     cursor: pointer;

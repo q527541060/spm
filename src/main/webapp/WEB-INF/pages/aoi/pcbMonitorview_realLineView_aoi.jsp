@@ -239,7 +239,14 @@
                 success:function(req){
                     //var xAxisjsonData = req.data[0].xaxis;
                     pcbTotal = Number(req.rows.iTotal);
-                    pcbTotal = pcbTotal+pcbTotal/4;
+                    pcbTotal = pcbTotal+pcbTotal/6;
+                    //x轴柱子宽度设定
+                    var pointWidth=undefined;
+                    if(req.data[0].xaxis.categories.length<10){
+                        pointWidth=100;
+                    }else{
+                        pointWidth=undefined;
+                    }
                     //请求成功时处理
                     //json.chart = req.data.chart;
                     json.chart ={
@@ -293,6 +300,7 @@
                             //borderColor:'#ff2514',
                             //borderWidth:10,
                             //selected:true,
+                            pointWidth:pointWidth,
                             cursor: 'pointer',
                             pointPadding: 0,
                             borderWidth: 0,
@@ -354,7 +362,7 @@
                                 text: '',
                             },
                             labels: {
-                                format: '{value}p',
+                                format: '{value}',
                                 style: {
                                     //color: Highcharts.getOptions().colors[1],
                                     //fontSize:'16px'
@@ -385,7 +393,7 @@
                             tickInterval:20,
                             type:'category',
                             plotLines:[{
-                                color:'#d7d906',           //线的颜色，定义为红色
+                                color:'#FFFF00',           //线的颜色，定义为红色
                                 dashStyle:'Dash',     //默认值，这里定义为实线
                                 value:passPcbYeild,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
                                 //width:1                //标示线的宽度，2px
@@ -561,6 +569,7 @@
                             pointPadding : 0
                         },
                         column:{
+                            pointWidth:pointWidth,
                             cursor: 'pointer',
                             borderWidth: 0,
                             dataLabels:{
@@ -848,7 +857,7 @@
 					background-color: #ECF0F5;
 				}
                 i{
-                    font-size: 5px;
+                    font-size: 12px;
                 }
                 /*#TableNGImage{
                     cursor: pointer;

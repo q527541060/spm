@@ -287,6 +287,7 @@
                 type:"GET",
                 success:function (req) {
                     //success
+                    var pieColors=['#007AAE','#B84A5B','#22B14C'];
                     pcbCountpieJson.title={
                         text:'PCB分析'
                     };
@@ -300,6 +301,7 @@
                     pcbCountpieJson.plotOptions={
                         pie: {
                             allowPointSelect: true,
+                            colors:pieColors,
                             cursor: 'pointer',
                             dataLabels: {
                                 enabled: true,

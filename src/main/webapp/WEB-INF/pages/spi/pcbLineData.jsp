@@ -33,7 +33,7 @@
     <nav>
 		<%@include file="../header.jsp"  %>
 		<div class="row" style=" text-align: left;">
-			<div class="col-md-3" style="padding: 0px">
+			<div class="col-md-4" style="padding: 0px">
 				<ol class="breadcrumb"  style="float: left;margin: 0px">
 					<li><a href="${basePath}/Home/pcbHome">Home</a></li>
 					<li class="active">spi<%--<a  data-toggle="tooltip" data-placement="bottom" title="过程数据大分析" href="${basePath}/Home/pcbHome">spi-dataInfo</a>--%></li>
@@ -61,7 +61,7 @@
 					</button>
 				</div>--%>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<div style="text-align: center;padding: 5px" id="sandBox-container">
 					<%--<span class="glyphicon glyphicon-time" aria-hidden="true"></span>--%>
 					<span  style="margin-left: -19px;" class="glyphicon glyphicon-calendar"></span>

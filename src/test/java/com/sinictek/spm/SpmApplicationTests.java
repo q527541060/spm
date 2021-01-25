@@ -36,12 +36,23 @@ import java.util.List;
 @MapperScan("com.sinictek.spm.dao")
 class SpmApplicationTests {
 
+    int add(int a,int b){
+
+        return a+b;
+    }
     @Autowired
     SPcbService sPcbService;
 
     /*@Resource
     private RocketMQTemplate rocketMQTemplate;*/
 
+
+
+    @Test
+    void Test(){
+
+        System.out.println(add(1,2));
+    }
 
     @org.junit.jupiter.api.Test
     void TestDLL(){
