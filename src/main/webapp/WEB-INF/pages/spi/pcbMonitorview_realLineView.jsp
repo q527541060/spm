@@ -243,7 +243,7 @@
                     }
                     //var xAxisjsonData = req.data[0].xaxis;
                     pcbTotal = Number(req.rows.iTotal);
-                    pcbTotal = pcbTotal+pcbTotal/6;
+                    pcbTotal = pcbTotal*10;
                     //请求成功时处理
                     //json.chart = req.data.chart;
                     json.chart ={
@@ -369,10 +369,10 @@
                             opposite: true,
                             gridLineWidth:0,
                             minorGridLineWidth:0,
-                            min:0,
+                            min:1,
                             max:pcbTotal,
                             //type:'category'
-                            //type: 'logarithmic'
+                            type: 'logarithmic'
                         },
                         {
                             labels: {
@@ -444,13 +444,19 @@
                             fontWeight:'bold'
                         }
                     }
+                    var maxCPK = 0;
+                    if(req.rows.maxCpk<=req.rows.standCPK){
+                        maxCPK = req.rows.standCPK*2;
+                    }else{
+                        maxCPK = req.rows.maxCpk;
+                    }
                     jsonCPK.yAxis={
                         title:'',
                         minorGridLineWidth:0,
                         //gridLineWidth:'0px',
                         //width:2,
                         gridLineWidth:0,
-                        max:req.rows.maxCpk,
+                        max:maxCPK,
                         min:0,
                         //type:'category',
                         //type: 'logarithmic',
@@ -533,7 +539,7 @@
                     //jsonDefault.yAxis = req.data.yaxis;
                     jsonDefault.yAxis =
                         {
-                            min:0,
+                            min:0.1,
                             title:'',
                             minorGridLineWidth:0,
                             gridLineWidth:0,
@@ -549,7 +555,7 @@
                                             // Highcharts.theme.textColor) ||
                                         },
                                 },
-                            //type: 'logarithmic',
+                            type: 'logarithmic',
                             //tickPixelInterval:5
                             //tickLength: 20
                             //min:0,

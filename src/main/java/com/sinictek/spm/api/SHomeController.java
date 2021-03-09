@@ -2,6 +2,8 @@ package com.sinictek.spm.api;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.sinictek.spm.annotation.LoginToken;
+import com.sinictek.spm.annotation.PassToken;
 import com.sinictek.spm.model.*;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
@@ -48,6 +50,8 @@ public class SHomeController {
 
     //private Logger logger = LoggerFactory.getLogger(SHomeController.class);
 
+
+   // @LoginToken
     @GetMapping("/pcbHome")
     public ModelAndView showHome(){
         ConstController.constController.iniDefaultParamSetting();
@@ -82,6 +86,8 @@ public class SHomeController {
         mv.addObject("postAoi_lineCount",aLineService.selectCount(Condition.create().eq("aoiMode","2")));
         mv.addObject("spi_dataCount",sPcb.getTotalpadCount());
         mv.addObject("spi_barcodeCount",sPcb.getTotal());
+        mv.addObject("aoi_pre_barcodeCount",aPcbService.selectCount(Condition.create().eq("aoiMode","1")));
+        mv.addObject("aoi_post__barcodeCount",aPcbService.selectCount(Condition.create().eq("aoiMode","2")));
         mv.addObject("spi_lineCount",iStatusCount);
                 //sLineService.selectCount(Condition.create().gt("updateDate",StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-24))));
         mv.addObject("spi_fovCount",0);
@@ -115,7 +121,7 @@ public class SHomeController {
         }
         //设备状态报警  和   良率报警
         int iSpiLineErrorCount = 0;
-        List<SStatus> spiStatusList=sStatusService.selectList(Condition.create()
+        List<SStatus> spiStatusList=sStatusService.selectList(Condition.create().ge("updateTime",stratTime).le("updateTime",endTime)
                 .groupBy("lineNo").orderBy(true,"lineNo",false)); //.orderBy(true,"lineNo",false)
         if(spiStatusList!=null && spiStatusList.size()>0){
             for (int i = 0; i < spiStatusList.size(); i++) {
@@ -125,7 +131,7 @@ public class SHomeController {
             }
         }
         int iAoiPreLineErrorCount = 0;
-        List<AStatus> aPreStatusList=aStatusService.selectList(Condition.create() .eq("aoiMode",1)
+        List<AStatus> aPreStatusList=aStatusService.selectList(Condition.create() .eq("aoiMode",1).ge("updateTime",stratTime).le("updateTime",endTime)
                 .groupBy("lineNo").orderBy(true,"lineNo",false));
         if(aPreStatusList!=null && aPreStatusList.size()>0){
             for (int i = 0; i < aPreStatusList.size(); i++) {
@@ -135,7 +141,7 @@ public class SHomeController {
             }
         }
         int iAoiPostLineErrorCount = 0;
-        List<AStatus> aPostStatusList=aStatusService.selectList(Condition.create() .eq("aoiMode",2)
+        List<AStatus> aPostStatusList=aStatusService.selectList(Condition.create() .eq("aoiMode",2).ge("updateTime",stratTime).le("updateTime",endTime)
                 .groupBy("lineNo").orderBy(true,"lineNo",false));
         if(aPostStatusList!=null && aPostStatusList.size()>0){
             for (int i = 0; i < aPostStatusList.size(); i++) {

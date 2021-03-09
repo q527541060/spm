@@ -10,6 +10,7 @@ import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
 import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.SPcbService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -80,11 +81,11 @@ public class SLineController {
         List<Series> lstSeries = new ArrayList<Series>();
 
         Series goodSeries = new Series();
-        goodSeries.setName("直通率");
+        goodSeries.setName("直通");
         Series ngSeries = new Series();
-        ngSeries.setName("不良率");
+        ngSeries.setName("不良");
         Series passSeries = new Series();
-        passSeries.setName("误报率");
+        passSeries.setName("误报");
         List<Data> lstGoodSeriesData = new ArrayList<Data>();
         List<Data> lstNgSeriesData = new ArrayList<Data>();
         List<Data> lstPassSeriesData = new ArrayList<Data>();
@@ -122,7 +123,9 @@ public class SLineController {
                         }
                         //dTmp =lstPcb.get(i).getGoodPcbYeild()==null?0.0: new BigDecimal(Double.parseDouble(lstPcb.get(i).getGoodPcbYeild() )).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                         dAVGGood +=  dTmp;
-                        data = new Data();data.setY(dTmp);
+
+                        data = new Data();
+                         data.setY(dTmp);
                         lstGoodSeriesData.add(data);
 
                         if(StringUtils.equals("1",pcbType)){
@@ -198,17 +201,17 @@ public class SLineController {
                 lstngPadCountSeriesData.add( data);
 
                 goodSeries.setType("column");
-                goodSeries.setColor("#92ff4e");
+                goodSeries.setColor("#22B14C");//22B14C 92ff4e
                 goodSeries.setData(lstGoodSeriesData);
                 goodSeries.setStack("0");
 
                 ngSeries.setType("column");
-                ngSeries.setColor("#ff4c39");
+                ngSeries.setColor("#DC334D");  //B84A5B  ff4c39
                 ngSeries.setData(lstNgSeriesData);
                 ngSeries.setStack("0");
 
                 passSeries.setType("column");
-                passSeries.setColor("#211cff");
+                passSeries.setColor("#007AAE");//007AAE  211cff
                 passSeries.setData(lstPassSeriesData);
                 passSeries.setStack("0");
 
@@ -222,9 +225,11 @@ public class SLineController {
                 passPcbCountSeries.setType("column");
                 passPcbCountSeries.setData(lstpassPcbCountSeriesData);
                 passPcbCountSeries.setStack("0");
+                passPcbCountSeries.setColor("#007AAE");
                 ngPadCountSeries.setType("column");
                 ngPadCountSeries.setData(lstngPadCountSeriesData);
                 ngPadCountSeries.setStack("0");
+                ngPadCountSeries.setColor("#DC334D");
 
                 lstPcbSeries.add(pcbCountSeries);
                 lstPcbSeries.add(ngPadCountSeries);
@@ -344,13 +349,13 @@ public class SLineController {
                 axisYeild.setCategories(lstCategoriesYeild);
                 goodSeries.setType("areaspline");
                 goodSeries.setData(lstGoodSeriesData);
-                goodSeries.setColor("#92ff4e");
+                goodSeries.setColor("#22B14C");//22B14C  92ff4e
                 ngSeries.setType("areaspline");
                 ngSeries.setData(lstNgSeriesData);
-                ngSeries.setColor("#ff4c39");
+                ngSeries.setColor("#F47378"); //B84A5B  ff4c39
                 passSeries.setType("areaspline");
                 passSeries.setData(lstPassSeriesData);
-                passSeries.setColor("#211cff");
+                passSeries.setColor("#007AAE"); //007AAE  211cff
 
                 lstSeries.add(goodSeries);
                 lstSeries.add(passSeries);
@@ -360,8 +365,10 @@ public class SLineController {
                 pcbCountSeries.setData(lstpcbCountSeriesData);
                 passPcbCountSeries.setType("areaspline");
                 passPcbCountSeries.setData(lstpassPcbCountSeriesData);
+                passPcbCountSeries.setColor("#007AAE");
                 ngPadCountSeries.setType("areaspline");
                 ngPadCountSeries.setData(lstngPadCountSeriesData);
+                ngPadCountSeries.setColor("#DC334D");
 
                 lstPcbSeries.add(pcbCountSeries);
                 lstPcbSeries.add(ngPadCountSeries);

@@ -46,16 +46,16 @@ public class Generator {
         String dburl = "jdbc:mysql://localhost:3306/db_spm?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8";
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setDbType(DbType.MYSQL)
-                .setUrl(dburl)
-                .setUsername("root")
-                .setPassword("1234")
-                .setDriverName("com.mysql.jdbc.Driver");
+                        .setUrl(dburl)
+                        .setUsername("root")
+                        .setPassword("1234")
+                        .setDriverName("com.mysql.jdbc.Driver");
         StrategyConfig strategyConfig = new StrategyConfig();
         strategyConfig.setCapitalMode(true)
-                .setEntityLombokModel(false)
-                .setNaming(NamingStrategy.underline_to_camel)
-             //   .setSuperMapperClass("com.sinictek.spm")
-                .setInclude(tableNames);
+                        .setEntityLombokModel(false)
+                        .setNaming(NamingStrategy.underline_to_camel)
+                     //   .setSuperMapperClass("com.sinictek.spm")
+                        .setInclude(tableNames);
         config.setActiveRecord(false)
                 .setAuthor(author)
                 .setOutputDir("d:\\codeGen")

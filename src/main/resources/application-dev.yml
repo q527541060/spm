@@ -23,7 +23,10 @@ spring:
     password: 1234
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-# JSON返回配置
+  #cache:
+   # ehcache:
+     # config: classpath:/ehcache.xml
+  # JSON返回配置
 # 默认时区
   jackson:
     time-zone: GMT+8
@@ -54,6 +57,8 @@ spring:
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.sinictek.spm.model
+  #configuration:
+  # cache-enabled: true  #开启二级缓存
 # 日志配置
 #logback:
 #  level: INFO

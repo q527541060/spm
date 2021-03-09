@@ -114,7 +114,7 @@ function showPreAoi3DComponentImage(staticPath,base64Image,arrayHeightBy3D,dMaxH
             }]
         });
     }
-    img.src='data:image/jpeg;base64,'+ base64Image+'';
+    img.src='data:image/jpeg;base64,'+ base64Image+'';com3DChart.clear();
 
 }
 function showPostAoi3DComponentImage(staticPath,base64Image,arrayHeightBy3D,dMaxHeight,dMinHeight){
@@ -233,7 +233,7 @@ function showPostAoi3DComponentImage(staticPath,base64Image,arrayHeightBy3D,dMax
             }]
         });
     }
-    img.src='data:image/jpeg;base64,'+ base64Image+'';
+    img.src='data:image/jpeg;base64,'+ base64Image+'';com3DChart.clear();
 
 }
 function showSpi3DComponentImage(staticPath,base64Image){
@@ -333,7 +333,7 @@ function showSpi3DComponentImage(staticPath,base64Image){
                 data: data
             }]
         });
-    }
-    img.src='data:image/jpeg;base64,'+ base64Image+'';
+    };
+    img.src='data:image/jpeg;base64,'+ base64Image+'';  com3DChart.clear();
 
 }

@@ -28,7 +28,7 @@
     <nav>
         <%@include file="../header.jsp"  %>
         <div class="row" style="text-align: left;">
-            <div class="col-md-2" style="padding: 0px">
+            <div class="col-md-3" style="padding: 0px">
                 <ol class="breadcrumb" style="float: left;margin: 0px;">
                     <li><a href="${basePath}/Home/pcbHome">Home</a></li>
                     <%--<li><a href="#">spi</a></li>--%>
@@ -36,7 +36,7 @@
                     <li class="active">Machine-historicalList</li>
                 </ol>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div style="text-align: center;padding: 5px" id="sandBox-container">
                     <%--<span class="glyphicon glyphicon-time" aria-hidden="true"></span>--%>
                     <span  style="margin-left: -19px;" class="glyphicon glyphicon-calendar"></span>

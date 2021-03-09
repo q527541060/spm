@@ -183,8 +183,8 @@
     });
     //时间选择器
     var nowDate = new Date();
-    var dStart = dateFomate( nowDate.setDate(nowDate.getDate()-188),'yyyy-MM-dd HH:mm:ss' );
-    var dEnd = dateFomate( nowDate.setDate(nowDate.getDate()+188),'yyyy-MM-dd HH:mm:ss' );
+    var dStart = dateFomate( nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd HH:mm:ss' );
+    var dEnd = dateFomate( nowDate.setDate(nowDate.getDate()+2),'yyyy-MM-dd HH:mm:ss' );
     $("#startTime").datetimepicker({
         //minView:"month",
         format: 'yyyy-mm-dd hh:ii:ss',
@@ -293,7 +293,7 @@
             columns:
                 [
                     {
-                        field: 'Barcode',
+                        field: 'barcode',
                         title: 'Barcode-List',
                         align: 'center',
                         width: 50,
@@ -301,7 +301,7 @@
                         visible: false,
                     },
                     {
-                        field: 'Barcode',
+                        field: 'barcode',
                         title: 'Barcode-List',
                         align: 'center',
                         width: 50,

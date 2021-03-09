@@ -493,7 +493,11 @@
 							borderWidth: 0,
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-                                    return this.series.name+':'+this.y+"%";
+									if(this.y>0){
+										return this.series.name+':'+this.y+"%";
+									}else {
+										return '';
+									}
 								},}
 						},
 						column: {
@@ -504,8 +508,15 @@
 							stacking:'normal',
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-                                    return this.series.name+':'+this.y+"%";
-								},},
+									if(this.y>0){
+										return this.series.name+':'+this.y+"%";
+									}else {
+										return '';
+									}
+								},style:{
+									color:'#3f3f57',
+									fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+								}},
 							events:{
 								click:function (e) {
 									var startTime = $("#startTime").val();
@@ -518,8 +529,15 @@
 						spline:{
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-                                    return this.series.name+':'+this.y+"%";
-								},}
+									if(this.y>0){
+										return this.series.name+':'+this.y+"%";
+									}else {
+										return '';
+									}
+								},style:{
+									color:'#3f3f57',
+									fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+								}}
 						}
 					};
                     jsonYeildHour.credits={enabled: false };
@@ -579,8 +597,16 @@
 							borderWidth: 0,
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-                                    return (this.series.name)+ ':' +(this.y);
-								},}
+									if(this.y>0){
+										return (this.series.name)+ ':' +(this.y);
+									}else {
+										return '';
+									}
+
+								},style:{
+									color:'#3f3f57',
+									fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+								}}
 						},
 						column: {
 							cursor:'pointer',
@@ -590,8 +616,15 @@
 							stacking:'normal',
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-                                    return (this.series.name)+ ':' +(this.y);
-								},},
+									if(this.y>0){
+										return (this.series.name)+ ':' +(this.y);
+									}else {
+										return '';
+									}
+								},style:{
+									color:'#3f3f57',
+									fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+								}},
 							events:{
 								click:function (e) {
 									var startTime = $("#startTime").val();
@@ -604,8 +637,15 @@
 						spline:{
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-                                    return (this.series.name)+ ':' +(this.y);
-								},}
+									if(this.y>0){
+										return (this.series.name)+ ':' +(this.y);
+									}else {
+										return '';
+									}
+								},style:{
+									color:'#3f3f57',
+									fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+								}}
 						}
 					};
                     jsonContainerline.credits={enabled: false };

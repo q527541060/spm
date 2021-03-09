@@ -421,7 +421,7 @@ public class SStatusController {
         productNGSeries.setData(ngFPYProductSeriesList);
         productNGSeries.setTooltip(productTooltip);
         productNGSeries.setStacking("normal");
-        productNGSeries.setColor("#B84A5B");
+        productNGSeries.setColor("#DA5858");
 
         productPassSeries.setType("column");
         productPassSeries.setName("误判");
@@ -443,11 +443,10 @@ public class SStatusController {
         productSplineSeries.setyAxis(1);
 
         lstFPYProductSeries.add(productSplineSeries);
-        lstFPYProductSeries.add(productNGSeries);
+
         lstFPYProductSeries.add(productGoodSeries);
-
         lstFPYProductSeries.add(productPassSeries);
-
+        lstFPYProductSeries.add(productNGSeries);
 
 
         cpkSeries.setName("CPK");

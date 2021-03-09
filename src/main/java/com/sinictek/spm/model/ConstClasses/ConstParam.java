@@ -79,6 +79,5 @@ public  class ConstParam {
      */
     public static int DEFAULTSETTING_showPad2DImageMode=0;
 
-
     //public static String CONST_RESOUCE_IMAGEPATH = "file://192.168.1.123/AOI_DB/";
 }

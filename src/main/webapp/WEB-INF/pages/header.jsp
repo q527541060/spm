@@ -57,7 +57,6 @@
         <script  src="${staticPath}/js/pcbfovImageView_aoi.js"></script>
 		<script  src="${staticPath}/js/threePointAsClose.js"></script>
 
-
 		<!-- echart -->
 		<script src="${staticPath}/echart/echarts.min.js"></script>
 		<script src="${staticPath}/echart/echarts-gl.min.js"></script>
@@ -167,6 +166,13 @@
 						 <!-- setting -->
 						 <li role="presentation"><a href="${basePath}/sDefaultsetting/setting"><img  src="${staticPath}/img/DL.png">Setting</a></li>
 
+						 <li role="presentation" style="float:right;text-align: center;margin-top: 10px">
+							 <div>
+								 欢迎您,<span id="spUsername">admin</span> <button type="button" onclick="logout()" class="btn  btn-primary btn-xs">注销</button>
+							 </div>
+
+						 </li>
+
 					 </ul>
 					<%--<ul class="nav nav-pills" >
 					  <li role="presentation" style="text-align: left;">
@@ -180,7 +186,9 @@
 					</ul>--%>
 					 <input  type="hidden" id="chartColor" value="${hChartColor}"/>
                      <input type="hidden" id="backgroundColor" value="${backgroundColor}">
+
                  </div>
+
 			</div>
 
 			<script type="text/javascript">
@@ -188,6 +196,37 @@
 					"zoom":"0.9",
 				//	"transform":"scale(0.9)"
 				});*/
+				//verify token 跳转
+				verifyLogin('${basePath}');
+
+				function verifyLogin(basePath){
+					$.ajax({
+						url: basePath+"/verify",
+						dataType:"json",   //返回格式为json
+						async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+						type:"POST",   //请求方式
+						headers:{'token':window.localStorage.token},
+						beforeSend:function(){
+							//请求前的处理
+						},
+						success:function(req) {
+							//username
+							$('#spUsername').html(window.localStorage.username);
+
+						},error:function(data){
+							//alert('登录失效,请重新登录!');
+							window.location.href='${basePath}';
+						}
+
+					});
+
+
+				}
+
+				function logout(){
+					window.localStorage.clear();
+					window.location.href='${basePath}';
+				}
 				function showHome(){
 					window.location.href="${basePath}/Home/pcbHome";
 				}

@@ -3,6 +3,8 @@ package com.sinictek.spm.dao;
 import com.sinictek.spm.model.SUser;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -13,5 +15,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface SUserMapper extends BaseMapper<SUser> {
 
-
+    public List<SUser> getTestAllUser();
 }

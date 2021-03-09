@@ -492,8 +492,15 @@
 							borderWidth: 0,
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-									return this.series.name+':'+this.y+"%";
-								},}
+									if(this.y>0){
+										return this.series.name+':'+this.y+"%";
+									}else {
+										return '';
+									}
+								},style:{
+									color:'#3f3f57',
+									fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+								}}
 						},
 						column: {
 							cursor:'pointer',
@@ -504,8 +511,15 @@
 							stacking:'normal',
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-									return this.series.name+':'+this.y+"%";
-								},},
+									if(this.y>0){
+										return this.series.name+':'+this.y+"%";
+									}else {
+										return '';
+									}
+								},style:{
+								color:'#3f3f57',
+								fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+							}},
 							events: {
 								click:function(e){
 									var startTime = $("#startTime").val();
@@ -518,8 +532,15 @@
 						spline:{
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-									return this.series.name+':'+this.y+"%";
-								},}
+									if(this.y>0){
+										return this.series.name+':'+this.y+"%";
+									}else {
+										return '';
+									}
+								},style:{
+									color:'#3f3f57',
+									fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+								}}
 						}
 					};
 					//alert(json);
@@ -581,8 +602,17 @@
 							borderWidth: 0,
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-									return (this.series.name)+ ':' +(this.y);
-								},}
+									if(this.y>0){
+										return (this.series.name)+ ':' +(this.y);
+									}else {
+										return '';
+									}
+
+								},style:{
+									color:'#3f3f57',
+									fontSize: '11px',
+									fontFamily: 'Verdana, sans-serif',
+								}}
 						},
 						column: {
 							grouping: true,
@@ -594,12 +624,15 @@
 								useHTML: true,
 								enabled:true,
 								formatter: function() {
-									return (this.series.name)+ ':' +(this.y);
-								},
-								style:{
-									fontSize:'12px',
-									fontWeight:'bold',
-									color:'#141328'
+									if(this.y>0){
+										return (this.series.name)+ ':' +(this.y);
+									}else {
+										return '';
+									}
+								},style:{
+									color:'#3f3f57',
+									fontSize: '11px',
+									fontFamily: 'Verdana, sans-serif',
 								},
 							},//,color:'#ff0816'
 							events: {
@@ -614,8 +647,16 @@
 						spline:{
 							dataLabels:{enabled:true,useHTML: true,
 								formatter: function() {
-									return (this.y)+'pcs';
-								},}
+									if(this.y>0){
+										return (this.y)+'pcs';
+									}else {
+										return '';
+									}
+
+								},style:{
+									color:'#3f3f57',
+									fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+								}}
 						}
 					};
 					jsonContainerline.credits={enabled: false };

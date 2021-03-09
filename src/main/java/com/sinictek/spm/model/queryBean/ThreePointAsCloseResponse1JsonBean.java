@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ThreePointAsCloseResponse1JsonBean {
-        private String Barcode;
+        private String barcode;
         private List<LstPCB> LstPCB;
         private int spiPCBID;
         private int preAoiPCBID;

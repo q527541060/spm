@@ -108,6 +108,15 @@
 					case 3:
 						window.location.href="${basePath}/sStatus/pcbMonitorview_realLineView";
 						break;
+                    case 4:
+                        window.location.href="${basePath}/Pcb/barcode"; //条码
+                        break;
+                    case 18:
+                        window.location.href="${basePath}/aPcb/barcode?aoiType=1"; //炉前条码
+                        break;
+                    case 118:
+                        window.location.href="${basePath}/aPcb/barcode?aoiType=2"; //炉后条码
+                        break;
 					case 5:   //炉前
 						window.location.href="${basePath}/aLine/pcbLine?aoiType=1";
 						break;
@@ -242,10 +251,10 @@
                                 <p style="margin: 8px" >良率报警:<span class="badge" id="preaoi-yeild-count">0</span></p>
                                 <p style="margin: 4px">故障报警:<span class="badge" id="preaoi-status-count">0</span></p>
                             </div></td>
-                            <td><div id="line-win"  onclick="showModel(8)">
+                            <td><div id="line-win"  onclick="showModel(18)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-list-alt"></span>
                                 <p> 炉前分析</p>
-                                <i class="line-count">0</i>
+                                <i class="line-count">${aoi_pre_barcodeCount}</i>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(10)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-level-up"></span>
@@ -288,7 +297,7 @@
                             <td><div id="line-win"  onclick="showModel(118)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-list-alt"></span>
                                 <p> 炉后分析</p>
-                                <i class="line-count">0</i>
+                                <i class="line-count">${aoi_post_barcodeCount}</i>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(110)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-folder-open"></span>
@@ -329,7 +338,6 @@
 
 
     <script>
-
         function dataRow(row, index){
             if (index % 2 == 0 ) {
                 return {
@@ -341,6 +349,8 @@
                 }
             }
         }
+
+
         //看板轮询时间
         var boardMachineRefreshTime = $("#boardMachineRefreshTime").val();
         if(boardMachineRefreshTime==null || boardMachineRefreshTime=='' ||boardMachineRefreshTime==0){

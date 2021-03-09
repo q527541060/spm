@@ -1,211 +1,169 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<html>
+<%
+    String contextPath = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath;
+    String staticPath = basePath + "/static";
+    request.setAttribute("staticPath", staticPath);
+    request.setAttribute("basePath", basePath);
+%>
 <head>
-  <%@include file="common/head.jsp" %>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>用户列表</title>
-  <link rel="stylesheet" href="${staticPath}/styles/user/manage.css">
+    <title>Login</title>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="登录"
+    />
+    <link rel="stylesheet icon" href="${staticPath}/img/logo.jpg" type="image/x-icon" media="screen" />
+    <!-- Meta tag Keywords -->
+    <!-- css files -->
+    <link rel="stylesheet" href="${staticPath}/css/style.css" />
+    <!-- Style-CSS -->
+    <link rel="stylesheet" href="${staticPath}/css/fontawesome-all.css">
+    <!-- Font-Awesome-Icons-CSS -->
+    <!-- //css files -->
+    <!-- web-fonts -->
+    <!-- //web-fonts -->
+
 </head>
+
 <body>
-<div class="content-wrap">
-  <h1>用户管理</h1>
-  <div class="table">
-    <table cellpadding="0" cellspacing="0" border="1px">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>昵称</th>
-        <th>性别</th>
-        <th>邮箱</th>
-        <th>手机号码</th>
-        <th>创建时间</th>
-        <th>操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <c:forEach items="${userList}" var="user">
-        <tr>
-          <td>${user.id}</td>
-          <td>${user.nickname}</td>
-          <td>${user.sex == 1 ? '男' : '女'}</td>
-          <td>${user.email}</td>
-          <td>${user.mobile}</td>
-          <td>${user.createTime}</td>
-          <td>
-            <a href="javascript:;" class="btn-edit" data-id="${user.id}">编辑</a>
-            <a href="javascript:;" class="btn-delete" data-id="${user.id}">删除</a>
-          </td>
-        </tr>
-      </c:forEach>
-      </tbody>
-    </table>
-    <div class="opera">
-      <button id="btnCreateUser" class="button normal">添加用户</button>
-    </div>
-  </div>
-  <div id="createDialog" class="dialog">
-    <div class="dialog-body">
-      <h3>创建用户</h3>
-      <form class="content">
-        <dl class="prop">
-          <dt>昵称</dt>
-          <dd><input type="text" name="nickname" placeholder="请输入昵称" maxlength="10"/></dd>
-        </dl>
-        <dl class="prop">
-          <dt>性别</dt>
-          <dd>
-            <label>男</label><input type="radio" name="sex" value="1"/>
-            <label>女</label><input type="radio" name="sex" value="0" checked/>
-          </dd>
-        </dl>
-        <dl class="prop">
-          <dt>邮箱</dt>
-          <dd><input type="text" name="email" placeholder="请输入昵称" maxlength="20"/></dd>
-        </dl>
-        <dl class="prop">
-          <dt>手机号码</dt>
-          <dd><input type="text" name="mobile" placeholder="请输入昵称" maxlength="11"/></dd>
-        </dl>
-      </form>
-      <div class="opera">
-        <button class="btn-cancel button">取消</button>
-        <button class="btn-confirm button normal margin-left">确定</button>
-      </div>
-    </div>
-  </div>
-  <div id="editDialog" class="dialog">
-    <div class="dialog-body">
-      <h3>编辑用户</h3>
-      <form class="content">
-        <input name="id" type="hidden">
-        <dl class="prop">
-          <dt>昵称</dt>
-          <dd><input type="text" name="nickname" placeholder="请输入昵称" maxlength="10"/></dd>
-        </dl>
-        <dl class="prop">
-          <dt>性别</dt>
-          <dd>
-            <label>男</label><input type="radio" name="sex" value="1"/>
-            <label>女</label><input type="radio" name="sex" value="0" checked/>
-          </dd>
-        </dl>
-        <dl class="prop">
-          <dt>邮箱</dt>
-          <dd><input type="text" name="email" placeholder="请输入昵称" maxlength="20"/></dd>
-        </dl>
-        <dl class="prop">
-          <dt>手机号码</dt>
-          <dd><input type="text" name="mobile" placeholder="请输入昵称" maxlength="11"/></dd>
-        </dl>
-      </form>
-      <div class="opera">
-        <button class="btn-cancel button">取消</button>
-        <button class="btn-confirm button normal margin-left">确定</button>
-      </div>
-    </div>
-  </div>
+<!-- bg effect -->
+<div id="bg">
+    <canvas></canvas>
+    <canvas></canvas>
+    <canvas></canvas>
 </div>
-<script>
-  $(function () {
-    // 事件绑定
-    function initEvents() {
-      // 添加用户
-      $('#btnCreateUser').click(function () {
-        $('#createDialog [name=nickname]').val('')
-        $('#createDialog [name=sex][value="0"]').attr('checked', true)
-        $('#createDialog [name=email]').val('')
-        $('#createDialog [name=mobile]').val('')
-        $('#createDialog').addClass('show')
-      });
-      // 确认添加
-      $('#createDialog .btn-confirm').click(function () {
-        createUser()
-      });
-      // 编辑用户
-      $('.btn-edit').click(function () {
-        initEditor($(this).data('id'))
-      });
-      // 确认编辑
-      $('#editDialog .btn-confirm').click(function () {
-        updateUser()
-      });
-      // 取消创建、编辑
-      $('.btn-cancel').click(function () {
-        $('.dialog').removeClass('show')
-      });
-      // 删除用户
-      $('.btn-delete').click(function () {
-        deleteById($(this).data('id'))
-      });
-    }
+<!-- //bg effect -->
+<!-- title -->
+<h1>WEBSPC-CENTER</h1>
+<!-- //title -->
+<!-- content -->
+<div class="sub-main-w3">
+    <form  id="form_login">
+        <h2>Login Now
+            <i class="fas fa-level-down-alt"></i>
+        </h2>
+        <div class="form-style-agile">
+            <label>
+                <i class="fas fa-user"></i>
+                Username
+            </label>
+            <input placeholder="Username" name="name" type="text" required="">
+        </div>
+        <div class="form-style-agile">
+            <label>
+                <i class="fas fa-unlock-alt"></i>
+                Password
+            </label>
+            <input placeholder="Password" name="psw" type="password" required="">
+        </div>
+        <!-- checkbox -->
+       <%-- <div class="wthree-text">
+            <ul>
+                <li>
+                    <label class="anim">
+                        <input type="checkbox" class="checkbox" required="">
+                        <span>Stay Signed In</span>
+                    </label>
+                </li>
+                <!-- <li> -->
+                <!-- <a href="#">Forgot Password?</a> -->
+                <!-- </li> -->
+            </ul>
+        </div>--%>
+        <!-- //checkbox -->
+        <input type="submit" value="Log In">
+        <!-- <input type="botton" value="Log In"> -->
+    </form>
+</div>
+<!-- //content -->
 
-    // 创建用户
-    function createUser() {
-      var param = {
-        'nickname': $('#createDialog [name=nickname]').val().trim(),
-        'sex': $('#createDialog [name=sex]:checked').val(),
-        'email': $('#createDialog [name=email]').val().trim(),
-        'mobile': $('#createDialog [name=mobile]').val().trim()
-      };
-      $.post(basePath + '/user/create', param, function (resp) {
-        if (resp.success) {
-          window.location.reload();
-          return
+<!-- copyright -->
+<div class="footer">
+    <p>©2021 Sinic-Tek intelligent Technology Co.,Ltd 版权所有</p>
+</div>
+<!-- //copyright -->
+
+<!-- Jquery -->
+<script src="${staticPath}/jquery/jQuery-2.2.0.min.js"></script>
+<!-- //Jquery -->
+<!-- effect js -->
+<script src="${staticPath}/js/canva_moving_effect.js"></script>
+<script >
+    $(document).ready(function(){
+        $('#form_login').submit(function(e) {
+            e.preventDefault();   //越过submit 执行以下代码.
+            login();
+
+        });
+    });
+    function login(){
+        // alert($('#login_submit').val());
+        $.ajax({
+            url:"${basePath}/spc/login",
+            data:$('#form_login').serialize(),
+            dataType:"json",
+            type:"POST",
+            beforeSend:function(){
+            },
+            success:function(data) {
+                //alert(data.data);
+                //登录成功并保存token
+                if(!window.localStorage){
+                    alert("浏览器支持localstorage");
+                    return false;
+                }else{
+                    var storage=window.localStorage;
+                    storage.setItem("token",data.data.token);
+                    storage.setItem("username",data.data.username);
+                    console.log(storage.token);
+                    //跳转主页
+                    if(data.message=='OK'){
+                        /*$.ajax({
+                            url:"${basePath}/Home/pcbHome",
+                            headers:{'token':storage.token},
+                            type:"GET",
+                            success:function(data) {*/
+                                //alert(data);
+                                window.location.href='${basePath}/Home/pcbHome';
+                           /* }
+                            ,error:function (data) {
+                                //alert(data);
+                            }
+
+                        });*/
+                    }else{
+                        //登录失败
+                        alert('登录失败!'+data.data.data);
+                    }
+                }
+
+            },
+            error:function (data) {
+                alert(data);
+            }
+        });
+
+    }
+    function enterLoginSearch(){
+        var event = window.event || arguments.callee.caller.arguments[0];
+        if (event.keyCode == 13)
+        {
+
         }
-        alert("创建失败")
-      })
     }
-
-    // 初始化编辑面板
-    function initEditor(id) {
-      $.get(basePath + '/user/' + id, function (resp) {
-        if (resp.success) {
-          $('#editDialog [name=id]').val(resp.data.id)
-          $('#editDialog [name=nickname]').val(resp.data.nickname)
-          $('#editDialog [name=sex][value=' + resp.data.sex + ']').attr('checked', true)
-          $('#editDialog [name=email]').val(resp.data.email)
-          $('#editDialog [name=mobile]').val(resp.data.mobile)
-          $('#editDialog').addClass('show')
-          return
-        }
-        alert('初始化编辑数据失败')
-      }, 'json')
-    }
-
-    // 确认更新
-    function updateUser() {
-      var param = {
-        'id': $('#editDialog [name=id]').val().trim(),
-        'nickname': $('#editDialog [name=nickname]').val().trim(),
-        'sex': $('#editDialog [name=sex]:checked').val(),
-        'email': $('#editDialog [name=email]').val().trim(),
-        'mobile': $('#editDialog [name=mobile]').val().trim()
-      };
-      $.post(basePath + '/user/updateById', param, function (resp) {
-        if (resp.success) {
-          window.location.reload();
-          return
-        }
-        alert("更新失败")
-      })
-    }
-
-    // 删除
-    function deleteById(id) {
-      if (confirm('确认删除该用户吗?')) {
-        $.get(basePath + '/user/delete/' + id, function (resp) {
-          if (resp.success) {
-            window.location.reload();
-            return
-          }
-          alert('删除失败')
-        })
-      }
-    }
-
-    initEvents();
-  })
 </script>
+<script>
+    /*addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    }*/
+</script>
+
 </body>
+
 </html>

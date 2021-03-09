@@ -397,7 +397,7 @@ public class AStatusController {
         productNGSeries.setData(ngFPYProductSeriesList);
         productNGSeries.setTooltip(productTooltip);
         productNGSeries.setStacking("normal");
-        productNGSeries.setColor("#B84A5B"); //F47378 F7A35C FF7F27
+        productNGSeries.setColor("#DA5858"); //F47378 F7A35C FF7F27
         //productNGSeries.setLineWidth(5);
 
         productPassSeries.setType("column");
@@ -420,11 +420,9 @@ public class AStatusController {
         productSplineSeries.setyAxis(1);
 
         lstFPYProductSeries.add(productSplineSeries);
-        lstFPYProductSeries.add(productNGSeries);
         lstFPYProductSeries.add(productGoodSeries);
-
         lstFPYProductSeries.add(productPassSeries);
-
+        lstFPYProductSeries.add(productNGSeries);
 
 
         cpkSeries.setName("CPK");
