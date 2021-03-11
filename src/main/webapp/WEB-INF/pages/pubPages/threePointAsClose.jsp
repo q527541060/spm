@@ -30,9 +30,9 @@
     <div class="row" style="text-align: left;">
         <div class="col-md-14">
             <ol class="breadcrumb" style="float: left;margin: 0px;">
-                <li><a href="${basePath}/Home/pcbHome">Home</a></li>
+                <li><a href="${basePath}/Home/pcbHome"><spring:message code="line.Home"></spring:message></a></li>
                 <%--<li><a href="#">spi</a></li>--%>
-                <li class="active">threePointClose</li>
+                <li class="active"><spring:message code="threePonitClose.threePointClose"></spring:message></li>
             </ol>
             <div style="float: left;margin:4px 20%;padding: 0px" id="sandBox-container">
                 <!-- glyphicon glyphicon-time   col-lg-offset-4-->
@@ -73,7 +73,7 @@
                 </div>
                 <!-- glyphicon glyphicon-search-->
                 <button type="button" class="btn  btn-info btn-xs"  onclick="showPcbList()">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> <spring:message code="Seach"></spring:message>
                 </button>
             </div>
 
@@ -88,7 +88,7 @@
                 <div class="col-md-4">
                     <div class="progress" style="margin: 0px">
                         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                            <small id="span-spi-content-component" class="font-small">SPI</small>
+                            <small id="span-spi-content-component" class="font-small"><spring:message code="threePointClose.spi"></spring:message></small>
                         </div>
                     </div>
                     <div id="spi-2D-Component" ></div>
@@ -99,7 +99,7 @@
                 <div class="col-md-4">
                     <div class="progress" style="margin: 0px">
                         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                            <small  id="span-PRE-content-component" class="font-small">AOI-PRE</small>
+                            <small  id="span-PRE-content-component" class="font-small"><spring:message code="threePointClose.preaoi"></spring:message></small>
                         </div>
                     </div>
                     <div id="preAoi-2D-Component" ></div>
@@ -110,7 +110,7 @@
                 <div class="col-md-4">
                     <div class="progress" style="margin: 0px">
                         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                            <small  id="span-POST-content-component" class="font-small">AOI-POST</small>
+                            <small  id="span-POST-content-component" class="font-small"><spring:message code="threePointClose.postaoi"></spring:message></small>
                         </div>
                     </div>
                     <div id="postAoi-2D-Component" ></div>
@@ -294,7 +294,7 @@
                 [
                     {
                         field: 'barcode',
-                        title: 'Barcode-List',
+                        title:'<spring:message code="threePointClose.barcodeList"></spring:message>',
                         align: 'center',
                         width: 50,
                         sortable: true,
@@ -302,7 +302,7 @@
                     },
                     {
                         field: 'barcode',
-                        title: 'Barcode-List',
+                        title: '<spring:message code="threePointClose.barcodeList"></spring:message>',
                         align: 'center',
                         width: 50,
                         formatter: function (value, row, index) {

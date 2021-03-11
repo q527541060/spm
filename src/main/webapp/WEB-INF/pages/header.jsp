@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <%
 	String contextPath = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + contextPath;
@@ -80,8 +82,8 @@
 				height: 40px;
 				background-color: #409EFE;
 			}
-			ul>li{
-				width: 150px;
+			.ul-li{
+				width: 130px;
 				padding: 0px;
 				margin: 0px;
 			}
@@ -92,6 +94,7 @@
 			ul>li>a>img{
 				height:30px;
 			}
+
 			.bootstrap-table .fixed-table-container .table thead th .both{
 				background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABgFBMVEWKv+aIvuZrruBur+Btr+B6tuMsi9OOweeMwOeMwOaLwOaLwOaMwOaKv+aKv+aKv+aKv+aKv+aKv+aJvuZ1s+JrruCKv+aKv+Zsr+Btr+CKv+Ztr+CKv+Ztr+Btr+CKv+aKv+Ztr+Btr+CKv+aKv+Ztr+Btr+CKv+Ztr+Btr+CJv+aKv+Ztr+Btr+CJv+aKv+Ztr+Btr+CJvuaKv+Ztr+Btr+CIvuaKv+Ztr+Btr+B8uOOJvuZtr+Btr+B8t+N0s+Ftr+Btr+BrruBtr+Btr+Btr+Btr+Btr+Btr+Btr+Btr+Btr+Btr+Btr+Btr+Btr+Btr+Btr+Btr+CKv+aJvuZ0s+J0s+Ftr+C21++HveVxseGhzOvz+f2Cu+RusOCPwufZ6vf///94teK42PD9/v+z1e+dyeru9vvq9PuFvOVsruDC3fL+//9rruCJv+abyOqy1e+w1O6jzeyfy+ugy+uDu+Vsr+CHvuWAueRysuFqrt+IvuaGveV3tOJwseEAAAA24TjAAAAAU3RSTlMAAAAAAAAAAA8sRlRGGnnC5fP3w3kaGLq5GHBvCrkKJuDfJUDw8EBS91JX+PhXTvb2Tjjs7Dga09MaAZaVAS/W1S8rjMzp9fn06MuLKxQyS1hKMcNktbAAAAABYktHRH9Iv3HlAAAACXBIWXMAACcQAAAnEAGUaVEZAAAAB3RJTUUH5AcYBBA25P1/QAAAAOtJREFUGNNjYGBgYOTg5OLm5uHkYGJmYQHyefn4BQSFhAQFhEVEQQJi4sFQEBIqIQkUkAqGC4SFS7MwyEAUREQEB0dGhcvKMcgrgOSiY2KiQ2LjwhWVGJRVgALxCYmJCfFJ4eGqagzqQkAFySmJiSmpceHhGpoMWtrBIWnpiUCQkZkVrqPLoKcfHJKdmAMEiam54QaGDEbGwXn5BamFRcUlpWXhJqYMZuZAQ8srKnOrqrLCwy0sGaysq2sqaoHmgYGNLQOrnX1dOAw4OLIwsLE7Obu4urm7e3h6efsAPccCBL5+/gG6gUG+IDYAkflCDXYUg6QAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDctMTlUMDM6Mzk6MjArMDA6MDCGZw5cAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTA4LTEwVDE0OjIxOjIxKzAwOjAwJQImowAAACB0RVh0c29mdHdhcmUAaHR0cHM6Ly9pbWFnZW1hZ2ljay5vcme8zx2dAAAAGHRFWHRUaHVtYjo6RG9jdW1lbnQ6OlBhZ2VzADGn/7svAAAAGHRFWHRUaHVtYjo6SW1hZ2U6OkhlaWdodAA1NTbsjFKcAAAAF3RFWHRUaHVtYjo6SW1hZ2U6OldpZHRoADU1Nn99AsEAAAAZdEVYdFRodW1iOjpNaW1ldHlwZQBpbWFnZS9wbmc/slZOAAAAF3RFWHRUaHVtYjo6TVRpbWUAMTU2NTQ0Njg4MVViNaoAAAASdEVYdFRodW1iOjpTaXplADE5NTMzQt+GreAAAABadEVYdFRodW1iOjpVUkkAZmlsZTovLy9kYXRhL3d3d3Jvb3Qvd3d3LmVhc3lpY29uLm5ldC9jZG4taW1nLmVhc3lpY29uLmNuL2ZpbGVzLzEyMy8xMjM2NDc0LnBuZ7aoUuwAAAAASUVORK5CYII=")}
 			.bootstrap-table .fixed-table-container .table thead th .desc{
@@ -134,45 +137,56 @@
 				 <div class="col-md-14 " id="header-col-mod-14">
 					 <ul class="nav nav-pills header-view">
 						 <!-- home -->
-						 <li role="presentation" style="text-align: left;">
+						 <li class="ul-li" role="presentation" style="text-align: left;">
 							 <button type="button" class="btn btn-primary" onclick="showHome()" aria-label="Left Align"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></button>
 						 </li>
 						 <!-- homePage -->
-						 <li role="presentation">
-							 <a href="${basePath}/Home/pcbHome"><img  src="${staticPath}/img/zz.png">HomePage</a>
+						 <li class="ul-li" role="presentation">
+							 <a href="${basePath}/Home/pcbHome"><img  src="${staticPath}/img/zz.png"><spring:message code="header.HomePage"></spring:message></a>
 						 </li>
 						<!-- dataInfo -->
-						 <li role="presentation" class="dropdown">
+						 <li  role="presentation" class="dropdown ul-li">
 							 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-								 <img  src="${staticPath}/img/VD_001.png">DataInfo <span class="caret"></span>
+								 <img  src="${staticPath}/img/VD_001.png"><spring:message code="header.DataInfo"></spring:message> <span class="caret"></span>
 							 </a>
 							 <ul class="dropdown-menu dropdown-menu-dataInfo">
-								 <li><a href="${basePath}/sLine/pcbLine">SPI</a></li>
-								 <li><a href="${basePath}/aLine/pcbLine?aoiType=1">PRE-AOI</a></li>
-								 <li><a href="${basePath}/aLine/pcbLine?aoiType=2">POST-AOI</a></li>
+								 <li><a href="${basePath}/sLine/pcbLine"><spring:message code="homePage.spi.Station"></spring:message></a></li>
+								 <li><a href="${basePath}/aLine/pcbLine?aoiType=1"><spring:message code="homePage.preaoi.Station"></spring:message></a></li>
+								 <li><a href="${basePath}/aLine/pcbLine?aoiType=2"><spring:message code="homePage.postaoi.Station"></spring:message></a></li>
 							 </ul>
 						 </li>
 						<!-- Monitoring-->
-						 <li role="presentation" class="dropdown">
+						 <li role="presentation" class="dropdown ul-li">
 							 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-								 <img  src="${staticPath}/img/zz04.png">Monitoring <span class="caret"></span>
+								 <img  src="${staticPath}/img/zz04.png"><spring:message code="header.Monitoring"></spring:message>  <span class="caret"></span>
 							 </a>
 							 <ul class="dropdown-menu dropdown-menu-dataInfo">
-								 <li><a href="${basePath}/sStatus/pcbMonitorview_realLineView">SPI</a></li>
-								 <li><a href="${basePath}/aStatus/pcbMonitorview_realLineView?aoiType=1">PRE-AOI</a></li>
-								 <li><a href="${basePath}/aStatus/pcbMonitorview_realLineView?aoiType=2">POST-AOI</a></li>
+								 <li><a href="${basePath}/sStatus/pcbMonitorview_realLineView"><spring:message code="homePage.spi.Station"></spring:message></a></li>
+								 <li><a href="${basePath}/aStatus/pcbMonitorview_realLineView?aoiType=1"><spring:message code="homePage.preaoi.Station"></spring:message></a></li>
+								 <li><a href="${basePath}/aStatus/pcbMonitorview_realLineView?aoiType=2"><spring:message code="homePage.postaoi.Station"></spring:message></a></li>
 							 </ul>
 						 </li>
 						 <!-- setting -->
-						 <li role="presentation"><a href="${basePath}/sDefaultsetting/setting"><img  src="${staticPath}/img/DL.png">Setting</a></li>
+						 <li class="ul-li" role="presentation"><a href="${basePath}/sDefaultsetting/setting"><img  src="${staticPath}/img/DL.png"><spring:message code="header.Setting"></spring:message> </a></li>
 
-						 <li role="presentation" style="float:right;text-align: center;margin-top: 10px">
-							 <div>
-								 欢迎您,<span id="spUsername">admin</span> <button type="button" onclick="logout()" class="btn  btn-primary btn-xs">注销</button>
+						 <li role="presentation" style="float:right;text-align: center;margin-top: 5px">
+							 <div class="btn-group"  style="float: right;padding: 0px;margin-right: 10px">
+								 <button type="button" class="btn  btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									 <spring:message code="lang.word"></spring:message> <span class="caret"></span>
+								 </button>
+								 <button type="button" onclick="logout()" class="btn  btn-primary btn-xs"><spring:message code="header.loginOut"></spring:message> </button>
+								 <ul class="dropdown-menu" style="height: 70px;width: 50px">
+									 <li class="dropdown-menu-l"><a  href="${basePath}/Home/pcbHome?lang=zh_CN"> 中文</a></li>
+									 <li class="dropdown-menu-l"><a  href="${basePath}/Home/pcbHome?lang=en_US"> US(America)</a></li>
+								 </ul>
 							 </div>
-
+							<%-- <div style="float: left">
+								 </div>--%>
 						 </li>
-
+						 <li role="presentation" style="float:right;text-align: center;margin-top: 10px;">
+							 <!-- Single button -->
+							 <spring:message code="header.Welcome"></spring:message> ,<span id="spUsername"></span>
+						 </li>
 					 </ul>
 					<%--<ul class="nav nav-pills" >
 					  <li role="presentation" style="text-align: left;">
@@ -337,5 +351,6 @@
 					$('[data-toggle="tooltip"]').tooltip();
 				})
             </script>
+
 	</body>
 </html>

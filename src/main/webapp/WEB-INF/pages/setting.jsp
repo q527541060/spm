@@ -35,9 +35,9 @@
         <div class="row" style="text-align: left;margin-top: -15px;padding: 0px ">
             <div class="col-md-14">
                 <ol class="breadcrumb">
-                    <li><a href="${basePath}/Home/pcbHome">Home</a></li>
+                    <li><a href="${basePath}/Home/pcbHome"><spring:message code="line.Home"></spring:message></a></li>
                     <%--<li><a href="#">spi</a></li>--%>
-                    <li class="active">setting</li>
+                    <li class="active"><spring:message code="setting.set"></spring:message></li>
                 </ol>
             </div>
         </div>
@@ -46,7 +46,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        Default参数设置
+                        <spring:message code="setting.defaultparam"></spring:message>
                     </div>
                     <div class="panel-body" style="padding: 0px">
                         <div id="table_default" ></div>
@@ -59,7 +59,7 @@
             <div class="col-md-10 col-md-offset-1" >
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        SPI线体信息变更
+                        <spring:message code="setting.lineParam.spi"></spring:message>
                     </div>
                     <div class="panel-body" style="padding: 0px">
                         <div id="table_line"></div>
@@ -71,7 +71,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        AOI线体信息变更
+                        <spring:message code="setting.lineParam.aoi"></spring:message>
                     </div>
                         <div class="panel-body" style="padding: 0px">
                           <div id="table_line_aoi"></div>

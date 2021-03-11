@@ -7,6 +7,7 @@
     request.setAttribute("staticPath", staticPath);
     request.setAttribute("basePath", basePath);
 %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <head>
     <title>Login</title>
     <!-- Meta tag Keywords -->
@@ -36,25 +37,25 @@
 </div>
 <!-- //bg effect -->
 <!-- title -->
-<h1>WEBSPC-CENTER</h1>
+<h1><spring:message code="login.title"></spring:message></h1>
 <!-- //title -->
 <!-- content -->
 <div class="sub-main-w3">
     <form  id="form_login">
-        <h2>Login Now
+        <h2><spring:message code="login.loginnow"></spring:message>
             <i class="fas fa-level-down-alt"></i>
         </h2>
         <div class="form-style-agile">
             <label>
                 <i class="fas fa-user"></i>
-                Username
+                <spring:message code="login.username"></spring:message>
             </label>
             <input placeholder="Username" name="name" type="text" required="">
         </div>
         <div class="form-style-agile">
             <label>
                 <i class="fas fa-unlock-alt"></i>
-                Password
+                <spring:message code="login.password"></spring:message>
             </label>
             <input placeholder="Password" name="psw" type="password" required="">
         </div>
@@ -73,7 +74,7 @@
             </ul>
         </div>--%>
         <!-- //checkbox -->
-        <input type="submit" value="Log In">
+        <input type="submit" value="<spring:message code="login.login"></spring:message>">
         <!-- <input type="botton" value="Log In"> -->
     </form>
 </div>

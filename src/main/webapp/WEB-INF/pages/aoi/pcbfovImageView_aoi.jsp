@@ -34,9 +34,9 @@
 		<div class="row" style=" text-align: left;">
 			<div class="col-md-14" >
 				<ol class="breadcrumb"  style="float: left;margin: 0px;">
-					<li><a href="${basePath}/Home/pcbHome">Home</a></li>
-					<li><a href="active">pre-aoi</a></li>
-					<li>pcbfovImageView</li>
+					<li><a href="${basePath}/Home/pcbHome"><spring:message code="line.Home"></spring:message></a></li>
+					<li><a href="active"><spring:message code="homePage.preaoi.Station"></spring:message></a></li>
+					<li><spring:message code="pcbfoview.pcbfovImageView"></spring:message></li>
 				</ol>
 				<div style="float: left;margin-left: 20%;padding: 5px" id="sandBox-container">
 					<!-- glyphicon glyphicon-time   col-lg-offset-4-->
@@ -46,7 +46,7 @@
 					<input  size="12"  type="text"  value="" readonly class="form-date" id="endTime"/>
 					<!-- glyphicon glyphicon-search-->
 					<button type="button" class="btn  btn-info btn-xs"  onclick="">
-						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> <spring:message code="Seach"></spring:message>
 					</button>
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 			<!-- 侧导航栏 线体  -->
 			<div class="col-md-1" style="padding: 0px">
 				<div class="panel panel-primary" style="margin: 0px">
-					<div class="panel-heading">Line-List-Info</div>
+					<div class="panel-heading"><spring:message code="pcbfov.lineInfo"></spring:message></div>
 				</div>
 				<!-- line job Table -->
 				<div id="lineTable" ></div>

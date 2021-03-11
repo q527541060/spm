@@ -29,10 +29,10 @@
     <div class="row" style="text-align: left;">
         <div class="col-md-14" style="padding: 0px;">
             <ol class="breadcrumb" style="float: left;margin: 0px;">
-                <li><a href="${basePath}/Home/pcbHome">Home</a></li>
+                <li><a href="${basePath}/Home/pcbHome"><spring:message code="line.Home"></spring:message></a></li>
                 <%--<li><a href="#">spi</a></li>--%>
-                <li class="active">spi</li>
-                <li class="active">BarcodeList</li>
+                <li class="active"><spring:message code="line.spi"></spring:message></li>
+                <li class="active"><spring:message code="barcode.BarcodeList"></spring:message></li>
             </ol>
         </div>
     </div>
@@ -40,7 +40,7 @@
         <div class="col-md-4" ></div>
         <div class="col-md-4" >
             <div class="input-group">
-                <input type="text" onkeydown="entersearch()" class="form-control input_barcode" placeholder="请输入条码" style="height: 28px">
+                <input type="text" onkeydown="entersearch()" class="form-control input_barcode" placeholder="<spring:message code="barcode.placeholder"></spring:message>" style="height: 28px">
                 <span class="input-group-btn" ><button type="button" class="btn btn-info"  onclick="refreshMainTable()">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </button></span>

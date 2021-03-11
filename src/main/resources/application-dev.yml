@@ -17,6 +17,8 @@ server:
     max-http-form-post-size: -1
 #MYSQL
 spring:
+  messages:
+    basename: i18n/messages/messages
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/db_spm?serverTimezone=GMT%2B8&useSSL=false
     username: root

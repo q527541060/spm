@@ -29,18 +29,18 @@
         <div class="row" style="margin-top: -10px; text-align: left;">
             <div class="col-md-14">
                 <ol class="breadcrumb">
-                    <li><a href="${basePath}/Home/pcbHome">Home</a></li>
+                    <li><a href="${basePath}/Home/pcbHome"><spring:message code="line.Home"></spring:message></a></li>
                    <%-- <li><a href="#">spi</a></li>--%>
-                    <li class="avtive"><c:if test="${aoiType !=1}">post-aoi</c:if><c:if test="${aoiType ==1}">pre-aoi</c:if></li>
-                    <li class="active">dataInfo</li>
-                    <li class="active">dataInfoDetail</li>
+                    <li class="avtive"><c:if test="${aoiType !=1}"><spring:message code="homePage.preaoi.Station"></spring:message></c:if><c:if test="${aoiType ==1}"><spring:message code="homePage.postaoi.Station"></spring:message></c:if></li>
+                    <li class="active"><spring:message code="line.dataInfo"></spring:message></li>
+                    <li class="active"><spring:message code="line.lineDetail.dataInfoDetail"></spring:message></li>
                 </ol>
             </div>
         </div>
         <!-- s饼图详情-->
         <div class="row" style="margin-top: -20px;; padding: 0px;">
             <div class="col-md-12">
-                <h4 style="margin: 0px"> ${lineNo}线质量统计分析 </h4>
+                <h4 style="margin: 0px"> ${lineNo}<spring:message code="line.lineDetail.title"></spring:message> </h4>
                 <input id="lineNo" type="hidden" value="${lineNo}">
                 <input id="inspectStarttime" type="hidden" value="${inspectStarttime}">
                 <input id="inspectEndtime" type="hidden" value="${inspectEndtime}">
@@ -141,7 +141,7 @@
                 type:"GET",
                 success:function (req) {
                     padCountpieJson.title={
-                        text:'缺陷分布分析'
+                        text:<spring:message code="line.lineDetail.defect"></spring:message>
                     };
                     padCountpieJson.xAxis= [
                         {
@@ -289,7 +289,7 @@
                     //success
                     var pieColors=['#007AAE','#B84A5B','#22B14C'];
                     pcbCountpieJson.title={
-                        text:'PCB分析'
+                        text:<spring:message code="line.lineDetail.pcbPie"></spring:message>
                     };
                     pcbCountpieJson.xaxis=[
                         {

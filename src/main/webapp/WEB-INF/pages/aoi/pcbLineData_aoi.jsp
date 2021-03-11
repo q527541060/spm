@@ -31,17 +31,17 @@
 		<div class="row" style=" text-align: left;">
 			<div class="col-md-4" style="padding: 0px">
 				<ol class="breadcrumb"  style="float: left;margin: 0px">
-					<li><a href="${basePath}/Home/pcbHome">Home</a></li>
-					<li class="active"><c:if test="${aoiType==1}">pre-aoi</c:if><c:if test="${aoiType==2}">post-aoi</c:if><%--<a  data-toggle="tooltip" data-placement="bottom" title="点击切换至spi" href="${basePath}/Home/pcbHome">pre-aoi</a>--%></li>
+					<li><a href="${basePath}/Home/pcbHome"><spring:message code="line.Home"></spring:message></a></li>
+					<li class="active"><c:if test="${aoiType==1}"><spring:message code="homePage.preaoi.Station"></spring:message></c:if><c:if test="${aoiType==2}">post-aoi</c:if><%--<a  data-toggle="tooltip" data-placement="bottom" title="点击切换至spi" href="${basePath}/Home/pcbHome">pre-aoi</a>--%></li>
 					<%--<li class="active">line</li>--%>
-					<li class="active">dataInfo</li>
+					<li class="active"><spring:message code="line.dataInfo"></spring:message></li>
 					<li>
 						<div class="btn-group" role="group" aria-label="...">
-							<button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart_PreAoi(0)">Hour</button>
-							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按线体排序" onclick="choiceChart_PreAoi(1)">Lines</button>
-							<button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析"  onclick="choicePcb_PreAoi(1)">pcb</button>
-							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="choicePcb_PreAoi(2)">array</button>
-							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按元器件分析" onclick="choicePcb_PreAoi(3)">position</button>
+							<button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart_PreAoi(0)"><spring:message code="line.Hour"></spring:message></button>
+							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按线体排序" onclick="choiceChart_PreAoi(1)"><spring:message code="line.Lines"></spring:message></button>
+							<button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析"  onclick="choicePcb_PreAoi(1)"><spring:message code="line.pcb"></spring:message></button>
+							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="choicePcb_PreAoi(2)"><spring:message code="line.array"></spring:message></button>
+							<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按元器件分析" onclick="choicePcb_PreAoi(3)"><spring:message code="line.position"></spring:message></button>
 						</div>
 					</li>
 				</ol>
@@ -65,7 +65,7 @@
 					<input  size="16"  type="text"   readonly  id="endTime"/>
 					<!-- glyphicon glyphicon-search-->
 					<button type="button" class="btn  btn-info btn-xs"  onclick="areaYeildChartPcbCount_PreAoi()">
-						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> <spring:message code="Seach"></spring:message>
 					</button>
 				</div>
 			</div>
@@ -450,7 +450,7 @@
 					jsonYeildHour.chart = {
 					};
 					jsonYeildHour.title ={
-						text: 'line-Info(良率分析)'
+						text: 'line-Info('+ <spring:message code="line.yield"></spring:message>+')'
 					};
 					jsonYeildHour.subtitle = '';
 					jsonYeildHour.tooltip ={formatter: function () {
@@ -549,7 +549,7 @@
 					jsonContainerline.chart = {
 					};
 					jsonContainerline.title ={
-						text: 'line-Info(缺陷趋势)'
+						text:  'defect-Info('+ <spring:message code="line.defect"></spring:message>+')'
 					};
 					jsonContainerline.subtitle = '';
 					jsonContainerline.tooltip ={formatter: function () {

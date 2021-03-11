@@ -50,14 +50,14 @@
 			<div class="row" style="text-align: left;margin-top: -5px">
 				<div class="col-md-14" >
                         <ol class="breadcrumb" >
-                            <li><a href="${basePath}/Home/pcbHome">Home</a></li>
-                            <li class="active" ><c:if test="${aoiType!=1}">post-aoi</c:if><c:if test="${aoiType==1}">pre-aoi</c:if><%--<a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/aStatus/pcbMonitorview_realLineView">spi</a>--%></li>
-                            <li class="active">Board-Machine-RealLineView</li>
+                            <li><a href="${basePath}/Home/pcbHome"><spring:message code="line.Home"></spring:message></a></li>
+                            <li class="active" ><c:if test="${aoiType!=1}"><spring:message code="homePage.postaoi.Station"></spring:message></c:if><c:if test="${aoiType==1}"><spring:message code="homePage.preaoi.Station"></spring:message></c:if><%--<a  data-toggle="tooltip" data-placement="bottom" title="点击切换至aoi" href="${basePath}/aStatus/pcbMonitorview_realLineView">spi</a>--%></li>
+                            <li class="active"><spring:message code="monitor.machineView"></spring:message></li>
                             <li>
                                 <div  class="btn-group" role="group" aria-label="..." >
-                                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析" onclick="changeChartView(1)">pcb</button>
-                                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="changeChartView(2)">array</button>
-                                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按焊盘点位分析" onclick="changeChartView(3)">position</button>
+                                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析" onclick="changeChartView(1)"><spring:message code="line.pcb"></spring:message></button>
+                                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="changeChartView(2)"><spring:message code="line.array"></spring:message></button>
+                                    <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按焊盘点位分析" onclick="changeChartView(3)"><spring:message code="line.position"></spring:message></button>
                                 </div>
                             </li>
                         </ol>

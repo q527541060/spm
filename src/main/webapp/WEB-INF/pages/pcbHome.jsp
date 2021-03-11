@@ -158,7 +158,7 @@
             <!-- 设备看板轮询时间 -->
             <input type="hidden" id="boardMachineRefreshTime" value="${boardMachineRefreshTime}"/>
             <div class="row" style="margin-top: -50px;padding:5px;background-color: #C2CAE1">
-                <h3 style="margin-top: 0px">Statistical Data Control System<span class="label label-default">SINICTEK</span></h3>
+                <h3 style="margin-top: 0px"><spring:message code="homePage.title"></spring:message><span class="label label-default">SINICTEK</span></h3>
                 <div class="col-md-12" >
                     <image  src="${staticPath}/img/smt_best.jpg" style="width:700px;height:150px;"></image>
                 </div>
@@ -169,23 +169,23 @@
                            data-row-style="dataRow">
                         <thead>
                         <tr>
-                            <th>Station</th>
-                            <th>DataInfo</th>
-                            <th>Monitoring</th>
-                            <th>Barcodes</th>
-                            <th>Fov/Pcb</th>
-                            <th>ThreePointClose</th>
-                            <th>MES</th>
-                            <th>Detail</th>
+                            <th><spring:message code="homePage.Station"></spring:message></th>
+                            <th><spring:message code="homePage.DataInfo"></spring:message></th>
+                            <th><spring:message code="homePage.Monitoring"></spring:message></th>
+                            <th><spring:message code="homePage.Barcodes"></spring:message></th>
+                            <th><spring:message code="homePage.FovPcb"></spring:message></th>
+                            <th><spring:message code="homePage.ThreePointClose"></spring:message></th>
+                            <th><spring:message code="homePage.MES"></spring:message></th>
+                            <th><spring:message code="homePage.Detail"></spring:message></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>SPI</td>
+                            <td><spring:message code="homePage.spi.Station"></spring:message></td>
                             <td>
                                 <div id="line-win"  onclick="showModel(2)">
                                     <span id="line-win-logo" class="glyphicon glyphicon-stats"></span>
-                                    <p> 过程分析</p>
+                                    <p> <spring:message code="homePage.spi.DataInfo"></spring:message></p>
                                     <i class="line-count"> <c:if test="${ empty spi_dataCount}">0/0</c:if> <c:if test="${spi_dataCount!=''}">${spi_dataCount}</c:if> </i>
                                 </div>
                             </td>
@@ -193,8 +193,8 @@
                                 <div id="line-win"  class="line-win-offset-right" onclick="showModel(3)">
                                     <span  id="line-win-logo" class="glyphicon glyphicon-bell spi-line-win-logo"></span>
                                  <%--   <p>SPI看板监控</p>--%>
-                                    <p style="margin: 8px">良率报警:<span class="badge" id="spi-yeild-count">0</span></p>
-                                    <p  style="margin: 4px">故障报警:<span class="badge" id="spi-status-count">0</span></p>
+                                    <p style="margin: 8px" ><spring:message code="homePage.spi.Monitoring.yield"></spring:message>:<span class="badge" id="preaoi-yeild-count">0</span></p>
+                                    <p style="margin: 4px"><spring:message code="homePage.spi.Monitoring.status"></spring:message>:<span class="badge" id="preaoi-status-count">0</span></p>
                                     <%--<p> 活动线体/总线体</p>--%>
                                    <%-- <i class="line-count">${spi_lineCount}</i>--%>
                                 </div>
@@ -202,45 +202,45 @@
                             <td>
                                 <div id="line-win"  class="line-win-offset-right" onclick="showModel(4)">
                                     <span id="line-win-logo" class="glyphicon glyphicon-qrcode"></span>
-                                    <p>条码追溯</p>
+                                    <p><spring:message code="homePage.spi.Barcodes"></spring:message></p>
                                     <i class="line-count">${spi_barcodeCount}</i>
                                 </div>
                             </td>
                             <td>
                                 <div id="line-win"  class="line-win-offset-left" onclick="showModel(10)">
                                     <span id="line-win-logo" class="glyphicon glyphicon-folder-close"></span>
-                                    <p> FOV/PCB</p>
+                                    <p> <spring:message code="homePage.spi.FovPcb"></spring:message></p>
                                     <i class="line-count"> ${spi_fovCount}/${spi_pcbCount}</i>
                                 </div>
                             </td>
                             <td>
                                 <div id="line-win"  class="line-win-offset-left" onclick="showModel(11)">
                                     <span id="line-win-logo" class="glyphicon glyphicon-tasks"></span>
-                                    <p>component</p>
+                                    <p> <spring:message code="homePage.spi.ThreePointClose"></spring:message></p>
                                     <i class="line-count">${spi_componentCount}</i>
                                 </div>
                             </td>
                             <td>
                                 <div id="line-win"  class="line-win-offset-left" onclick="showModel(6)">
                                     <span id="line-win-logo" class="glyphicon glyphicon-sound-5-1"></span>
-                                    <p> spi-demo</p>
+                                    <p> <spring:message code="homePage.spi.MES"></spring:message></p>
                                     <i class="line-count">2333</i>
                                 </div>
                             </td>
                             <td>
                                 <div id="line-win"  class="line-win-offset-left" onclick="showModel(666)">
                                     <span id="line-win-logo" class="glyphicon glyphicon-flag"></span>
-                                    <p>spidetail</p>
+                                    <p><spring:message code="homePage.spi.Detail"></spring:message></p>
                                     <i class="line-count">0</i>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>PRE-AOI</td>
+                            <td> <spring:message code="homePage.preaoi.Station"></spring:message></td>
                             <td>
                                 <div id="line-win"  onclick="showModel(5)">
                                     <span id="line-win-logo" class="glyphicon glyphicon-equalizer"></span>
-                                    <p> 活动线体/总线体</p>
+                                    <p> <spring:message code="homePage.preaoi.DataInfo"></spring:message></p>
                                     <i class="line-count">${preAoi_lineCount}/${preAoi_lineCount}</i>
                                 </div>
                             </td>
@@ -248,76 +248,76 @@
                                 <span id="line-win-logo" class="glyphicon glyphicon-bell AoiPre-line-win-logo"></span>
                                 <%--<p> 炉前看板查询</p>
                                 <i class="line-count">0</i>--%>
-                                <p style="margin: 8px" >良率报警:<span class="badge" id="preaoi-yeild-count">0</span></p>
-                                <p style="margin: 4px">故障报警:<span class="badge" id="preaoi-status-count">0</span></p>
+                                <p style="margin: 8px" ><spring:message code="homePage.preaoi.Monitoring.yield"></spring:message>:<span class="badge" id="preaoi-yeild-count">0</span></p>
+                                <p style="margin: 4px"><spring:message code="homePage.preaoi.Monitoring.status"></spring:message>:<span class="badge" id="preaoi-status-count">0</span></p>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(18)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-list-alt"></span>
-                                <p> 炉前分析</p>
+                                <p>  <spring:message code="homePage.preaoi.Barcodes"></spring:message></p>
                                 <i class="line-count">${aoi_pre_barcodeCount}</i>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(10)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-level-up"></span>
-                                <p> FOV/PCB</p>
+                                <p>  <spring:message code="homePage.preaoi.FovPcb"></spring:message></p>
                                 <i class="line-count"> 0/0</i>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(11)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-tasks"></span>
-                                <p>component</p>
+                                <p> <spring:message code="homePage.preaoi.ThreePointClose"></spring:message></p>
                                 <%--<p> 活动线体/总线体</p>--%>
                                 <i class="line-count">0</i>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(6)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-subtitles"></span>
-                                <p> pre-demo</p>
+                                <p> <spring:message code="homePage.preaoi.MES"></spring:message></p>
                                 <i class="line-count">0</i>
                             </div></td>
                             <td>
                                 <div id="line-win"  class="line-win-offset-left" onclick="showModel(666)">
                                     <span id="line-win-logo" class="glyphicon glyphicon-flag"></span>
-                                    <p>preAoidetail</p>
+                                    <p><spring:message code="homePage.preaoi.Detail"></spring:message></p>
                                     <i class="line-count">0</i>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>POST-AOI</td>
+                            <td><spring:message code="homePage.postaoi.Station"></spring:message></td>
                             <td><div id="line-win"  onclick="showModel(115)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-signal"></span>
-                                <p> 活动线体/总线体</p>
+                                <p> <spring:message code="homePage.postaoi.DataInfo"></spring:message></p>
                                 <i class="line-count">${postAoi_lineCount}/${postAoi_lineCount}</i>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(117)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-bell AoiPost-line-win-logo"></span>
                                 <%--<p>炉后看板查询</p>
                                 <i class="line-count">0</i>--%>
-                                <p style="margin: 8px">良率报警:<span class="badge" id="postaoi-yeild-count">0</span></p>
-                                <p style="margin: 4px">故障报警:<span class="badge" id="postaoi-status-count">0</span></p>
+                                <p style="margin: 8px"><spring:message code="homePage.postaoi.Monitoring.yield"></spring:message>:<span class="badge" id="postaoi-yeild-count">0</span></p>
+                                <p style="margin: 4px"><spring:message code="homePage.postaoi.Monitoring.status"></spring:message>:<span class="badge" id="postaoi-status-count">0</span></p>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(118)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-list-alt"></span>
-                                <p> 炉后分析</p>
+                                <p>  <spring:message code="homePage.postaoi.Barcodes"></spring:message></p>
                                 <i class="line-count">${aoi_post_barcodeCount}</i>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(110)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-folder-open"></span>
-                                <p> FOV/PCB</p>
+                                <p> <spring:message code="homePage.postaoi.FovPcb"></spring:message></p>
                                 <i class="line-count"> 0/0</i>
                             </div></td>
                             <td> <div id="line-win"  onclick="showModel(111)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-tasks"></span>
-                                <p>component</p>
+                                <p><spring:message code="homePage.postaoi.ThreePointClose"></spring:message></p>
                                 <%--<p> 活动线体/总线体</p>--%>
                                 <i class="line-count">0</i>
                             </div></td>
                             <td><div id="line-win"  onclick="showModel(116)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-sound-6-1"></span>
-                                <p> post-demo</p>
+                                <p> <spring:message code="homePage.postaoi.MES"></spring:message></p>
                                 <i class="line-count">0</i>
                             </div></td>
                             <td><div id="line-win"  class="line-win-offset-left" onclick="showModel(666)">
                                 <span id="line-win-logo" class="glyphicon glyphicon-flag"></span>
-                                <p>postAoidetail</p>
+                                <p><spring:message code="homePage.postaoi.Detail"></spring:message></p>
                                 <i class="line-count">0</i>
                             </div></td>
                         </tr>
