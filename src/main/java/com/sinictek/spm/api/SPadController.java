@@ -2,6 +2,8 @@ package com.sinictek.spm.api;
 
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.SPad;
 import com.sinictek.spm.model.SPcb;
@@ -85,18 +87,29 @@ public class SPadController {
     @GetMapping("padList")
     public ApiResponse getPadListWithPcbIDline(@RequestParam("pcbIdLine") String pcbIdLine,
                                                @RequestParam("defectTypeCode") String defectTypeCode) throws Exception{
+        //ConstController.constController.iniDefaultParamSetting();
 
         pcbIdLine = pcbIdLine.replace("=====","#");
-        Map<String,Object> pcbListMap = new HashMap<String,Object>();
-        pcbListMap.put("pcbIdLine",pcbIdLine);
-        List<SPcb> sPcblst = sPcbService.selectByMap(pcbListMap);
+        //Map<String,Object> pcbListMap = new HashMap<String,Object>();
+        //pcbListMap.put("pcbIdLine",pcbIdLine);
+        List<SPcb> sPcblst = sPcbService.selectList(Condition.create().eq("pcbIdLine",pcbIdLine));
         String padTableName =null;
+        boolean bDefectTypeCodeIsNull = false;
+        if(StringUtils.isEmpty(defectTypeCode)){
+            bDefectTypeCodeIsNull = false;
+        }else{
+            bDefectTypeCodeIsNull = true;
+        }
         if(sPcblst!=null&&sPcblst.size()>0){
             padTableName = sPcblst.get(0).getPadTableName();
         }else{
             return new ApiResponse(true,null,null,null);
         }
-        List<SPad> lstPad = sPadService.getPadListWithPCbidLineService(padTableName ,pcbIdLine,defectTypeCode);
+        List<SPad> lstPad = sPadService.selectList(Condition.create()
+                .eq("pcbidLine",pcbIdLine)
+                .and(bDefectTypeCodeIsNull,"padInspectResult=1 AND defectTypeCode ="+defectTypeCode)
+               // .eq("create_time","20210323")
+        ) ;
 
         if(lstPad!=null && lstPad.size()>0){
             String base64Str =null;
@@ -113,6 +126,7 @@ public class SPadController {
                                 //Base64Utils.decodeFromString(lstPad.get(i).getPad2dImageBase64());
                                 //byte[] byte64 = ;
                                 //byte[] byte641 = Base64Utils.decodeFromString(lstPad.get(i).getPad2dImageBase64());
+
                                 lstPad.get(i).setPad2dImageBase64(
                                         Base64.getEncoder().encodeToString(QuickLZ.decompress(
                                                 net.iharder.Base64.decode(net.iharder.Base64.decode(lstPad.get(i).getPad2dImageBase64()))
@@ -130,7 +144,7 @@ public class SPadController {
                 case 0:
                 default:
                     for (int i = 0; i < lstPad.size(); i++) {
-                        if(lstPad.get(i).getPad2dImage()!=null && lstPad.get(i).getPad2dImage().length>0){
+                        if(lstPad.get(i).getPad2dImage()!=null ){
                             try {
                                 //net.iharder.Base64.decode()
                                 //byte[] byte64 = net.iharder.Base64.decode(lstPad.get(i).getPad2dImage());
@@ -140,7 +154,7 @@ public class SPadController {
                                         ))
                                 );
                                 //Base64.Decoder()
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -151,11 +165,20 @@ public class SPadController {
                     break;
             }
         }
+        try{
+            return  new ApiResponse(true,null,null,lstPad);
+        }catch (Exception e){
+
+        }finally {
+            lstPad = null;
+            //pcbListMap=null;
+            sPcblst=null;
+        }
         return  new ApiResponse(true,null,null,lstPad);
     }
 
     @ResponseBody
-    @PostMapping("padImage")
+    @PostMapping("/padImage")
     public ApiResponse getPad2DImage(@RequestParam("pcbidLine") String pcbidLine,
                                      @RequestParam("padId") String padId) throws IOException, DataFormatException {
 
@@ -169,15 +192,17 @@ public class SPadController {
         pcbListMap.put("pcbidLine",pcbidLine);
         List<SPcb> sPcblst = sPcbService.selectByMap(pcbListMap);
         String padTableName =null;
+        String base64Str =null;
+        byte[] byte64=null;
         if(sPcblst!=null&&sPcblst.size()>0)
         {
 
             padTableName = sPcblst.get(0).getPadTableName();
 
-            SPad sPad = sPadService.getPadWithPCbidLineService(padTableName,pcbidLine,padId);
+            SPad sPad = sPadService.selectOne(Condition.create().eq("pcbidLine",pcbidLine).and().eq("padId",padId));//getPadWithPCbidLineService(padTableName,pcbidLine,padId);
             if(sPad!=null )
             {
-                String base64Str =null;
+
                 switch (ConstParam.DEFAULTSETTING_showPad2DImageMode){
                     case 1:
                         base64Str = sPad.getPad2dImageBase64();//Base64Helper.decompressData(sPad.getPad2dImageBase64());//
@@ -187,11 +212,21 @@ public class SPadController {
                         break;
                     case 0:
                     default:
-                        byte[] byte64 = net.iharder.Base64.decode(sPad.getPad2dImage()); //net.iharder.Base64.decode(sPad.getPad2dImage());
+                        byte64 = net.iharder.Base64.decode(sPad.getPad2dImage()); //net.iharder.Base64.decode(sPad.getPad2dImage());
                         base64Str = Base64.getEncoder().encodeToString(QuickLZ.decompress(byte64));//QuickLZ.decompress(byte64));
                         break;
                 }
+                try{
+                    return new ApiResponse(true,null,base64Str,null);
+                }catch (Exception e){
 
+                }finally {
+                    base64Str=null;
+                    byte64=null;
+                    sPad=null;
+                    sPcblst=null;
+                    System.gc();
+                }
                 return new ApiResponse(true,null,base64Str,null);
             }
             else{
@@ -204,11 +239,11 @@ public class SPadController {
     }
 
     @ResponseBody
-    @GetMapping("padDefaultTypeInfo")
-    public ApiResponse getPadDefaultTypeInfoWithPCBtable(@RequestParam("id") Integer id){
-        SPcb sPcb = sPcbService.selectById(id);
+    @GetMapping("/padDefaultTypeInfo")
+    public ApiResponse getPadDefaultTypeInfoWithPCBtable(@RequestParam("id") Integer id,@RequestParam("create_time") String create_time){
+        SPcb sPcb = sPcbService.selectOne(Condition.create().eq("id",id).eq("create_time",create_time));
         String padSeriesData=null;
-        padSeriesData = getPadDefaultTypeContent(sPcb);
+            padSeriesData = getPadDefaultTypeContent(sPcb);
         return  new ApiResponse(true,null,padSeriesData);
     }
     private String getPadDefaultTypeContent(SPcb sPcb){

@@ -12,6 +12,7 @@ function showPreAoi3DComponentImage(staticPath,base64Image,arrayHeightBy3D,dMaxH
         var height = canvas.height = img.height;
         ctx.drawImage(img, 0, 0, width, height);
         var imgData = ctx.getImageData(0, 0, width, height);
+
         var data = [];
         var dArray=arrayHeightBy3D;
         if(dArray==null){

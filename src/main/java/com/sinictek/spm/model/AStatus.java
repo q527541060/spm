@@ -117,5 +117,5 @@ public class AStatus implements Serializable {
      * aoiMode
      */
     private Integer aoiMode;
-
+    private  String create_time;
 }

@@ -34,7 +34,7 @@ public class LoginController {
 
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     @ResponseBody
     public ApiResponse login(@RequestBody SUser sUser){
 
@@ -96,4 +96,6 @@ public class LoginController {
             return new ApiResponse(false, "NG", jsonObject);
         }
     }
+
+
 }

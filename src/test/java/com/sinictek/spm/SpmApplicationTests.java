@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
+import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.queryBean.ThreePointAsCloseResponse1JsonBean;
 import com.sinictek.spm.model.utils.SoctekUtil;
 import com.sinictek.spm.model.utils.StringTimeUtils;
@@ -53,7 +54,16 @@ class SpmApplicationTests {
     @Test
     void Test(){
 
-        System.out.println(add(1,2));
+        try{
+            int i = StringTimeUtils.getTimeStringToDate("2021-02-25 00:00:00").compareTo(new Date());
+            if(i > 0  ){
+                i = 100;
+            }else{
+                i=-100;
+            };
+        }catch (Exception e){
+
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -128,6 +138,56 @@ class SpmApplicationTests {
 
     @org.junit.jupiter.api.Test
     void contextLoads() {
+
+        SPcb sPcb = new SPcb();
+        sPcb.setPcbIdLine("1#SMT31");
+        sPcb.setLineNo("SMT31");
+        sPcb.setJobName("Sample1_510_GWok-0-test");
+        sPcb.setLaneNo(0);
+        sPcb.setInspectResult("0");
+        sPcb.setInspectStarttime(new Date());
+        sPcb.setInspectEndtime(new Date());
+        sPcb.setBoardWidth(0.11);
+        sPcb.setBoardLength(0.22);
+        sPcb.setBoardBarcode("SDFWES");
+        sPcb.setComponentTableName("as");
+        sPcb.setPadTableName("pad_20210317");
+        sPcb.setArrayBarcode("sdf,sdgfg,dfg");
+        sPcb.setArrayWidth("23,346,543");
+        sPcb.setArrayLength("12,4,5");
+        sPcb.setArrayinspectResult("NG,Good,Pass");
+        sPcb.setTotalpadCount(12);
+        sPcb.setPasspadCount(123);
+        sPcb.setNgpadCount(1);
+        sPcb.setGoodpadCount(11);
+        sPcb.setShiftyCount(23);
+        sPcb.setBridgeCount(0);
+        sPcb.setShapeerrorCount(0);
+        //sPcb.setaCpk(0.1);
+        sPcb.setVcpk(0.3);
+        //sPcb.sethCpk(0.5);
+        sPcb.setShithxCpk(0.1);
+        sPcb.setShithyCpk(0.2);
+        sPcb.setUcl("234");
+        sPcb.setLcl("44");
+        sPcb.setRemark("ss");
+        sPcb.setShiftyCount(0);
+        sPcb.setBridgeCount(0);
+        sPcb.setShapeerrorCount(0);
+        sPcb.setSmearedCount(0);
+        sPcb.setCoplanarityCount(0);
+        sPcb.setPrebridgeCount(0);
+        sPcb.setPadareapercentCount(0);
+        sPcb.setShiftxCount(0);
+        sPcb.setOtherCount(0);
+        sPcb.setLowareaCount(0);
+        sPcb.setOverareaCount(0);
+        sPcb.setLowheightCount(0);
+        sPcb.setOverheightCount(0);
+        sPcb.setExcessCount(0);
+        sPcb.setInsufficientCount(0);
+        sPcb.setMissingCount(0);
+        sPcbService.insert(sPcb);
     }
 
    /* @Test

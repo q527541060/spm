@@ -32,6 +32,7 @@ public class SLine implements Serializable {
     private Date createDate;
     private Date updateDate;
     private String remark;
+    private  String create_time;
 
     @TableField(exist = false)
     private String idStr;

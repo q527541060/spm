@@ -40,6 +40,6 @@ public class AFov implements Serializable {
     private Date inspectEndtime;
     private String remark;
 
-
+    private  String create_time;
 
 }

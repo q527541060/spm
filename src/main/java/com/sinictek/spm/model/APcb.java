@@ -85,7 +85,7 @@ public class APcb implements Serializable {
     private String lcl;
     private String ucl;
     private String remark;
-
+    private  String create_time;
 
     @TableField(exist = false)
     private String totalAoi;

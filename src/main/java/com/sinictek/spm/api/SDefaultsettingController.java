@@ -3,6 +3,7 @@ package com.sinictek.spm.api;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.sinictek.spm.annotation.LoginToken;
 import com.sinictek.spm.model.ALine;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
@@ -52,6 +53,7 @@ public class SDefaultsettingController {
     public ModelAndView showSetting(){
         ConstController.constController.iniDefaultParamSetting();
         boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+
         String viewName = "setting";
         if(bCmBoxs){
         }else{
@@ -62,24 +64,47 @@ public class SDefaultsettingController {
         mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
         mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
         mv.addObject("boardView_chartMove",ConstParam.DEFAULTSETTING_boardViewChartMove);
+        mv.addObject("weburl","/sDefaultsetting/setting?");
         return  mv;
     }
 
     @ResponseBody
     @GetMapping("listline")
     public ApiResponse getEquipmentJson(){
+        List<SLine> lineList = sLineService.selectList(Condition.create().eq("create_time","21000101"));
+        try{
+            return  new ApiResponse(true,
+                    null,
+                    null,
+                    lineList);
+        }catch (Exception e){
+        }finally {
+            lineList = null;
+            System.gc();
+        }
         return  new ApiResponse(true,
                 null,
                 null,
-                sLineService.selectList(null));
+                lineList);
     }
     @ResponseBody
     @GetMapping("listlineAoi")
     public ApiResponse getEquipmentJsonAoi(){
+        List<ALine> lineList =aLineService.selectList(Condition.create().eq("create_time","21000101"));
+        try{
+            return  new ApiResponse(true,
+                    null,
+                    null,lineList
+                    );
+        }catch (Exception e){
+        }finally {
+            lineList = null;
+            System.gc();
+        }
         return  new ApiResponse(true,
                 null,
-                null,
-                aLineService.selectList(null));
+                null,lineList
+                );
     }
     @ResponseBody
     @GetMapping("lineSetting")
@@ -155,7 +180,15 @@ public class SDefaultsettingController {
     @ResponseBody
     @GetMapping("getDefaultJson")
     public ApiResponse getDefaultJson(){
-        return  new ApiResponse(true,null,null,sDefaultsettingService.selectList(null));
+        List<SDefaultsetting> sDefaultsettingList = sDefaultsettingService.selectList(Condition.create().eq("create_time","21000101"));
+        try{
+            return  new ApiResponse(true,null,null,sDefaultsettingList);
+        }catch (Exception e){
+        }finally {
+            sDefaultsettingList=null;
+            System.gc();
+        }
+        return  new ApiResponse(true,null,null,sDefaultsettingList);
     }
 
     @ResponseBody

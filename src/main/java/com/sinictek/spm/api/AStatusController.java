@@ -2,6 +2,7 @@ package com.sinictek.spm.api;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.sinictek.spm.annotation.LoginToken;
 import com.sinictek.spm.model.APcb;
 import com.sinictek.spm.model.AStatus;
 import com.sinictek.spm.model.ConstClasses.ConstController;
@@ -16,10 +17,7 @@ import com.sinictek.spm.service.APcbService;
 import com.sinictek.spm.service.AStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
@@ -29,7 +27,7 @@ import java.util.*;
  * @Date 2020/7/23 17:10
  * @Version 1.0
  */
-@Controller
+@RestController
 @RequestMapping("/aStatus")
 public class AStatusController {
 
@@ -41,13 +39,23 @@ public class AStatusController {
     @RequestMapping("pcbMonitorview_realLineView")
     public ModelAndView ShowPcbMonitorView_AOI(@RequestParam("aoiType")String aoiType){
         ConstController.constController.iniDefaultParamSetting();
-        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        boolean bCmBoxs = false;//ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        try{
+            int i = StringTimeUtils.getTimeStringToDate("2021-04-25 00:00:00").compareTo(new Date());
+            if(i > 0  ){
+                bCmBoxs = true;
+            }else{
+                bCmBoxs = false;
+            };
+        }catch (Exception e){
+        }
         String viewName = "aoi/pcbMonitorview_realLineView_aoi";
         if(bCmBoxs){
         }else{
             viewName = "error/comBoxExpire";
         }
         ModelAndView mv = new ModelAndView(viewName);
+        mv.addObject("weburl","/aStatus/pcbMonitorview_realLineView?aoiType="+aoiType+"&");
         mv.addObject("aoiType",aoiType);
         mv.addObject("boardMachineRefreshTime", ConstParam.DEFAULTSETTING_boardMachineRefreshTime);
         mv.addObject("Frequency_start",ConstParam.DEFAULTSETTING_FrequencyStart);
@@ -319,13 +327,12 @@ public class AStatusController {
                 standCPKSeriesList.add(data);*/
             }
         }else{
-            lstFPYProductCategories.add("当前时间段无设备检测信息  "+stratTime+"-"+endTime);
+            lstFPYProductCategories.add(ConstController.constController.getStringByLocalContextHolder("monitor.nullMachinaInfo") +"  "+stratTime+"-"+endTime);
         }
         //new  top5
         Map<String,String> mapData = new HashMap<String,String>();
         //int iTotal =0,iPcbTmp=0;
         List<Map<Integer,Integer>> realLst = new ArrayList<Map<Integer,Integer>>();
-        List<Integer> lstComto = new ArrayList<Integer>();
         if (lstPcb != null && lstPcb.size() > 0) {
             for (int i = 0; i < lstPcb.size(); i++) {
                 Map<Integer,Integer> mapsort = new HashMap<Integer, Integer>();
@@ -345,6 +352,9 @@ public class AStatusController {
                     realMap.put(key,mapsort.get(key));
                 }
                 realLst.add(realMap);
+
+                mapsort=null;
+                realMap=null;
             }
         }
         //top5
@@ -352,7 +362,7 @@ public class AStatusController {
             top5Series = new Series();
             if (lstPcb != null && lstPcb.size() > 0) {
                 top5Series.setType("column");
-                top5Series.setName(ConstPublicClassUtil.getErrorCodeChinase(i));
+                top5Series.setName(ConstPublicClassUtil.getErrorCodeChinaseAoi(i));
                 top5Series.setStacking("normal");
                 top5SeriesList = new ArrayList<Data>();
                 for (int y = 0; y < lstPcb.size(); y++) {
@@ -367,6 +377,8 @@ public class AStatusController {
             top5Series.setData(top5SeriesList);
             //top5Series.setColor("#F5A96A");
             lstTop5Series.add(top5Series);
+
+            top5Series=null;
         }
         xAxisFPYProduct.setCategories(lstFPYProductCategories);
         xAxisFPYProduct.setMin(0);
@@ -375,7 +387,7 @@ public class AStatusController {
         xAxisCPK.setMin(0);
         xAxisCPK.setMax(lstFPYProductCategories.size()<=0?0:(lstFPYProductCategories.size()-1));
         if(lstPlotBands.size()>0) {
-            xAxisFPYProduct.setPlotBands(lstPlotBands);
+            //xAxisFPYProduct.setPlotBands(lstPlotBands);
         }
         //xAxisFPYProduct.set
         //xAxisFPYProduct.setLineWidth(2);
@@ -385,7 +397,7 @@ public class AStatusController {
         Tooltip productTooltip = new Tooltip();
         productTooltip.setValueSuffix("p");
         productGoodSeries.setType("column");
-        productGoodSeries.setName("良好");
+        productGoodSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.pass"));
         productGoodSeries.setData(goodFPYProductSeriesList);
         productGoodSeries.setTooltip(productTooltip);
         productGoodSeries.setStacking("normal");
@@ -393,15 +405,15 @@ public class AStatusController {
 
 
         productNGSeries.setType("column");
-        productNGSeries.setName("不良");
+        productNGSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.ng"));
         productNGSeries.setData(ngFPYProductSeriesList);
         productNGSeries.setTooltip(productTooltip);
         productNGSeries.setStacking("normal");
-        productNGSeries.setColor("#DA5858"); //F47378 F7A35C FF7F27
+        productNGSeries.setColor("#DC334D"); //F47378 F7A35C FF7F27
         //productNGSeries.setLineWidth(5);
 
         productPassSeries.setType("column");
-        productPassSeries.setName("误判");
+        productPassSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.rePass"));
         productPassSeries.setData(passFPYProductSeriesList);
         productPassSeries.setTooltip(productTooltip);
         productPassSeries.setStacking("normal");
@@ -411,7 +423,7 @@ public class AStatusController {
         Tooltip productSplineTooltip = new Tooltip();
         productSplineTooltip.setValueSuffix("%");
         productSplineSeries.setType("spline");
-        productSplineSeries.setName("直通率");
+        productSplineSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.passpresent"));
         productSplineSeries.setData(goodFPYProductSplineSeriesList);
         productSplineSeries.setTooltip(productSplineTooltip);
         productSplineSeries.setColor("#22B14C"); //22B14C 7bdd18
@@ -452,12 +464,45 @@ public class AStatusController {
         lstJsonChartsBean.add(jsonChartsBean_Top5);
         mapData.put("iTotal",iTotal+"");
         mapData.put("standCPK",ConstParam.DEFAULTSETTING_standCPK+"");
+        mapData.put("standPassPcbYeild",ConstParam.DEFAULTSETTING_passPcbYeild+"");
         //如果最大cpk低于标准值
         if(maxCpk<ConstParam.DEFAULTSETTING_standCPK){
             maxCpk = ConstParam.DEFAULTSETTING_standCPK;
         }
         mapData.put("maxCpk",maxCpk+"");
-        return  new ApiResponse(true,null,lstJsonChartsBean,mapData);
+
+        try{
+            return  new ApiResponse(true,null,lstJsonChartsBean,mapData);
+        }catch (Exception e){
+        }finally {
+            lstPcb=null;
+            jsonChartsBean_FPYProduct=null;
+            jsonChartsBean_CPK=null;
+            jsonChartsBean_Top5=null;
+            lstFPYProductSeries=null;
+            productGoodSeries=null;
+            productPassSeries=null;
+            productNGSeries=null;
+            productSplineSeries=null;
+            lstCPKSeries=null;
+            cpkSeries=null;
+            lstTop5Series=null;
+            top5Series=null;
+            xAxisFPYProduct=null;
+            xAxisCPK=null;
+            lstFPYProductCategories=null;
+            goodFPYProductSeriesList=null;
+            passFPYProductSeriesList=null;
+            ngFPYProductSeriesList=null;
+            goodFPYProductSplineSeriesList=null;
+            cpkSeriesList=null;
+            top5SeriesList=null;
+            lstPlotBands=null;
+            mapData=null;
+            realLst=null;
+            System.gc();
+        }
+        return  new ApiResponse(true,null,null,null);
     }
 
 
@@ -468,14 +513,17 @@ public class AStatusController {
     public ModelAndView showSpiStatusView(@RequestParam("lineNo")String lineNo,@RequestParam("aoiMode") String aoiMode){
         ConstController.constController.iniDefaultParamSetting();
         boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
-        String viewName = "aoi/historicalList_aoi";
+
+        String viewName = "aoiHistoricalList";
         if(bCmBoxs){
         }else{
             viewName = "error/comBoxExpire";
         }
         ModelAndView mv = new ModelAndView(viewName);
+        mv.addObject("weburl","/aStatus/historicalList_aoi?aoiMode="+aoiMode+"&lineNo="+lineNo+"&");
         mv.addObject("aoiMode",aoiMode);
         mv.addObject("lineNo",lineNo);
+        mv.addObject("aoiName",StringUtils.equals(aoiMode,"1")?"PreAOI":"PostAOI");
         return  mv;
 
     }
@@ -489,7 +537,13 @@ public class AStatusController {
         List<SStatus> aStatusList = aStatusService.selectList(Condition.create().eq("lineNo",lineNo).eq("aoiMode",aoiMode)
                 .ge("updateTime",inspectStartTime)
                 .le("updateTime",inspectEndTime));
-        return new ApiResponse(true,null,null,aStatusList);
+        try {
+            return new ApiResponse(true, null, null, aStatusList);
+        }catch (Exception e){
+        }finally {
+            aStatusList = null;
+        }
+        return new ApiResponse(true, null, null, aStatusList);
     }
 
 

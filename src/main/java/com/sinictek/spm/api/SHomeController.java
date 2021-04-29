@@ -11,6 +11,7 @@ import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
 import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.*;
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/Home")
+@Log4j2
 public class SHomeController {
 
     @Autowired
@@ -49,6 +51,9 @@ public class SHomeController {
     AStatusService aStatusService;
 
     //private Logger logger = LoggerFactory.getLogger(SHomeController.class);
+
+
+
 
 
    // @LoginToken
@@ -73,7 +78,16 @@ public class SHomeController {
             }
         }
 
-        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        boolean bCmBoxs = false;//ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        try{
+            int i = StringTimeUtils.getTimeStringToDate("2021-04-25 00:00:00").compareTo(new Date());
+            if(i > 0  ){
+                bCmBoxs = true;
+            }else{
+                bCmBoxs = false;
+            };
+        }catch (Exception e){
+        }
         String viewName = "pcbHome";
         if(bCmBoxs){
         }else{
@@ -95,6 +109,7 @@ public class SHomeController {
         mv.addObject("spi_componentCount",0);
         mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
         mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
+        mv.addObject("weburl","/Home/pcbHome?");
         return  mv;
     }
 
@@ -189,7 +204,40 @@ public class SHomeController {
         hashMap.put("iPreAoiYeildCount",iPreAoiYeildCount);
         hashMap.put("iPostAoiYeildCount",iPostAoiYeildCount);
         //logger.info("just end");
+        try{
+            return new ApiResponse(true,null,hashMap);
+        }catch (Exception e){
+        }finally {
+            spiStatusList=null;
+            aPreStatusList=null;
+            aPostStatusList=null;
+            lstSpiPcb=null;
+            lstPreAoiPcb=null;
+            lstPostAoiPcb=null;
+            hashMap=null;
+            System.gc();
+        }
         return new ApiResponse(true,null,hashMap);
+
+    }
+
+
+    @GetMapping("/index")
+    public ModelAndView showNiftyHome(){
+        ConstController.constController.iniDefaultParamSetting();
+
+        ModelAndView mv = new ModelAndView();
+
+        mv.addObject("weburl","/sStatus/pcbMonitorview_realLineView?");
+        mv.addObject("boardMachineRefreshTime",ConstParam.DEFAULTSETTING_boardMachineRefreshTime);
+        mv.addObject("Frequency_start",ConstParam.DEFAULTSETTING_FrequencyStart);
+        mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
+        mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
+        mv.addObject("passPcbYeild",ConstParam.DEFAULTSETTING_passPcbYeild);
+        mv.addObject("boardView_chartMove",ConstParam.DEFAULTSETTING_boardViewChartMove);
+        mv.setViewName("index");
+
+        return mv;
     }
 
 }

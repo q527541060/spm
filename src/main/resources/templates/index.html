@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="header::head">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Nifty - Admin Template</title>
+    <style>
+        #com-sm-left-panel-title{
+          /*  height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;*/
+        }
+
+    </style>
+</head>
+
+<!--TIPS-->
+<!--You may remove all ID or Class names which contain "demo-", they are only used for demonstration. -->
+<body>
+    <div id="container" class="effect aside-float aside-bright mainnav-lg">
+        <!--NAVBAR-->
+        <!--===================================================-->
+        <div th:include="header::headerContent"></div>
+        <!--===================================================-->
+        <!--END NAVBAR-->
+
+        <div class="boxed">
+
+            <!--CONTENT CONTAINER-->
+            <!--===================================================-->
+            <div id="content-container">
+                
+
+                <!--Page content-->
+                <!--===================================================-->
+                <div id="page-content">
+                    <!-- SPI -->
+					<div class="row">
+					    <div class="col-lg-14">
+                            <div class="panel-group panel-group-success" id="accordion-success-example">
+                                <div class="panel panel-bordered-default panel-default">
+                                    <div class="panel-heading" style="height: 30px;line-height: 30px">
+                                        <div class="panel-control">
+                                            <button  class="btn btn-mint btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析" onclick="changeChartView(1)">pcb</button>
+                                            <button  class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="changeChartView(2)">array</button>
+                                            <button  class="btn btn-purple btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按点位分析" onclick="changeChartView(3)">posite</button>
+                                            <button class="demo-panel-ref-btn btn btn-default" data-toggle="panel-overlay" data-target="#demo-panel-collapse"><i class="demo-pli-repeat-2"></i></button>
+                                            <button class="btn btn-default" data-target="#demo-panel-collapse" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                            <button class="btn btn-default" data-dismiss="panel"><i class="demo-pli-cross"></i></button>
+                                        </div>
+                                        <h3 class="panel-title" style="height: 30px;line-height: 30px;text-align: center;font-family: Courier New, Courier, monospace;"> SPI-Board-View </h3>
+                                    </div>
+                                    <!--Panel body-->
+                                    <div id="demo-panel-collapse" class="collapse in">
+                                        <div class="panel-body" style="padding: 0px;margin: 0px">
+                                            <div style="float: left;width: 93%">
+                                                <div class="panel" style="margin: 1px">
+                                                    <div class="panel-heading" style="height: 20px;line-height: 20px;background-color: #ffffff">
+                                                        <div class="panel-control">
+                                                            <button class="btn btn-default" data-target="#demo-panel-collapse-FPY" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                                        </div>
+                                                       <h5 class="panel-title" style="height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;">FPY</h5>
+                                                    </div>
+                                                    <div id="demo-panel-collapse-FPY" class="collapse in">
+                                                        <div class="panel-body" style="padding: 0px">
+                                                            <div id="container-FPY" style="width:100%;max-height: 40vh;height: 40vh;float: left;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel" style="margin: 1px">
+                                                    <div class="panel-heading" style="height: 20px;line-height: 20px;background-color: #ffffff">
+                                                        <div class="panel-control">
+                                                            <button class="btn btn-default" data-target="#demo-panel-collapse-Top5" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                                        </div>
+                                                        <div class="panel-title com-sm-left-panel-title" style="height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;">Top5</div>
+                                                    </div>
+                                                    <div id="demo-panel-collapse-Top5" class="collapse in">
+                                                        <div class="panel-body" style="padding: 0px">
+                                                            <div id="container-defaultTop" style="width:100%;max-height: 20vh;height: 20vh;float: left;"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel" style="margin: 1px">
+                                                    <div class="panel-heading" style="height: 20px;line-height: 20px;background-color: #ffffff">
+                                                        <div class="panel-control">
+                                                            <button class="btn btn-default" data-target="#demo-panel-collapse-CPK" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                                        </div>
+                                                        <div class="panel-title com-sm-left-panel-title" style="height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;">CPK</div>
+                                                    </div>
+                                                    <div id="demo-panel-collapse-CPK" class="collapse in">
+                                                    <div class="panel-body" style="padding: 0px">
+                                                        <div id="container-CPK" style="width:100%;max-height: 15vh;height: 15vh;float: left;"></div>
+                                                        <h5 style="float: left;">
+                                                            <div class="btn-group-sm" role="group" aria-label="...">
+                                                                <button type="button" class="btn btn-sm btn-default" onclick="FPYRealTime(this.value)" VALUE="0">area</button>
+                                                                <button type="button" class="btn btn-sm btn-default" onclick="FPYRealTime(this.value)" VALUE="1">height</button>
+                                                                <button type="button" class="btn btn-sm btn-default" onclick="FPYRealTime(this.value)" VALUE="2">vol</button>
+                                                                <button type="button" class="btn btn-sm btn-default" onclick="FPYRealTime(this.value)" VALUE="3">shiftX</button>
+                                                                <button type="button" class="btn btn-sm btn-default" onclick="FPYRealTime(this.value)" VALUE="4">shiftY</button>
+                                                            </div>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <div style="float: right;width: 7%;">
+                                                <div style="float: right;width: 47%">
+                                                    <table  class="table" id="machineStatusLeft" cellpadding="0px" cellspacing="0px" >
+                                                    </table>
+                                                </div>
+                                                <div style="float: right;width: 47%;margin-right: 3px">
+                                                    <table  class="table" id="machineStatusRight" cellpadding="0px" cellspacing="0px">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+					    </div>
+					</div>
+
+                    <!-- PRE-AOI -->
+                    <div class="row">
+                        <div class="col-lg-14">
+                            <div class="panel-group panel-group-success" id="accordion-success-example-preaoi">
+                                <div class="panel panel-bordered-default panel-default">
+                                    <div class="panel-heading" style="height: 30px;line-height: 30px;">
+                                        <div class="panel-control">
+                                            <button  class="btn btn-mint btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析" onclick="changeChartView_preaoi(1)">pcb</button>
+                                            <button  class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="changeChartView_preaoi(2)">array</button>
+                                            <button  class="btn btn-purple btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按点位分析" onclick="changeChartView_preaoi(3)">posite</button>
+                                            <button class="demo-panel-ref-btn btn btn-default" data-toggle="panel-overlay" data-target="#demo-panel-collapse-preaoi"><i class="demo-pli-repeat-2"></i></button>
+                                            <button class="btn btn-default" data-target="#demo-panel-collapse-preaoi" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                            <button class="btn btn-default" data-dismiss="panel"><i class="demo-pli-cross"></i></button>
+                                        </div>
+                                        <h3 class="panel-title"  style="height: 30px;line-height: 30px;text-align: center;font-family: Courier New, Courier, monospace;"> PreAOI-Board-View </h3>
+                                    </div>
+                                    <!--Panel body-->
+                                    <div id="demo-panel-collapse-preaoi" class="collapse in">
+                                        <div class="panel-body" style="padding: 0px;margin: 0px">
+                                            <div style="float: left;width: 93%">
+                                                <div class="panel" style="margin: 1px">
+                                                    <div class="panel-heading" style="height: 20px;line-height: 20px;background-color: #ffffff">
+                                                        <div class="panel-control">
+                                                            <button class="btn btn-default" data-target="#demo-panel-collapse-FPY-preaoi" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                                        </div>
+                                                        <h5 class="panel-title com-sm-left-panel-title" style="height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;">FPY</h5>
+                                                    </div>
+                                                    <div id="demo-panel-collapse-FPY-preaoi" class="collapse in">
+                                                        <div class="panel-body" style="padding: 0px">
+                                                            <div id="container-FPY-preaoi" style="width:100%;max-height: 40vh;height: 40vh;float: left;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel" style="margin: 1px">
+                                                    <div class="panel-heading" style="height: 20px;line-height: 20px;background-color: #ffffff">
+                                                        <div class="panel-control">
+                                                            <button class="btn btn-default" data-target="#demo-panel-collapse-Top5-preaoi" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                                        </div>
+                                                        <div class="panel-title com-sm-left-panel-title" style="height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;">Top5</div>
+                                                    </div>
+                                                    <div id="demo-panel-collapse-Top5-preaoi" class="collapse in">
+                                                        <div class="panel-body" style="padding: 0px">
+                                                            <div id="container-defaultTop-preaoi" style="width:100%;max-height: 20vh;height: 20vh;float: left;"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel" style="margin: 1px">
+                                                    <div class="panel-heading" style="height: 20px;line-height: 20px;background-color: #ffffff">
+                                                        <div class="panel-control">
+                                                            <button class="btn btn-default" data-target="#demo-panel-collapse-CPK-preaoi" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                                        </div>
+                                                        <div class="panel-title com-sm-left-panel-title" style="height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;">CPK</div>
+                                                    </div>
+                                                    <div id="demo-panel-collapse-CPK-preaoi" class="collapse in">
+                                                        <div class="panel-body" style="padding: 0px">
+                                                            <div id="container-CPK-preaoi" style="width:100%;max-height: 15vh;height: 15vh;float: left;"></div>
+                                                            <h5 style="float: left;">
+                                                                <div class="btn-group-sm" role="group" aria-label="...">
+                                                                    <button type="button" class="btn btn-group-xs btn-default" onclick="FPYRealTime_preaoi(this.value)" VALUE="0">area</button>
+                                                                    <button type="button" class="btn btn-group-xs btn-default" onclick="FPYRealTime_preaoi(this.value)" VALUE="1">height</button>
+                                                                    <button type="button" class="btn btn-group-xs btn-default" onclick="FPYRealTime_preaoi(this.value)" VALUE="2">vol</button>
+                                                                    <button type="button" class="btn btn-group-xs btn-default" onclick="FPYRealTime_preaoi(this.value)" VALUE="3">shiftX</button>
+                                                                    <button type="button" class="btn btn-group-xs btn-default" onclick="FPYRealTime_preaoi(this.value)" VALUE="4">shiftY</button>
+                                                                </div>
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="float: right;width: 7%;">
+                                                <div style="float: right;width: 47%">
+                                                    <table  class="table" id="machineStatusLeft-preaoi" cellpadding="0px" cellspacing="0px" >
+                                                    </table>
+                                                </div>
+                                                <div style="float: right;width: 47%;margin-right: 3px">
+                                                    <table  class="table" id="machineStatusRight-preaoi" cellpadding="0px" cellspacing="0px">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- POST-AOI -->
+                    <div class="row">
+                        <div class="col-lg-14">
+                            <div class="panel-group panel-group-success" id="accordion-success-example-postaoi">
+                                <div class="panel panel-bordered-default panel-default">
+                                    <div class="panel-heading" style="height: 30px;line-height: 30px;">
+                                        <div class="panel-control">
+                                            <button  class="btn btn-mint btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析" onclick="changeChartView_postaoi(1)">pcb</button>
+                                            <button  class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="changeChartView_postaoi(2)">array</button>
+                                            <button  class="btn btn-purple btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按点位分析" onclick="changeChartView_postaoi(3)">posite</button>
+
+                                            <button class="demo-panel-ref-btn btn btn-default" data-toggle="panel-overlay" data-target="#demo-panel-collapse-postaoi"><i class="demo-pli-repeat-2"></i></button>
+                                            <button class="btn btn-default" data-target="#demo-panel-collapse-postaoi" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                            <button class="btn btn-default" data-dismiss="panel"><i class="demo-pli-cross"></i></button>
+                                        </div>
+                                        <h3 class="panel-title" style="height: 30px;line-height: 30px;text-align: center;font-family: Courier New, Courier, monospace;"> PostAOI-Board-View </h3>
+                                    </div>
+                                    <!--Panel body-->
+                                    <div id="demo-panel-collapse-postaoi" class="collapse in">
+                                        <div class="panel-body" style="padding: 0px;margin: 0px">
+                                            <div style="float: left;width: 93%">
+                                                <div class="panel" style="margin: 1px">
+                                                    <div class="panel-heading" style="height: 20px;line-height: 20px;background-color: #ffffff">
+                                                        <div class="panel-control">
+                                                            <button class="btn btn-default" data-target="#demo-panel-collapse-FPY-postaoi" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                                        </div>
+                                                        <h5 class="panel-title com-sm-left-panel-title" style="height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;">FPY</h5>
+                                                    </div>
+                                                    <div id="demo-panel-collapse-FPY-postaoi" class="collapse in">
+                                                        <div class="panel-body" style="padding: 0px">
+                                                            <div id="container-FPY-postaoi" style="width:100%;max-height: 40vh;height: 40vh;float: left;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel" style="margin: 1px">
+                                                    <div class="panel-heading" style="height: 20px;line-height: 20px;background-color: #ffffff">
+                                                        <div class="panel-control">
+                                                            <button class="btn btn-default" data-target="#demo-panel-collapse-Top5-postaoi" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                                        </div>
+                                                        <div class="panel-title com-sm-left-panel-title" style="height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;">Top5</div>
+                                                    </div>
+                                                    <div id="demo-panel-collapse-Top5-postaoi" class="collapse in">
+                                                        <div class="panel-body" style="padding: 0px">
+                                                            <div id="container-defaultTop-postaoi" style="width:100%;max-height: 20vh;height: 20vh;float: left;"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel" style="margin: 1px">
+                                                    <div class="panel-heading" style="height: 20px;line-height: 20px;background-color: #ffffff">
+                                                        <div class="panel-control">
+                                                            <button class="btn btn-default" data-target="#demo-panel-collapse-CPK-postaoi" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                                        </div>
+                                                        <div class="panel-title com-sm-left-panel-title" style="height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;">CPK</div>
+                                                    </div>
+                                                    <div id="demo-panel-collapse-CPK-postaoi" class="collapse in">
+                                                        <div class="panel-body" style="padding: 0px">
+                                                            <div id="container-CPK-postaoi" style="width:100%;max-height: 15vh;height: 15vh;float: left;"></div>
+                                                            <h5 style="float: left;">
+                                                                <div class="btn-group-sm" role="group" aria-label="...">
+                                                                    <button type="button" class="btn btn-sm" onclick="FPYRealTime_postaoi(this.value)" VALUE="0">area</button>
+                                                                    <button type="button" class="btn btn-sm" onclick="FPYRealTime_postaoi(this.value)" VALUE="1">height</button>
+                                                                    <button type="button" class="btn btn-sm" onclick="FPYRealTime_postaoi(this.value)" VALUE="2">vol</button>
+                                                                    <button type="button" class="btn btn-sm" onclick="FPYRealTime_postaoi(this.value)" VALUE="3">shiftX</button>
+                                                                    <button type="button" class="btn btn-sm" onclick="FPYRealTime_postaoi(this.value)" VALUE="4">shiftY</button>
+                                                                </div>
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="float: right;width: 7%;">
+                                                <div style="float: right;width: 47%">
+                                                    <table  class="table" id="machineStatusLeft-postaoi" cellpadding="0px" cellspacing="0px" >
+                                                    </table>
+                                                </div>
+                                                <div style="float: right;width: 47%;margin-right: 3px">
+                                                    <table  class="table" id="machineStatusRight-postaoi" cellpadding="0px" cellspacing="0px">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+					
+					
+                </div>
+                <!--===================================================-->
+                <!--End page content-->
+
+
+            </div>
+            <!--===================================================-->
+            <!--END CONTENT CONTAINER-->
+
+            <div th:replace="commonPage::aside-mainnav"></div>
+
+
+        </div>
+
+        <!-- FOOTER -->
+        <!--===================================================-->
+        <footer id="footer">
+
+            <!-- Visible when footer positions are fixed -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div class="show-fixed pull-right">
+                You have <a href="#" class="text-bold text-main"><span class="label label-danger">3</span> pending action.</a>
+            </div>
+
+          <!--  &lt;!&ndash; Visible when footer positions are static &ndash;&gt;
+            &lt;!&ndash; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ &ndash;&gt;
+            <div class="hide-fixed pull-right pad-rgt">
+                14GB of <strong>512GB</strong> Free.
+            </div>-->
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <!-- Remove the class "show-fixed" and "hide-fixed" to make the content always appears. -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+            <p class="pad-lft">&#0169; 2021 Sinic-Tek intelligent Technology Co.,Ltd 版权所有</p>
+
+
+
+        </footer>
+        <!--===================================================-->
+        <!-- END FOOTER -->
+
+        <!-- SCROLL PAGE BUTTON -->
+        <!--===================================================-->
+        <button class="scroll-top btn">
+            <i class="pci-chevron chevron-up"></i>
+        </button>
+        <!--===================================================-->
+
+    </div>
+    <!--===================================================-->
+    <!-- END OF CONTAINER -->
+
+    <div th:include="commonPage::demo-set-com"></div>
+
+    <input type="hidden" id="boardMachineRefreshTime" th:value="${boardMachineRefreshTime}" />
+    <input type="hidden" id="Frequency-start" th:value="${Frequency_start}"/>
+    <input type="hidden" id="passPcbYeild" th:value="${passPcbYeild}">
+    <input type="hidden" id="boardView-chartMove" th:value="${boardView_chartMove}">
+
+    <script type="text/javascript">
+
+        //side title active
+        $('.Board-class').attr('class','active-link');
+
+        var mode = 1;
+        window.operateEventsRealLineView={
+            "click #MachineListNo" :function(e,value, row, index){
+                window.open("/sStatus/historicalList?lineNo="+row.lineNo);
+            },
+            "click #MachineListNo_i" :function(e,value, row, index){
+                window.open("/sStatus/historicalList?lineNo="+row.lineNo);
+            }
+        };
+        window.operateEventsRealLineView_preaoi={
+            "click #MachineListNo-preaoi" :function(e,value, row, index){
+                window.open("/aStatus/historicalList_aoi?lineNo="+row.lineNo+"&aoiMode="+preaoiType);
+            },
+            "click #MachineListNo_i-preaoi" :function(e,value, row, index){
+                window.open("/aStatus/historicalList_aoi?lineNo="+row.lineNo+"&aoiMode="+preaoiType);
+            }
+        };
+        window.operateEventsRealLineView_postaoi={
+            "click #MachineListNo-postaoi" :function(e,value, row, index){
+                window.open("/aStatus/historicalList_aoi?lineNo="+row.lineNo+"&aoiMode="+potaoiType);
+            },
+            "click #MachineListNo_i-postaoi" :function(e,value, row, index){
+                window.open("/aStatus/historicalList_aoi?lineNo="+row.lineNo+"&aoiMode="+potaoiType);
+            }
+        };
+        var StatusQueryUrl = '/sStatus/pcbMonitorJson';
+        var vValue=1;
+        var refreshSecon = $('#boardMachineRefreshTime').val();
+        var passPcbYeild = $('#passPcbYeild').val();
+        if(passPcbYeild==null||passPcbYeild==""){
+            passPcbYeild=85;
+        }
+        var bChartMove = $('#boardView-chartMove').val();
+        if(bChartMove==null||bChartMove==""){
+            bChartMove = true;
+        }else if(bChartMove=='0'){
+            bChartMove =false;
+        }else{
+            bChartMove = true;
+        }
+        if(refreshSecon==0){
+            refreshSecon=10;
+        }
+        InitMainTableLeft();
+        InitMainTableRight();
+        FPYRealTime(vValue,mode);
+        var jChart=null;
+        function changeChartView(x){
+            mode = x;
+            FPYRealTime(vValue,mode);
+        }
+        function FPYRealTime(value,x){
+            var  pcbTotal =0;
+            vValue = value;
+            // alert(value+mode);
+            var json = {};
+            $.ajax({
+                url: "/sStatus/pcbMonitorview_realLineViewJson?aValue="+value+"&mode="+mode,
+                dataType:"json",   //返回格式为json
+                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+                data:'',    //参数值
+                type:"GET",   //请求方式
+                beforeSend:function(){
+                    //请求前的处理
+                },
+                success:function(req){
+                    var timer = null;
+                    //x轴柱子宽度设定
+                    var pointWidth=undefined;
+                    if(req.data[0].xaxis.categories.length<10){
+                        pointWidth=100;
+                    }else{
+                        pointWidth=undefined;
+                    }
+                    //var xAxisjsonData = req.data[0].xaxis;
+                    pcbTotal = Number(req.rows.iTotal);
+                    pcbTotal = pcbTotal*1.5;
+                    //请求成功时处理
+                    //json.chart = req.data.chart;
+                    json.chart ={
+                        events: {
+                            // load，图表加载完成时触发
+                            load: function () {
+                                var chart = this;
+                                var points = chart==null?null:chart.series[0].points;
+                                var len = points.length;
+                                var i = 0;
+                                timer && clearInterval(timer);
+                                // for (let i = 0; i < points.length; i++) {
+                                //    autoTooltip(points[0]);
+                                //    autoTooltip(points[1]);
+                                //   autoTooltip(points[2]);
+                                //}
+                                timer = setInterval(function () {
+                                    if(len != 0 && points[i].options!=null) {
+                                        if (points[i].options.y < req.rows.standPassPcbYeild) {
+                                            autoTooltip(points[i]);
+                                        }
+                                    }
+                                    i++;
+                                    if (i === len) {
+                                        i = 0;
+                                    }
+                                }, 600);
+                            }
+                        }
+                        //animation:true,
+                    };
+                    json.title = {
+                        text:'',
+                       /* text:'FPY、Product',
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize:"22px",
+                            color: '#5cccff',
+                            // backgroundColor: 'green',
+                            // border:'2px'
+                            // (Highcharts.theme &&
+                            // Highcharts.theme.textColor) ||
+                        }*/
+                    };
+                    //json.subtitle = {text:'FPY、Product'};
+                    json.plotOptions={
+                        /*bar:{
+                            borderColor:'red',
+                            borderWidth:2,
+                        },*/
+                        series:{
+                            groupPadding : 0.1,
+                            pointPadding : 0,
+                            animation: bChartMove,//{
+                            //    duration: 5000,
+                            //   easing: 'easeOutBounce'
+                            //},//bChartMove,
+                            marker: {
+                                enabled:true,
+                                radius: 6,//点的大小
+                                //fillColor: '#DD7272',
+                                //lineColor: '#DEECF9',
+                                //lineWidth:5,
+                                shadow:false,
+                                states:{
+                                    hover:{
+                                        radius: 10,
+                                        enabled:true,
+                                    }
+                                }
+                            },
+                            //fontSize:"22px",
+
+                        },
+                        spline:{
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    return (this.y)+'%';
+                                },} //,color:'#0f100b'
+                        },
+                        column:{
+                            //pointWidth:pointWidth,
+                            //borderColor:'#ff2514',
+                            //borderWidth:10,
+                            //selected:true,
+                            cursor: 'pointer',
+                            pointPadding: 0,
+                            borderWidth: 0,
+                            //pointWidth:50,
+                            maxPointWidth:50,
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+                                formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+                                },
+                                style:{
+                                    fontSize:'12px',
+                                    fontWeight:'bold',
+                                    color:'#141328'
+                                },
+                            },//,color:'#ff0816'
+                            events:{
+                                click:function (e) {
+                                    //alert(this.xAxis.categories[e.point.x]);
+                                    //进入质量分析
+                                    var Frequency_start = $('#Frequency-start').val();
+                                    var nowDate = new Date();
+                                    var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    if(Frequency_start>100){
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd') +" "+Frequency_start.substring(0,Frequency_start.length-2)+":00:00";
+                                    }else{
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    }
+                                    var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
+                                    window.open("/sLine/pcbLineDetailsNew?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode);
+                                }
+                            },
+                        },
+
+
+                    };
+                    json.credits={enabled: false };
+                    json.legend = {
+                        enabled:false,
+                    };
+                    json.xAxis = req.data[0].xaxis;
+
+                    json.xAxis.labels={
+                        format: '{value}',
+                        style: {
+                            //color: Highcharts.getOptions().colors[1],
+                            fontSize:'14px',
+                            fontWeight:'bold'
+                        }
+                    }
+                    /*json.xAxis.plotBands= [{ // mark the weekend
+                        color: '#FCFFC5',
+                        from: -0.5,
+                        to: 0.5,
+                    }]*/
+                    json.yAxis =
+                        [
+                            { // Secondary yAxis
+                                title: {
+                                    text: '',
+                                },
+                                labels: {
+                                    format: '{value}',
+                                    style: {
+                                        //color: Highcharts.getOptions().colors[1],
+                                        //fontSize:'16px'
+                                    }
+                                },
+                                opposite: true,
+                                gridLineWidth:0,
+                                minorGridLineWidth:0,
+                                min:0.99,
+                                max:pcbTotal,
+                                //type:'category'
+                                type: 'logarithmic'
+                            },
+                            {
+                                labels: {
+                                    format: '{value}%',
+                                },
+                                title: {
+                                    text: '',
+                                    /*style: {
+                                        color: Highcharts.getOptions().colors[0]
+                                    }*/
+                                },
+                                gridLineWidth:0,
+                                minorGridLineWidth:0,
+                                max:100,
+                                min:0,
+                                tickInterval:20,
+                                type:'category',
+                                plotLines:[{
+                                    color:'#d7d906',           //线的颜色，定义为红色
+                                    dashStyle:'Dash',     //默认值，这里定义为实线
+                                    value:passPcbYeild,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                                    //width:1                //标示线的宽度，2px
+                                }]
+                                //opposite: false
+                            },
+                        ];
+                    json.tooltip = {
+                        zIndex:99999,
+                        backgroundColor: '#FCFFC5',//'#FCFFC5',   // 背景颜色
+                        borderColor: '#3f3f57',         // 边框颜色
+                        borderRadius: 16,             // 边框圆角
+                        borderWidth: 2,               // 边框宽度
+                        shadow: false,                 // 是否显示阴影
+                        animation: false ,              // 是否启用动画效果
+                        style: {                      // 文字内容相关样式
+                            color: "#ff0000",
+                            fontSize: "9px",
+                            fontWeight: 'bold',
+                            fontFamily: "Courir new",
+                            textAlign: 'centen'
+                        },
+
+                        formatter: function () {
+                            return '<b>' + this.x + '线良率告警'+'</b><br/>' +
+                                this.series.name + ':' + this.y +'%';//+ '<br/>' +
+                            //'value: ' + this.point.stackTotal;
+                        },
+                        //shared: true
+                    };
+                    json.series = req.data[0].series;
+                    json.exporting={
+                        enabled:false
+                    };
+                    //cpk
+                    var jsonCPK={};
+                    jsonCPK.title={
+                        text: '',
+                       };
+                    jsonCPK.series=req.data[1].series;
+                    jsonCPK.legend={
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                        enabled:false,
+                    };
+                    jsonCPK.tooltip={formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y ;
+                        }};
+                    jsonCPK.xAxis=req.data[1].xaxis;
+                    jsonCPK.xAxis.labels={
+                        format: '{value}',
+                        style: {
+                            //color: Highcharts.getOptions().colors[1],
+                            fontSize:'14px',
+                            fontWeight:'bold'
+                        }
+                    }
+                    var maxCPK = 0;
+                    if(req.rows.maxCpk<=req.rows.standCPK){
+                        maxCPK = req.rows.standCPK*2;
+                    }else{
+                        maxCPK = req.rows.maxCpk;
+                    }
+                    jsonCPK.yAxis={
+                        title:'',
+                        minorGridLineWidth:0,
+                        //gridLineWidth:'0px',
+                        //width:2,
+                        gridLineWidth:0,
+                        max:maxCPK,
+                        min:0,
+                        //type:'category',
+                        //type: 'logarithmic',
+                        plotLines:[{
+                            color:'#d9c01d',           //线的颜色，定义为红色
+                            dashStyle:'Dash',     //默认值，这里定义为实线
+                            value:req.rows.standCPK,//Number(req.rows.standCPK),               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                            // width:3                //标示线的宽度，2px
+                        }]
+                    };
+                    //dataLabels:{enabled:true},
+                    jsonCPK.plotOptions = {
+                        series: {
+                            lineWidth:1,
+                            //allowPointSelect :true,
+                            animation:bChartMove,  //动画
+                            //lineColor:'blue',
+                            //enableMouseTracking:true,//显示提示框
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+
+                            },//,colo
+                            marker: {
+                                enabled:true,
+                                radius: 6,//点的大小
+                                //fillColor: '#DD7272',
+                                //lineColor: '#DEECF9',
+                                //lineWidth:5,
+                                shadow:false,
+                                states:{
+                                    hover:{
+                                        radius: 10,
+                                        enabled:true,
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    jsonCPK.exporting={
+                        enabled:false
+                    };
+                    jsonCPK.credits={enabled: false };
+                    //top5
+                    var jsonDefault = {};
+                    //jsonDefault.chart = req.data.chart;
+                    jsonDefault.chart = {
+
+                    };
+                    jsonDefault.title = {
+                        text:'',
+
+                    };
+                    jsonDefault.subtitle = '';
+                    jsonDefault.tooltip = {
+                        formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y;//+ '<br/>' +
+                            //'value: ' + this.point.stackTotal;
+                        }
+                    };
+                    jsonDefault.legend = {
+                        enabled:false,
+                    };
+                    jsonDefault.xAxis = req.data[1].xaxis;
+                    jsonDefault.xAxis.labels={
+                        format: '{value}',
+                        style: {
+                            //color: Highcharts.getOptions().colors[1],
+                            fontSize:'14px',
+                            fontWeight:'bold'
+                        }
+                    }
+                    //jsonDefault.yAxis = req.data.yaxis;
+                    jsonDefault.yAxis =
+                        {
+                            min:0.1,
+                            title:'',
+                            minorGridLineWidth:0,
+                            gridLineWidth:0,
+                            stackLabels:
+                                {
+                                    enabled: true,
+                                    allowOverlap: true,
+                                    style:
+                                        {
+                                            fontWeight: 'bold',
+                                            fontSize:"22px",
+                                            color: '#5cccff'// (Highcharts.theme &&
+                                            // Highcharts.theme.textColor) ||
+                                        },
+                                },
+                            type: 'logarithmic',
+                            //tickPixelInterval:5
+                            //tickLength: 20
+                            //min:0,
+                        };
+                    jsonDefault.series = req.data[2].series;
+
+                    jsonDefault.exporting={
+                        enabled:false
+                    };
+                    jsonDefault.credits = {enabled: false};
+                    jsonDefault.plotOptions={
+                        series:{
+                            animation: bChartMove,
+                            groupPadding : 0.1,
+                            pointPadding : 0
+                        },
+                        column:{
+                            //pointWidth:pointWidth,
+                            cursor: 'pointer',
+                            borderWidth: 0,
+                            //pointWidth:50,
+                            maxPointWidth:50,
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+                                formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+                                },
+                                style:{
+                                    fontSize:'12px',
+                                    fontWeight:'bold',
+                                    color:'#141328'
+                                },
+                            },//,color:'#ff0816'
+                            events:{
+                                click:function (e) {
+                                    //alert(this.xAxis.categories[e.point.x]);
+                                    //进入质量分析
+                                    var Frequency_start = $('#Frequency-start').val();
+                                    var nowDate = new Date();
+                                    var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    if(Frequency_start>100){
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd') +" "+Frequency_start.substring(0,Frequency_start.length-2)+":00:00";
+                                    }else{
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    }
+                                    var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
+                                    window.open("/sLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode);
+                                }
+                            },
+                        },
+                    };
+                    //console.log(JSON.stringify(json));
+                    //console.log(JSON.stringify(jsonDefault));
+                    $("#container-defaultTop").highcharts(jsonDefault);
+                    //alert('come');
+                    $('#container-CPK').highcharts(jsonCPK);
+                    //alert('come');
+                    jChart = Highcharts.chart('container-FPY',json,'');// $('#container-FPY').highcharts(json);
+                },
+                complete:function(){
+                    //请求完成的处理
+                },
+                error:function(){
+                    //请求出错处理
+                }
+            });
+        }
+
+        function autoTooltip(point) {
+            jChart.tooltip.refresh(point);
+        }
+        function  addFunctionAltyRealLineView(value, row, index) {
+            if(row.error==1 ){
+                //(row.errContent==''?'':' ['+row.errContent+']')+
+                return ['<i data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" id="MachineListNo_i" style="cursor:pointer;">'+row.lineNo+'</i ><br>']+['<image data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" style="cursor:pointer;width:27px;height:20px" id="MachineListNo"  src="/static/img/spi2_red.jpg">'];
+                // return ['<span id="TableNGImage"  style="cursor:pointer"  class="glyphicon glyphicon-picture">'+row.lineNo+"-红灯"+'</span>'].join("");
+            }else  if(row.stop==1){
+                //(row.errContent==''?'':' ['+row.errContent+']')+
+                return ['<i  id="MachineListNo_i" style="cursor:pointer;">' +row.lineNo+'</i><br>']+['<image id="MachineListNo"  style="cursor:pointer;width:27px;height:20px" src="/static/img/spi2_yellow.jpg">'];
+            }else{
+                //(row.errContent==''?'':' ['+row.errContent+']')+
+                return ['<i  id="MachineListNo_i" style="cursor:pointer;">'+row.lineNo+'</i><br>']+['<image id="MachineListNo"  style="cursor:pointer;width:27px;height:20px" src="/static/img/spi2_green.jpg">'];
+            }
+        }
+        <!--   设备状态js代码  -->
+
+        function InitMainTableLeft () {
+            //alert('come in..');
+            //记录页面bootstrap-table全局变量$table，方便应用
+             $('#machineStatusLeft').bootstrapTable({
+                url: StatusQueryUrl+"?lane="+0,                      //请求后台的URL（*）
+                dataType:"json",
+                method: 'GET',                      //请求方式（*）
+                //data:{lane:0},
+                //toolbar: '#toolbar',              //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                whiteSpace:'nowrap',
+                //width:3,
+                //sortOrder: "desc",                   //排序方式
+                //sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                //pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                //pageSize: 5,                     //每页的记录行数（*）
+                //pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                      //是否显示表格搜索
+                strictSearch: false,
+                showColumns: false,                  //是否显示所有的列（选择显示的列）
+                showRefresh: false,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                classes:'table table-striped table-hover',
+                rowStyle: function(row, index) {
+                    if (index % 2 == 0 ) {
+                        return {
+                            classes: 'success',
+                        }
+                    }else{
+                        return {
+                            classes: 'info',
+                        }
+                    }
+                },
+                //得到查询的参数
+                queryParams : function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    return {
+                        pageSize: params.limit,               //页面大小
+                        pageNumber: params.offset/params.limit+1,  //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order //排位命令（desc，asc）
+                    };
+                },
+                columns:
+                    [
+                        {
+                            field: 'lineNo',
+                            title: 'L1',
+                            align:'center',
+                            width:3,
+                            sortable: true,
+                            events: operateEventsRealLineView,
+                            formatter: addFunctionAltyRealLineView,
+                            cellStyle: function (value, row, index){
+                                if(row.status == 1) { return {css:{"background-color":"D9534F","font-size":"9px"}}  }
+                            },
+                            cellStyle:function(value,row,index){
+                                if(row.error==1) {
+                                    return {css: {"color": "#FF0000","padding":0,"font-size":"9px"}}
+                                }else{
+                                    return {css: {"color": "#333333","padding":0,"font-size":"9px"}}
+                                }
+                            },
+                        },
+                    ],
+                onLoadSuccess: function (sta) {
+                    $("#machineStatusLeft").css("width","5vh");
+                },
+                formatNoMatches:function(){
+                    return "无";
+                }
+            });
+        };
+        function InitMainTableRight(){
+            $('#machineStatusRight').bootstrapTable({
+                url: StatusQueryUrl+"?lane="+1,                        //请求后台的URL（*）
+                dataType:"json",
+                method: 'GET',                      //请求方式（*）
+                //data:{lane:1},
+                //toolbar: '#toolbar',              //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                whiteSpace:'nowrap',
+                //sortOrder: "desc",                   //排序方式
+                //sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                //pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                //pageSize: 5,                     //每页的记录行数（*）
+                //pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                      //是否显示表格搜索
+                strictSearch: false,
+                showColumns: false,                  //是否显示所有的列（选择显示的列）
+                showRefresh: false,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                // width:3,
+                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                classes:'table table-striped table-hover',
+                rowStyle: function(row, index) {
+                    var classes = [
+                        'bg-blue',
+                        'bg-green',
+                        'bg-red'
+                    ]
+                    if (index % 2 == 0 ) {
+                        return {
+                            classes: 'info'
+                        }
+                    }else{
+                        return {
+                            classes: 'success'
+                        }
+                    }
+                },
+                //得到查询的参数
+                queryParams : function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    return {
+                        pageSize: params.limit,               //页面大小
+                        pageNumber: params.offset/params.limit+1,  //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order //排位命令（desc，asc）
+                    };
+                },
+                columns:
+                    [
+                        {
+                            field: 'lineNo',
+                            title: 'L2',
+                            align:'center',
+                            width:3,
+                            sortable: true,
+                            events: operateEventsRealLineView,
+                            formatter: addFunctionAltyRealLineView,
+                            cellStyle: function (value, row, index){
+                                if(row.status == 1) { return {css:{"background-color":"D9534F"}}  }
+                            },
+                            cellStyle:function(value,row,index){
+                                if(row.error==1) {
+                                    return {css: {"color": "#FF0000","padding":0}}
+                                }else{
+                                    return {css: {"color": "#333333","padding":0}}
+                                }
+                            },
+                        },
+                    ],
+                onLoadSuccess: function (sta) {
+                    $("#machineStatusRight").css("width","5vh");
+                },formatNoMatches:function(){
+                    return "无";
+                }
+            });
+        }
+        function refreshTableLeft(){
+            var opt = {
+                url: StatusQueryUrl+"?lane="+0,
+                silent: true,
+                query:{
+                    type:1,
+                    level:2
+                }
+            };
+            $("#machineStatusLeft").bootstrapTable('refresh', opt);
+
+        }
+        function refreshTableRight(){
+            var opt = {
+                url: StatusQueryUrl+"?lane="+1,
+                silent: true,
+                query:{
+                    type:1,
+                    level:2
+                }
+            };
+            $("#machineStatusRight").bootstrapTable('refresh', opt);
+
+        }
+        function refreshFPYRealTime(){
+            FPYRealTime(vValue,mode);
+        }
+        setInterval(refreshTableLeft,refreshSecon*1000);
+        setInterval(refreshTableRight,refreshSecon*1000);
+        setInterval(refreshFPYRealTime,refreshSecon*1000*2);
+
+
+        //preaoi
+        var preaoiType = 1;//$('#aoiType').val();
+
+        var StatusQueryUrlpreaoi = '/aStatus/pcbMonitorJson';
+        var vValue=1;
+        InitMainTableLeft_preaoi();
+        InitMainTableRight_preaoi();
+        FPYRealTime_preaoi(vValue,mode);
+
+
+        var jChartpreaoi=null;
+        function changeChartView_preaoi(x){
+            mode = x;
+            FPYRealTime_preaoi(vValue,mode);
+        }
+        function FPYRealTime_preaoi(value,x){
+            var timer=null;
+            var  pcbTotal =0;
+            vValue = value;
+            // alert(value+mode);
+            var json = {};
+            $.ajax({
+                url: "/aStatus/pcbMonitorview_realLineViewJson?aValue="+value+"&mode="+mode+"&aoiType="+preaoiType,
+                dataType:"json",   //返回格式为json
+                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+                data:'',    //参数值
+                type:"GET",   //请求方式
+                beforeSend:function(){
+                    //请求前的处理
+                },
+                success:function(req){
+                    //var xAxisjsonData = req.data[0].xaxis;
+                    pcbTotal = Number(req.rows.iTotal);
+                    pcbTotal = pcbTotal*1.5;
+                    //x轴柱子宽度设定
+                    var pointWidth=undefined;
+                    if(req.data[0].xaxis.categories.length<10){
+                        pointWidth=100;
+                    }else{
+                        pointWidth=undefined;
+                    }
+                    //请求成功时处理
+                    //json.chart = req.data.chart;
+                    json.chart ={
+                        events: {
+                            // load，图表加载完成时触发
+                            load: function () {
+                                var chart = this;
+                                var points = chart==null?null:chart.series[0].points;
+                                var len = points.length;
+                                var i = 0;
+                                timer && clearInterval(timer);
+                                // for (let i = 0; i < points.length; i++) {
+                                //    autoTooltip(points[0]);
+                                //    autoTooltip(points[1]);
+                                //   autoTooltip(points[2]);
+                                //}
+                                timer = setInterval(function () {
+                                    if(len != 0 && points[i].options!=null) {
+                                        if (points[i].options.y < req.rows.standPassPcbYeild) {
+                                            autoTooltip_preaoi(points[i]);
+                                        }
+                                    }
+                                    i++;
+                                    if (i === len) {
+                                        i = 0;
+                                    }
+                                }, 600);
+                            }
+                        }
+                        //animation:true,
+                    };
+                    json.title = {
+                        text:'',
+                    };
+                    //json.subtitle = {text:'FPY、Product'};
+                    json.plotOptions={
+                        /*bar:{
+                            borderColor:'red',
+                            borderWidth:2,
+                        },*/
+                        series:{
+                            groupPadding : 0.1,
+                            pointPadding : 0,
+                            animation: bChartMove,
+                            marker: {
+                                enabled:true,
+                                radius: 6,//点的大小
+                                //fillColor: '#DD7272',
+                                //lineColor: '#DEECF9',
+                                //lineWidth:5,
+                                shadow:false,
+                                states:{
+                                    hover:{
+                                        radius: 10,
+                                        enabled:true,
+                                    }
+                                }
+                            }
+                            //fontSize:"22px",
+                        },
+                        spline:{
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    return (this.y)+'%';
+                                },} //,color:'#0f100b'
+                        },
+                        column:{
+                            //borderColor:'#ff2514',
+                            //borderWidth:10,
+                            //selected:true,
+                            //pointWidth:pointWidth,
+                            cursor: 'pointer',
+                            pointPadding: 0,
+                            borderWidth: 0,
+                            //pointWidth:50,
+                            maxPointWidth:50,
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+                                formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+                                },
+                                style:{
+                                    fontSize:'12px',
+                                    fontWeight:'bold',
+                                    color:'#141328'
+                                },
+                            },//,color:'#ff0816'
+                            events:{
+                                click:function (e) {
+                                    //alert(this.xAxis.categories[e.point.x]);
+                                    //进入质量分析
+                                    var Frequency_start = $('#Frequency-start').val();
+                                    var nowDate = new Date();
+                                    var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    if(Frequency_start>100){
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd') +" "+Frequency_start.substring(0,Frequency_start.length-2)+":00:00";
+                                    }else{
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    }
+                                    var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
+                                    window.open("/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+preaoiType);
+                                }
+                            }
+                        },
+
+
+                    };
+                    json.credits={enabled: false };
+                    json.legend = {
+                        enabled:false,
+                    };
+                    json.xAxis = req.data[0].xaxis;
+
+                    json.xAxis.labels={
+                        format: '{value}',
+                        style: {
+                            //color: Highcharts.getOptions().colors[1],
+                            fontSize:'14px',
+                            fontWeight:'bold'
+                        }
+                    }
+                    /*json.xAxis.plotBands= [{ // mark the weekend
+                        color: '#FCFFC5',
+                        from: -0.5,
+                        to: 0.5,
+                    }]*/
+                    json.yAxis =
+                        [
+                            { // Secondary yAxis
+                                title: {
+                                    text: '',
+                                },
+                                labels: {
+                                    format: '{value}',
+                                    style: {
+                                        //color: Highcharts.getOptions().colors[1],
+                                        //fontSize:'16px'
+                                    }
+                                },
+                                //tickInterval: 10,
+                                opposite: true,
+                                gridLineWidth:0,
+                                minorGridLineWidth:0,
+                                min:0.99,
+                                max:pcbTotal,
+                                //type:'category'
+                                type: 'logarithmic',
+                                //tickInterval:0.1,
+                            },
+                            {
+                                labels: {
+                                    format: '{value}%',
+                                },
+                                title: {
+                                    text: '',
+                                    /*style: {
+                                        color: Highcharts.getOptions().colors[0]
+                                    }*/
+                                },
+                                gridLineWidth:0,
+                                minorGridLineWidth:0,
+                                max:100,
+                                min:0,
+                                tickInterval:20,
+                                //type:'category',//linear category
+                                plotLines:[{
+                                    color:'#FFFF00',           //线的颜色，定义为红色
+                                    dashStyle:'Dash',     //默认值，这里定义为实线
+                                    value:passPcbYeild,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                                    //width:1                //标示线的宽度，2px
+                                }]
+                                //opposite: false
+                            },
+                        ];
+                    json.tooltip = {
+                        backgroundColor: '#FCFFC5',   // 背景颜色
+                        borderColor: '#3f3f57',         // 边框颜色
+                        borderRadius: 16,             // 边框圆角
+                        borderWidth: 2,               // 边框宽度
+                        shadow: false,                 // 是否显示阴影
+                        animation: false ,              // 是否启用动画效果
+                        style: {                      // 文字内容相关样式
+                            color: "#ff0000",
+                            fontSize: "12px",
+                            fontWeight: "blod",
+                            fontFamily: "Courir new"
+                        },
+                        //animation:true,
+                        /*formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ':' + this.y ;//+ '<br/>' +
+                            //'value: ' + this.point.stackTotal;
+                        }*/
+                        //shared: true
+                    };
+                    json.series = req.data[0].series;
+
+                    json.exporting={
+                        enabled:false
+                    };
+
+                    //cpk
+                    var jsonCPK={};
+                    jsonCPK.title= {
+                        text: '',
+                    };
+                    jsonCPK.series=req.data[1].series;
+                    jsonCPK.legend={
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                        enabled:false,
+                    };
+                    jsonCPK.tooltip={formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y ;
+                        }};
+                    jsonCPK.xAxis=req.data[1].xaxis;
+                    jsonCPK.xAxis.labels={
+                        format: '{value}',
+                        style: {
+                            //color: Highcharts.getOptions().colors[1],
+                            fontSize:'14px',
+                            fontWeight:'bold'
+                        }
+                    }
+                    var maxCPK = 0;
+                    if(req.rows.maxCpk<=req.rows.standCPK){
+                        maxCPK = req.rows.standCPK*2;
+                    }else{
+                        maxCPK = req.rows.maxCpk;
+                    }
+                    jsonCPK.yAxis={
+                        title:'',
+                        minorGridLineWidth:0,
+                        //gridLineWidth:'0px',
+                        //width:2,
+                        gridLineWidth:0,
+                        max:maxCPK,
+                        min:0,
+                        //type:'category',
+                        //type: 'logarithmic',
+                        plotLines:[{
+                            color:'#d9c01d',           //线的颜色，定义为红色
+                            dashStyle:'Dash',     //默认值，这里定义为实线
+                            value:req.rows.standCPK,//Number(req.rows.standCPK),               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                            // width:3                //标示线的宽度，2px
+                        }]
+                    };
+                    //dataLabels:{enabled:true},
+                    jsonCPK.plotOptions = {
+                        series: {
+                            lineWidth:1,
+                            //allowPointSelect :true,
+                            animation:bChartMove,  //动画
+                            //lineColor:'blue',
+                            //enableMouseTracking:true,//显示提示框
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+
+                            },//,colo
+                            marker: {
+                                enabled:true,
+                                radius: 6,//点的大小
+                                //fillColor: '#DD7272',
+                                //lineColor: '#DEECF9',
+                                //lineWidth:5,
+                                shadow:false,
+                                states:{
+                                    hover:{
+                                        radius: 10,
+                                        enabled:true,
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    jsonCPK.exporting={
+                        enabled:false
+                    };
+                    jsonCPK.credits={enabled: false };
+
+                    //top5
+                    var jsonDefault = {};
+                    //jsonDefault.chart = req.data.chart;
+                    jsonDefault.chart = {
+
+                    };
+                    jsonDefault.title = {
+                        text:''
+                    };
+                    jsonDefault.subtitle = '';
+                    jsonDefault.tooltip = {
+                        formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y;//+ '<br/>' +
+                            //'value: ' + this.point.stackTotal;
+                        }
+                    };
+                    jsonDefault.legend = {
+                        enabled:false,
+                    };
+                    jsonDefault.xAxis = req.data[1].xaxis;
+                    jsonDefault.xAxis.labels={
+                        format: '{value}',
+                        style: {
+                            //color: Highcharts.getOptions().colors[1],
+                            fontSize:'14px',
+                            fontWeight:'bold'
+                        }
+                    }
+                    //jsonDefault.yAxis = req.data.yaxis;
+                    jsonDefault.yAxis =
+                        {
+                            min:0.1,
+                            title:'',
+                            minorGridLineWidth:0,
+                            gridLineWidth:0,
+                            stackLabels:
+                                {
+                                    enabled: true,
+                                    allowOverlap: true,
+                                    style:
+                                        {
+                                            fontWeight: 'bold',
+                                            fontSize:"22px",
+                                            color: '#5cccff'// (Highcharts.theme &&
+                                            // Highcharts.theme.textColor) ||
+                                        },
+                                },
+                            type: 'logarithmic',
+                            //tickLength: 20
+                        };
+                    jsonDefault.series = req.data[2].series;
+
+                    jsonDefault.exporting={
+                        enabled:false
+                    };
+                    jsonDefault.credits = {enabled: false};
+                    jsonDefault.plotOptions={
+                        series:{
+                            animation: bChartMove,
+                            groupPadding : 0.1,
+                            pointPadding : 0
+                        },
+                        column:{
+                            //pointWidth:pointWidth,
+                            cursor: 'pointer',
+                            borderWidth: 0,
+                            //pointWidth:50,
+                            maxPointWidth:50,
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+                                formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+                                },
+                                style:{
+                                    fontSize:'12px',
+                                    fontWeight:'bold',
+                                    color:'#141328'
+                                },
+                            },//,color:'#ff0816'
+                            events:{
+                                click:function(e){
+                                    //进入质量分析
+                                    var Frequency_start = $('#Frequency-start').val();
+                                    var nowDate = new Date();
+                                    var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    if(Frequency_start>100){
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd') +" "+Frequency_start.substring(0,Frequency_start.length-2)+":00:00";
+                                    }else{
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    }
+                                    var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
+                                    window.open("/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+preaoiType);
+                                }
+                            }
+                        },
+                    };
+                    //console.log(JSON.stringify(json));
+                    //$("#container-defaultTop").highcharts(jsonDefault);
+                    //console.log(JSON.stringify(json));
+                    //console.log(JSON.stringify(jsonDefault));
+                    //Highcharts.chart('container-defaultTopAoi',jsonDefault,'');
+                    $("#container-defaultTop-preaoi").highcharts(jsonDefault);
+                    //alert('come');
+                    $('#container-CPK-preaoi').highcharts(jsonCPK);
+                    //alert('come');
+                    jChartpreaoi = Highcharts.chart('container-FPY-preaoi',json,'');// $('#container-FPY').highcharts(json);
+                },
+                complete:function(){
+                    //请求完成的处理
+                },
+                error:function(){
+                    //请求出错处理
+                }
+            });
+        }
+        function autoTooltip_preaoi(point) {
+            jChartpreaoi.tooltip.refresh(point);
+        }
+        function  addFunctionAltyRealLineView_preaoi(value, row, index) {
+            if(row.error==1 ){
+                //(row.errContent==''?'':' ['+row.errContent+']')+
+                return ['<i data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" id="MachineListNo_i-preaoi" style="cursor:pointer;">'+row.lineNo+'</i ><br>']+['<image data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" style="cursor:pointer;width:27px;height:20px" id="MachineListNo-preaoi"  src="/static/img/spi2_red.jpg">'];
+                // return ['<span id="TableNGImage"  style="cursor:pointer"  class="glyphicon glyphicon-picture">'+row.lineNo+"-红灯"+'</span>'].join("");
+            }else  if(row.stop==1){
+                //(row.errContent==''?'':' ['+row.errContent+']')+
+                return ['<i  id="MachineListNo_i-preaoi" style="cursor:pointer;">' +row.lineNo+'</i><br>']+['<image id="MachineListNo-preaoi"  style="cursor:pointer;width:27px;height:20px" src="/static/img/spi2_yellow.jpg">'];
+            }else{
+                //(row.errContent==''?'':' ['+row.errContent+']')+
+                return ['<i  id="MachineListNo_i-preaoi" style="cursor:pointer;">'+row.lineNo+'</i><br>']+['<image id="MachineListNo-preaoi"  style="cursor:pointer;width:27px;height:20px" src="/static/img/spi2_green.jpg">'];
+            }
+        }
+        <!--   设备状态js代码  -->
+        function InitMainTableLeft_preaoi () {
+            //alert('come in..');
+            //记录页面bootstrap-table全局变量$table，方便应用
+            $('#machineStatusLeft-preaoi').bootstrapTable({
+                url: StatusQueryUrlpreaoi+"?lane="+0 +"&aoiType="+preaoiType,                      //请求后台的URL（*）
+                dataType:"json",
+                method: 'GET',                      //请求方式（*）
+                //data:{lane:0},
+                //toolbar: '#toolbar',              //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                //width:3,
+                //sortOrder: "desc",                   //排序方式
+                //sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                //pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                //pageSize: 5,                     //每页的记录行数（*）
+                //pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                      //是否显示表格搜索
+                strictSearch: false,
+                showColumns: false,                  //是否显示所有的列（选择显示的列）
+                showRefresh: false,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                classes:'table table-striped table-hover',
+                rowStyle: function(row, index) {
+                    if (index % 2 == 0 ) {
+                        return {
+                            classes: 'success',
+                        }
+                    }else{
+                        return {
+                            classes: 'info',
+                        }
+                    }
+                },
+                //得到查询的参数
+                queryParams : function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    return {
+                        pageSize: params.limit,               //页面大小
+                        pageNumber: params.offset/params.limit+1,  //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order //排位命令（desc，asc）
+                    };
+                },
+                columns:
+                    [
+                        {
+                            field: 'lineNo',
+                            title: 'L1',
+                            align:'center',
+                            width:3,
+                            sortable: true,
+                            events: operateEventsRealLineView_preaoi,
+                            formatter: addFunctionAltyRealLineView_preaoi,
+                            cellStyle: function (value, row, index){
+                                if(row.status == 1) { return {css:{"background-color":"D9534F"}}  }
+                            },
+                            cellStyle:function(value,row,index){
+                                if(row.error==1) {
+                                    return {css: {"color": "#FF0000","padding":0}}
+                                }else{
+                                    return {css: {"color": "#333333","padding":0}}
+                                }
+                            },
+                        },
+                    ],
+                onLoadSuccess: function (sta) {
+                    $("#machineStatusLeft-preaoi").css("width","5vh");
+                },
+                formatNoMatches:function(){
+                    return "无";
+                }
+            });
+        };
+        function InitMainTableRight_preaoi(){
+            $('#machineStatusRight-preaoi').bootstrapTable({
+                url: StatusQueryUrlpreaoi+"?lane="+1+"&aoiType="+preaoiType,                        //请求后台的URL（*）
+                dataType:"json",
+                method: 'GET',                      //请求方式（*）
+                //data:{lane:1},
+                //toolbar: '#toolbar',              //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                //sortOrder: "desc",                   //排序方式
+                //sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                //pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                //pageSize: 5,                     //每页的记录行数（*）
+                //pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                      //是否显示表格搜索
+                strictSearch: false,
+                showColumns: false,                  //是否显示所有的列（选择显示的列）
+                showRefresh: false,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                // width:3,
+                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                classes:'table table-striped table-hover',
+                rowStyle: function(row, index) {
+                    var classes = [
+                        'bg-blue',
+                        'bg-green',
+                        'bg-red'
+                    ]
+                    if (index % 2 == 0 ) {
+                        return {
+                            classes: 'info'
+                        }
+                    }else{
+                        return {
+                            classes: 'success'
+                        }
+                    }
+                },
+                //得到查询的参数
+                queryParams : function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    return {
+                        pageSize: params.limit,               //页面大小
+                        pageNumber: params.offset/params.limit+1,  //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order //排位命令（desc，asc）
+                    };
+                },
+                columns:
+                    [
+                        {
+                            field: 'lineNo',
+                            title: 'L2',
+                            align:'center',
+                            width:3,
+                            sortable: true,
+                            events: operateEventsRealLineView_preaoi,
+                            formatter: addFunctionAltyRealLineView_preaoi,
+                            cellStyle: function (value, row, index){
+                                if(row.status == 1) { return {css:{"background-color":"D9534F"}}  }
+                            },
+                            cellStyle:function(value,row,index){
+                                if(row.error==1) {
+                                    return {css: {"color": "#FF0000","padding":0}}
+                                }else{
+                                    return {css: {"color": "#333333","padding":0}}
+                                }
+                            },
+                        },
+                    ],
+                onLoadSuccess: function (sta) {
+                    $("#machineStatusRight-preaoi").css("width","5vh");
+                },formatNoMatches:function(){
+                    return "无";
+                }
+            });
+        }
+        function refreshTableLeft_preaoi(){
+            var opt = {
+                url: StatusQueryUrlpreaoi+"?lane="+0+"&aoiType="+preaoiType,
+                silent: true,
+                query:{
+                    type:1,
+                    level:2
+                }
+            };
+            $("#machineStatusLeft-preaoi").bootstrapTable('refresh', opt);
+
+        }
+        function refreshTableRight_preaoi(){
+            var opt = {
+                url: StatusQueryUrlpreaoi+"?lane="+1+"&aoiType="+preaoiType,
+                silent: true,
+                query:{
+                    type:1,
+                    level:2
+                }
+            };
+            $("#machineStatusRight-preaoi").bootstrapTable('refresh', opt);
+
+        }
+        function refreshFPYRealTime_preaoi(){
+            FPYRealTime_preaoi(vValue,mode);
+        }
+        setInterval(refreshTableLeft_preaoi,refreshSecon*1000);
+        setInterval(refreshTableRight_preaoi,refreshSecon*1000);//,FPYRealTime,CPKRealTime,defaultTopRealTime,
+        setInterval(refreshFPYRealTime_preaoi,refreshSecon*1000*2);
+
+
+        //potaoi
+        var jChart_postaoi=null;
+        var potaoiType = 2;//$('#aoiType').val();
+
+        var StatusQueryUrlpotAoi = '/aStatus/pcbMonitorJson';
+        var vValue=1;
+
+        InitMainTableLeft_postaoi();
+        InitMainTableRight_postaoi();
+        FPYRealTime_postaoi(vValue,mode);
+
+
+        function changeChartView_postaoi(x){
+            mode = x;
+            FPYRealTime_postaoi(vValue,mode);
+        }
+        function FPYRealTime_postaoi(value,x){
+            var timer=null;
+            var  pcbTotal =0;
+            vValue = value;
+            // alert(value+mode);
+            var json = {};
+            $.ajax({
+                url: "/aStatus/pcbMonitorview_realLineViewJson?aValue="+value+"&mode="+mode+"&aoiType="+potaoiType,
+                dataType:"json",   //返回格式为json
+                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+                data:'',    //参数值
+                type:"GET",   //请求方式
+                beforeSend:function(){
+                    //请求前的处理
+                },
+                success:function(req){
+                    //var xAxisjsonData = req.data[0].xaxis;
+                    pcbTotal = Number(req.rows.iTotal);
+                    pcbTotal = pcbTotal*1.5;
+                    //x轴柱子宽度设定
+                    var pointWidth=undefined;
+                    if(req.data[0].xaxis.categories.length<10){
+                        pointWidth=100;
+                    }else{
+                        pointWidth=undefined;
+                    }
+                    //请求成功时处理
+                    //json.chart = req.data.chart;
+                    json.chart ={
+                        events: {
+                            // load，图表加载完成时触发
+                            load: function () {
+                                var chart = this;
+                                var points = chart==null?null:chart.series[0].points;
+                                var len = points.length;
+                                var i = 0;
+                                timer && clearInterval(timer);
+                                // for (let i = 0; i < points.length; i++) {
+                                //    autoTooltip(points[0]);
+                                //    autoTooltip(points[1]);
+                                //   autoTooltip(points[2]);
+                                //}
+                                timer = setInterval(function () {
+                                    if(len != 0 && points[i].options!=null) {
+                                        if (points[i].options.y < req.rows.standPassPcbYeild) {
+                                            autoTooltip_postaoi(points[i]);
+                                        }
+                                    }
+                                    i++;
+                                    if (i === len) {
+                                        i = 0;
+                                    }
+                                }, 600);
+                            }
+                        }
+                        //animation:true,
+                    };
+                    json.title = {
+                        text:'',
+                    };
+                    //json.subtitle = {text:'FPY、Product'};
+                    json.plotOptions={
+                        /*bar:{
+                            borderColor:'red',
+                            borderWidth:2,
+                        },*/
+                        series:{
+                            groupPadding : 0.1,
+                            pointPadding : 0,
+                            animation: bChartMove,
+                            marker: {
+                                enabled:true,
+                                radius: 6,//点的大小
+                                //fillColor: '#DD7272',
+                                //lineColor: '#DEECF9',
+                                //lineWidth:5,
+                                shadow:false,
+                                states:{
+                                    hover:{
+                                        radius: 10,
+                                        enabled:true,
+                                    }
+                                }
+                            }
+                            //fontSize:"22px",
+                        },
+                        spline:{
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    return (this.y)+'%';
+                                },} //,color:'#0f100b'
+                        },
+                        column:{
+                            //borderColor:'#ff2514',
+                            //borderWidth:10,
+                            //selected:true,
+                            //pointWidth:pointWidth,
+                            cursor: 'pointer',
+                            pointPadding: 0,
+                            borderWidth: 0,
+                            //pointWidth:50,
+                            maxPointWidth:50,
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+                                formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+                                },
+                                style:{
+                                    fontSize:'12px',
+                                    fontWeight:'bold',
+                                    color:'#141328'
+                                },
+                            },//,color:'#ff0816'
+                            events:{
+                                click:function (e) {
+                                    //alert(this.xAxis.categories[e.point.x]);
+                                    //进入质量分析
+                                    var Frequency_start = $('#Frequency-start').val();
+                                    var nowDate = new Date();
+                                    var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    if(Frequency_start>100){
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd') +" "+Frequency_start.substring(0,Frequency_start.length-2)+":00:00";
+                                    }else{
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    }
+                                    var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
+                                    window.open("/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+potaoiType);
+                                }
+                            }
+                        },
+
+
+                    };
+                    json.credits={enabled: false };
+                    json.legend = {
+                        enabled:false,
+                    };
+                    json.xAxis = req.data[0].xaxis;
+
+                    json.xAxis.labels={
+                        format: '{value}',
+                        style: {
+                            //color: Highcharts.getOptions().colors[1],
+                            fontSize:'14px',
+                            fontWeight:'bold'
+                        }
+                    }
+                    /*json.xAxis.plotBands= [{ // mark the weekend
+                        color: '#FCFFC5',
+                        from: -0.5,
+                        to: 0.5,
+                    }]*/
+                    json.yAxis =
+                        [
+                            { // Secondary yAxis
+                                title: {
+                                    text: '',
+                                },
+                                labels: {
+                                    format: '{value}',
+                                    style: {
+                                        //color: Highcharts.getOptions().colors[1],
+                                        //fontSize:'16px'
+                                    }
+                                },
+                                //tickInterval: 10,
+                                opposite: true,
+                                gridLineWidth:0,
+                                minorGridLineWidth:0,
+                                min:0.99,
+                                max:pcbTotal,
+                                //type:'category'
+                                type: 'logarithmic',
+                                //tickInterval:0.1,
+                            },
+                            {
+                                labels: {
+                                    format: '{value}%',
+                                },
+                                title: {
+                                    text: '',
+                                    /*style: {
+                                        color: Highcharts.getOptions().colors[0]
+                                    }*/
+                                },
+                                gridLineWidth:0,
+                                minorGridLineWidth:0,
+                                max:100,
+                                min:0,
+                                tickInterval:20,
+                                //type:'category',//linear category
+                                plotLines:[{
+                                    color:'#FFFF00',           //线的颜色，定义为红色
+                                    dashStyle:'Dash',     //默认值，这里定义为实线
+                                    value:passPcbYeild,               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                                    //width:1                //标示线的宽度，2px
+                                }]
+                                //opposite: false
+                            },
+                        ];
+                    json.tooltip = {
+                        backgroundColor: '#FCFFC5',   // 背景颜色
+                        borderColor: '#3f3f57',         // 边框颜色
+                        borderRadius: 16,             // 边框圆角
+                        borderWidth: 2,               // 边框宽度
+                        shadow: false,                 // 是否显示阴影
+                        animation: false ,              // 是否启用动画效果
+                        style: {                      // 文字内容相关样式
+                            color: "#ff0000",
+                            fontSize: "12px",
+                            fontWeight: "blod",
+                            fontFamily: "Courir new"
+                        },
+                        //animation:true,
+                        /*formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ':' + this.y ;//+ '<br/>' +
+                            //'value: ' + this.point.stackTotal;
+                        }*/
+                        //shared: true
+                    };
+                    json.series = req.data[0].series;
+
+                    json.exporting={
+                        enabled:false
+                    };
+
+                    //cpk
+                    var jsonCPK={};
+                    jsonCPK.title= {
+                        text: '',
+                    };
+                    jsonCPK.series=req.data[1].series;
+                    jsonCPK.legend={
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                        enabled:false,
+                    };
+                    jsonCPK.tooltip={formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y ;
+                        }};
+                    jsonCPK.xAxis=req.data[1].xaxis;
+                    jsonCPK.xAxis.labels={
+                        format: '{value}',
+                        style: {
+                            //color: Highcharts.getOptions().colors[1],
+                            fontSize:'14px',
+                            fontWeight:'bold'
+                        }
+                    }
+                    var maxCPK = 0;
+                    if(req.rows.maxCpk<=req.rows.standCPK){
+                        maxCPK = req.rows.standCPK*2;
+                    }else{
+                        maxCPK = req.rows.maxCpk;
+                    }
+                    jsonCPK.yAxis={
+                        title:'',
+                        minorGridLineWidth:0,
+                        //gridLineWidth:'0px',
+                        //width:2,
+                        gridLineWidth:0,
+                        max:maxCPK,
+                        min:0,
+                        //type:'category',
+                        //type: 'logarithmic',
+                        plotLines:[{
+                            color:'#d9c01d',           //线的颜色，定义为红色
+                            dashStyle:'Dash',     //默认值，这里定义为实线
+                            value:req.rows.standCPK,//Number(req.rows.standCPK),               //定义在那个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+                            // width:3                //标示线的宽度，2px
+                        }]
+                    };
+                    //dataLabels:{enabled:true},
+                    jsonCPK.plotOptions = {
+                        series: {
+                            lineWidth:1,
+                            //allowPointSelect :true,
+                            animation:bChartMove,  //动画
+                            //lineColor:'blue',
+                            //enableMouseTracking:true,//显示提示框
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+
+                            },//,colo
+                            marker: {
+                                enabled:true,
+                                radius: 6,//点的大小
+                                //fillColor: '#DD7272',
+                                //lineColor: '#DEECF9',
+                                //lineWidth:5,
+                                shadow:false,
+                                states:{
+                                    hover:{
+                                        radius: 10,
+                                        enabled:true,
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    jsonCPK.exporting={
+                        enabled:false
+                    };
+                    jsonCPK.credits={enabled: false };
+
+                    //top5
+                    var jsonDefault = {};
+                    //jsonDefault.chart = req.data.chart;
+                    jsonDefault.chart = {
+
+                    };
+                    jsonDefault.title = {
+                        text:''
+                    };
+                    jsonDefault.subtitle = '';
+                    jsonDefault.tooltip = {
+                        formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y;//+ '<br/>' +
+                            //'value: ' + this.point.stackTotal;
+                        }
+                    };
+                    jsonDefault.legend = {
+                        enabled:false,
+                    };
+                    jsonDefault.xAxis = req.data[1].xaxis;
+                    jsonDefault.xAxis.labels={
+                        format: '{value}',
+                        style: {
+                            //color: Highcharts.getOptions().colors[1],
+                            fontSize:'14px',
+                            fontWeight:'bold'
+                        }
+                    }
+                    //jsonDefault.yAxis = req.data.yaxis;
+                    jsonDefault.yAxis =
+                        {
+                            min:0.1,
+                            title:'',
+                            minorGridLineWidth:0,
+                            gridLineWidth:0,
+                            stackLabels:
+                                {
+                                    enabled: true,
+                                    allowOverlap: true,
+                                    style:
+                                        {
+                                            fontWeight: 'bold',
+                                            fontSize:"22px",
+                                            color: '#5cccff'// (Highcharts.theme &&
+                                            // Highcharts.theme.textColor) ||
+                                        },
+                                },
+                            type: 'logarithmic',
+                            //tickLength: 20
+                        };
+                    jsonDefault.series = req.data[2].series;
+
+                    jsonDefault.exporting={
+                        enabled:false
+                    };
+                    jsonDefault.credits = {enabled: false};
+                    jsonDefault.plotOptions={
+                        series:{
+                            animation: bChartMove,
+                            groupPadding : 0.1,
+                            pointPadding : 0
+                        },
+                        column:{
+                            //pointWidth:pointWidth,
+                            cursor: 'pointer',
+                            borderWidth: 0,
+                           // pointWidth:50,
+                            maxPointWidth:50,
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+                                formatter: function() {
+                                    return (this.series.name)+ ':' +(this.y);
+                                },
+                                style:{
+                                    fontSize:'12px',
+                                    fontWeight:'bold',
+                                    color:'#141328'
+                                },
+                            },//,color:'#ff0816'
+                            events:{
+                                click:function(e){
+                                    //进入质量分析
+                                    var Frequency_start = $('#Frequency-start').val();
+                                    var nowDate = new Date();
+                                    var startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    if(Frequency_start>100){
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd') +" "+Frequency_start.substring(0,Frequency_start.length-2)+":00:00";
+                                    }else{
+                                        startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
+                                    }
+                                    var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
+                                    window.open("/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+potaoiType);
+                                }
+                            }
+                        },
+                    };
+                    //console.log(JSON.stringify(json));
+                    //$("#container-defaultTop").highcharts(jsonDefault);
+                    //console.log(JSON.stringify(json));
+                    //console.log(JSON.stringify(jsonDefault));
+                    //Highcharts.chart('container-defaultTopAoi',jsonDefault,'');
+                    $("#container-defaultTop-postaoi").highcharts(jsonDefault);
+                    //alert('come');
+                    $('#container-CPK-postaoi').highcharts(jsonCPK);
+                    //alert('come');
+                    jChart_postaoi = Highcharts.chart('container-FPY-postaoi',json,'');// $('#container-FPY').highcharts(json);
+                },
+                complete:function(){
+                    //请求完成的处理
+                },
+                error:function(){
+                    //请求出错处理
+                }
+            });
+        }
+        function autoTooltip_postaoi(point) {
+            jChart_postaoi.tooltip.refresh(point);
+        }
+        function  addFunctionAltyRealLineView_postaoi(value, row, index) {
+            if(row.error==1 ){
+                //(row.errContent==''?'':' ['+row.errContent+']')+
+                return ['<i data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" id="MachineListNo_i-postaoi" style="cursor:pointer;">'+row.lineNo+'</i ><br>']+['<image data-toggle="tooltip" data-placement="bottom" title="'+row.errContent+'" style="cursor:pointer;width:27px;height:20px" id="MachineListNo-postaoi"  src="/static/img/spi2_red.jpg">'];
+                // return ['<span id="TableNGImage"  style="cursor:pointer"  class="glyphicon glyphicon-picture">'+row.lineNo+"-红灯"+'</span>'].join("");
+            }else  if(row.stop==1){
+                //(row.errContent==''?'':' ['+row.errContent+']')+
+                return ['<i  id="MachineListNo_i-postaoi" style="cursor:pointer;">' +row.lineNo+'</i><br>']+['<image id="MachineListNo-postaoi"  style="cursor:pointer;width:27px;height:20px" src="/static/img/spi2_yellow.jpg">'];
+            }else{
+                //(row.errContent==''?'':' ['+row.errContent+']')+
+                return ['<i  id="MachineListNo_i-postaoi" style="cursor:pointer;">'+row.lineNo+'</i><br>']+['<image id="MachineListNo-postaoi"  style="cursor:pointer;width:27px;height:20px" src="/static/img/spi2_green.jpg">'];
+            }
+        }
+        <!--   设备状态js代码  -->
+        function InitMainTableLeft_postaoi () {
+            //alert('come in..');
+            //记录页面bootstrap-table全局变量$table，方便应用
+            $('#machineStatusLeft-postaoi').bootstrapTable({
+                url: StatusQueryUrlpotAoi+"?lane="+0 +"&aoiType="+potaoiType,                      //请求后台的URL（*）
+                dataType:"json",
+                method: 'GET',                      //请求方式（*）
+                //data:{lane:0},
+                //toolbar: '#toolbar',              //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                //width:3,
+                //sortOrder: "desc",                   //排序方式
+                //sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                //pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                //pageSize: 5,                     //每页的记录行数（*）
+                //pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                      //是否显示表格搜索
+                strictSearch: false,
+                showColumns: false,                  //是否显示所有的列（选择显示的列）
+                showRefresh: false,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                classes:'table table-striped table-hover',
+                rowStyle: function(row, index) {
+                    if (index % 2 == 0 ) {
+                        return {
+                            classes: 'success',
+                        }
+                    }else{
+                        return {
+                            classes: 'info',
+                        }
+                    }
+                },
+                //得到查询的参数
+                queryParams : function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    return {
+                        pageSize: params.limit,               //页面大小
+                        pageNumber: params.offset/params.limit+1,  //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order //排位命令（desc，asc）
+                    };
+                },
+                columns:
+                    [
+                        {
+                            field: 'lineNo',
+                            title: 'L1',
+                            align:'center',
+                            width:3,
+                            sortable: true,
+                            events: operateEventsRealLineView_postaoi,
+                            formatter: addFunctionAltyRealLineView_postaoi,
+                            cellStyle: function (value, row, index){
+                                if(row.status == 1) { return {css:{"background-color":"D9534F"}}  }
+                            },
+                            cellStyle:function(value,row,index){
+                                if(row.error==1) {
+                                    return {css: {"color": "#FF0000","padding":0}}
+                                }else{
+                                    return {css: {"color": "#333333","padding":0}}
+                                }
+                            },
+                        },
+                    ],
+                onLoadSuccess: function (sta) {
+                    $("#machineStatusLeft-postaoi").css("width","5vh");
+                },
+                formatNoMatches:function(){
+                    return "无";
+                }
+            });
+        };
+        function InitMainTableRight_postaoi(){
+            $('#machineStatusRight-postaoi').bootstrapTable({
+                url: StatusQueryUrlpotAoi+"?lane="+1+"&aoiType="+potaoiType,                        //请求后台的URL（*）
+                dataType:"json",
+                method: 'GET',                      //请求方式（*）
+                //data:{lane:1},
+                //toolbar: '#toolbar',              //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                //sortOrder: "desc",                   //排序方式
+                //sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                //pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                //pageSize: 5,                     //每页的记录行数（*）
+                //pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                      //是否显示表格搜索
+                strictSearch: false,
+                showColumns: false,                  //是否显示所有的列（选择显示的列）
+                showRefresh: false,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                // width:3,
+                //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                classes:'table table-striped table-hover',
+                rowStyle: function(row, index) {
+                    var classes = [
+                        'bg-blue',
+                        'bg-green',
+                        'bg-red'
+                    ]
+                    if (index % 2 == 0 ) {
+                        return {
+                            classes: 'info'
+                        }
+                    }else{
+                        return {
+                            classes: 'success'
+                        }
+                    }
+                },
+                //得到查询的参数
+                queryParams : function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    return {
+                        pageSize: params.limit,               //页面大小
+                        pageNumber: params.offset/params.limit+1,  //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order //排位命令（desc，asc）
+                    };
+                },
+                columns:
+                    [
+                        {
+                            field: 'lineNo',
+                            title: 'L2',
+                            align:'center',
+                            width:3,
+                            sortable: true,
+                            events: operateEventsRealLineView_postaoi,
+                            formatter: addFunctionAltyRealLineView_postaoi,
+                            cellStyle: function (value, row, index){
+                                if(row.status == 1) { return {css:{"background-color":"D9534F"}}  }
+                            },
+                            cellStyle:function(value,row,index){
+                                if(row.error==1) {
+                                    return {css: {"color": "#FF0000","padding":0}}
+                                }else{
+                                    return {css: {"color": "#333333","padding":0}}
+                                }
+                            },
+                        },
+                    ],
+                onLoadSuccess: function (sta) {
+                    $("#machineStatusRight-postaoi").css("width","5vh");
+                },formatNoMatches:function(){
+                    return "无";
+                }
+            });
+        }
+        function refreshTableLeft_postaoi(){
+            var opt = {
+                url: StatusQueryUrlpotAoi+"?lane="+0+"&aoiType="+potaoiType,
+                silent: true,
+                query:{
+                    type:1,
+                    level:2
+                }
+            };
+            $("#machineStatusLeft-postaoi").bootstrapTable('refresh', opt);
+
+        }
+        function refreshTableRight_postaoi(){
+            var opt = {
+                url: StatusQueryUrlpotAoi+"?lane="+1+"&aoiType="+potaoiType,
+                silent: true,
+                query:{
+                    type:1,
+                    level:2
+                }
+            };
+            $("#machineStatusRight-postaoi").bootstrapTable('refresh', opt);
+
+        }
+        function refreshFPYRealTime_postaoi(){
+            FPYRealTime_postaoi(vValue,mode);
+        }
+        setInterval(refreshTableLeft_postaoi,refreshSecon*1000);
+        setInterval(refreshTableRight_postaoi,refreshSecon*1000);//,FPYRealTime,CPKRealTime,defaultTopRealTime,
+        setInterval(refreshFPYRealTime_postaoi,refreshSecon*1000*2);
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+    </script>
+
+</body>
+</html>

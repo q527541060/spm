@@ -1,0 +1,223 @@
+# 项目信息配置
+project:
+  name: spm
+  version: 1.0.0
+  env: product
+server:
+  port: 9090
+  servlet:
+    context-path: /
+  tomcat:
+    accept-count: 1000
+    threads:
+      max: 1000
+    max-connections: 20000
+    #connection-timeout: 120000
+    max-http-form-post-size: -1
+#jetty:
+#  threads:
+#    max: 1000
+#    max-queue-capacity: 20000
+#  max-http-form-post-size: -1
+#  max-threads: 1000
+spring:
+  shardingsphere :
+    datasource :
+      names : ds1,ds2,ds3,ds4,ds5,
+        ds6,ds7,ds8,ds9,ds10,
+        ds11,ds12,ds210001  #,ds1,ds2,ds3,ds4,ds5,ds6,ds7,ds8,ds9
+      #ds0配置
+      ds1 :
+        type : com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name : com.mysql.jdbc.Driver
+        jdbc-url : jdbc:mysql://127.0.0.1:3306/db_spm01?serverTimezone=GMT%2B8&useSSL=false
+        username : root
+        password : 1234
+      #ds0配置
+      ds2:
+        type: com.zaxxer.hikari.HikariDataSource  #com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm02?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+        #ds0配置
+      ds3:
+        type: com.zaxxer.hikari.HikariDataSource  #com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm03?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+      #ds0配置
+      ds4:
+        type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm04?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+      #ds0配置
+      ds5:
+        type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm05?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+      #ds0配置
+      ds6:
+        type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm06?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+      #ds0配置
+      ds7:
+        type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm07?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+      #ds0配置
+      ds8:
+        type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm08?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+      #ds0配置
+      ds9:
+        type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm09?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+      #ds0配置
+      ds10:
+        type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm10?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+      #ds0配置
+      ds11:
+        type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm11?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+      #ds0配置
+      ds12:
+        type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm12?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+      #ds0配置
+      ds210001:
+        type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm210001?serverTimezone=GMT%2B8&useSSL=false
+        username: root
+        password: 1234
+
+    # 分库策略
+    sharding :
+      default-database-strategy:
+        standard:
+          # 配置进行分库的字段
+          sharding-column: create_time  #yyyyMMdd
+          precise-algorithm-class-name: com.sinictek.spm.model.utils.PreciseModuloDatabaseShardingAlgorithm
+      default-table-strategy:
+        standard:
+          # 配置进行分表的字段
+          sharding-column: create_time
+          precise-algorithm-class-name: com.sinictek.spm.model.utils.PreciseModuloTableShardingAlgorithm
+      tables:
+        #SPI
+        s_defaultSetting:
+          actual-data-nodes: ds$->{210001..210001}.s_defaultSetting
+        s_user:
+          actual-data-nodes: ds$->{210001..210001}.s_user
+        s_line:
+          actual-data-nodes: ds$->{210001..210001}.s_line
+        s_job:
+          actual-data-nodes: ds$->{210001..210001}.s_job
+        s_pcb:
+          actual-data-nodes: ds$->{1..12}.s_pcb
+        s_status:
+          actual-data-nodes: ds$->{1..12}.s_status
+        s_component:
+          actual-data-nodes: ds$->{1..12}.s_component
+        s_realTimeConfig:
+          actual-data-nodes: ds$->{1..12}.s_realTimeConfig
+        s_realTimeAutoRefresh:
+          actual-data-nodes: ds$->{1..12}.s_realTimeAutoRefresh
+        s_realTimeSituation:
+          actual-data-nodes: ds$->{1..12}.s_realTimeSituation
+        s_pad:
+          # 配置库与表结合，就是你有几个库，几个表，逻辑表为s_pad_$
+          actual-data-nodes:  ds$->{1..12}.s_pad_$->{1..31} #ds$->{202103..202112}.s_pad_$->{1..31},ds$->{202201..202212}.s_pad_$->{1..31}
+          #table-strategy:
+          #inline:
+          #sharding-column: 分表字段create_time  # 分表字段create_time
+          #algorithm-expression: s_pad_$->{id % 41} # 分表策略 根据id取模,确定数据最终落在那个表中
+          # 使用SNOWFLAKE算法生成主键
+          #key-generator.column: id
+          #key-generator.type: SNOWFLAKE
+
+        #AOI
+        a_line:
+          actual-data-nodes: ds$->{210001..210001}.a_line
+        a_job:
+          actual-data-nodes: ds$->{210001..210001}.a_job
+        a_pcb:
+          actual-data-nodes: ds$->{1..12}.a_pcb
+        a_fov:
+          actual-data-nodes: ds$->{1..12}.a_fov
+        a_window:
+          actual-data-nodes: ds$->{1..12}.a_window
+        a_status:
+          actual-data-nodes: ds$->{1..12}.a_status
+        a_component:
+          actual-data-nodes: ds$->{1..12}.a_component_$->{1..31}
+
+    props:
+      sql:
+        show: false
+  jackson:
+    time-zone : GMT+8
+    date-format : yyyy-MM-dd HH:mm:ss
+    #mvc:
+      #view:
+      #prefix: /WEB-INF/pages/
+    #suffix: .jsp
+    #static-path-pattern: /image/**
+  #freemarker:
+   # suffix: .ff
+  thymeleaf:
+    suffix: .html
+    prefix: classpath:/templates/
+    cache: false
+  messages:
+    basename: i18n/messages/messages
+    encoding: UTF-8
+  resources :
+    static-locations : classpath:/META-INF/resources/, classpath:/META-INF/resources/webjars/,classpath:/META-INF/static/,classpath:/static/
+mybatis-plus :
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sinictek.spm.model
+  global-config :
+    db-column-underline : false #驼峰下划线转换
+    # Sequence序列接口实现类配置
+    #逻辑删除配置（下面3个配置）
+    logic-delete-value : Y
+    logic-not-delete-value : N
+    configuration :
+      #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
+      map-underscore-to-camel-case : false
+      cache-enabled : false
+      #配置JdbcTypeForNull, oracle数据库必须配置
+      jdbc-type-for-null : 'null'
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    #若采用雪花算法生成id，需要在生成的实体类中将id的type = IdType.AUTO去掉
+    id-type : 0
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 2

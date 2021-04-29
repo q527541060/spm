@@ -1,10 +1,7 @@
 
 package com.sinictek.spm.model.utils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ResourceBundle;
-
+//import com.mysql.cj.jdbc.MysqlDataSource;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ResourceBundle;
 
 //import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -47,35 +48,37 @@ public class DataBaseInit
     public static void initUseSQL(String... sqlPathArr)
         throws IOException
     {
-        Assert.notEmpty(sqlPathArr, "SQLPathArr length must be greater than 0");
-        // 建库用临时DataSource
-        MysqlDataSource dataSource = new MysqlDataSource();
-        ResourceBundle config = ResourceBundle.getBundle("jdbc");
-        String jdbcUrl = StringUtils.substringBeforeLast(config.getString("jdbc.url"), "/");
-        dataSource.setUrl(jdbcUrl);
-        dataSource.setUser(config.getString("jdbc.username"));
-        dataSource.setPassword(config.getString("jdbc.password"));
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        logger.info("JdbcTemplate = {}", jdbcTemplate);
-        
-        // 取数据库名
-        String dataBase = StringUtils.substringAfterLast(config.getString("jdbc.url"), "/");
-        dataBase = dataBase.contains("?") ? StringUtils.substringBefore(dataBase, "?") : dataBase;
-        logger.info("★★★★ jdbcUrl = {}, dataBase = {}", jdbcUrl, dataBase);
-
-        // 按需建库
-        jdbcTemplate.execute(String.format("CREATE DATABASE IF NOT EXISTS `%s` DEFAULT CHARACTER SET UTF8", dataBase));
-
-        // 正式库刷表
-        dataSource.setUrl(config.getString("jdbc.url")+ "&allowMultiQueries=true" );//+ "&allowMultiQueries=true"
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        logger.info("JdbcTemplate = {}", jdbcTemplate);
+        int i=0;
         for (String sqlPath : sqlPathArr)
         {
+            i++;
+            Assert.notEmpty(sqlPathArr, "SQLPathArr length must be greater than 0");
+            // 建库用临时DataSource
+            MysqlDataSource dataSource = new MysqlDataSource();
+            ResourceBundle config = ResourceBundle.getBundle("jdbc-sharding");
+            String jdbcUrl = StringUtils.substringBeforeLast(config.getString("jdbc.url"+i), "/");
+            dataSource.setUrl(jdbcUrl);
+            dataSource.setUser(config.getString("jdbc.username"));
+            dataSource.setPassword(config.getString("jdbc.password"));
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+            //logger.info("JdbcTemplate = {}", jdbcTemplate);
+
+            // 取数据库名
+            String dataBase = StringUtils.substringAfterLast(config.getString("jdbc.url"+i), "/");
+            dataBase = dataBase.contains("?") ? StringUtils.substringBefore(dataBase, "?") : dataBase;
+            //logger.info("★★★★ jdbcUrl = {}, dataBase = {}", jdbcUrl, dataBase);
+
+            // 按需建库
+            jdbcTemplate.execute(String.format("CREATE DATABASE IF NOT EXISTS `%s` DEFAULT CHARACTER SET UTF8", dataBase));
+
+            // 正式库刷表
+            dataSource.setUrl(config.getString("jdbc.url"+i)+ "&allowMultiQueries=true" );//+ "&allowMultiQueries=true"
+            jdbcTemplate = new JdbcTemplate(dataSource);
+            //logger.info("JdbcTemplate = {}", jdbcTemplate);
             try (InputStream inputStream = DataBaseInit.class.getResourceAsStream(sqlPath))
             {
                 String sqlText = IOUtils.toString(inputStream, "utf-8");
-                logger.info("SQL = {}", sqlText);
+                //logger.info("SQL = {}", sqlText);
                 if (dataSource.getUrl().contains("allowMultiQueries=true"))
                 {
                     logger.info("开始执行当前的初始化语句块");

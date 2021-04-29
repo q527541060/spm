@@ -34,6 +34,6 @@ public class AJob implements Serializable {
     private String remark;
     private Integer aoiMode;
 
-
+    private  String create_time;
 
 }

@@ -40,7 +40,7 @@ public class BaseJob {
     public void doLine(){
         System.out.println("springboot thread line..."+new Date());
     }*/
-    @Scheduled(cron = "0/5 * * * * *")
+    @Scheduled(cron = "0 0 0/1 * * ?")
     public void doGc(){
         System.gc();
     }

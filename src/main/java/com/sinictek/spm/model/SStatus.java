@@ -50,6 +50,7 @@ public class SStatus implements Serializable {
     private String errContent;
     private String remark;
     private Date updateTime;
+    private  String create_time;
 
 
 }

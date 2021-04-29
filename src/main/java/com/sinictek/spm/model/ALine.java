@@ -54,5 +54,5 @@ public class ALine implements Serializable {
      * aoimode
      */
     private Integer aoiMode;
-
+    private  String create_time;
 }

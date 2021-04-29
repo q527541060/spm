@@ -67,6 +67,6 @@ public class AComponent implements Serializable {
     private String historyDefectRecord;
     private String remark;
 
-
+    private  String create_time;
 
 }

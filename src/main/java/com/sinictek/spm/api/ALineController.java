@@ -2,6 +2,7 @@ package com.sinictek.spm.api;
 
 
 import com.alibaba.druid.util.StringUtils;
+import com.sinictek.spm.annotation.LoginToken;
 import com.sinictek.spm.model.APcb;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
@@ -54,7 +55,16 @@ public class ALineController {
     @GetMapping("pcbLine")
     public ModelAndView showPcbLine(@RequestParam("aoiType") String aoiType)  {
         ConstController.constController.iniDefaultParamSetting();
-        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        boolean bCmBoxs =false;// ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        try{
+            int i = StringTimeUtils.getTimeStringToDate("2021-04-25 00:00:00").compareTo(new Date());
+            if(i > 0  ){
+                bCmBoxs = true;
+            }else{
+                bCmBoxs = false;
+            };
+        }catch (Exception e){
+        }
         String viewName = "aoi/pcbLineData_aoi";
         if(bCmBoxs){
         }else {
@@ -65,6 +75,7 @@ public class ALineController {
         mv.addObject("hChartColor", ConstParam.DEFAULTSETTING_hChartColor);
         mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
         mv.addObject("aoiType",aoiType);
+        mv.addObject("weburl","/aLine/pcbLine?aoiType="+aoiType+"&");
         return  mv;
     }
 
@@ -97,22 +108,22 @@ public class ALineController {
         List<Series> lstSeries = new ArrayList<Series>();
 
         Series goodSeries = new Series();
-        goodSeries.setName("直通");
+        goodSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.pass"));
         Series ngSeries = new Series();
-        ngSeries.setName("不良");
+        ngSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.ng"));
         Series passSeries = new Series();
-        passSeries.setName("误报");
+        passSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.rePass"));
         List<Data> lstGoodSeriesData = new ArrayList<Data>();
         List<Data> lstNgSeriesData = new ArrayList<Data>();
         List<Data> lstPassSeriesData = new ArrayList<Data>();
 
         List<Series> lstPcbSeries = new ArrayList<Series>();
         Series pcbCountSeries = new Series();
-        pcbCountSeries.setName("总板");
+        pcbCountSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.pcbCount"));
         Series passPcbCountSeries = new Series();
-        passPcbCountSeries.setName("复判板");
+        passPcbCountSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.rePassPcbCount"));
         Series ngPadCountSeries = new Series();
-        ngPadCountSeries.setName("缺陷点");
+        ngPadCountSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.defectCount"));
         List<Data> lstpcbCountSeriesData = new ArrayList<Data>();
         List<Data> lstpassPcbCountSeriesData = new ArrayList<Data>();
         List<Data> lstngPadCountSeriesData = new ArrayList<Data>();
@@ -274,39 +285,54 @@ public class ALineController {
                     inspectStarttime = inspectEndtime; //开始时间=结束时间
                     if (pcb != null) {
 
-                        double goodarrayCount = pcb.getGoodarrayCountAoi()==null? 0:Double.parseDouble(pcb.getGoodarrayCountAoi()),
-                                ngarrayCount = pcb.getNgarrayCountAoi()==null ? 0:Double.parseDouble(pcb.getNgarrayCountAoi()),
-                                passarrayCount = pcb.getPassarrayCountAoi()==null ? 0:Double.parseDouble(pcb.getPassarrayCountAoi());
+                        double goodarrayCount = pcb.getGoodArrayCount()==null? 0:pcb.getGoodArrayCount(),
+                                ngarrayCount = pcb.getNgArrayCount()==null ? 0:pcb.getNgArrayCount(),
+                                passarrayCount = pcb.getPassArrayCount()==null ? 0:pcb.getPassArrayCount(),
+                                arrayTotalCount = goodarrayCount+ngarrayCount+passarrayCount
+                                        ;
+
+                        double goodpcbCount = pcb.getGoodPcbCountAoi()==null? 0:Double.parseDouble(pcb.getGoodPcbCountAoi()),
+                                ngpcbCount = pcb.getNgPcbCountAoi()==null ? 0:Double.parseDouble(pcb.getNgPcbCountAoi()),
+                                passpcbCount = pcb.getPassPcbCountAoi()==null ? 0:Double.parseDouble(pcb.getPassPcbCountAoi()),
+                                pcbTotalCount = goodpcbCount+ngpcbCount+passpcbCount
+                                        ;
+                        double goodpadCount = pcb.getGoodComponentCount()==null? 0:pcb.getGoodComponentCount(),
+                                ngpadCount = pcb.getNgComponentCount()==null? 0:pcb.getNgComponentCount(),
+                                passpadCount = pcb.getPassComponentCount()==null? 0:pcb.getPassComponentCount(),
+                                padTotalCount = goodpadCount+ngpadCount+passpadCount
+                                        ;
+
                         //直通率
                         data = new Data();
                         if(StringUtils.equals("1",pcbType)){
-                            data.setY(pcb.getGoodPcbYeildAoi() == null ? 0.0 : Double.parseDouble(pcb.getGoodPcbYeildAoi()));
+                            data.setY(pcbTotalCount==0?0:(double)(Math.round(goodpcbCount*100/pcbTotalCount*100)/100.0));
                         }else if(StringUtils.equals("2",pcbType)){
-                            data.setY(goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(goodarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0));
+                            data.setY(arrayTotalCount==0?0:(double)(Math.round(goodarrayCount*100/arrayTotalCount*100)/100.0));
                         }else{
-                            data.setY(pcb.getGoodcomponentYeildAoi()==null?0:(double)(Math.round(Double.parseDouble(pcb.getGoodcomponentYeildAoi()) *100)/100.0));
+                            data.setY(padTotalCount==0?0:(double)(Math.round(goodpadCount*100/padTotalCount*100)/100.0));
                         }
                         lstGoodSeriesData.add(data);
                         //不良率
                         data = new Data();
                         if(StringUtils.equals("1",pcbType)){
-                            data.setY(pcb.getNgPcbYeildAoi() == null ? 0.0 : Double.parseDouble(pcb.getNgPcbYeildAoi()));
+                            data.setY(pcbTotalCount==0?0:(double)(Math.round(ngpcbCount*100/pcbTotalCount*100)/100.0));
                         }else if(StringUtils.equals("2",pcbType)){
-                            data.setY(goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(ngarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0));
+                            data.setY(arrayTotalCount==0?0:(double)(Math.round(ngarrayCount*100/arrayTotalCount*100)/100.0));
                         }else{
-                            data.setY(pcb.getNgcomponentYeildAoi()==null?0:(double)(Math.round(Double.parseDouble(pcb.getNgcomponentYeildAoi()) *100)/100.0));
+                            data.setY(padTotalCount==0?0:(double)(Math.round(ngpadCount*100/(padTotalCount)*100)/100.0));
                         }
                         lstNgSeriesData.add(data);
                         //误判率
                         data = new Data();
                         if(StringUtils.equals("1",pcbType)){
-                            data.setY(pcb.getPassPcbYeildAoi() == null ? 0.0 : Double.parseDouble(pcb.getPassPcbYeildAoi()));
+                            data.setY(pcbTotalCount==0?0:(double)(Math.round(goodpcbCount*100/pcbTotalCount*100)/100.0));
                         }else if(StringUtils.equals("2",pcbType)){
-                            data.setY(goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(passarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0));
+                            data.setY(arrayTotalCount==0?0:(double)(Math.round(passarrayCount*100/arrayTotalCount*100)/100.0));
                         }else{
-                            data.setY(pcb.getPasscomponentYeildAoi()==null?0:(double)(Math.round(Double.parseDouble(pcb.getPasscomponentYeildAoi()) *100)/100.0));
+                            data.setY(padTotalCount==0?0:(double)(Math.round(passpadCount*100/padTotalCount*100)/100.0));
                         }
                         lstPassSeriesData.add(data);
+
 
                         //pcb count
                         data = new Data();
@@ -389,12 +415,34 @@ public class ALineController {
                 break;
             }
         }
+
         jsonChartsBeanYeild.setSeries(lstSeries);
         jsonChartsBeanYeild.setXAxis(axisYeild);
         jsonChartsBeanContainerline.setSeries(lstPcbSeries);
-        lstPcb=null;
-        System.gc();
+
+        try{
+            return  new ApiResponse(true,null,jsonChartsBeanYeild,jsonChartsBeanContainerline);
+        }catch (Exception e){
+        }finally {
+            jsonChartsBeanYeild = null;
+            jsonChartsBeanContainerline=null;
+            lstGoodSeriesData =null;lstNgSeriesData=null;   lstPassSeriesData=null;   lstPassSeriesData=null;   lstpcbCountSeriesData =null;  lstpassPcbCountSeriesData=null;   lstngPadCountSeriesData=null;
+            lstpcbCountSeriesData=null;lstCategoriesYeild =null; lstGoodSeriesData=null;   lstNgSeriesData =null; lstPassSeriesData=null;
+            lstpassPcbCountSeriesData=null;
+            lstngPadCountSeriesData=null;
+            lstPassSeriesData=null;
+            pcbCountSeries=null;
+            pcbCountSeries=null;
+            ngPadCountSeries=null;
+            passPcbCountSeries=null;
+            lstPcb=null;
+            lstPcbSeries=null;
+            axisYeild=null;
+            lstSeries=null;
+            System.gc();
+        }
         return  new ApiResponse(true,null,jsonChartsBeanYeild,jsonChartsBeanContainerline);
+
     }
 
 
@@ -427,6 +475,7 @@ public class ALineController {
             viewName = "error/comBoxExpire";
         }
         ModelAndView mv = new ModelAndView(viewName);
+
         mv.addObject("aoiType",aoiType);
         mv.addObject("pcbType",pcbType);
         mv.addObject("lineNo",lineNo);
@@ -434,9 +483,48 @@ public class ALineController {
         mv.addObject("inspectEndtime",inspectEndtime);
         mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
         mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
+        mv.addObject("weburl","/aLine/pcbLineDetails?" +
+                "aoiType="+aoiType+
+                "&pcbType="+pcbType+
+                "&lineNo="+lineNo+
+                "&inspectStarttime="+inspectStarttime+
+                "&inspectEndtime="+inspectEndtime + "&"
+        );
         return mv;
     }
 
+    @GetMapping("pcbLineDetailsNew")
+    public ModelAndView showPcbLineDetailsNew(@RequestParam("lineNo") String lineNo,
+                                           @RequestParam("inspectStarttime") String inspectStarttime,
+                                           @RequestParam("inspectEndtime") String inspectEndtime,
+                                           @RequestParam("pcbType") String pcbType,
+                                           @RequestParam("aoiType")String aoiType){
+        ConstController.constController.iniDefaultParamSetting();
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "aoiPcbChartDetail";
+        if(bCmBoxs){
+        }else {
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+
+        mv.addObject("aoiName",aoiType=="1"?"Pre-AOI":"Post-AOI");
+        mv.addObject("aoiType",aoiType);
+        mv.addObject("pcbType",pcbType);
+        mv.addObject("lineNo",lineNo);
+        mv.addObject("inspectStarttime",inspectStarttime);
+        mv.addObject("inspectEndtime",inspectEndtime);
+        mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
+        mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
+        mv.addObject("weburl","/aLine/pcbLineDetails?" +
+                "aoiType="+aoiType+
+                "&pcbType="+pcbType+
+                "&lineNo="+lineNo+
+                "&inspectStarttime="+inspectStarttime+
+                "&inspectEndtime="+inspectEndtime + "&"
+        );
+        return mv;
+    }
 
     @ResponseBody
     @GetMapping(value="lineDetailsLeftChart",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -455,7 +543,6 @@ public class ALineController {
         int totleNgPcb = 0;
         int totlePassPcb =0;
         int totleGoodPcb =0;
-        List<Series> seriesLst = new ArrayList<Series>();
         String strPieServies = "";
         strPieServies +="[";
         if(lstPcb!=null && lstPcb.size()>0){
@@ -484,7 +571,8 @@ public class ALineController {
                 "]" ;
 
 
-        //System.gc();
+
+        System.gc();
         return  new ApiResponse(true,null,strPieServies,lstPcb);
     }
 
@@ -492,7 +580,16 @@ public class ALineController {
     @GetMapping("pre/pcbfovView")
     public ModelAndView showPcbFovView(){
         ConstController.constController.iniDefaultParamSetting();
-        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        boolean bCmBoxs = false;//ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        try{
+            int i = StringTimeUtils.getTimeStringToDate("2021-04-25 00:00:00").compareTo(new Date());
+            if(i > 0  ){
+                bCmBoxs = true;
+            }else{
+                bCmBoxs = false;
+            };
+        }catch (Exception e){
+        }
         String viewName = "/aoi/pcbfovImageView_aoi";
         if(bCmBoxs){
         }else {
@@ -507,7 +604,7 @@ public class ALineController {
         //imageIcon.getImage().getHeight();
         //ConstParam.CONST_RESOUCE_IMAGEPATH="file://192.168.1.123/AOI_DB/";
         //new Thread(() -> contextRefresher.refresh()).start();
-
+        mv.addObject("weburl","/aLine/pre/pcbfovView?");
         return mv;
     }
 
@@ -518,6 +615,8 @@ public class ALineController {
         if(StringUtils.isEmpty(path)){
             return  new ApiResponse(false,"PATH_IS_EMPTY",null);
         }else{
+            byte[] arrByte=null;
+            String strByte = null;
             try {
                 //File file = new File(Image3DPath);
                 //int[] arr = UtilLibrary.test(Image3DPath);
@@ -526,12 +625,15 @@ public class ALineController {
                 /*ObjectInputStream in = new ObjectInputStream(new FileInputStream(Image3DPath));
                 System.out.println("obj1 " + in.readObject());    //读取字面值常量*/
                 //System.out.println("obj1 " + in.readObject().toString());    //读取字面值常量*/
-               byte[] arrByte =  ConstPublicClassUtil.getFileByte(path);
-
-               return  new ApiResponse(true,"ok",Base64.encodeBytes(arrByte)) ;
+                arrByte =  ConstPublicClassUtil.getFileByte(path);
+                strByte = Base64.encodeBytes(arrByte);
+               return  new ApiResponse(true,"ok",strByte) ;
             } catch (Exception  e) {
                 e.printStackTrace();
                 return ApiResponse.failed(e.getMessage());
+            }finally {
+                arrByte=null;strByte = null;
+                System.gc();
             }
         }
     }
@@ -543,9 +645,12 @@ public class ALineController {
         if(StringUtils.isEmpty(path) ){
             return  new ApiResponse(false,"PATH_IS_EMPTY",null);
         }else{
+            Map<String,Object> map = new HashMap<String,Object>();
+            byte[] arrByte =  null;
+            String strByte=null;
             try {
 
-                byte[] arrByte =  ConstPublicClassUtil.getFileByte(path);
+                arrByte=ConstPublicClassUtil.getFileByte(path);
                 int[] arrDb={1};
                 int iMax=0;
                 int iMin=0;
@@ -569,8 +674,8 @@ public class ALineController {
                         dMin = arrRealDb[i];
                     }
                 }*/
-                Map<String,Object> map = new HashMap<String,Object>();
-                map.put("base64Image",Base64.encodeBytes(arrByte));
+               strByte=Base64.encodeBytes(arrByte);
+                map.put("base64Image",strByte);
                 map.put("arrayHeightBy3D",arrDb);
                 map.put("dMaxHeight",iMax+iMax*5);
                 map.put("dMinHeight",iMin-iMax*5);
@@ -579,6 +684,11 @@ public class ALineController {
             } catch (Exception  e) {
                 e.printStackTrace();
                 return ApiResponse.failed(e.getMessage());
+            }finally {
+                strByte=null;
+                map =null;
+                arrByte=null;
+                System.gc();
             }
         }
 

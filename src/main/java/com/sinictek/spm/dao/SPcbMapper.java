@@ -20,7 +20,7 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
 
     @Select({"SELECT " +
                "COUNT(pcb.id) total," +
-               "SUM(pcb.inspectResult = 1)/COUNT(pcb.id)*100  ngPcbYeild," +
+               "SUM(pcb.inspectResult = 1)/COUNT(pcb.id)*100  ngpcbyeild," +
                "SUM(pcb.inspectResult = 0)/COUNT(pcb.id)*100  goodPcbYeild," +
                "SUM(pcb.inspectResult= 2 )/COUNT(pcb.id)*100  passPcbYeild," +
                " SUM(pcb.inspectResult = 1)  ngPcbCount,"+
@@ -58,8 +58,8 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
                 "ROUND(AVG(pcb.hCpk),3) AS hCpk ,ROUND(AVG(pcb.aCpk),3) AS aCpk,ROUND(AVG(pcb.VCPK),3) AS vcpk  "+
           /// "SUM(pcb.ngpadCount) ngpadCount  "+
             "FROM  " +
-            "s_pcb pcb WHERE  pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   " +
-            "  GROUP BY pcb.lineNo"
+            "s_pcb pcb WHERE    pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}    " +
+            "  GROUP BY pcb.lineNo"  //create_time=DATE_FORMAT(#{inspectStarttime},'%Y%m%d') and
     })
     public List<SPcb> getPcbListWithALLLine(@Param("inspectStarttime") String inspectStarttime ,@Param("inspectEndtime") String inspectEndtime);
 
@@ -101,8 +101,8 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
             "pcb.lineNo lineNo  " +
             /// "SUM(pcb.ngpadCount) ngpadCount  "+
             "FROM  " +
-            "s_pcb pcb WHERE  pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   "
-            //"  GROUP BY pcb.lineNo"
+            "s_pcb pcb WHERE    pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   "
+            //"  GROUP BY pcb.lineNo"inspectStarttime create_time=DATE_FORMAT(#{},'%Y%m%d') and
     })
     public SPcb getPcbListWithALLLineByDateNoGroup(@Param("inspectStarttime") String inspectStarttime ,@Param("inspectEndtime") String inspectEndtime);
 
@@ -139,7 +139,7 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
             "pcb.lineNo lineNo,Min(pcb.inspectStarttime) inspectStarttime,Max(pcb.inspectEndtime) inspectEndtime   " +
             /// "SUM(pcb.ngpadCount) ngpadCount  "+
             "FROM  " +
-            "s_pcb pcb WHERE pcb.lineNo = #{lineNo} "  + //})
+            "s_pcb pcb WHERE    pcb.lineNo = #{lineNo} "  + //})  create_time=DATE_FORMAT(#{inspectStarttime},'%Y%m%d') and
             "and pcb.inspectStarttime >= #{inspectStarttime}  " +
             "and pcb.inspectEndtime <= #{inspectEndtime}"})
     public SPcb getPcbListWithLineNo(@Param("lineNo") String lineNo,
@@ -149,8 +149,8 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
     @Select({"SELECT  COUNT(pcb.id) total, " +
             "AVG(pcb.hCpk) hCpk, AVG(pcb.VCPK) vcpk, AVG(pcb.aCpk) aCpk, AVG(pcb.shithxCpk) shithxCpk, AVG(pcb.shiftyCount) shiftyCount, " +
             "MAX(pcb.ucl) ucl, MAX(pcb.lcl) lcl FROM s_pcb pcb  " +
-            "WHERE pcb.lineNo=#{lineNo} AND pcb.inspectStarttime >= #{inspectStarttime} AND pcb.inspectEndtime< #{inspectEndtime}"})
-    public SPcb getPcbListProductCPKWithLineNo(@Param("lineNo") String lineNo,
+            "WHERE   pcb.lineNo=#{lineNo} AND pcb.inspectStarttime >= #{inspectStarttime} AND pcb.inspectEndtime< #{inspectEndtime}"})
+    public SPcb getPcbListProductCPKWithLineNo(@Param("lineNo") String lineNo, //create_time=DATE_FORMAT(#{inspectStarttime},'%Y%m%d') and
                                             @Param("inspectStarttime") String inspectStarttime,
                                             @Param("inspectEndtime") String inspectEndtime);
 
@@ -171,10 +171,11 @@ public interface SPcbMapper extends BaseMapper<SPcb> {
             "pcb.hCpk hCpk, " +
             "pcb.aCpk aCpk, " +
             "pcb.vcpk vcpk, " +
+            "pcb.create_time create_time, " +
             "pcb.shithxCpk shithxCpk, " +
             "pcb.shithyCpk shithyCpk " +
             "FROM  " +
-            "s_pcb pcb WHERE pcb.lineNo = #{lineNo}   " +
+            "s_pcb pcb WHERE    pcb.lineNo = #{lineNo}   " +  //create_time=DATE_FORMAT(#{inspectStarttime},'%Y%m%d') and
             "and pcb.inspectStarttime >= #{inspectStarttime} " +
             "and pcb.inspectEndtime <= #{inspectEndtime}  " +
             "and FIND_IN_SET(pcb.inspectResult,#{pcbResult})   "

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>出错啦～</title>
+  <link rel="stylesheet" href="/static/styles/base.css"/>
+  <link rel="stylesheet" href="/static/styles/error.css"/>
+</head>
+<body>
+<div class="error">
+  <h1>500</h1>
+  <p >错误详情: <i th:text="${error}"></i></p>
+</div>
+</body>
+</html>

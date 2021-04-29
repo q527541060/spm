@@ -3,11 +3,13 @@ package com.sinictek.spm.api;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.sinictek.spm.annotation.LoginToken;
 import com.sinictek.spm.model.APcb;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
+import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.APcbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,13 +40,23 @@ public class APcbController {
     @GetMapping("barcode")
     public ModelAndView getBarcodeView(@RequestParam("aoiType")String aoiType){
         ConstController.constController.iniDefaultParamSetting();
-        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        boolean bCmBoxs =false;// ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        try{
+            int i = StringTimeUtils.getTimeStringToDate("2021-04-25 00:00:00").compareTo(new Date());
+            if(i > 0  ){
+                bCmBoxs = true;
+            }else{
+                bCmBoxs = false;
+            };
+        }catch (Exception e){
+        }
         String viewName = "aoi/barcode_aoi";
         if(bCmBoxs){
         }else {
             viewName = "error/comBoxExpire";
         }
         ModelAndView mv = new ModelAndView(viewName);
+        mv.addObject("weburl","/aPcb/barcode?aoiType="+aoiType+"&");
         mv.addObject("aoiType",aoiType);
         mv.addObject("hChartColor", ConstParam.DEFAULTSETTING_hChartColor);
         mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
@@ -97,11 +110,18 @@ public class APcbController {
                     sPcbList.get(i).setRemark(sb.toString());
 
                 }
-
+                sb = null;
             }
-            return new ApiResponse(true,null,null,sPcbList);
-        }
+            try{
+                return new ApiResponse(true,null,null,sPcbList);
+            }catch (Exception e){
+            }finally {
+                sPcbList=null;
+                System.gc();
+            }
 
+        }
+        return new ApiResponse(false,"Barcode_IS_NULL",null,null);
     }
 
 }

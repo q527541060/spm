@@ -1,8 +1,10 @@
 package com.sinictek.spm.model.utils;
 
+
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.URLEncoder;
 
 /**
  * @Author sinictek-pd
@@ -19,17 +21,17 @@ public class SoctekUtil {
      * @throws Exception
      */
 
-    /*public static String sendBySocket (String text,String ip,int port)throws Exception{
+    public static String sendBySocket (String text,String ip,int port)throws Exception{
 
         Socket socket = new Socket(ip,port);
         String resultString="";
         try
         {
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-            dos.write("abc".getBytes("UTF-8"));
+            dos.write(text.getBytes());
             dos.flush();
             //InputStreamReader isr =;
-            BufferedReader bReader  =new BufferedReader( new InputStreamReader(socket.getInputStream(),"UTF-8"));
+            BufferedReader bReader  =new BufferedReader( new InputStreamReader(socket.getInputStream()));
             String responseLine="";
             while ((responseLine = bReader.readLine())!=null ) {
                 resultString +=responseLine +"\n";
@@ -51,12 +53,13 @@ public class SoctekUtil {
         }
         return  resultString;
     }
-    */
+
     public static String sendByCShapeSocket(String text, String ip, int port)
             throws Exception {
         //创建socket
         InetSocketAddress addr = new InetSocketAddress(ip, port);
         Socket sock = new Socket();
+        //sock.setSoTimeout(15000);
         //连接服务器
         sock.connect(addr);
         //获得输入输出流
@@ -70,6 +73,7 @@ public class SoctekUtil {
         //获取接收到的数据
         String lineResult ="";
         String tmpRdLine="";
+        //String sss= is.readLine();
         while( (tmpRdLine= is.readLine())!=null){
             lineResult+=tmpRdLine;
         }

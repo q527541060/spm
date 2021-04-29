@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>出错啦!</title>
+    <link rel="stylesheet" href="/static/styles/base.css"/>
+    <link rel="stylesheet" href="/static/styles/error.css"/>
+</head>
+<body>
+<div class="error">
+    <h1 th:text="${code}"></h1>
+    <p th:text="${message}"></p>
+    <p>
+       <i>点击前往<a href="/">登录</a>..</i>
+    </p>
+</div>
+</body>
+</html>

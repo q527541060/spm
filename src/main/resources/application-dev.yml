@@ -19,6 +19,7 @@ server:
 spring:
   messages:
     basename: i18n/messages/messages
+    encoding: UTF-8
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/db_spm?serverTimezone=GMT%2B8&useSSL=false
     username: root

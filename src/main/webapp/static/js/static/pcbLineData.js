@@ -184,9 +184,7 @@ columnChartPcbCount =function (){
 
 }
 
-addFunctionAltyPcbLineData=function (value, row, index){
-    return ['<button type="button" id="TablePcbDataDetails"   class="btn btn-primary btn-xs">详情</button>'].join("");
-}
+
 
 /*function InitPcbLineDataMainTable(basePath){
     var startTime = $("#startTime").val().toString();

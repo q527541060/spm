@@ -20,8 +20,7 @@ import java.io.Serializable;
  * @since 2020-06-09
  */
 @TableName("s_pcb")
-@Getter
-@Setter
+@Data
 public class SPcb implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -73,6 +72,7 @@ public class SPcb implements Serializable {
 
     private String padTableName;
     private String componentTableName;
+    private  String create_time;
 
     @TableField(exist = false)
     private String total;

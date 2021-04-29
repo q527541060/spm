@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="header::head">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nifty-RealTime</title>
+
+
+</head>
+
+<!--TIPS-->
+<!--You may remove all ID or Class names which contain "demo-", they are only used for demonstration. -->
+<body>
+    <div id="container" class="effect aside-float aside-bright mainnav-lg">
+    <!--NAVBAR-->
+    <!--===================================================-->
+    <div th:include="header::headerContent"></div>
+    <!--===================================================-->
+    <!--END NAVBAR-->
+
+    <div class="boxed">
+
+        <!--CONTENT CONTAINER-->
+        <!--===================================================-->
+        <div id="content-container">
+
+            <div id="page-content">
+                <!-- SPI -->
+                <div class="row">
+                    <div class="col-lg-14">
+                            <div class="panel panel-default">
+                                <div class="panel-heading panel-default" style="height: 30px;line-height: 30px">
+                                    <div class="panel-control">
+                                      <!--  <span   class="glyphicon glyphicon-calendar"></span>-->
+                                        <input style="line-height: 16px;height: 16px;border: 1px #c9cdc3 solid" size="16" type="hidden" readonly id="startTime" /> -
+                                        <input  style="line-height: 16px;height: 16px;border: 1px #c9cdc3 solid" size="16"  type="hidden"   readonly  id="endTime"/>&nbsp;&nbsp;
+
+
+                                       <!-- <input id="demo-panel-w-switch-1" class="toggle-switch" type="checkbox" >
+                                        <label for="demo-panel-w-switch-1"></label>-->
+                                        <button class="btn btn-default" onclick="show_realTime_line_setting()" data-toggle="tooltip" data-placement="bottom" title="线体监控设置"><i class="fa fa-gears"></i></button>
+                                        <button class="btn btn-default" data-target="#demo-panel-collapse" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                        <button class="btn btn-default" data-dismiss="panel" data-toggle="tooltip" data-placement="bottom" title="关闭"><i class="demo-pli-cross"></i></button>
+                                    </div>
+                                    <h3 class="panel-title" style="height: 30px;line-height: 30px;font-family: Courier New, Courier, monospace;"> SPI-RealTime </h3>
+                                </div>
+                                <!--Panel body-->
+                                <div id="demo-panel-collapse" class="collapse in">
+                                    <div class="panel-body"  style="padding: 0px;margin: 0px">
+                                        <!---------------------------------------------------------------->
+                                        <!------------------line list row start------------------------------>
+                                        <div class="row" style="height: 35px;width: 100%; padding: 0px;margin: 0px">
+                                            <div class="col-lg-14" style="height: 35px;width: 100%">
+                                                <!--   线体列表 start  -->
+
+                                                    <div class="panel-heading" style="height: 35px;line-height: 35px; width: 100%;background-color: #FFFFFF">
+                                                        <div class="panel-title" style="height: 35px;line-height: 35px; width: 100%;">
+                                                            <div class="btn-group-xs" id="realTime-line-group" style="overflow: auto;margin-top: -5px" role="group" aria-label="...">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <!--   线体列表 start  -->
+                                            </div>
+                                        </div>
+                                        <!------------------line list row end------------------------------>
+                                        <!---------------------------------------------------------------->
+
+                                        <!---------------------------------------------------------------->
+                                        <!------------------策略对策记录  realTime-config表格 row start ------------------------------>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <table  class="table" id="realTimeRecord" >
+                                                </table>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <table  class="table" id="realTimeConfig" >
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!------------------策略对策记录  realTime-config表格 row end ------------------------------>
+                                        <!---------------------------------------------------------------->
+
+                                        <!---------------------------------------------------------------->
+                                        <!------------------x-bar  r α cpk  strat------------------------------>
+                                        <!---------------------------------------------------------------->
+                                        <div class="row" id="chartContent"  style="width: 100%;">
+
+                                        </div>
+                                        <!---------------------------------------------------------------->
+                                        <!------------------x-bar  r α cpk  end------------------------------>
+                                        <!---------------------------------------------------------------->
+
+
+                                        <!---------------------------------------------------------------->
+                                        <!------------------ realTime数据列 表格 row start ------------------------------>
+                                        <div class="row" id="chartTable">
+
+                                        </div>
+                                        <!------------------ realTime数据列 表格 row end ------------------------------>
+                                        <!---------------------------------------------------------------->
+
+                                        <!-- 线体设置模态框  -->
+                                        <div class="row">
+                                            <div class="modal fade" id="editLineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="exampleModalLabel1">line Message</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="form_default">
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            <button type="button" onclick="updata_Line()" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+
+                <!-- PRE-AOI -->
+                <div class="row">
+                    <div class="col-lg-14">
+                        <div class="panel panel-default panel-bordered-default">
+                            <div class="panel-heading" style="height: 30px;line-height: 30px">
+                                <div class="panel-control">
+                                    <input id="demo-panel-w-switch-2" class="toggle-switch" type="checkbox" checked>
+                                    <label for="demo-panel-w-switch-2"></label>
+                                    <button class="btn btn-default" data-target="#demo-panel-collapse-2" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                    <button class="btn btn-default" data-dismiss="panel"><i class="demo-pli-cross"></i></button>
+                                </div>
+                                <h3 class="panel-title" style="height: 30px;line-height: 30px;font-family: Courier New, Courier, monospace;"> PRE-AOI-RealTime </h3>
+                            </div>
+                            <!--Panel body-->
+                            <div id="demo-panel-collapse-2" class="collapse in">
+                                <div class="panel-body" style="padding: 0px;margin: 0px">
+                                    <p> I'M Come in!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POST-AOI -->
+                <div class="row">
+                    <div class="col-lg-14">
+                        <div class="panel panel-default panel-bordered-default">
+                            <div class="panel-heading" style="height: 30px;line-height: 30px">
+                                <div class="panel-control">
+                                    <input id="demo-panel-w-switch-3" class="toggle-switch" type="checkbox" checked>
+                                    <label for="demo-panel-w-switch-3"></label>
+                                    <button class="btn btn-default" data-target="#demo-panel-collapse-3" data-toggle="collapse"><i class="demo-pli-arrow-down"></i></button>
+                                    <button class="btn btn-default" data-dismiss="panel"><i class="demo-pli-cross"></i></button>
+                                </div>
+                                <h3 class="panel-title" style="height: 30px;line-height: 30px;font-family: Courier New, Courier, monospace;"> POST-AOI-RealTime </h3>
+                            </div>
+                            <!--Panel body-->
+                            <div id="demo-panel-collapse-3" class="collapse in">
+                                <div class="panel-body" style="padding: 0px;margin: 0px">
+                                    <p> I'M Come in!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--===================================================-->
+            <!--End page content-->
+
+        </div>
+        <!--===================================================-->
+        <!--END CONTENT CONTAINER-->
+
+        <div th:replace="commonPage::aside-mainnav"></div>
+
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--===================================================-->
+    <footer id="footer">
+
+        <!-- Visible when footer positions are fixed -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <div class="show-fixed pull-right">
+            You have <a href="#" class="text-bold text-main"><span class="label label-danger">3</span> pending action.</a>
+        </div>
+
+        <!--  &lt;!&ndash; Visible when footer positions are static &ndash;&gt;
+          &lt;!&ndash; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ &ndash;&gt;
+          <div class="hide-fixed pull-right pad-rgt">
+              14GB of <strong>512GB</strong> Free.
+          </div>-->
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Remove the class "show-fixed" and "hide-fixed" to make the content always appears. -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <p class="pad-lft">&#0169; 2021 Sinic-Tek intelligent Technology Co.,Ltd 版权所有</p>
+
+
+
+    </footer>
+    <!--===================================================-->
+    <!-- END FOOTER -->
+
+    <!-- SCROLL PAGE BUTTON -->
+    <!--===================================================-->
+    <button class="scroll-top btn">
+        <i class="pci-chevron chevron-up"></i>
+    </button>
+    <!--===================================================-->
+
+</div>
+    <!--===================================================-->
+    <!-- END OF CONTAINER -->
+
+    <div th:include="commonPage::demo-set-com"></div>
+
+    <script type="text/javascript">
+            //side title active
+            $('.RealTime-class').attr('class','active-link');
+            $('[data-toggle="tooltip"]').tooltip();
+
+
+            // 全局变量 线体号
+            var lineNo =  localStorage.getItem('lineNo') == undefined?'':localStorage.getItem('lineNo');
+            //全局变量 线体数组
+            var arrLineNo = [];
+            //全局变量  暂停定时任务
+            var bIsStopTimeIntever=false;
+
+            showRealTimeLineListButton();
+            showRealTimeTableSituation();
+            //getRealTimeInfoByCShapeSocket(lineNo);
+
+
+            //chart js代码   显示chart图形
+            function showCharts(xbarData,rData,afData,cpkData,arrChartID,config) {
+                //let xbar_chart =
+                //Highcharts.chart(arrChartID[0], );
+                $('#'+arrChartID[0]).highcharts({
+                    chart: {
+                        zoomType: ''
+                    },
+                    title: {
+                        text: 'machine:'+lineNo+';项目特性:'+config.Title+';模组:'+config.JobName+';time:'+config.dtLastUpdateTime
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {
+                        tickInterval:1
+                    },
+                    tooltip: {
+                        animation:false, //动画
+                    },
+                    yAxis: {
+                        title: {
+                            text: '<small style="font-size: 8px">x-bar</small>'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                                    [0, new Highcharts.getOptions().colors[0]],
+                                    [1, new Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                ]
+                            },
+                            marker: {
+                                radius: 2
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        },
+                        series:{
+                            animation:false,
+                        }
+                    },
+                    series: [{
+                        type: 'area',
+                        name: 'value',
+                        data: xbarData
+                    }]
+                });
+                //let r_chart =
+                //Highcharts.chart(arrChartID[1], );
+                $('#'+arrChartID[1]).highcharts({
+                    chart: {
+                        zoomType: 'x'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {tickInterval:1},
+                    tooltip: {animation:false, },
+                    yAxis: {
+                        title: {
+                            text: '<small style="font-size: 8px">r</small>'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                                    [0, new Highcharts.getOptions().colors[0]],
+                                    [1, new Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                ]
+                            },
+                            marker: {
+                                radius: 2
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        },
+                        series:{
+                            animation:false,
+                        }
+                    },
+                    series: [{
+                        type: 'area',
+                        name: 'value',
+                        data: rData
+                    }]
+                });
+                //let af_chart =
+                //Highcharts.chart(arrChartID[2], );
+                $('#'+arrChartID[2]).highcharts({
+                    chart: {
+                        zoomType: 'x'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {tickInterval:1},
+                    tooltip: {animation:false, },
+                    yAxis: {
+                        title: {
+                            text: '<small style="font-size: 8px">α</small>'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                                    [0, new Highcharts.getOptions().colors[0]],
+                                    [1, new Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                ]
+                            },
+                            marker: {
+                                radius: 2
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        },
+                        series:{
+                            animation:false,
+                        }
+                    },
+                    series: [{
+                        type: 'area',
+                        name: 'value',
+                        data: afData
+                    }]
+                });
+                //let cpk_chart =
+                //Highcharts.chart(arrChartID[3], );
+                $('#'+arrChartID[3]).highcharts({
+                    chart: {
+                        zoomType: 'x'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {tickInterval:1},
+                    tooltip: {animation:false, },
+                    yAxis: {
+                        title: {
+                            text: '<small style="font-size: 8px">cpk</small>'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                                    [0, new Highcharts.getOptions().colors[0]],
+                                    [1, new Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                ]
+                            },
+                            marker: {
+                                radius: 2
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        },
+                        series:{
+                            animation:false,
+                        }
+                    },
+                    series: [{
+                        type: 'area',
+                        name: 'value',
+                        data: cpkData
+                    }]
+                });
+            }
+            //realTime table config js  config表格
+            function showRealTimeTableConfig(data){
+                $('#realTimeConfig').bootstrapTable({
+                    dataType:"json",
+                    method: 'GET',                      //请求方式（*）
+                    data:data,
+                    //toolbar: '#lineToolbar',              //工具按钮用哪个容器
+                    //toolbarAlign:'right',
+                    striped: true,                      //是否显示行间隔色
+                    cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: false,                   //是否显示分页（*）
+                    sortable: true,
+                    sortName:'Date',//是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                    sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                    pageSize: 5,                     //每页的记录行数（*）
+                    pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
+                    search: false,                      //是否显示表格搜索
+                    strictSearch: false,
+                    showColumns: false,                  //是否显示所有的列（选择显示的列）
+                    showRefresh: false,                  //是否显示刷新按钮
+                    //showColumnsToggleAll:true,
+                    // minimumCountColumns: 0,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+                    height: 150,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                    showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                  //是否显示父子表
+                    classes:'table table-sm table-bordered table-striped',
+
+                    //得到查询的参数
+                    queryParams : function (params) {
+                        //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                        return {
+                            pageSize: params.limit,               //页面大小
+                            pageNumber: params.offset/params.limit+1,  //页码
+                            sort: params.sort,      //排序列名
+                            sortOrder: params.order, //排位命令（desc，asc）
+                           // inspectStarttime:startTime,inspectEndtime:endTime
+                        };
+                    },
+                    columns: [
+                        /*{
+                    checkbox: true,
+                    align:'center',
+                    visible: true
+                    //是否显示复选框
+                }, */
+                        {
+                            field: 'LineNo',
+                            title: 'lineNo',
+                            width:50,
+                            align:'center',
+                            sortable: true,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'JobName',
+                            title: 'jobName',
+                            align:'center',
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                            sortable: true
+                        },{
+                            field: 'LaneNo',
+                            title: 'laneNo',
+                            align:'center',
+                            sortable:true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                            //formatter: linkFormatter
+                        }, {
+                            field: 'PadGroup',
+                            title:  'padGroup',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                            //events:operateEvents,
+                        }, {
+                            field: 'Pads',
+                            title:  'pad',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'RealTimeType',
+                            title:  'realTimeType',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'CPKThresh',
+                            title:  'CPKThresh',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field:  'PcbSubGroupCount',
+                            title:  'pcbSubGroup',
+                            align:  'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'Rule',
+                            title: 'rule',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'USL',
+                            title: 'USL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'MSL',
+                            title: 'MSL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'LSL',
+                            title: 'LSL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'RefreshTime',
+                            title: 'timeInterver',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'dtLastUpdateTime',
+                            title: 'inspectStarttime',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },
+                    ],
+                    onLoadSuccess: function (sta) {
+                    },
+                    onLoadError: function (status,res) {
+                    },
+                });
+
+
+            }
+            function refreshRealTimeTableConfig(data){
+                var opt = {
+                    silent: true,
+                    data:data,
+                    query:{
+                        type:1,
+                        level:2
+                    }
+                };
+                $("#realTimeConfig").bootstrapTable('refresh', opt);
+            }
+
+            //realTime table situation js  策略对策表格
+            function showRealTimeTableSituation(){
+                let startTime = localStorage.getItem('startTime-line-'+lineNo);
+                let endTime = localStorage.getItem('endTime-line-'+lineNo);
+                $('#realTimeRecord').bootstrapTable({
+                    url: "/sRealtimesituation/getSRealTimeSituation?inspectStarttime="+startTime+"&inspectEndtime="+endTime+"&lineNo="+lineNo,                      //请求后台的URL（*）
+                    dataType:"json",
+                    method: 'GET',                      //请求方式（*）
+                    //data:{inspectStarttime:startTime,inspectEndtime:endTime},
+                    striped: true,                      //是否显示行间隔色
+                    cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: false,                   //是否显示分页（*）
+                    sortable: true,
+                    sortName:'dataTime',//是否启用排序
+                    sortOrder: "desc",                   //排序方式
+                    sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                    search: false,                      //是否显示表格搜索
+                    strictSearch: false,
+                    showColumns: false,                  //是否显示所有的列（选择显示的列）
+                    showRefresh: false,                  //是否显示刷新按钮
+                    //showColumnsToggleAll:true,
+                    // minimumCountColumns: 0,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+                    height: 150,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                    showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                  //是否显示父子表
+                    classes:'table table-sm table-bordered table-striped',
+                    //得到查询的参数
+                    queryParams : function (params) {
+                        //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                        return {
+                            pageSize: params.limit,               //页面大小
+                            pageNumber: params.offset/params.limit+1,  //页码
+                            sort: params.sort,      //排序列名
+                            sortOrder: params.order, //排位命令（desc，asc）
+                            inspectStarttime:startTime,inspectEndtime:endTime
+                        };
+                    },
+                    columns: [
+                        /*{
+                    checkbox: true,
+                    align:'center',
+                    visible: true
+                    //是否显示复选框
+                }, */
+                        {
+                            field: 'dataTime',
+                            title: 'dataTime',
+                            width:200,
+                            align:'center',
+                            sortable: true,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'jobName',
+                            title: 'jobName',
+                            align:'center',
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                            sortable: true
+                        },{
+                            field: 'rules',
+                            title:  'rules',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field:  'resources',
+                            title:  'resources',
+                            align:  'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'padGroup',
+                            title: 'padGroup',
+                            align:'center',
+                            sortable:true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                            //formatter: linkFormatter
+                        }, {
+                            field: 'pcbids',
+                            title:  'pcbids',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                            //events:operateEvents,
+                        }, {
+                            field: 'pcbbarcodes',
+                            title:  'pcbbarcodes',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'fieldType',
+                            title:  'fieldType',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        },
+                    ],
+                    onLoadSuccess: function (sta) {
+                    },
+                    onLoadError: function (status,res) {
+                    },
+                });
+
+            }
+            function refreshRealTimeTableSituation(){
+                if(bIsStopTimeIntever){
+                    return;
+                }
+                let startTime = localStorage.getItem('startTime-line-'+lineNo);
+                let endTime = localStorage.getItem('endTime-line-'+lineNo);
+                var opt = {
+                    url: "/sRealtimesituation/getSRealTimeSituation?inspectStarttime="+ startTime +"&inspectEndtime="+endTime+"&lineNo="+lineNo,
+                    silent: true,
+                    query:{
+                        type:1,
+                        level:2
+                    }
+                };
+                $("#realTimeRecord").bootstrapTable('refresh', opt);
+            }
+
+
+            //reTime table js  data  数据表格js
+            function showRealTimeTableData(data,tableID){
+                //realTime-table
+                $('#'+tableID).bootstrapTable({
+                    dataType:"json",
+                    method: 'GET',                      //请求方式（*）
+                    data:data,
+                    //toolbar: '#lineToolbar',              //工具按钮用哪个容器
+                    //toolbarAlign:'right',
+                    striped: true,                      //是否显示行间隔色
+                    cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: false,                   //是否显示分页（*）
+                    sortable: true,
+                    sortName:'Date',//是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                    sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                    pageSize: 5,                     //每页的记录行数（*）
+                    pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
+                    search: false,                      //是否显示表格搜索
+                    strictSearch: false,
+                    showColumns: false,                  //是否显示所有的列（选择显示的列）
+                    showRefresh: false,                  //是否显示刷新按钮
+                    //showColumnsToggleAll:true,
+                    // minimumCountColumns: 0,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+                    height: 150,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                    showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                  //是否显示父子表
+                    classes:'table table-sm table-bordered table-striped',
+
+                    //得到查询的参数
+                    queryParams : function (params) {
+                        //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                        return {
+                            pageSize: params.limit,               //页面大小
+                            pageNumber: params.offset/params.limit+1,  //页码
+                            sort: params.sort,      //排序列名
+                            sortOrder: params.order, //排位命令（desc，asc）
+                           // inspectStarttime:startTime,inspectEndtime:endTime
+                        };
+                    },
+                    columns: [
+                        /*{
+                    checkbox: true,
+                    align:'center',
+                    visible: true
+                    //是否显示复选框
+                }, */
+                        {
+                            field: 'ID',
+                            title: 'ID',
+                            width:50,
+                            align:'center',
+                            sortable: true,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'PCBIDs',
+                            title: 'PCBIDs',
+                            align:'center',
+                            width:50,
+                            formatter:function(value,row,index){
+
+                            },cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                            sortable: true
+                        },{
+                            field: 'XVal',
+                            title: 'XValS',
+                            align:'center',
+                            sortable:true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                            //formatter: linkFormatter
+                        }, {
+                            field: 'XAverage',
+                            title:  'XAverage',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'XSigma',
+                            title:  'α',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'R',
+                            title:  'R',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'Ca',
+                            title:  'Ca',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field:  'Cp',
+                            title:  'Cp',
+                            align:  'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        }, {
+                            field: 'CPK',
+                            title: 'CPK',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'PCBBarcodes',
+                            title: 'PCBBarcodes',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'XUCL',
+                            title: 'XUCL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'XCL',
+                            title: 'XCL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'XLCL',
+                            title: 'XLCL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'USL',
+                            title: 'USL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'LSL',
+                            title: 'LSL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'RUCL',
+                            title: 'RUCL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'RCL',
+                            title: 'RCL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },{
+                            field: 'RLCL',
+                            title: 'RLCL',
+                            align: 'center',
+                            sortable: true,
+                            width: 50,
+                            cellStyle: function (value, row, index) {
+                                return {css: {'font-size': '9px', 'padding': '0px'}}
+                            },
+                        },
+                    ],
+                    onLoadSuccess: function (sta) {
+                    },
+                    onLoadError: function (status,res) {
+                    },
+                });
+            }
+
+            //get socket server    调用客户端c#服务
+            function getRealTimeInfoByCShapeSocket(AlineNo){
+                if(bIsLineOpened(AlineNo) == false){
+                    return;
+                }
+                let startTime = localStorage.getItem('startTime-line-'+AlineNo);
+                let endTime = localStorage.getItem('endTime-line-'+AlineNo);
+                $.ajax({
+                    url: "/realTime/getRealTimeInfoSocketServer?startTime="+startTime +"&endTime="+endTime+"&lineNo="+AlineNo,
+                    dataType:"json",   //返回格式为json
+                    async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+                    //data:'',    //参数值
+                    type:"GET",   //请求方式
+                    beforeSend:function(){
+                        //请求前的处理
+                    },
+                    success:function(res){
+
+                        if(res.data!=null && res.data.length>0){
+                            // do rendering  渲染当前窗体选中线体 其它默认不显示
+                            if(res.data[0].Config.LineNo = lineNo){
+                                interfaceRendering(res);
+                            }
+
+                            //获取到后台数据 如果当message出现触发规则  button改变颜色
+
+                            //if(bIsLineOpened())
+                            for (let i = 0; i < res.data.length; i++) {
+                                if(res.data[i].RuleMessage !=null && res.data[i].RuleMessage !=''){
+                                    // button id line-button-lineNo
+                                    let $lineButtonID = $('#line-button-'+AlineNo);
+                                    if($lineButtonID.hasClass('btn-default')){
+                                        $lineButtonID.removeClass('btn-default');
+                                        $lineButtonID.addClass('btn-danger');
+                                    }else if($lineButtonID.hasClass('btn-success')){
+                                        $lineButtonID.removeClass('btn-success');
+                                        $lineButtonID.addClass('btn-danger');
+                                    }
+
+                                    //获取PCBIDS
+                                   /* let pcbids = '';
+                                    let pcbbarcodes = '';
+                                    for (let j = 0; j < res.data[i].LstPCBData.length; j++) {
+                                        pcbids+= res.data[i].LstPCBData[j].PCBIDs;
+                                        pcbbarcodes+= res.data[i].LstPCBData[j].PCBBarcodes;
+                                    }
+
+                                    insertRealTimeSituationTable(lineNo,
+                                        dateFomate(new Date(res.data[i].Config.dtLastUpdateTime),'yyyy-MM-dd HH:mm:ss'),
+                                        //res.data[i].Config.dtLastUpdateTime,
+                                        res.data[i].Config.JobName,
+                                        res.data[i].Config.PadGroup,
+                                        pcbids,
+                                        pcbbarcodes,
+                                        res.data[i].RuleMessage,
+                                        res.data[i].Config.Title,''
+
+                                    )
+                                    */
+
+                                    //弹出规则输入框  通知UI报警
+
+
+                                }
+                            }
+
+
+
+
+                        }
+                    },
+                    error:function(err){
+                        //alert(arr);
+                    }
+
+                });
+
+            }
+
+            //界面渲染function
+            function interfaceRendering(res){
+                tableConfig = [];
+                //$('#chartContent').clean();
+                <!--  params   begin-->
+                var xbarData = [];
+                var rData = [];
+                var afData = [];
+                var CPKData = [];
+                var pcbBarData = [];
+                var pcbRData = [];
+                var pcbAFData = [];
+                var pcbCPKData = [];
+                var lChartHtml=null;
+                var tableConfig = [];
+
+                let arrChartID =[];
+                //渲染xbar chart组 class col-lg
+                let lgCount = null ;
+                let lIdName = null;
+                let lcollgIdName =null;
+                <!--  params   end-->
+                $('#chartContent').empty();
+                $('#chartTable').empty();
+                $('#chartContent').innerHTML='';
+                $('#chartTable').innerHTML='';
+                //return;
+                if(res.data!=null && res.data.length>0){
+                    //循环realTime规则
+                    for (let i = 0; i < res.data.length; i++) {
+                        tableConfig.push(res.data[i].Config);
+                        arrChartID =[];
+                        //渲染xbar chart组 class col-lg
+                        lgCount = res.data.length ==1?14:Math.floor((13/res.data.length)) ;
+                        lIdName = "realTime-xbar-chart-"+i;
+                        lcollgIdName ="col-lg-chart-"+i;
+                        //创建chart Html
+                        var lChartHtml1 = $('<div class="col-lg-'+lgCount+'"></div>')
+                            .attr("id",lcollgIdName)
+                            .append($('<div style="min-height: 13vh; height: 13vh; margin: 0 auto;width:100%"></div>')
+                                .attr("id",lIdName));
+                        lChartHtml1.appendTo($('#chartContent'));
+
+                        arrChartID.push(lIdName);  //push idName chart数组
+                        //r chart组 class col-lg
+                        lIdName = "realTime-r-chart-"+i;
+                        var lChartHtml2 = $('<div style="min-height: 13vh; height: 13vh; margin: 0 auto;width:100%"></div>')
+                            .attr("id",lIdName);
+                        lChartHtml2.appendTo($('#'+lcollgIdName+''));
+                        arrChartID.push(lIdName);//push idName chart数组
+                        //A chart组 class col-lg
+                        lIdName = "realTime-a-chart-"+i;
+                        var lChartHtml3 = $('<div style="min-height: 13vh; height: 13vh; margin: 0 auto;width:100%"></div>')
+                            .attr("id",lIdName);
+                        lChartHtml3.appendTo($('#'+lcollgIdName+''));
+                        arrChartID.push(lIdName);//push idName chart数组
+                        //cpk chart组 class col-lg
+                        lIdName = "realTime-cpk-chart-"+i;
+                        var lChartHtml4 = $('<div style="min-height: 13vh; height: 13vh; margin: 0 auto;width:100%"></div>')
+                            .attr("id",lIdName);
+                        lChartHtml4.appendTo($('#'+lcollgIdName+''));
+                        arrChartID.push(lIdName);//push idName chart数组
+
+
+                        //创建chart table Html
+                        lIdName = "realTime-table-chart-"+i;
+                        lcollgIdName = "col-lg-table-chart-"+i;
+                        var lChartHtml5 = $('<div class="col-lg-'+lgCount+'"></div>')
+                            .attr("id",lcollgIdName)
+                            .append($('<div style="min-height: 13vh; height: 13vh; margin: 0 auto;width:100%"></div>')
+                                .attr("id",lIdName));
+                        lChartHtml5.appendTo($('#chartTable'));
+
+                        //获取char data数据
+                        xbarData = [];
+                        rData = [];
+                        afData = [];
+                        CPKData = [];
+                        for (let j = 0; j < res.data[i].LstPCBData.length; j++) {
+
+                            <!-- ------------------------------ -->
+                            <!--     chart data  parts   begin       -->
+                            pcbBarData = [];
+                            pcbRData = [];
+                            pcbAFData = [];
+                            pcbCPKData = [];
+                            pcbBarData.push(j+1);
+                            pcbBarData.push(res.data[i].LstPCBData[j].XAverage); //X-BAR
+
+                            pcbRData.push(j+1);
+                            pcbRData.push(res.data[i].LstPCBData[j].R);    //R
+
+                            pcbAFData.push(j+1);
+                            pcbAFData.push(res.data[i].LstPCBData[j].XSigma);  //af
+
+                            pcbCPKData.push(j+1);
+                            if(res.data[i].LstPCBData[j].CPK === '-Infinity' || res.data[i].LstPCBData[j].CPK === 'Infinity')
+                            {
+                                pcbCPKData.push(0);  //cpk
+                            }else{
+                                pcbCPKData.push(res.data[i].LstPCBData[j].CPK);  //cpk
+                            }
+
+                            xbarData.push(pcbBarData);
+                            rData.push(pcbRData);
+                            afData.push(pcbAFData);
+                            CPKData.push(pcbCPKData);
+
+                            <!--     chart data  parts   end       -->
+                            <!-- ------------------------------ -->
+                        }
+
+
+                        //del
+                        //lChartHtml1.deleteBuffer();
+                        lChartHtml1.innerHTML = '';
+                        lChartHtml1=null;
+                        //lChartHtml2.del();
+                        lChartHtml2.innerHTML = '';
+                        lChartHtml2=null;
+                        //lChartHtml3.del();
+                        lChartHtml3.innerHTML = '';
+                        lChartHtml3=null;
+                        //lChartHtml4.del();
+                        lChartHtml4.innerHTML = '';
+                        lChartHtml4=null;
+                        //lChartHtml5.del();
+                        lChartHtml5.innerHTML = '';
+                        lChartHtml5=null;
+
+
+                        //渲染 chart图表
+                        showCharts(xbarData,rData,afData,CPKData,arrChartID,res.data[i].Config);
+
+                        //渲染 table图表
+                        showRealTimeTableData(res.data[i].LstPCBData,lIdName);
+
+                    }
+                    //渲染cpnfig页面
+                    showRealTimeTableConfig(tableConfig);
+
+
+                }else{
+                    //接收socket为空 返回空图表数据;
+
+
+
+                }
+
+                <!--  params  clear  begin-->
+                xbarData = null;
+                rData = null;
+                afData = null;
+                CPKData = null;
+                pcbBarData = null;
+                pcbRData = null;
+                pcbAFData = null;
+                pcbCPKData = null;
+                lChartHtml=null;
+                tableConfig = null;
+
+                arrChartID =null;
+                lgCount = null ;
+                lIdName = null;
+                lcollgIdName =null;
+                <!--  params  clear end-->
+
+                res = null;
+            }
+
+            //获取线体LIST按钮组
+            function showRealTimeLineListButton(){
+                if(bIsStopTimeIntever){
+                    return;
+                }
+                $.ajax({
+                    url: "/sLine/lineList",
+                    dataType:"json",   //返回格式为json
+                    async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+                    //data:'',    //参数值
+                    type:"GET",   //请求方式
+                    beforeSend:function(){
+                        //请求前的处理
+                    },
+                    success:function(res){
+                        <!-- 渲染线体按钮组 begin-->
+                        $('#realTime-line-group').empty();
+                        if(res !=null && res.data!=null){
+                            for (let i = 0; i < res.data.length; i++) {
+                                let $ButtonHtml = $('<button type="button"></button>')
+                                    .addClass('btn btn-default btn-xs').text(res.data[i].lineNo)
+                                   // .attr('click','doSwitchLine('+res.data[i].lineNo+')')
+                                    .attr('id','line-button-'+res.data[i].lineNo)
+                                    .click(function(){
+                                        doSwitchLine(res.data[i].lineNo);
+                                    })
+                                ;
+
+                                //如果线体后台开启  线体变成绿色
+                                if(bIsLineOpened(res.data[i].lineNo) ){
+                                    if($ButtonHtml.hasClass('btn-danger')){
+                                        $ButtonHtml.removeClass('btn-danger');
+                                    }
+                                    else if($ButtonHtml.hasClass('btn-default')){
+                                        $ButtonHtml.removeClass('btn-default');
+                                    }
+                                    $ButtonHtml.addClass('btn-success');
+                                }
+
+                                if(lineNo == res.data[i].lineNo){
+                                    $ButtonHtml.addClass('active');
+                                }
+                                $ButtonHtml.appendTo($('#realTime-line-group'));
+                                $ButtonHtml.innerHTML = '';
+                                $ButtonHtml =null;
+
+
+
+
+                            }
+
+                            //读取设置localStagor中线体是否开启 开启线才执行
+
+
+
+                            <!-- 调用asyncCall  -->
+                            asyncCallCSHapeSocket();
+                        }
+                        <!-- 渲染按钮组  end  -->
+
+
+                    },
+                    error:function(err){
+                        //alert(arr);
+                    }
+
+
+
+                });
+
+
+
+            }
+
+            //获取线体是否设置开启 返回true开启
+            function bIsLineOpened(AlineNo){
+                if(localStorage.getItem('demo-realLine-'+AlineNo)!=undefined &&localStorage.getItem('demo-realLine-'+AlineNo) =='1'){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }
+
+            //通过line数组个数来遍历 异步调用客户端c#服务
+            function asyncCallCSHapeSocket(){
+
+                $('#realTime-line-group button').each(function(index,element){
+                    //如果线体后台设置开启则执行
+                    if(bIsLineOpened(this.innerHTML)) {
+                        getRealTimeInfoByCShapeSocket(this.innerHTML);
+                        //console.log(index+'--'+this.innerHTML);
+                    }
+                });
+
+            }
+
+            //doSwitchLine 切换线体显示界面
+            function doSwitchLine(AlineNo) {
+                lineNo = AlineNo;
+                //localstoage赋值lineNo
+                localStorage.setItem('lineNo',lineNo);
+                //遍历线体 改变class 状态
+                $('#realTime-line-group button').each(function(index,element){
+                    if(this.innerHTML == AlineNo){
+                        addActiveWithLine(AlineNo);
+                    }else{
+                        removeActiveWithLine(AlineNo);
+                    }
+                });
+                //刷新situation config chart table
+                refreshRealTimeTableSituation();
+                showRealTimeLineListButton();
+                /*if (bIsLineOpened(AlineNo)) {
+                    getRealTimeInfoByCShapeSocket(lineNo);
+
+                }*/
+
+            }
+
+
+
+            //插入realtime-situation数据库表 方法
+            function insertRealTimeSituationTable(lineNo,DataTime,JobName,PadGroup,PCBIDs,PCBBarcodes,Rules,FieldType,Resources){
+                let arrObj ={
+                    lineNo:lineNo,
+                    dataTime:DataTime,
+                    jobName:JobName,
+                    padGroup:PadGroup,
+                    pcbids:PCBIDs,
+                    pcbbarcodes:PCBBarcodes,
+                    rules:Rules,
+                    fieldType:FieldType,
+                    resources:Resources
+                };
+                var data = JSON.stringify(arrObj);
+                $.ajax({
+                    url: "/sRealtimesituation/insertSituation",
+                    contentType: 'application/json;charset=UTF-8',
+                    dataType:"json",   //返回格式为json
+                    async:true,
+                    data:data,
+                    type:"POST",
+
+                    success:function(res) {
+
+                    },
+                    error:function(data){
+
+                    }
+
+                });
+
+
+            }
+
+            //显示监控线体模拟框
+            function show_realTime_line_setting(){
+                //停止定时任务刷新
+                bIsStopTimeIntever =true;
+                //获取所有线体
+                $.ajax({
+                    url: "/sLine/lineList",
+                    dataType:"json",   //返回格式为json
+                    async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+                    //data:'',    //参数值
+                    type:"GET",   //请求方式
+                    success:function(res){
+                        <!-- 渲染模拟框  begin  -->
+                        if(res !=null && res.data!=null){
+                            $('#form_default').empty();
+                            for (let i = 0; i < res.data.length; i++) {
+                                let lineStartTime = 'startTime-line-'+res.data[i].lineNo;
+                                let lineEndTime = 'endTime-line-'+res.data[i].lineNo;
+                                let lineChecked = 'demo-realLine-'+res.data[i].lineNo;
+                                let $formGroupHtml = $('<div></div>')
+                                    .addClass('form-group')
+                                    .append(
+                                        $('<h6></h6>').append(res.data[i].lineNo)
+                                    )
+                                    .append(
+                                        $('<span></span>').addClass('glyphicon glyphicon-calendar')
+                                    ).append(
+                                        $('<input style="line-height: 16px;height: 16px;border: 1px #c9cdc3 solid" size="16" type="text" readonly id="'+lineStartTime+'" /> -' +
+                                            '<input style="line-height: 16px;height: 16px;border: 1px #c9cdc3 solid" size="16" type="text" readonly id= "'+lineEndTime+'" />')
+                                    ).append(
+                                        $('<input class="toggle-switch" type="checkbox" >').attr('id',lineChecked).attr('value',lineChecked)
+                                    ).append(
+                                        $('<label></label>').attr('for','demo-realLine-'+res.data[i].lineNo)
+                                    );
+                                $formGroupHtml.appendTo($('#form_default'));
+                                //赋值
+                                $("#"+lineStartTime).datetimepicker({
+                                    //minView:"month",
+                                    format: 'yyyy-mm-dd hh:ii:ss',
+                                    language:"zh-CN",
+                                    todayHighlight:true,
+                                    showMeridian: true,
+                                    autoclose: true,
+                                    todayBtn: true,
+                                    //pickerPosition: "bottom-left"
+                                    //minuteStep: 1
+                                });
+                                $("#"+lineEndTime).datetimepicker({
+                                    //minView:"month",
+                                    format: 'yyyy-mm-dd hh:ii:ss',
+                                    language:"zh-CN",
+                                    todayHighlight:true,
+                                    showMeridian: true,
+                                    autoclose: true,
+                                    todayBtn: true,
+                                    //pickerPosition: "bottom-left",
+                                    //minuteStep: 1
+                                });
+                                //获取localStorage
+                                if(localStorage.getItem(lineStartTime)!=null){
+                                    $("#"+lineStartTime).val(localStorage.getItem(lineStartTime)) ;
+                                }else{
+                                    $("#"+lineStartTime).val(dateFomate(  new Date(new Date().getTime() - 3 * 60 * 60 * 1000),'yyyy-MM-dd HH:mm:ss' ));
+                                }
+                                if(localStorage.getItem(lineEndTime)!=null){
+                                    $("#"+lineEndTime).val(localStorage.getItem(lineEndTime)) ;
+                                }else{
+                                    $("#"+lineEndTime).val(dateFomate( new Date(new Date().getDate()+2),'yyyy-MM-dd HH:mm:ss' ));
+                                }
+                                if(localStorage.getItem(lineChecked) !=null){
+                                    if(localStorage.getItem(lineChecked) !='1'){
+                                        $("#"+lineChecked).attr('checked',false) ;
+                                    }else{
+                                        $("#"+lineChecked).attr('checked',true) ;
+                                    }
+
+                                }else{
+                                    $("#"+lineChecked).attr('checked',false) ;
+                                }
+
+                                $formGroupHtml.innerHTML = '';
+                                $formGroupHtml =null;
+
+                            }
+                        }
+                        <!-- 渲染模拟框  end  -->
+                    },
+                    error:function(err){
+                        //alert(arr);
+                    }
+                });
+                // show modal
+                $('#editLineModal').modal({
+                    backdrop:'static',keyboard:false   //锁定界面
+                });
+            }
+
+            //元素被选中方法
+            function addActiveWithLine(ALineNo){
+                $('#line-button-'+ALineNo).addClass('active');
+                //刷新div
+                //$('#line-button-'+ALineNo).load(location.href+'#line-button-'+ALineNo);
+            }
+            //元素移除选中方法
+            function removeActiveWithLine(ALineNo){
+                if($('#line-button-'+ALineNo).hasClass('active')){
+                    $('#line-button-'+ALineNo).removeClass('active');
+                }
+            }
+
+            //提交线体
+            function updata_Line(){
+
+                //var iTpm = 0;
+                $('#form_default h6').each(function(index,element){
+                    //存储 line监控开关  以及时间至    localStagore
+                    let lineStartTime = 'startTime-line-'+this.innerHTML;
+                    let lineEndTime = 'endTime-line-'+this.innerHTML;
+                    let lineChecked = 'demo-realLine-'+this.innerHTML;
+                    localStorage.setItem(lineStartTime,$('#'+lineStartTime).val());
+                    localStorage.setItem(lineEndTime,$('#'+lineEndTime).val());
+
+                    if( $('#'+lineChecked+':checked').val() !=undefined){
+                        //iTpm++;
+                        //如果此时不存在已经被选中的线体默认 第一条
+                        //遍历线体 改变class 状态
+                        //if(iTmp === 1){
+                            if(lineNo ==null || lineNo ==''){
+                                lineNo =this.innerHTML;
+                                localStorage.setItem('lineNo',lineNo);
+                                addActiveWithLine(lineNo);
+                            }
+                        //}
+                        localStorage.setItem(lineChecked,'1');
+                    }else{
+                        localStorage.setItem(lineChecked,'2');
+                    }
+
+                });
+
+                $('#editLineModal').modal('hide');
+
+                //打开定时任务
+                bIsStopTimeIntever =false;
+                refreshRealTimeTableSituation();
+                showRealTimeLineListButton();
+            }
+
+            //asyncCallCHapeSocket();
+            //定时任务
+            setInterval(refreshRealTimeTableSituation,1000*20);
+            setInterval(showRealTimeLineListButton,1000*20);
+
+    </script>
+</body>
+</html>

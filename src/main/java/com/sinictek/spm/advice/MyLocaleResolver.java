@@ -24,6 +24,7 @@ public class MyLocaleResolver implements LocaleResolver {
 
             Locale.setDefault(locale);
         }
+        //Locale.getAvailableLocales()
         return locale;
     }
 

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONPObject;
 import com.baomidou.mybatisplus.mapper.Condition;
+import com.sinictek.spm.annotation.LoginToken;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
@@ -14,6 +15,7 @@ import com.sinictek.spm.model.apiResponse.ApiResponse;
 import com.sinictek.spm.model.queryBean.ThreePointAsCloseResponse1JsonBean;
 import com.sinictek.spm.model.queryBean.ThreePointAsCloseResponse3JsonBean;
 import com.sinictek.spm.model.utils.SoctekUtil;
+import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.SLineService;
 import com.sinictek.spm.service.SPcbService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,13 +46,23 @@ public class ThreePointAsCloseController {
     @GetMapping("showThreePointClose")
     public ModelAndView threepointascloseView() {
         ConstController.constController.iniDefaultParamSetting();
-        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        boolean bCmBoxs = false;//ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        try{
+            int i = StringTimeUtils.getTimeStringToDate("2021-04-25 00:00:00").compareTo(new Date());
+            if(i > 0  ){
+                bCmBoxs = true;
+            }else{
+                bCmBoxs = false;
+            };
+        }catch (Exception e){
+        }
         String viewName = "pubPages/threePointAsClose";
         if(bCmBoxs){
         }else {
             viewName = "error/comBoxExpire";
         }
         ModelAndView mv = new ModelAndView(viewName);
+        mv.addObject("weburl","/threePointClose/showThreePointClose?");
         //ModelAndView mv = new ModelAndView("spi/pcbLineData");
         mv.addObject("hChartColor", ConstParam.DEFAULTSETTING_hChartColor);
         mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
@@ -57,6 +70,26 @@ public class ThreePointAsCloseController {
         //ModelAndView mv = new ModelAndView("pubPages/threePointAsClose");
         return mv;
     }
+
+
+    @GetMapping("showThreePointCloseNew")
+    public ModelAndView threepointascloseViewNew() {
+        ConstController.constController.iniDefaultParamSetting();
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "threePointClose";
+        if(bCmBoxs){
+        }else {
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+        mv.addObject("weburl","/threePointClose/showThreePointClose?");
+        //ModelAndView mv = new ModelAndView("spi/pcbLineData");
+        // mv.addObject("aoiType",aoiType);
+        //ModelAndView mv = new ModelAndView("pubPages/threePointAsClose");
+        return mv;
+    }
+
+
 
     @GetMapping("getAllLine")
     @ResponseBody
@@ -112,8 +145,16 @@ public class ThreePointAsCloseController {
         }
         //List<ThreePointAsCloseResponse1JsonBean>
         // List<SPcb> lstSpcb = sPcbService.selectList(Condition.create().gt("inspectStarttime", inspectStarttime).and().lt("inspectEndtime", inspectEndtime).and().eq("lineNo", lineNo));
+        try{
+            return new ApiResponse(true, "", "", threePointAsCloseResponse1JsonBean);
 
-        return new ApiResponse(true, "", "", threePointAsCloseResponse1JsonBean);
+        }catch (Exception e){
+        }finally {
+            strResponseResult=null;
+            threePointAsCloseResponse1JsonBean=null;
+        }
+        return new ApiResponse(true, "", "", true);
+
     }
 
     @GetMapping("getComponentListWiththreePointAsClose")
@@ -133,6 +174,15 @@ public class ThreePointAsCloseController {
 
         String strResponseResult = SoctekUtil.sendByCShapeSocket(strSocketText,"127.0.0.1",12345);
         List<Object> lstStr = (List<Object>)JSONUtils.parse(strResponseResult);
+        try{
+            return new ApiResponse(true, "", "", lstStr);
+
+        }catch (Exception e){
+        }finally {
+            strSocketText=null;
+            strResponseResult=null;
+            lstStr=null;
+        }
         return new ApiResponse(true, "", "", lstStr);
 
     }
@@ -160,6 +210,13 @@ public class ThreePointAsCloseController {
         String strResponseResult = SoctekUtil.sendByCShapeSocket(strSocketText,"127.0.0.1",12345);
         //ThreePointAsCloseResponse3JsonBean threePointAsCloseResponse3JsonBean= (ThreePointAsCloseResponse3JsonBean)JSONUtils.parse(strResponseResult);
         Object obj= JSONUtils.parse(strResponseResult);
+        try{
+            return new ApiResponse(true,"",obj);
+        }catch (Exception e){
+            obj=null;
+            strResponseResult=null;
+            strSocketText=null;
+        }
         return new ApiResponse(true,"",obj);
     }
 

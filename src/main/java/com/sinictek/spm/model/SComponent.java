@@ -32,6 +32,6 @@ public class SComponent implements Serializable {
     private String componentInspectResult;
     private String remark;
 
-
+    private  String create_time;
 
 }

@@ -4,6 +4,8 @@ import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.service.SDefaultsettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +21,9 @@ public class ConstController {
 
     @Autowired
     SDefaultsettingService sDefaultsettingService;
+
+    @Autowired
+    MessageSource messageSource;
 
     public static ConstController constController;
 
@@ -109,6 +114,12 @@ public class ConstController {
             }
         }
 
+
+    }
+
+    public String getStringByLocalContextHolder(String souce){
+
+        return  messageSource.getMessage(souce,null, LocaleContextHolder.getLocale());
 
     }
 

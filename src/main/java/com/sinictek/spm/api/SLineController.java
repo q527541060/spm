@@ -2,6 +2,8 @@ package com.sinictek.spm.api;
 
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.sinictek.spm.annotation.LoginToken;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
@@ -9,8 +11,8 @@ import com.sinictek.spm.model.JsonchartModel.*;
 import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
 import com.sinictek.spm.model.utils.StringTimeUtils;
+import com.sinictek.spm.service.SLineService;
 import com.sinictek.spm.service.SPcbService;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -36,11 +38,37 @@ public class SLineController {
 
     @Autowired
     SPcbService sPcbService;
+    @Autowired
+    SLineService sLineService;
+
+
+    @GetMapping("/line")
+    public ModelAndView showLine()  {
+        ConstController.constController.iniDefaultParamSetting();
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "line";
+        if(bCmBoxs){
+        }else {
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+        //mv.addObject("weburl","/sLine/pcbLine?");
+        return  mv;
+    }
 
     @GetMapping("pcbLine")
     public ModelAndView showPcbLine()  {
         ConstController.constController.iniDefaultParamSetting();
-        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        boolean bCmBoxs = false;//ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        try{
+            int i = StringTimeUtils.getTimeStringToDate("2021-04-25 00:00:00").compareTo(new Date());
+            if(i > 0  ){
+                bCmBoxs = true;
+            }else{
+                bCmBoxs = false;
+            };
+        }catch (Exception e){
+        }
         String viewName = "spi/pcbLineData";
         if(bCmBoxs){
         }else {
@@ -50,7 +78,21 @@ public class SLineController {
         //ModelAndView mv = new ModelAndView("spi/pcbLineData");
         mv.addObject("hChartColor", ConstParam.DEFAULTSETTING_hChartColor);
         mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
+        mv.addObject("weburl","/sLine/pcbLine?");
         return  mv;
+    }
+
+
+    /***
+     * 获取SPI全部线体信息
+     * @return apiResponse
+     */
+    @GetMapping("/lineList")
+    @ResponseBody
+    public ApiResponse getLineList(){
+
+        return new ApiResponse(true,null, sLineService.selectList(Condition.create().eq("create_time","21000101")));
+
     }
 
     @ResponseBody
@@ -81,22 +123,22 @@ public class SLineController {
         List<Series> lstSeries = new ArrayList<Series>();
 
         Series goodSeries = new Series();
-        goodSeries.setName("直通");
+        goodSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.pass"));
         Series ngSeries = new Series();
-        ngSeries.setName("不良");
+        ngSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.ng"));
         Series passSeries = new Series();
-        passSeries.setName("误报");
+        passSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.rePass"));
         List<Data> lstGoodSeriesData = new ArrayList<Data>();
         List<Data> lstNgSeriesData = new ArrayList<Data>();
         List<Data> lstPassSeriesData = new ArrayList<Data>();
 
         List<Series> lstPcbSeries = new ArrayList<Series>();
         Series pcbCountSeries = new Series();
-        pcbCountSeries.setName("总板");
+        pcbCountSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.pcbCount"));
         Series passPcbCountSeries = new Series();
-        passPcbCountSeries.setName("复判板");
+        passPcbCountSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.rePassPcbCount"));
         Series ngPadCountSeries = new Series();
-        ngPadCountSeries.setName("缺陷点");
+        ngPadCountSeries.setName(ConstController.constController.getStringByLocalContextHolder("line.defectCount"));
         List<Data> lstpcbCountSeriesData = new ArrayList<Data>();
         List<Data> lstpassPcbCountSeriesData = new ArrayList<Data>();
         List<Data> lstngPadCountSeriesData = new ArrayList<Data>();
@@ -258,40 +300,55 @@ public class SLineController {
 
                     inspectEndtime = StringTimeUtils.addHourTimeStrNow(calendar, i * (int) dOptical);
                     pcb = sPcbService.getPcbListWithALLLineByDateNoGroup(inspectStarttime, inspectEndtime);
+
                     inspectStarttime = inspectEndtime; //开始时间=结束时间
                     if (pcb != null) {
 
                         double goodarrayCount = pcb.getGoodarrayCount()==null? 0:Double.parseDouble(pcb.getGoodarrayCount()),
                                 ngarrayCount = pcb.getNgarrayCount()==null ? 0:Double.parseDouble(pcb.getNgarrayCount()),
-                                passarrayCount = pcb.getPassarrayCount()==null ? 0:Double.parseDouble(pcb.getPassarrayCount());
+                                passarrayCount = pcb.getPassarrayCount()==null ? 0:Double.parseDouble(pcb.getPassarrayCount()),
+                                arrayTotalCount = goodarrayCount+ngarrayCount+passarrayCount
+                        ;
+
+                        double goodpcbCount = pcb.getGoodPcbCount()==null? 0:Double.parseDouble(pcb.getGoodPcbCount()),
+                                ngpcbCount = pcb.getNgPcbCount()==null ? 0:Double.parseDouble(pcb.getNgPcbCount()),
+                                passpcbCount = pcb.getPassPcbCount()==null ? 0:Double.parseDouble(pcb.getPassPcbCount()),
+                                pcbTotalCount = goodpcbCount+ngpcbCount+passpcbCount
+                        ;
+                        double goodpadCount = pcb.getGoodpadCount()==null? 0:pcb.getGoodpadCount(),
+                                ngpadCount = pcb.getNgpadCount()==null? 0:pcb.getNgpadCount(),
+                                passpadCount = pcb.getPasspadCount()==null? 0:pcb.getPasspadCount(),
+                                padTotalCount = goodpadCount+ngpadCount+passpadCount
+                        ;
+
                         //直通率
                         data = new Data();
                         if(StringUtils.equals("1",pcbType)){
-                            data.setY(pcb.getGoodPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getGoodPcbYeild()));
+                            data.setY(pcbTotalCount==0?0:(double)(Math.round(goodpcbCount*100/pcbTotalCount*100)/100.0));
                         }else if(StringUtils.equals("2",pcbType)){
-                            data.setY(goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(goodarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0));
+                            data.setY(arrayTotalCount==0?0:(double)(Math.round(goodarrayCount*100/arrayTotalCount*100)/100.0));
                         }else{
-                            data.setY(pcb.getGoodpadYeild()==null?0:(double)(Math.round(Double.parseDouble(pcb.getGoodpadYeild()) *100)/100.0));
+                            data.setY(padTotalCount==0?0:(double)(Math.round(goodpadCount*100/padTotalCount*100)/100.0));
                         }
                         lstGoodSeriesData.add(data);
                         //不良率
                         data = new Data();
                         if(StringUtils.equals("1",pcbType)){
-                            data.setY(pcb.getNgPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getNgPcbYeild()));
+                            data.setY(pcbTotalCount==0?0:(double)(Math.round(ngpcbCount*100/pcbTotalCount*100)/100.0));
                         }else if(StringUtils.equals("2",pcbType)){
-                            data.setY(goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(ngarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0));
+                            data.setY(arrayTotalCount==0?0:(double)(Math.round(ngarrayCount*100/arrayTotalCount*100)/100.0));
                         }else{
-                            data.setY(pcb.getNgpadYeild()==null?0:(double)(Math.round(Double.parseDouble(pcb.getNgpadYeild()) *100)/100.0));
+                            data.setY(padTotalCount==0?0:(double)(Math.round(ngpadCount*100/(padTotalCount)*100)/100.0));
                         }
                          lstNgSeriesData.add(data);
                         //误判率
                         data = new Data();
                         if(StringUtils.equals("1",pcbType)){
-                            data.setY(pcb.getPassPcbYeild() == null ? 0.0 : Double.parseDouble(pcb.getPassPcbYeild()));
+                            data.setY(pcbTotalCount==0?0:(double)(Math.round(goodpcbCount*100/pcbTotalCount*100)/100.0));
                         }else if(StringUtils.equals("2",pcbType)){
-                            data.setY(goodarrayCount+ngarrayCount+passarrayCount==0?0:(double)(Math.round(passarrayCount*100/(goodarrayCount+ngarrayCount+passarrayCount)*100)/100.0));
+                            data.setY(arrayTotalCount==0?0:(double)(Math.round(passarrayCount*100/arrayTotalCount*100)/100.0));
                         }else{
-                            data.setY(pcb.getPasspadYeild()==null?0:(double)(Math.round(Double.parseDouble(pcb.getPasspadYeild()) *100)/100.0));
+                            data.setY(padTotalCount==0?0:(double)(Math.round(passpadCount*100/padTotalCount*100)/100.0));
                         }
                         lstPassSeriesData.add(data);
 
@@ -380,13 +437,34 @@ public class SLineController {
         jsonChartsBeanYeild.setSeries(lstSeries);
         jsonChartsBeanYeild.setXAxis(axisYeild);
         jsonChartsBeanContainerline.setSeries(lstPcbSeries);
-        lstPcb=null;
-        System.gc();
+
+        try{
+            return  new ApiResponse(true,null,jsonChartsBeanYeild,jsonChartsBeanContainerline);
+        }catch (Exception e){
+        }finally {
+            jsonChartsBeanYeild = null;
+            jsonChartsBeanContainerline=null;
+            lstGoodSeriesData =null;lstNgSeriesData=null;   lstPassSeriesData=null;   lstPassSeriesData=null;   lstpcbCountSeriesData =null;  lstpassPcbCountSeriesData=null;   lstngPadCountSeriesData=null;
+            lstpcbCountSeriesData=null;lstCategoriesYeild =null; lstGoodSeriesData=null;   lstNgSeriesData =null; lstPassSeriesData=null;
+            lstpassPcbCountSeriesData=null;
+            lstngPadCountSeriesData=null;
+            lstPassSeriesData=null;
+            pcbCountSeries=null;
+            pcbCountSeries=null;
+            ngPadCountSeries=null;
+            passPcbCountSeries=null;
+            lstPcb=null;
+            lstPcbSeries=null;
+            axisYeild=null;
+            lstSeries=null;
+            System.gc();
+        }
         return  new ApiResponse(true,null,jsonChartsBeanYeild,jsonChartsBeanContainerline);
+
     }
 
 
-    @ResponseBody()
+    @ResponseBody
     @GetMapping("pcbTableLine")
     public ApiResponse getJsonPcbTableLine(@RequestParam("inspectStarttime") String inspectStarttime,
                                            @RequestParam("inspectEndtime") String inspectEndtime){
@@ -405,7 +483,16 @@ public class SLineController {
                                            @RequestParam("inspectEndtime") String inspectEndtime,
                                            @RequestParam("pcbType") String pcbType){
         ConstController.constController.iniDefaultParamSetting();
-        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        boolean bCmBoxs = false;//ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        try{
+            int i = StringTimeUtils.getTimeStringToDate("2021-04-25 00:00:00").compareTo(new Date());
+            if(i > 0  ){
+                bCmBoxs = true;
+            }else{
+                bCmBoxs = false;
+            };
+        }catch (Exception e){
+        }
         String viewName = "spi/pcbDataDetails";
         if(bCmBoxs){
         }else {
@@ -418,8 +505,44 @@ public class SLineController {
         mv.addObject("inspectEndtime",inspectEndtime);
         mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
         mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
+        mv.addObject("weburl","/sLine/pcbLineDetails?" +
+                "pcbType="+pcbType+
+                "&lineNo="+lineNo+
+                "&inspectStarttime="+inspectStarttime+
+                "&inspectEndtime="+inspectEndtime+ "&"
+        );
         return mv;
     }
+
+
+    @GetMapping("pcbLineDetailsNew")
+    public ModelAndView showPcbLineDetailsNew(@RequestParam("lineNo") String lineNo,
+                                           @RequestParam("inspectStarttime") String inspectStarttime,
+                                           @RequestParam("inspectEndtime") String inspectEndtime,
+                                           @RequestParam("pcbType") String pcbType){
+        ConstController.constController.iniDefaultParamSetting();
+        boolean bCmBoxs = ConstPublicClassUtil.loadCmBoxs();bCmBoxs=true;
+        String viewName = "spiPcbChartDetail";
+        if(bCmBoxs){
+        }else {
+            viewName = "error/comBoxExpire";
+        }
+        ModelAndView mv = new ModelAndView(viewName);
+        mv.addObject("pcbType",pcbType);
+        mv.addObject("lineNo",lineNo);
+        mv.addObject("inspectStarttime",inspectStarttime);
+        mv.addObject("inspectEndtime",inspectEndtime);
+        mv.addObject("hChartColor",ConstParam.DEFAULTSETTING_hChartColor);
+        mv.addObject("backgroundColor",ConstParam.DEFAULTSETTING_backgroundColor);
+        mv.addObject("weburl","/sLine/pcbLineDetails?" +
+                "pcbType="+pcbType+
+                "&lineNo="+lineNo+
+                "&inspectStarttime="+inspectStarttime+
+                "&inspectEndtime="+inspectEndtime+ "&"
+        );
+        return mv;
+    }
+
 
     @ResponseBody
     @GetMapping(value="lineDetailsLeftChart",produces = MediaType.APPLICATION_JSON_VALUE)

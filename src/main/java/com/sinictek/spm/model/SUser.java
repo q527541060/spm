@@ -30,6 +30,7 @@ public class SUser implements Serializable {
     private String psw;
     private String lineNoStr;
     private String remark;
+    private  String create_time;
 
 
 }

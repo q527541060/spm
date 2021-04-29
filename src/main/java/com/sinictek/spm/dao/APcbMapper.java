@@ -20,8 +20,8 @@ public interface APcbMapper extends BaseMapper<APcb> {
     @Select({"SELECT " +
             "SUM(pcb.inspectResult = 0)/COUNT(pcb.id)*100  goodPcbYeildAoi  " +
             "FROM  " +
-            "a_pcb pcb WHERE  pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   " +
-            "   AND pcb.aoiMode=#{aoiMode}   " +
+            "a_pcb pcb WHERE    pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   " +
+            "   AND pcb.aoiMode=#{aoiMode}   " + //create_time=DATE_FORMAT(#{inspectStarttime},'%Y%m%d') and
             "  GROUP BY pcb.lineNo"
     })
     public List<APcb> getPcbListWithALLLineNoAoiMode(@Param("inspectStarttime") String inspectStarttime , @Param("inspectEndtime") String inspectEndtime,@Param("aoiMode")String aoiMode);
@@ -76,16 +76,16 @@ public interface APcbMapper extends BaseMapper<APcb> {
             "ROUND(AVG(pcb.hCpk),3) AS hCpk ,ROUND(AVG(pcb.aCpk),3) AS aCpk,ROUND(AVG(pcb.VCPK),3) AS vcpk  "+
 
             "FROM  " +
-            "a_pcb pcb WHERE  pcb.aoiMode=#{aoiMode} and pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   " +
-            "  GROUP BY pcb.lineNo"
+            "a_pcb pcb WHERE   pcb.aoiMode=#{aoiMode} and pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   " +
+            "  GROUP BY pcb.lineNo"  //create_time=DATE_FORMAT(#{inspectStarttime},'%Y%m%d') and
     })
     public List<APcb> getPcbListWithALLLine(@Param("inspectStarttime") String inspectStarttime , @Param("inspectEndtime") String inspectEndtime,@Param("aoiMode") String aoiMode);
 
     @Select({"SELECT " +
             "COUNT(pcb.id) totalAoi," +
             "SUM(pcb.inspectResult = 1)/COUNT(pcb.id)*100  ngPcbYeildAoi," +
-            "SUM(pcb.inspectResult = 0)/COUNT(pcb.id)*100 goodPcbYeildAoi," +
-            "SUM(pcb.inspectResult= 2 )/COUNT(pcb.id)*100 passPcbYeildAoi," +
+            "SUM(pcb.inspectResult = 0)/COUNT(pcb.id)*100  goodPcbYeildAoi," +
+            "SUM(pcb.inspectResult= 2 )/COUNT(pcb.id)*100  passPcbYeildAoi," +
             "SUM(pcb.inspectResult = 1)  ngPcbCountAoi,"+
             "SUM(pcb.inspectResult = 0)  goodPcbCountAoi,"+
             "SUM(pcb.inspectResult = 2)  passPcbCountAoi,"+
@@ -128,8 +128,8 @@ public interface APcbMapper extends BaseMapper<APcb> {
             "pcb.lineNo lineNo  "+
 
             "FROM  " +
-            "a_pcb pcb WHERE pcb.aoiMode=#{aoiMode} and pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   "
-            //"  GROUP BY pcb.lineNo"
+            "a_pcb pcb WHERE   pcb.aoiMode=#{aoiMode} and pcb.inspectStarttime >= #{inspectStarttime} and pcb.inspectEndtime< #{inspectEndtime}   "
+            //"  GROUP BY pcb.lineNo"  create_time=DATE_FORMAT(#{inspectStarttime},'%Y%m%d') and
     })
     public APcb getPcbListWithALLLineByDateNoGroup(@Param("inspectStarttime") String inspectStarttime ,@Param("inspectEndtime") String inspectEndtime,@Param("aoiMode") String aoiMode);
 
@@ -152,7 +152,7 @@ public interface APcbMapper extends BaseMapper<APcb> {
             "pcb.shithxCpk shithxCpk, " +
             "pcb.shithyCpk shithyCpk " +
             "FROM  " +
-            "a_pcb pcb WHERE   pcb.lineNo = #{lineNo} and pcb.aoiMode=#{aoiType}  " +
+            "a_pcb pcb WHERE    pcb.lineNo = #{lineNo} and pcb.aoiMode=#{aoiType}  " +//create_time=DATE_FORMAT(#{inspectStarttime},'%Y%m%d') and
             "and pcb.inspectStarttime >= #{inspectStarttime} " +
             "and pcb.inspectEndtime <= #{inspectEndtime}  " +
             "and FIND_IN_SET(pcb.inspectResult,#{pcbResult})   "

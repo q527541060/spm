@@ -16,6 +16,7 @@ import com.wibu.CodeMeter.CodeMeter.CMACCESS2;
 import com.wibu.CodeMeter.CodeMeter.CMBOXENTRY;
 import com.wibu.CodeMeter.CodeMeter.CMBOXINFO;
 import com.wibu.CodeMeter.CodeMeter.CMTIME;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 /**
  * @Author sinictek-pd
@@ -24,6 +25,11 @@ import com.wibu.CodeMeter.CodeMeter.CMTIME;
  */
 public class ConstPublicClassUtil {
 
+    public static Locale getLocaleContext(){
+
+        return  LocaleContextHolder.getLocale();
+
+    }
 
     public static int getPadErrorCodeCount(SPcb sPcbList, int iJuResult){
         int i=0;
@@ -610,39 +616,39 @@ public class ConstPublicClassUtil {
                 break;
             }
             case 2: {
-                str = "#FBCFD0";
+                str = "#D9D9D9";
                 break;
             }
             case 3: {
-                str = "#FFE5D4";
+                str = "#D9D9D9";
                 break;
             }
             case 4: {
-                str = "#FFFCCC";
+                str = "#D9D9D9";
                 break;
             }
             case 5: {
-                str = "#C8EFD4";
+                str = "#D9D9D9";
                 break;
             }
             case 6: {
-                str = "#C8EBFA";
+                str = "#D9D9D9";
                 break;
             }
             case 7: {
-                str = "#D3D5F5";
+                str = "#D9D9D9";
                 break;
             }
             case 8: {
-                str = "#EDD3ED";
+                str = "#D9D9D9";
                 break;
             }
             case 9: {
-                str = "#CF7C89";
+                str = "#D9D9D9";
                 break;
             }
             case 10: {
-                str = "#F8A1A4";
+                str = "#D9D9D9";
                 break;
             }
             case 11: {
@@ -650,31 +656,31 @@ public class ConstPublicClassUtil {
                 break;
             }
             case 12: {
-                str = "#FFFA99";
+                str = "#D9D9D9";
                 break;
             }
             case 13: {
-                str = "#98E0AD";
+                str = "#D9D9D9";
                 break;
             }
             case 14: {
-                str = "#94D8F6";
+                str = "#D9D9D9";
                 break;
             }
             case 15: {
-                str = "#AAAEEB";
+                str = "#D9D9D9";
                 break;
             }case 16: {
-                str = "#DAAADB";
+                str = "#D9D9D9";
                 break;
             }case 17: {
-                str = "#AAAEEB";
+                str = "#D9D9D9";
                 break;
             }case 18: {
-                str = "#AAAEEB";
+                str = "#D9D9D9";
                 break;
             }case 19: {
-                str = "#AAAEEB";
+                str = "#D9D9D9";
                 break;
             }
             default: {
@@ -697,71 +703,71 @@ public class ConstPublicClassUtil {
                 break;
             }
             case 2: {
-                str = "#FBCFD0";
+                str = "#D9D9D9";
                 break;
             }
             case 3: {
-                str = "#FFE5D4";
+                str = "#D9D9D9";
                 break;
             }
             case 4: {
-                str = "#FFFCCC";
+                str = "#D9D9D9";
                 break;
             }
             case 5: {
-                str = "#C8EFD4";
+                str = "#D9D9D9";
                 break;
             }
             case 6: {
-                str = "#C8EBFA";
+                str = "#D9D9D9";
                 break;
             }
             case 7: {
-                str = "#D3D5F5";
+                str = "#D9D9D9";
                 break;
             }
             case 8: {
-                str = "#EDD3ED";
+                str = "#D9D9D9";
                 break;
             }
             case 9: {
-                str = "#CF7C89";
+                str = "#D9D9D9";
                 break;
             }
             case 10: {
-                str = "#F8A1A4";
+                str = "#D9D9D9";
                 break;
             }
             case 11: {
-                str = "#FFCCA9";
+                str = "#D9D9D9";
                 break;
             }
             case 12: {
-                str = "#FFFA99";
+                str = "#D9D9D9";
                 break;
             }
             case 13: {
-                str = "#98E0AD";
+                str = "#D9D9D9";
                 break;
             }
             case 14: {
-                str = "#94D8F6";
+                str = "#D9D9D9";
                 break;
             }
             case 15: {
-                str = "#AAAEEB";
+                str = "#D9D9D9";
                 break;
             }case 16: {
-                str = "#DAAADB";
+                str = "#D9D9D9";
                 break;
             }case 17: {
-                str = "#AAAEEB";
+                str = "#D9D9D9";
                 break;
             }case 18: {
-                str = "#AAAEEB";
+                str = "#D9D9D9";
                 break;
             }case 19: {
-                str = "#AAAEEB";
+                str = "#D9D9D9";
                 break;
             }
             default: {

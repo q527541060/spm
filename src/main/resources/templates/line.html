@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="header::head">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nifty-Line</title>
+</head>
+
+<!--TIPS-->
+<!--You may remove all ID or Class names which contain "demo-", they are only used for demonstration. -->
+<body>
+    <div id="container" class="effect aside-float aside-bright mainnav-lg">
+    <!--NAVBAR-->
+    <!--===================================================-->
+    <div th:include="header::headerContent"></div>
+    <!--===================================================-->
+    <!--END NAVBAR-->
+
+    <div class="boxed">
+
+        <!--CONTENT CONTAINER-->
+        <!--===================================================-->
+        <div id="content-container">
+
+            <div id="page-content">
+                <!-- SPI -->
+                <div class="row">
+                    <div class="col-lg-14">
+                        <!--Panel with Tabs-->
+                        <!--===================================================-->
+                        <div class="panel panel-default">
+
+                            <!--Panel heading-->
+                            <div class="panel-heading" style="height: 35px; line-height: 35px">
+                                <div class="panel-control" >
+
+                                    <!--Nav tabs-->
+                                    <ul class="nav nav-tabs" style="height: 35px; line-height: 35px;margin-top: -30px;padding-top:5px ">
+                                        <li class="active"><a data-toggle="tab" href="#demo-tabs-box-1">SPI</a></li>
+                                        <li><a data-toggle="tab" href="#demo-tabs-box-2">Pre-AOI</a></li>
+                                        <li><a data-toggle="tab" href="#demo-tabs-box-3">Post-AOI</a></li>
+                                    </ul>
+
+                                </div>
+                                <h3 class="panel-title" style="font-family: Courier New, Courier, monospace;">Line-Job-View</h3>
+                            </div>
+
+                            <!--Panel body-->
+                            <div class="panel-body">
+
+                                <!--Tabs content-->
+                                <div class="tab-content">
+                                    <div id="demo-tabs-box-1" class="tab-pane fade in active">
+
+                                        <div class="row" >
+                                            <div class="col-lg-6 col-lg-offset-3 ">
+                                                <div style="text-align: center;" id="sandBox-container">
+                                                    <span   class="glyphicon glyphicon-calendar"></span>
+                                                    <input size="19" type="text"  readonly  id="startTime" /> -
+                                                    <input  size="19"  type="text"   readonly  id="endTime"/>
+                                                    <!-- glyphicon glyphicon-search-->
+                                                    <button type="button" class="btn  btn-default btn-xs"  onclick="areaYeildChartPcbCount()">
+                                                        <span class="ion-search" aria-hidden="true"></span> Search
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row" style="padding: 0px;margin: 0px">
+                                            <div class="col-lg-14">
+                                                <div id="container-linePcbYeild-spi" style="min-width: 35vh; height: 35vh; margin: 0 auto"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row " style="padding: 0px;margin: 0px">
+                                            <div class="col-lg-14">
+                                                <div id="container-lineFn-spi" style="min-width: 32vh; height: 32vh; margin: 0 auto"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding: 0px;margin: 0px">
+                                            <table  class="table" id="pcbline_table-spi" >
+                                            </table>
+                                        </div>
+                                        <div id="lineToolbar" >
+                                           <!-- <button type="button" id="lineToolbar-exp" class="btn btn-default" >EXP</button>-->
+                                            <div class="btn-group" role="group" aria-label="...">
+                                                <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart('0')">hour</button>
+                                                <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按线体排序" onclick="choiceChart('1')">lines</button>
+                                                <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析"  onclick="choicePcb('1')">pcb</button>
+                                                <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="choicePcb('2')">array</button>
+                                                <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按点位焊盘分析" onclick="choicePcb('3')">posite</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div id="demo-tabs-box-2" class="tab-pane fade">
+                                       <!--     pre-aoi   -->
+                                        <div class="row" >
+                                            <div class="col-lg-6 col-lg-offset-3 ">
+                                                <div style="text-align: center;" id="sandBox-container-preaoi">
+                                                    <span   class="glyphicon glyphicon-calendar"></span>
+                                                    <input size="19" type="text"  readonly  id="startTime-preaoi" /> -
+                                                    <input  size="19"  type="text"   readonly  id="endTime-preaoi"/>
+                                                    <!-- glyphicon glyphicon-search-->
+                                                    <button type="button" class="btn  btn-default btn-xs"  onclick="areaYeildChartPcbCount_AOI(1)">
+                                                        <span class="ion-search" aria-hidden="true"></span> Search
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row" style="padding: 0px;margin: 0px">
+                                            <div class="col-lg-14">
+                                                <div id="container-linePcbYeild-preaoi" style="min-width: 35vh; height: 35vh; margin: 0 auto"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row " style="padding: 0px;margin: 0px">
+                                            <div class="col-lg-14">
+                                                <div id="container-lineFn-preaoi" style="min-width: 32vh; height: 32vh; margin: 0 auto"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding: 0px;margin: 0px">
+                                            <table  class="table" id="pcbline_table-preaoi" >
+                                            </table>
+                                        </div>
+                                        <div id="lineToolbar-preaoi">
+                                            <!--<button type="button" id="lineToolbar-exp-preaoi" class="btn btn-default" >EXP</button>-->
+                                            <div class="btn-group" role="group" aria-label="...">
+                                                <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart_AOI('0','1')">hour</button>
+                                                <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按线体排序" onclick="choiceChart_AOI('1','1')">lines</button>
+                                                <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析"  onclick="choicePcb_AOI('1','1')">pcb</button>
+                                                <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="choicePcb_AOI('2','1')">array</button>
+                                                <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按元器件分析" onclick="choicePcb_AOI('3','1')">posite</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div id="demo-tabs-box-3" class="tab-pane fade">
+                                        <!--     post-aoi   -->
+                                        <div class="row" >
+                                            <div class="col-lg-6 col-lg-offset-3 ">
+                                                <div style="text-align: center;" id="sandBox-container-postaoi">
+                                                    <span   class="glyphicon glyphicon-calendar"></span>
+                                                    <input size="19" type="text"  readonly  id="startTime-postaoi" /> -
+                                                    <input  size="19"  type="text"   readonly  id="endTime-postaoi"/>
+                                                    <!-- glyphicon glyphicon-search-->
+                                                    <button type="button" class="btn  btn-default btn-xs"  onclick="areaYeildChartPcbCount_AOI(2)">
+                                                        <span class="ion-search" aria-hidden="true"></span> Search
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row" style="padding: 0px;margin: 0px">
+                                            <div class="col-lg-14">
+                                                <div id="container-linePcbYeild-postaoi" style="min-width: 35vh; height: 35vh; margin: 0 auto"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row " style="padding: 0px;margin: 0px">
+                                            <div class="col-lg-14">
+                                                <div id="container-lineFn-postaoi" style="min-width: 32vh; height: 32vh; margin: 0 auto"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding: 0px;margin: 0px">
+                                            <table  class="table" id="pcbline_table-postaoi" >
+                                            </table>
+                                        </div>
+                                        <div id="lineToolbar-postaoi">
+                                           <!-- <button type="button" id="lineToolbar-exp-postaoi" class="btn btn-default" >EXP</button>-->
+                                            <div class="btn-group" role="group" aria-label="...">
+                                                <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按小时排序"  onclick="choiceChart_AOI('0','2')">hour</button>
+                                                <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按线体排序" onclick="choiceChart_AOI('1','2')">lines</button>
+                                                <button type="button" class="btn btn-primary btn-xs"data-toggle="tooltip" data-placement="bottom" title="良率按大板分析"  onclick="choicePcb_AOI('1','2')">pcb</button>
+                                                <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按小拼板分析" onclick="choicePcb_AOI('2','2')">array</button>
+                                                <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="良率按元器件分析" onclick="choicePcb_AOI('3','2')">posite</button>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--===================================================-->
+                        <!--End of panel with tabs-->
+                    </div>
+                </div>
+
+               <!-- &lt;!&ndash; PRE-AOI &ndash;&gt;
+                <div class="row">
+                    <div class="col-lg-14">
+                    </div>
+                </div>
+
+                &lt;!&ndash; POST-AOI &ndash;&gt;
+                <div class="row">
+                    <div class="col-lg-14">
+                    </div>
+                </div>-->
+
+            </div>
+            <!--===================================================-->
+            <!--End page content-->
+
+        </div>
+        <!--===================================================-->
+        <!--END CONTENT CONTAINER-->
+
+        <div th:replace="commonPage::aside-mainnav"></div>
+
+
+    </div>
+
+    <!-- FOOTER -->
+    <!--===================================================-->
+    <footer id="footer">
+
+        <!-- Visible when footer positions are fixed -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <div class="show-fixed pull-right">
+            You have <a href="#" class="text-bold text-main"><span class="label label-danger">3</span> pending action.</a>
+        </div>
+
+        <!--  &lt;!&ndash; Visible when footer positions are static &ndash;&gt;
+          &lt;!&ndash; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ &ndash;&gt;
+          <div class="hide-fixed pull-right pad-rgt">
+              14GB of <strong>512GB</strong> Free.
+          </div>-->
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Remove the class "show-fixed" and "hide-fixed" to make the content always appears. -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <p class="pad-lft">&#0169; 2021 Sinic-Tek intelligent Technology Co.,Ltd 版权所有</p>
+
+
+
+    </footer>
+    <!--===================================================-->
+    <!-- END FOOTER -->
+
+    <!-- SCROLL PAGE BUTTON -->
+    <!--===================================================-->
+    <button class="scroll-top btn">
+        <i class="pci-chevron chevron-up"></i>
+    </button>
+    <!--===================================================-->
+
+</div>
+    <!--===================================================-->
+    <!-- END OF CONTAINER -->
+
+    <div th:include="commonPage::demo-set-com"></div>
+
+    <script type="text/javascript">
+        //side title active
+        $('.Line-class').attr('class','active-link');
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        <!-- event start -->
+        window.operateEventsPcbLineData={
+            "click #TablePcbDataDetailsSPI" :function(e,value, row, index){
+                window.open("/sLine/pcbLineDetailsNew?lineNo="+row.lineNo+"&inspectStarttime="+row.inspectStarttime + "&inspectEndtime="+ row.inspectEndtime +"&pcbType="+ichoicePcb);
+            },
+            "click #TablePcbDataDetailsAOI" :function(e,value, row, index){
+                window.open("/aLine/pcbLineDetails?lineNo="+row.lineNo+"&inspectStarttime="+row.inspectStarttime + "&inspectEndtime="+ row.inspectEndtime +"&pcbType="+ichoicePcb+"&aoiType="+aoiType);
+            }
+
+        };
+        function addFunctionAltyPcbLineDataSPI(value, row, index){
+            return ['<button type="button" id="TablePcbDataDetailsSPI"   class="btn btn-primary btn-xs">detail</button>'].join("");
+        }
+        function addFunctionAltyPcbLineDataAOI(value, row, index){
+            return ['<button type="button" id="TablePcbDataDetailsAOI"   class="btn btn-primary btn-xs">detail</button>'].join("");
+        }
+
+        <!-- event end -->
+        var iGroupMode = '1';
+        var ichoicePcb ='1';
+        var nowDate = new Date();
+        var dStart = dateFomate( nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd HH:mm:ss' );
+        var dEnd = dateFomate( nowDate.setDate(nowDate.getDate()+1),'yyyy-MM-dd HH:mm:ss' );
+
+        <!-- ------------ -->
+        <!--    SPI  JS  begin  -->
+        $("#startTime").datetimepicker({
+            //minView:"month",
+            format: 'yyyy-mm-dd hh:ii:ss',
+            language:"zh-CN",
+            todayHighlight:true,
+            showMeridian: true,
+            autoclose: true,
+            todayBtn: true,
+            //pickerPosition: "bottom-left"
+            //minuteStep: 1
+        });
+        $("#endTime").datetimepicker({
+            //minView:"month",
+            format: 'yyyy-mm-dd hh:ii:ss',
+            language:"zh-CN",
+            todayHighlight:true,
+            showMeridian: true,
+            autoclose: true,
+            todayBtn: true,
+            //pickerPosition: "bottom-left",
+            //minuteStep: 1
+        });
+        $("#startTime").val(dStart) ;
+        $("#endTime").val(dEnd) ;
+        areaYeildChartPcbCount();
+        InitPcbLineDataMainTable();
+        <!--LINE TABLE -->
+
+        function choicePcb(x) {
+            ichoicePcb = x;
+            areaYeildChartPcbCount();
+        }
+        function choiceChart(x){
+            iGroupMode = x;
+            areaYeildChartPcbCount();
+        }
+        function InitPcbLineDataMainTable(){
+            let startTime = $("#startTime").val();
+            let endTime = $("#endTime").val();
+            $('#pcbline_table-spi').bootstrapTable({
+                url: "/sLine/pcbTableLine?inspectStarttime="+startTime+"&inspectEndtime="+endTime,                      //请求后台的URL（*）
+                dataType:"json",
+                method: 'GET',                      //请求方式（*）
+                //data:{inspectStarttime:startTime,inspectEndtime:endTime},
+                toolbar: '#lineToolbar',              //工具按钮用哪个容器
+                toolbarAlign:'left',
+                striped: true,                      //是否显示行间隔色
+                cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: true,
+                sortName:'Date',//是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                pageSize: 5,                     //每页的记录行数（*）
+                pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
+                search: true,                      //是否显示表格搜索
+                strictSearch: false,
+                showColumns: true,                  //是否显示所有的列（选择显示的列）
+                showRefresh: true,                  //是否显示刷新按钮
+                //showColumnsToggleAll:true,
+                // minimumCountColumns: 0,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                height: 400,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                classes:'table table-sm table-bordered',
+                exportDataType:'all',
+                showExport: true,  //是否显示导出按钮
+                buttonsAlign:"right",  //按钮位置
+                //exportTypes: [ 'csv', 'txt', 'xml', 'excel'],
+                Icons:'glyphicon-export icon-share',
+                exportOptions:{
+                    //ignoreColumn: [0],  //忽略某一列的索引
+                    fileName: "spi_"+$("#startTime").val()+ "_"+$("#endTime").val()+ "_line.csv",  //文件名称设置
+                    worksheetName: 'sheet1',  //表格工作区名称
+                    tableName: '缺陷',
+                    excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+                    //onMsoNumberFormat: DoOnMsoNumberFormat
+                },
+                rowStyle: function(row, index) {
+                    if (index % 2 == 0 ) {
+                        return {
+                            classes: 'success',
+                        }
+                    }else{
+                        return {
+                            classes: 'info ',
+                        }
+                    }
+                },
+                /*cellStyle: function (value, row, index){
+                    return {css:{'font-size':'9px','padding':'0px'}}
+                },*/
+                //得到查询的参数
+                queryParams : function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    return {
+                        pageSize: params.limit,               //页面大小
+                        pageNumber: params.offset/params.limit+1,  //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order, //排位命令（desc，asc）
+                        //inspectStarttime:startTime,inspectEndtime:endTime
+                    };
+                },
+                columns: [
+                    /*{
+                checkbox: true,
+                align:'center',
+                visible: true
+                //是否显示复选框
+            }, */
+                    {
+                        field: 'lineNo',
+                        title: 'lineNo',
+                        width:50,
+                        align:'center',
+                        sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    }, {
+                        field: 'goodPcbYeild',
+                        title: 'PassPcbYeild',
+                        align:'center',
+                        width:50,
+                        formatter:function(value,row,index){
+                            var goodCount =row.goodarrayCount;
+                            var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                            if(ichoicePcb==1){
+                                return '<span>'+row.goodPcbYeild+'</span>';
+                            }else if(ichoicePcb==2){
+                                goodCount =row.goodarrayCount;
+                                Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                                return '<span>'+(goodCount/Count*100).toFixed(2)+'</span>';
+                            }else{
+                                goodCount =row.goodpadCount;
+                                Count=row.totalpadCount;
+                                return '<span>'+(goodCount/Count*100).toFixed(2)+'</span>';
+                            }
+
+                        },cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                        sortable: true
+                    },{
+                        field: 'passPcbYeild',
+                        title: 'RePassPcbYeild',
+                        align:'center',
+                        sortable:true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            var passCount =row.passarrayCount;
+                            var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                            //var ngarrayCount=row.ngarrayCount;
+                            if(ichoicePcb==1){
+                                return '<span>'+row.passPcbYeild+'</span>';
+                            }else if(ichoicePcb==2){
+                                passCount =row.passarrayCount;
+                                Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                                return '<span>'+(passCount/Count*100).toFixed(2)+'</span>';
+                            }else{
+                                passCount =row.passpadCount;
+                                Count=row.totalpadCount;
+                                return '<span>'+(passCount/Count*100).toFixed(2)+'</span>';
+                            }
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                        //formatter: linkFormatter
+                    }, {
+                        field: 'ngPcbYeild',
+                        title:  'ngPcbYeild',
+                        align:'center',
+                        sortable: true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            var ngCount =row.ngarrayCount;
+                            var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                            //var ngarrayCount=row.ngarrayCount;
+                            if(ichoicePcb==1){
+                                return '<span>'+row.ngPcbYeild+'</span>';
+                            }else if(ichoicePcb==2){
+                                ngCount =row.ngarrayCount;
+                                Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                                return '<span>'+(ngCount/Count*100).toFixed(2)+'</span>';
+                            }else{
+                                ngCount =row.ngpadCount;
+                                Count=row.totalpadCount;
+                                return '<span>'+(ngCount/Count*100).toFixed(2)+'</span>';
+                            }
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                        //events:operateEvents,
+                    }, {
+                        field: 'total',
+                        title:  'pcbTotal',
+                        align:'center',
+                        sortable: true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            if(ichoicePcb==1){
+                                return '<span>'+row.total+'</span>';
+                            }else if(ichoicePcb==2){
+                                return '<span>'+(parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount))+'</span>';
+                            }else{
+                                return '<span>'+row.total+'</span>';
+                            }
+
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    }, {
+                        field: 'ngPcbCount',
+                        title:  'ngPcbCount',
+                        align:'center',
+                        sortable: true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            if(ichoicePcb==1){
+                                return '<span>'+row.ngPcbCount+'</span>';
+                            }else if(ichoicePcb==2){
+                                return '<span>'+row.ngarrayCount+'</span>';
+                            }else{
+                                return '<span>'+row.ngPcbCount+'</span>';
+                            }
+
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    }, {
+                        field: 'passPcbCount',
+                        title:  'RePassPcbCount',
+                        align:'center',
+                        sortable: true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            if(ichoicePcb==1){
+                                return '<span>'+row.passPcbCount+'</span>';
+                            }else if(ichoicePcb==2){
+                                return '<span>'+row.passarrayCount+'</span>';
+                            }else{
+                                return '<span>'+row.passPcbCount+'</span>';
+                            }
+
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    }, {
+                        field:  'ngpadCount',
+                        title:  'ngpadCount',
+                        align:  'center',
+                        sortable: true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            if(ichoicePcb==1){
+                                return '<span>'+row.ngpadCount+'</span>';
+                            }else if(ichoicePcb==2){
+                                return '<span>'+row.ngarrayCount+'</span>';
+                            }else{
+                                return '<span>'+row.ngpadCount+'</span>';
+                            }
+
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    }, {
+                        field: 'Date',
+                        title:  'Date',
+                        align:'center',
+                        //sortable: true,
+                        width:200,
+                        formatter:function(value,row,index){
+                            var html='<span>'+row.inspectStarttime+ '-' +row.inspectEndtime +'</span>';
+                            return html;
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    },{
+                        field: 'operation',
+                        title:  'operation',
+                        align:'center',
+                        //sortable: true,
+                        width:50,
+                        events: operateEventsPcbLineData,//给按钮注册事件
+                        formatter: addFunctionAltyPcbLineDataSPI,//表格中增加按钮
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+
+                    }],
+                onLoadSuccess: function (sta) {
+                },
+                onLoadError: function (status,res) {
+                    console.log(res);
+                    console.log(status);
+                },
+                onDblClickRow: function (row, $element) {
+
+                },
+                onClickRow:function(row,$element){
+                    $('.danger').removeClass('danger');
+                    $($element).addClass('danger');
+                }
+            });
+        }
+
+        function areaYeildChartPcbCount(){
+            // alert($("#startTime").val());
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+            //alert(startTime+"__" +endTime);
+            var jsonYeildHour={};
+            var jsonContainerline={};
+            $.ajax({
+                url:"/sLine/jsonPcbLine",
+                dataType:"json",
+                async:true,
+                data:{inspectStarttime:startTime,inspectEndtime:endTime,mode:iGroupMode,pcbType:ichoicePcb},
+                scriptCharset: 'utf-8',
+                type:"GET",
+
+                beforeSend:function(){
+
+                },
+                success:function(req){
+                    jsonYeildHour.chart = {
+                    };
+                    jsonYeildHour.title ={
+                        text: 'line-Info'//(<spring:message code="line.yield"></spring:message>)'
+                    };
+                    jsonYeildHour.subtitle = '';
+                    jsonYeildHour.tooltip ={formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y ;
+                        }};
+                    jsonYeildHour.credits={enabled: false };
+                    jsonYeildHour.xAxis = req.data.xaxis;
+                    jsonYeildHour.yAxis = {
+                        title: {
+                            text: 'yeild%',
+                        },min:0,
+                        max:100,
+                        labels: {
+                        },
+                        //type: 'datetime',
+                        gridLineWidth:0,
+                        minorGridLineWidth:0,
+                        opposite: false,
+                        //type:'logarithmic'
+
+                    };
+                    jsonYeildHour.exporting={
+                        enabled:false
+                    };
+                    jsonYeildHour.series=req.data.series;
+                    jsonYeildHour.plotOptions = {
+                        areaspline: {
+                            pointStart: 0,
+                            shadow: false,
+                            marker: {
+                                enabled: true,
+                                symbol: 'triangle-down',
+                                radius: 1,
+                                states: {
+                                    hover: {
+                                        enabled: true
+                                    }
+                                }
+                            },
+                            pointPadding: 0.3,
+                            borderWidth: 0,
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return this.series.name+':'+this.y+"%";
+                                    }else {
+                                        return '';
+                                    }
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+                                }}
+                        },
+                        column: {
+                            cursor:'pointer',
+                            grouping: true,
+                            shadow: false,
+                            borderWidth: 0,
+                            pointPadding: 0,
+                            //pointWidth:50,
+                            maxPointWidth:50,
+                            stacking:'normal',
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return this.series.name+':'+this.y+"%";
+                                    }else {
+                                        return '';
+                                    }
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+                                }},
+                            events: {
+                                click:function(e){
+                                    var startTime = $("#startTime").val();
+                                    var endTime = $("#endTime").val();
+                                    window.open("/sLine/pcbLineDetailsNew?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime+ "&inspectEndtime="+ endTime +"&pcbType="+ichoicePcb);
+                                }
+
+                            }
+                        },
+                        spline:{
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return this.series.name+':'+this.y+"%";
+                                    }else {
+                                        return '';
+                                    }
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+                                }}
+                        }
+                    };
+                    //alert(json);
+                    jsonYeildHour.credits={enabled: false };
+                    jsonYeildHour.legend = {
+                        enabled:false,
+                    };
+                    $('#container-linePcbYeild-spi').highcharts(jsonYeildHour);
+
+
+                    jsonContainerline.chart = {
+                    };
+                    jsonContainerline.title ={
+                        text:  'defect-Info'//(<spring:message code="line.defect"></spring:message>)'
+                    };
+                    jsonContainerline.subtitle = '';
+                    jsonContainerline.tooltip ={formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y ;
+                        }};
+                    jsonContainerline.credits={enabled: false };
+
+                    jsonContainerline.xAxis = req.data.xaxis;
+                    var vYaxisType ='logarithmic';
+                    if(req.data.xaxis.categories.length==1){
+                        vYaxisType = 'linear';
+                    }
+                    jsonContainerline.yAxis =
+                        {
+                            title: {
+                                text: 'count',
+                            },
+                            labels: {
+                            },
+                            type:vYaxisType,
+                            gridLineWidth:0,
+                            minorGridLineWidth:0
+
+                        };
+                    jsonContainerline.exporting={
+                        enabled:false
+                    };
+                    jsonContainerline.series=req.rows.series;
+                    jsonContainerline.plotOptions = {
+                        areaspline: {
+                            pointStart: 0,
+                            shadow: false,
+                            marker: {
+                                enabled: true,
+                                symbol: 'triangle-down',
+                                radius: 1,
+                                states: {
+                                    hover: {
+                                        enabled: true
+                                    }
+                                }
+                            },
+                            pointPadding: 0.3,
+                            borderWidth: 0,
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return (this.series.name)+ ':' +(this.y);
+                                    }else {
+                                        return '';
+                                    }
+
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',
+                                    fontFamily: 'Verdana, sans-serif',
+                                }}
+                        },
+                        column: {
+                            grouping: true,
+                            shadow: false,
+                            cursor:'pointer',
+                            pointPadding: 0,
+                            borderWidth: 0,
+                            //pointWidth:50,
+                            maxPointWidth:50,
+                            dataLabels:{
+                                useHTML: true,
+                                enabled:true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return (this.series.name)+ ':' +(this.y);
+                                    }else {
+                                        return '';
+                                    }
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',
+                                    fontFamily: 'Verdana, sans-serif',
+                                },
+                            },//,color:'#ff0816'
+                            events: {
+                                click:function(e){
+                                    var startTime = $("#startTime").val();
+                                    var endTime = $("#endTime").val();
+                                    window.open("/sLine/pcbLineDetailsNew?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime+ "&inspectEndtime="+ endTime +"&pcbType="+ichoicePcb);
+                                }
+
+                            }
+                        },
+                        spline:{
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return (this.y)+'pcs';
+                                    }else {
+                                        return '';
+                                    }
+
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+                                }}
+                        }
+                    };
+                    jsonContainerline.credits={enabled: false };
+                    jsonContainerline.legend = {
+                        enabled:false,
+                    };
+                    //alert(json);
+                    $('#container-lineFn-spi').highcharts(jsonContainerline);
+                },
+                complete:function(){
+                },
+                error:function(data){
+                    //alert(data);
+                    //console.log(data);
+                }
+            });
+            refreshTable(startTime,endTime);
+        }
+        function refreshTable(startTime,endTime){
+            var opt = {
+                url: "/sLine/pcbTableLine?inspectStarttime="+startTime+"&inspectEndtime="+endTime,
+                silent: true,
+                query:{
+                    type:1,
+                    level:2
+                }
+            };
+            $("#pcbline_table-spi").bootstrapTable('refresh', opt);
+        }
+        $("#lineToolbar-exp").click(function () {
+            excel = new ExcelGen({
+                "src_id": "pcbline_table",
+                "show_header": true,
+                "format": "csv",
+                "type": "table",
+                "exclude_selector": null,
+                "file_name":$("#startTime").val()+ "_"+$("#endTime").val()+ "_line.csv",//"output.xlsx",
+            });
+            excel.generate();
+        });
+
+        <!--  SPI JS end -->
+        <!-- ------------ -->
+
+
+        <!--     AOI  JS   start   -->
+
+        $("#startTime-preaoi").datetimepicker({
+            //minView:"month",
+            format: 'yyyy-mm-dd hh:ii:ss',
+            language:"zh-CN",
+            todayHighlight:true,
+            showMeridian: true,
+            autoclose: true,
+            todayBtn: true,
+            //pickerPosition: "bottom-left"
+            //minuteStep: 1
+        });
+        $("#endTime-preaoi").datetimepicker({
+            //minView:"month",
+            format: 'yyyy-mm-dd hh:ii:ss',
+            language:"zh-CN",
+            todayHighlight:true,
+            showMeridian: true,
+            autoclose: true,
+            todayBtn: true,
+            //pickerPosition: "bottom-left",
+            //minuteStep: 1
+        });
+        $("#startTime-postaoi").datetimepicker({
+            //minView:"month",
+            format: 'yyyy-mm-dd hh:ii:ss',
+            language:"zh-CN",
+            todayHighlight:true,
+            showMeridian: true,
+            autoclose: true,
+            todayBtn: true,
+            //pickerPosition: "bottom-left"
+            //minuteStep: 1
+        });
+        $("#endTime-postaoi").datetimepicker({
+            //minView:"month",
+            format: 'yyyy-mm-dd hh:ii:ss',
+            language:"zh-CN",
+            todayHighlight:true,
+            showMeridian: true,
+            autoclose: true,
+            todayBtn: true,
+            //pickerPosition: "bottom-left",
+            //minuteStep: 1
+        });
+        /*var dStart = dateFomate( nowDate.setDate(nowDate.getDate()-1),'yyyy-MM-dd HH:mm:ss' );
+        var dEnd = dateFomate( nowDate.setDate(nowDate.getDate()+1),'yyyy-MM-dd HH:mm:ss' );*/
+        $('#startTime-preaoi').val(dStart);
+        $('#endTime-preaoi').val(dEnd);
+        $('#startTime-postaoi').val(dStart);
+        $('#endTime-postaoi').val(dEnd);
+
+
+        InitPcbLineDataMainTable_AOI(1);
+        areaYeildChartPcbCount_AOI(1);
+        InitPcbLineDataMainTable_AOI(2);
+        areaYeildChartPcbCount_AOI(2);
+        function choicePcb_AOI(x,AaoiType) {
+            ichoicePcb = x;
+            areaYeildChartPcbCount_AOI(AaoiType);
+        }
+        function choiceChart_AOI(x,AaoiType){
+            iGroupMode = x;
+            areaYeildChartPcbCount_AOI(AaoiType);
+        }
+        <!--LINE TABLE -->
+
+        function InitPcbLineDataMainTable_AOI(AaoiType){
+            let startTime = dStart;
+            let endTime = dEnd;
+            let lineToolBar = '';//#lineToolbar'
+            let id_pcbTable = '';
+            if(AaoiType === 1){
+                lineToolBar = '#lineToolbar-preaoi';
+                 startTime = $("#startTime-preaoi").val();
+                 endTime = $("#endTime-preaoi").val();
+                id_pcbTable = "#pcbline_table-preaoi";
+            }else{
+                lineToolBar = '#lineToolbar-postaoi';
+                 startTime = $("#startTime-postaoi").val();
+                 endTime = $("#endTime-postaoi").val();
+                id_pcbTable = "#pcbline_table-postaoi";
+            }
+            $(id_pcbTable).bootstrapTable({
+                url: "/aLine/pcbTableLine?inspectStarttime="+startTime+"&inspectEndtime="+endTime+"&aoiType="+AaoiType,                      //请求后台的URL（*）
+                dataType:"json",
+                method: 'GET',                      //请求方式（*）
+                //data:{inspectStarttime:startTime,inspectEndtime:endTime,aoiType:aoiType},
+                toolbar: lineToolBar,              //工具按钮用哪个容器
+                toolbarAlign:'left',
+                striped: true,                      //是否显示行间隔色
+                cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: true,
+                sortName:'Date',//是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+                pageSize: 5,                     //每页的记录行数（*）
+                pageList: [15, 20, 50, 100,'ALL'],        //可供选择的每页的行数（*）
+                search: true,                      //是否显示表格搜索
+                strictSearch: false,
+                showColumns: true,                  //是否显示所有的列（选择显示的列）
+                showRefresh: true,                  //是否显示刷新按钮
+                //showColumnsToggleAll:true,
+                // minimumCountColumns: 0,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                height: 400,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                classes:'table table-striped table-hover',
+                exportDataType:'all',
+                showExport: true,  //是否显示导出按钮
+                buttonsAlign:"right",  //按钮位置
+                //exportTypes: [ 'csv', 'txt', 'xml', 'excel'],
+                Icons:'glyphicon-export icon-share',
+                exportOptions:{
+                    //ignoreColumn: [0],  //忽略某一列的索引
+                    fileName: (AaoiType==1?'pre-aoi_':'post-aoi_')+startTime+ "_"+endTime+ "_line.csv",  //文件名称设置
+                    worksheetName: 'sheet1',  //表格工作区名称
+                    tableName: '缺陷',
+                    excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+                    //onMsoNumberFormat: DoOnMsoNumberFormat
+                },
+                rowStyle: function(row, index) {
+                    if (index % 2 == 0 ) {
+                        return {
+                            classes: 'success',
+                        }
+                    }else{
+                        return {
+                            classes: 'info ',
+                        }
+                    }
+                },
+                /*cellStyle: function (value, row, index){
+                    return {css:{'font-size':'9px','padding':'0px'}}
+                },*/
+                //得到查询的参数
+                queryParams : function (params) {
+                    //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                    return {
+                        pageSize: params.limit,               //页面大小
+                        pageNumber: params.offset/params.limit+1,  //页码
+                        sort: params.sort,      //排序列名
+                        sortOrder: params.order, //排位命令（desc，asc）
+                        //inspectStarttime:startTime,inspectEndtime:endTime
+                    };
+                },
+                columns: [
+                    /*{
+                checkbox: true,
+                align:'center',
+                visible: true
+                //是否显示复选框
+            }, */
+                    {
+                        field: 'lineNo',
+                        title: 'lineNo',
+                        width:50,
+                        align:'center',
+                        sortable: true,
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    }, {
+                        field: 'goodPcbYeildAoi',
+                        title: 'PassPcbYeildAoi',
+                        align:'center',
+                        width:50,
+                        formatter:function(value,row,index){
+                            var goodCount =row.goodarrayCount;
+                            var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                            if(ichoicePcb==1){
+                                return '<span>'+row.goodPcbYeildAoi+'</span>';
+                            }else if(ichoicePcb==2){
+                                goodCount =row.goodarrayCount;
+                                Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                                return '<span>'+(goodCount/Count*100).toFixed(2)+'</span>';
+                            }else{
+                                goodCount =row.goodComponentCount;
+                                Count=row.totalComponentCount;
+                                return '<span>'+(goodCount/Count*100).toFixed(2)+'</span>';
+                            }
+
+                        },cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                        sortable: true
+                    },{
+                        field: 'passPcbYeildAoi',
+                        title: 'RePassPcbYeildAoi',
+                        align:'center',
+                        sortable:true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            var passCount =row.passarrayCount;
+                            var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                            //var ngarrayCount=row.ngarrayCount;
+                            if(ichoicePcb==1){
+                                return '<span>'+row.passPcbYeildAoi+'</span>';
+                            }else if(ichoicePcb==2){
+                                passCount =row.passarrayCount;
+                                Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                                return '<span>'+(passCount/Count*100).toFixed(2)+'</span>';
+                            }else{
+                                passCount =row.passComponentCount;
+                                Count=row.totalComponentCount;
+                                return '<span>'+(passCount/Count*100).toFixed(2)+'</span>';
+                            }
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                        //formatter: linkFormatter
+                    }, {
+                        field: 'ngPcbYeildAoi',
+                        title:  'ngPcbYeildAoi',
+                        align:'center',
+                        sortable: true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            var ngCount =row.ngarrayCount;
+                            var Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                            //var ngarrayCount=row.ngarrayCount;
+                            if(ichoicePcb==1){
+                                return '<span>'+row.ngPcbYeildAoi+'</span>';
+                            }else if(ichoicePcb==2){
+                                ngCount =row.ngarrayCount;
+                                Count=parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount);
+                                return '<span>'+(ngCount/Count*100).toFixed(2)+'</span>';
+                            }else{
+                                ngCount =row.ngComponentCount;
+                                Count=row.totalComponentCount;
+                                return '<span>'+(ngCount/Count*100).toFixed(2)+'</span>';
+                            }
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                        //events:operateEvents,
+                    }, {
+                        field: 'totalAoi',
+                        title:  'pcbTotalAoi',
+                        align:'center',
+                        sortable: true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            if(ichoicePcb==1){
+                                return '<span>'+row.totalAoi+'</span>';
+                            }else if(ichoicePcb==2){
+                                return '<span>'+(parseInt(row.passarrayCount)+parseInt(row.goodarrayCount)+parseInt(row.ngarrayCount))+'</span>';
+                            }else{
+                                return '<span>'+row.totalAoi+'</span>';
+                            }
+
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    }, {
+                        field: 'ngPcbCountAoi',
+                        title:  'ngPcbCountAoi',
+                        align:'center',
+                        sortable: true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            if(ichoicePcb==1){
+                                return '<span>'+row.ngPcbCountAoi+'</span>';
+                            }else if(ichoicePcb==2){
+                                return '<span>'+row.ngarrayCount+'</span>';
+                            }else{
+                                return '<span>'+row.ngPcbCountAoi+'</span>';
+                            }
+
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    }, {
+                        field: 'passPcbCountAoi',
+                        title:  'RePassPcbCountAoi',
+                        align:'center',
+                        sortable: true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            if(ichoicePcb==1){
+                                return '<span>'+row.passPcbCountAoi+'</span>';
+                            }else if(ichoicePcb==2){
+                                return '<span>'+row.passarrayCountAoi+'</span>';
+                            }else{
+                                return '<span>'+row.passPcbCountAoi+'</span>';
+                            }
+
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    }, {
+                        field:  'ngComponentCount',
+                        title:  'ngComponentCount',
+                        align:  'center',
+                        sortable: true,
+                        width:50,
+                        formatter:function(value,row,index){
+                            if(ichoicePcb==1){
+                                return '<span>'+row.ngComponentCount+'</span>';
+                            }else if(ichoicePcb==2){
+                                return '<span>'+row.ngComponentCount+'</span>';
+                            }else{
+                                return '<span>'+row.ngComponentCount+'</span>';
+                            }
+
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    }, {
+                        field: 'Date',
+                        title:  'Date',
+                        align:'center',
+                        //sortable: true,
+                        width:200,
+                        formatter:function(value,row,index){
+                            var html='<span>'+row.inspectStarttime+ '-' +row.inspectEndtime +'</span>';
+                            return html;
+                        },
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+                    },{
+                        field: 'operation',
+                        title:  'operation',
+                        align:'center',
+                        //sortable: true,
+                        width:50,
+                        events: operateEventsPcbLineData,//给按钮注册事件
+                        formatter: addFunctionAltyPcbLineDataAOI,//表格中增加按钮
+                        cellStyle: function (value, row, index){
+                            return {css:{'font-size':'9px','padding':'0px'}}
+                        },
+
+                    }],
+                onLoadSuccess: function (sta) {
+                },
+                onLoadError: function (status,res) {
+                    console.log(res);
+                    console.log(status);
+                },
+                onDblClickRow: function (row, $element) {
+
+                },
+                onClickRow:function(row,$element){
+                    $('.danger').removeClass('danger');
+                    $($element).addClass('danger');
+                }
+            });
+        }
+        function areaYeildChartPcbCount_AOI(AaoiType){
+            // alert($("#startTime").val());
+            var startTime = dStart;
+            var endTime = dEnd;
+            //alert(startTime+"__" +endTime);
+            var jsonYeildHour={};
+            var jsonContainerline={};
+
+            let id_container_linePcbYeild = '';//chart pcb  #container-linePcbYeild-
+            let id_container_lineFn = '';// chart line container-lineFn
+            if(AaoiType === 1){
+                id_container_linePcbYeild = '#container-linePcbYeild-preaoi';
+                id_container_lineFn = '#container-lineFn-preaoi';
+                startTime = $("#startTime-preaoi").val().toString();
+                endTime = $("#endTime-preaoi").val().toString();
+            }else{
+                id_container_linePcbYeild = '#container-linePcbYeild-postaoi';
+                id_container_lineFn = '#container-lineFn-postaoi';
+                startTime = $("#startTime-postaoi").val().toString();
+                endTime = $("#endTime-postaoi").val().toString();
+            }
+            $.ajax({
+                url:"/aLine/jsonPcbLine",
+                dataType:"json",
+                async:true,
+                data:{inspectStarttime:startTime,inspectEndtime:endTime,mode:iGroupMode,pcbType:ichoicePcb,aoiType:AaoiType},
+                scriptCharset: 'utf-8',
+                type:"GET",
+
+                beforeSend:function(){
+
+                },
+                success:function(req){
+                    jsonYeildHour.chart = {
+                    };
+                    jsonYeildHour.title ={
+                        text: 'line-Info'
+                    };
+                    jsonYeildHour.subtitle = '';
+                    jsonYeildHour.tooltip ={formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y ;
+                        }};
+                    jsonYeildHour.credits={enabled: false };
+                    jsonYeildHour.xAxis = req.data.xaxis;
+                    jsonYeildHour.yAxis = {
+                        title: {
+                            text: 'yeild%',
+                        },min:0,
+                        max:100,labels: {
+                        },
+                        opposite: false,
+                        gridLineWidth:0,
+                        minorGridLineWidth:0
+
+
+                    };
+                    jsonYeildHour.exporting={
+                        enabled:false
+                    };
+                    jsonYeildHour.series=req.data.series;
+                    jsonYeildHour.plotOptions = {
+                        areaspline: {
+                            pointStart: 0,
+                            shadow: false,
+                            marker: {
+                                enabled: true,
+                                symbol: 'triangle-down',
+                                radius: 1,
+                                states: {
+                                    hover: {
+                                        enabled: true
+                                    }
+                                }
+                            },
+                            pointPadding: 0.3,
+                            borderWidth: 0,
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return this.series.name+':'+this.y+"%";
+                                    }else {
+                                        return '';
+                                    }
+                                },}
+                        },
+                        column: {
+                            cursor:'pointer',
+                            grouping: true,
+                            shadow: false,
+                            borderWidth: 0,
+                            stacking:'normal',
+                            maxPointWidth:50,
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return this.series.name+':'+this.y+"%";
+                                    }else {
+                                        return '';
+                                    }
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+                                }},
+                            events:{
+                                click:function (e) {
+                                    var startTime = $("#startTime").val();
+                                    var endTime = $("#endTime").val();
+                                    window.open("/aLine/pcbLineDetailsNew?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime+ "&inspectEndtime="+ endTime +"&pcbType="+ichoicePcb+"&aoiType="+AaoiType);
+
+                                }
+                            }
+                        },
+                        spline:{
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return this.series.name+':'+this.y+"%";
+                                    }else {
+                                        return '';
+                                    }
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+                                }}
+                        }
+                    };
+                    jsonYeildHour.credits={enabled: false };
+                    jsonYeildHour.legend = {
+                        enabled:false,
+                    };
+                    //alert(json);
+                    $(id_container_linePcbYeild).highcharts(jsonYeildHour);
+                    jsonContainerline.chart = {
+                    };
+                    jsonContainerline.title ={
+                        text:  'defect-Info'
+                    };
+                    jsonContainerline.subtitle = '';
+                    jsonContainerline.tooltip ={formatter: function () {
+                            return '<b>' + this.x + '</b><br/>' +
+                                this.series.name + ': ' + this.y ;
+                        }};
+                    jsonContainerline.credits={enabled: false };
+
+                    jsonContainerline.xAxis = req.data.xaxis;
+                    var vYaxisType ='logarithmic';
+                    if(req.data.xaxis.categories.length==1){
+                        vYaxisType = 'linear';
+                    }
+                    jsonContainerline.yAxis =
+                        {
+                            title: {
+                                text: 'count',
+                            },
+                            labels: {
+                            },
+                            type:vYaxisType,
+                            gridLineWidth:0,
+                            minorGridLineWidth:0
+
+                        };
+                    jsonContainerline.exporting={
+                        enabled:false
+                    };
+                    jsonContainerline.series=req.rows.series;
+                    jsonContainerline.plotOptions = {
+                        areaspline: {
+                            pointStart: 0,
+                            shadow: false,
+                            marker: {
+                                enabled: true,
+                                symbol: 'triangle-down',
+                                radius: 1,
+                                states: {
+                                    hover: {
+                                        enabled: true
+                                    }
+                                }
+                            },
+                            pointPadding: 0.3,
+                            borderWidth: 0,
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return (this.series.name)+ ':' +(this.y);
+                                    }else {
+                                        return '';
+                                    }
+
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+                                }}
+                        },
+                        column: {
+                            cursor:'pointer',
+                            grouping: true,
+                            shadow: false,
+                            borderWidth: 0,
+                            maxPointWidth:50,
+                            stacking:'normal',
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return (this.series.name)+ ':' +(this.y);
+                                    }else {
+                                        return '';
+                                    }
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+                                }},
+                            events:{
+                                click:function (e) {
+                                    var startTime = $("#startTime").val();
+                                    var endTime = $("#endTime").val();
+                                    window.open("/aLine/pcbLineDetailsNew?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime+ "&inspectEndtime="+ endTime +"&pcbType="+ichoicePcb+"&aoiType="+AaoiType);
+
+                                }
+                            }
+                        },
+                        spline:{
+                            dataLabels:{enabled:true,useHTML: true,
+                                formatter: function() {
+                                    if(this.y>0){
+                                        return (this.series.name)+ ':' +(this.y);
+                                    }else {
+                                        return '';
+                                    }
+                                },style:{
+                                    color:'#3f3f57',
+                                    fontSize: '11px',fontFamily: 'Verdana, sans-serif',
+                                }}
+                        }
+                    };
+                    jsonContainerline.credits={enabled: false };
+                    jsonContainerline.legend = {
+                        enabled:false,
+                    };
+                    //alert(json);
+                    $(id_container_lineFn).highcharts(jsonContainerline);
+                },
+                complete:function(){
+                },
+                error:function(data){
+                    //alert(data);
+                    //console.log(data);
+                }
+            });
+            refreshTableAOI(startTime,endTime,AaoiType);
+        }
+
+        function refreshTableAOI(startTime,endTime,AaoiType){
+            var opt = {
+                url: "/aLine/pcbTableLine?inspectStarttime="+startTime+"&inspectEndtime="+endTime+"&aoiType="+AaoiType,
+                silent: true,
+                query:{
+                    type:1,
+                    level:2
+                }
+            };
+            if(AaoiType === 1){
+                $("#pcbline_table-preaoi").bootstrapTable('refresh', opt);
+            }else{
+                $("#pcbline_table-postaoi").bootstrapTable('refresh', opt);
+            }
+
+        }
+
+        $("#lineToolbar-preaoi-exp-preaoi").click(function () {
+            excel = new ExcelGen({
+                "src_id": "pcbline_table",
+                "show_header": true,
+                "format": "csv",
+                "type": "table",
+                "exclude_selector": null,
+                "file_name":$("#startTime").val()+ "_"+$("#endTime").val()+ "_line.csv",//"output.xlsx",
+            });
+            excel.generate();
+        });
+        $("#lineToolbar-postaoi-exp-postaoi").click(function () {
+            excel = new ExcelGen({
+                "src_id": "pcbline_table",
+                "show_header": true,
+                "format": "csv",
+                "type": "table",
+                "exclude_selector": null,
+                "file_name":$("#startTime").val()+ "_"+$("#endTime").val()+ "_line.csv",//"output.xlsx",
+            });
+            excel.generate();
+        });
+
+        <!--     AOI  JS   end    -->
+
+    </script>
+</body>
+</html>

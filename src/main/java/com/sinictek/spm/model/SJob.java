@@ -33,6 +33,6 @@ public class SJob implements Serializable {
     private Date updateDate;
     private String remark;
 
-
+    private  String create_time;
 
 }

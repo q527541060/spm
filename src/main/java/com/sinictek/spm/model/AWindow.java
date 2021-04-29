@@ -62,6 +62,6 @@ public class AWindow implements Serializable {
     private String win3dImageBase64;
     private String historyDefectRecord;
 
-
+    private  String create_time;
 
 }

@@ -24,5 +24,5 @@ public class ADefaulttype implements Serializable {
     private String errorcode;
     private String content;
 
-
+    private  String create_time;
 }

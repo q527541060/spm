@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `db_spm`.`s_job`  (
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`jobId`, `jobName`) USING BTREE,
   UNIQUE INDEX `jobName`(`jobName`) USING BTREE
--- INDEX `fore_job_line_lineNo`(`lineNo`) USING BTREE,
+ -- INDEX `fore_job_line_lineNo`(`lineNo`) USING BTREE,
 -- CONSTRAINT `fore_job_line_lineNo` FOREIGN KEY (`lineNo`) REFERENCES `s_line` (`LineNo`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'job总表' ROW_FORMAT = Compact;
 
@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `db_spm`.`s_user`  (
   PRIMARY KEY (`id`, `lineNoStr`) USING BTREE,
   INDEX `lineWithUser`(`lineNoStr`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
-
+INSERT INTO `s_user` ( `name`, psw ,lineNoStr) SELECT 'admin','sinictek','smt' FROM DUAL WHERE	NOT EXISTS ( SELECT * FROM s_user WHERE NAME = 'admin' );
 -- ----------------------------
 -- Table structure for a_line
 -- ----------------------------

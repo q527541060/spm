@@ -1,6 +1,8 @@
 package com.sinictek.spm.api;
 
 
+import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.mapper.Condition;
 import com.sinictek.spm.model.AComponent;
 import com.sinictek.spm.model.APcb;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
@@ -49,13 +51,13 @@ public class AComponentController {
         Map<String,Object> pcbListMap = new HashMap<String,Object>();
         pcbListMap.put("pcbIdLine",pcbidLine);
         pcbListMap.put("aoiMode",aoiType);
-        List<APcb> aPcblst = aPcbService.selectByMap(pcbListMap);
+        List<APcb> aPcblst = aPcbService.selectList(Condition.create().eq("pcbIdLine",pcbidLine).eq("aoiMode",aoiType));
         String componentTableName =null;
         if(aPcblst!=null&&aPcblst.size()>0)
         {
             componentTableName = aPcblst.get(0).getComponentTableName();
-
-            AComponent aComponent = aComponentService.getComponentWithPCbidLineDao(componentTableName,pcbidLine,padId,aoiType);
+            aPcblst = null;
+            AComponent aComponent = aComponentService.selectOne(Condition.create().eq("pcbidLine",pcbidLine).eq("padId",padId).eq("aoiMode",aoiType));//getComponentWithPCbidLineDao(componentTableName,pcbidLine,padId,aoiType);
             if(aComponent!=null )
             {
                 return new ApiResponse(true,null,aComponent.getComImageBase64(),null);
@@ -67,6 +69,7 @@ public class AComponentController {
         }else{
             return new ApiResponse(true,null,null,null);
         }
+
     }
 
 
@@ -82,12 +85,18 @@ public class AComponentController {
         pcbListMap.put("aoiMode",aoiType);
         List<APcb> aPcblst = aPcbService.selectByMap(pcbListMap);
         String componentTableName =null;
+        boolean bIsdefectTypeCode = false;
+        if(!StringUtils.isEmpty(defectTypeCode)){
+            bIsdefectTypeCode = true;
+        }
         if(aPcblst!=null&&aPcblst.size()>0){
             componentTableName = aPcblst.get(0).getComponentTableName();
         }else{
             return new ApiResponse(true,null,null,null);
         }
-        List<AComponent> lstComponent = aComponentService.getComponentListWithPCbidLineDao(componentTableName ,pcbIdLine,defectTypeCode,aoiType);
+        List<AComponent> lstComponent = aComponentService.selectList(Condition.create().eq("pcbIdLine",pcbIdLine).
+                eq("aoiMode",aoiType).
+                and(bIsdefectTypeCode," result=1  AND defectType = "+defectTypeCode)); //getComponentListWithPCbidLineDao(componentTableName ,pcbIdLine,defectTypeCode,aoiType);
 
         return  new ApiResponse(true,null,null,lstComponent);
     }

@@ -78,6 +78,6 @@ public class SPad implements Serializable {
     //@TableField(exist = false)
     private String pad3dImageBase64;
 
-
+    private  String create_time;
 
 }
