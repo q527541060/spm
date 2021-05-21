@@ -139,7 +139,7 @@ class SpmApplicationTests {
     @org.junit.jupiter.api.Test
     void contextLoads() {
 
-        SPcb sPcb = new SPcb();
+        /*SPcb sPcb = new SPcb();
         sPcb.setPcbIdLine("1#SMT31");
         sPcb.setLineNo("SMT31");
         sPcb.setJobName("Sample1_510_GWok-0-test");
@@ -187,7 +187,7 @@ class SpmApplicationTests {
         sPcb.setExcessCount(0);
         sPcb.setInsufficientCount(0);
         sPcb.setMissingCount(0);
-        sPcbService.insert(sPcb);
+        sPcbService.insert(sPcb);*/
     }
 
    /* @Test

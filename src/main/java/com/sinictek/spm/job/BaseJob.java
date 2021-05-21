@@ -42,6 +42,7 @@ public class BaseJob {
     }*/
     @Scheduled(cron = "0 0 0/1 * * ?")
     public void doGc(){
+        //System.out.println("----------------GC-------------");
         System.gc();
     }
 

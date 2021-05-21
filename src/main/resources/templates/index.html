@@ -4,7 +4,7 @@
 <head th:include="header::head">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Nifty - Admin Template</title>
+    <title>Index Page</title>
     <style>
         #com-sm-left-panel-title{
           /*  height: 20px;line-height: 20px;font-family: Courier New, Courier, monospace;font-size: 9px;*/
@@ -467,7 +467,7 @@
                                     if (i === len) {
                                         i = 0;
                                     }
-                                }, 600);
+                                }, refreshSecon*100);
                             }
                         }
                         //animation:true,
@@ -636,6 +636,8 @@
                         borderWidth: 2,               // 边框宽度
                         shadow: false,                 // 是否显示阴影
                         animation: false ,              // 是否启用动画效果
+                        //followTouchMove:true,
+                        //enabled:false,
                         style: {                      // 文字内容相关样式
                             color: "#ff0000",
                             fontSize: "9px",
@@ -645,8 +647,14 @@
                         },
 
                         formatter: function () {
-                            return '<b>' + this.x + '线良率告警'+'</b><br/>' +
-                                this.series.name + ':' + this.y +'%';//+ '<br/>' +
+                            if(this.series.name =='直通率' ){
+                                return '<b>' + this.x + '线良率告警'+'</b><br/>' +
+                                    this.series.name + ':' + this.y +'%';//+ '<br/>' +
+                            }else{
+                                return '';
+                            }
+                            //return '<b>' + this.x + '线良率告警'+'</b><br/>' +
+                            //    this.series.name + ':' + this.y +'%';//+ '<br/>' +
                             //'value: ' + this.point.stackTotal;
                         },
                         //shared: true
@@ -833,7 +841,7 @@
                                         startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
                                     }
                                     var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
-                                    window.open("/sLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode);
+                                    window.open("/sLine/pcbLineDetailsNew?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode);
                                 }
                             },
                         },
@@ -1140,7 +1148,7 @@
                                     if (i === len) {
                                         i = 0;
                                     }
-                                }, 600);
+                                }, refreshSecon*100);
                             }
                         }
                         //animation:true,
@@ -1215,7 +1223,7 @@
                                         startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
                                     }
                                     var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
-                                    window.open("/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+preaoiType);
+                                    window.open("/aLine/pcbLineDetailsNew?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+preaoiType);
                                 }
                             }
                         },
@@ -1290,25 +1298,34 @@
                             },
                         ];
                     json.tooltip = {
-                        backgroundColor: '#FCFFC5',   // 背景颜色
+                        zIndex:99999,
+                        backgroundColor: '#FCFFC5',//'#FCFFC5',   // 背景颜色
                         borderColor: '#3f3f57',         // 边框颜色
                         borderRadius: 16,             // 边框圆角
                         borderWidth: 2,               // 边框宽度
                         shadow: false,                 // 是否显示阴影
                         animation: false ,              // 是否启用动画效果
+                        //followTouchMove:true,
+                        //enabled:false,
                         style: {                      // 文字内容相关样式
                             color: "#ff0000",
-                            fontSize: "12px",
-                            fontWeight: "blod",
-                            fontFamily: "Courir new"
+                            fontSize: "9px",
+                            fontWeight: 'bold',
+                            fontFamily: "Courir new",
+                            textAlign: 'centen'
                         },
-                        //animation:true,
-                        /*formatter: function () {
-                            return '<b>' + this.x + '</b><br/>' +
-                                this.series.name + ':' + this.y ;//+ '<br/>' +
+
+                        formatter: function () {
+                            if(this.series.name =='直通率' ){
+                                return '<b>' + this.x + '线良率告警'+'</b><br/>' +
+                                    this.series.name + ':' + this.y +'%';//+ '<br/>' +
+                            }else{
+                                return '';
+                            }
+                            //return '<b>' + this.x + '线良率告警'+'</b><br/>' +
+                            //    this.series.name + ':' + this.y +'%';//+ '<br/>' +
                             //'value: ' + this.point.stackTotal;
-                        }*/
-                        //shared: true
+                        },
                     };
                     json.series = req.data[0].series;
 
@@ -1491,7 +1508,7 @@
                                         startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
                                     }
                                     var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
-                                    window.open("/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+preaoiType);
+                                    window.open("/aLine/pcbLineDetailsNew?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+preaoiType);
                                 }
                             }
                         },
@@ -1798,7 +1815,7 @@
                                     if (i === len) {
                                         i = 0;
                                     }
-                                }, 600);
+                                }, refreshSecon*100);
                             }
                         }
                         //animation:true,
@@ -1873,7 +1890,7 @@
                                         startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
                                     }
                                     var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
-                                    window.open("/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+potaoiType);
+                                    window.open("/aLine/pcbLineDetailsNew?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+potaoiType);
                                 }
                             }
                         },
@@ -1948,25 +1965,34 @@
                             },
                         ];
                     json.tooltip = {
-                        backgroundColor: '#FCFFC5',   // 背景颜色
+                        zIndex:99999,
+                        backgroundColor: '#FCFFC5',//'#FCFFC5',   // 背景颜色
                         borderColor: '#3f3f57',         // 边框颜色
                         borderRadius: 16,             // 边框圆角
                         borderWidth: 2,               // 边框宽度
                         shadow: false,                 // 是否显示阴影
                         animation: false ,              // 是否启用动画效果
+                        //followTouchMove:true,
+                        //enabled:false,
                         style: {                      // 文字内容相关样式
                             color: "#ff0000",
-                            fontSize: "12px",
-                            fontWeight: "blod",
-                            fontFamily: "Courir new"
+                            fontSize: "9px",
+                            fontWeight: 'bold',
+                            fontFamily: "Courir new",
+                            textAlign: 'centen'
                         },
-                        //animation:true,
-                        /*formatter: function () {
-                            return '<b>' + this.x + '</b><br/>' +
-                                this.series.name + ':' + this.y ;//+ '<br/>' +
+
+                        formatter: function () {
+                            if(this.series.name =='直通率' ){
+                                return '<b>' + this.x + '线良率告警'+'</b><br/>' +
+                                    this.series.name + ':' + this.y +'%';//+ '<br/>' +
+                            }else{
+                                return '';
+                            }
+                            //return '<b>' + this.x + '线良率告警'+'</b><br/>' +
+                            //    this.series.name + ':' + this.y +'%';//+ '<br/>' +
                             //'value: ' + this.point.stackTotal;
-                        }*/
-                        //shared: true
+                        },
                     };
                     json.series = req.data[0].series;
 
@@ -2149,7 +2175,7 @@
                                         startTime = dateFomate(nowDate.setDate(nowDate.getDate()+0),'yyyy-MM-dd') +" "+Frequency_start+":00:00";
                                     }
                                     var endTime =  dateFomate(new Date(),'yyyy-MM-dd HH:mm:ss');
-                                    window.open("/aLine/pcbLineDetails?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+potaoiType);
+                                    window.open("/aLine/pcbLineDetailsNew?lineNo="+this.xAxis.categories[e.point.x]+"&inspectStarttime="+startTime + "&inspectEndtime="+ endTime+"&pcbType="+mode+"&aoiType="+potaoiType);
                                 }
                             }
                         },

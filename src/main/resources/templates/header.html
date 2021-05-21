@@ -423,6 +423,7 @@
 
                         <!--Language selector-->
                         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
                         <li class="dropdown">
                             <a id="demo-lang-switch" class="lang-selector dropdown-toggle" href="#" data-toggle="dropdown">
                                     <span class="lang-selected">
@@ -440,8 +441,8 @@
                                         <span class="lang-name">English</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <!--France-->
+                               <!-- <li>
+                                    &lt;!&ndash;France&ndash;&gt;
                                     <a href="#">
                                         <img class="lang-flag" src="/static/nifty/img/flags/france.png" alt="France">
                                         <span class="lang-id">FR</span>
@@ -449,7 +450,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <!--Germany-->
+                                    &lt;!&ndash;Germany&ndash;&gt;
                                     <a href="#">
                                         <img class="lang-flag" src="/static/nifty/img/flags/germany.png" alt="Germany">
                                         <span class="lang-id">DE</span>
@@ -457,7 +458,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <!--Italy-->
+                                    &lt;!&ndash;Italy&ndash;&gt;
                                     <a href="#">
                                         <img class="lang-flag" src="/static/nifty/img/flags/italy.png" alt="Italy">
                                         <span class="lang-id">IT</span>
@@ -465,15 +466,17 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <!--Spain-->
+                                    &lt;!&ndash;Spain&ndash;&gt;
                                     <a href="#">
                                         <img class="lang-flag" src="/static/nifty/img/flags/spain.png" alt="Spain">
                                         <span class="lang-id">ES</span>
                                         <span class="lang-name">Espa&ntilde;ol</span>
                                     </a>
-                                </li>
+                                </li>-->
                             </ul>
                         </li>
+
+
                         <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                         <!--End language selector-->
 
@@ -542,6 +545,13 @@
                 <!--End Navbar Dropdown-->
                 <!--  logout function -->
                 <script type="text/javascript">
+
+                    window.onload = (function(){
+                        <!-- bartools -->
+                        //$('#col-lg-6-left .fixed-table-toolbar .btn').addClass('btn-xs');
+                        $('.fixed-table-toolbar button').addClass('btn-xs');
+                        <!--  bartools -->
+                    });
                     function logout(){
                         window.localStorage.removeItem("token");
                         window.localStorage.removeItem("username");

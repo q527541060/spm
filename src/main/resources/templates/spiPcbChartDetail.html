@@ -4,7 +4,7 @@
 <head th:include="header::head">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nifty-PcbAndPosite</title>
+    <title>PcbAndPosite Page</title>
 </head>
 
 <!--TIPS-->
@@ -29,7 +29,7 @@
                     <div class="col-lg-14">
                         <!--Panel with Tabs-->
                         <!--===================================================-->
-                        <div class="panel panel-success">
+                        <div class="panel panel-primary">
 
                             <!--Panel heading-->
                             <div class="panel-heading" style="height: 35px; line-height: 35px;">
@@ -73,13 +73,16 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-6" >
                                                 <table id="table_pcbList" ></table>
                                             </div>
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-6" >
                                                 <table id="table_padList"></table>
                                             </div>
                                             <div id="pcbToolbar">
+                                                <button  type="button" class="btn btn-default">EXP</button>
+                                            </div>
+                                            <div id="padToolbar">
                                                 <button  type="button" class="btn btn-default">EXP</button>
                                             </div>
                                         </div>
@@ -307,6 +310,7 @@
                     enabled:false,
                 };
                 $('#container_pad').highcharts(padCountpieJson);
+                $('.fixed-table-toolbar button').addClass('btn-xs');
             }
         });
 
@@ -820,7 +824,7 @@
     function InitPadTable (ApcbIdLine,defectTypeCode) {
         //记录页面bootstrap-table全局变量$table，方便应用
         //alert(barcode);
-        var $table = $('#table_padList').bootstrapTable({
+        $('#table_padList').bootstrapTable({
             url: "/sPad/padList?pcbIdLine="+ApcbIdLine+
                 "&defectTypeCode="+defectTypeCode,                      //请求后台的URL（*）
             dataType:"json",
@@ -846,7 +850,6 @@
             showRefresh: true,                  //是否显示刷新按钮
             minimumCountColumns: 2,             //最少允许的列数
             clickToSelect: true,                //是否启用点击选中行
-            settimeout:1,
             height: 380,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
             //uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
             exportDataType:'all',
@@ -1112,6 +1115,7 @@
     /*document.body.onclick = function(){
          this.webkitRequestFullscreen();
      }*/
+
 </script>
 </body>
 </html>

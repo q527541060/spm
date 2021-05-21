@@ -23,6 +23,9 @@ server:
 spring:
   shardingsphere :
     datasource :
+      removeAbandoned : true
+      removeAbandonedTimeout : 60
+      logAbandoned : true
       names : ds1,ds2,ds3,ds4,ds5,
         ds6,ds7,ds8,ds9,ds10,
         ds11,ds12,ds210001  #,ds1,ds2,ds3,ds4,ds5,ds6,ds7,ds8,ds9
@@ -30,91 +33,91 @@ spring:
       ds1 :
         type : com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name : com.mysql.jdbc.Driver
-        jdbc-url : jdbc:mysql://127.0.0.1:3306/db_spm01?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url : jdbc:mysql://127.0.0.1:3306/db_spm01?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username : root
         password : 1234
       #ds0配置
       ds2:
         type: com.zaxxer.hikari.HikariDataSource  #com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm02?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm02?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
         #ds0配置
       ds3:
         type: com.zaxxer.hikari.HikariDataSource  #com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm03?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm03?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
       #ds0配置
       ds4:
         type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm04?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm04?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
       #ds0配置
       ds5:
         type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm05?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm05?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
       #ds0配置
       ds6:
         type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm06?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm06?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
       #ds0配置
       ds7:
         type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm07?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm07?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
       #ds0配置
       ds8:
         type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm08?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm08?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
       #ds0配置
       ds9:
         type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm09?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm09?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
       #ds0配置
       ds10:
         type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm10?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm10?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
       #ds0配置
       ds11:
         type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm11?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm11?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
       #ds0配置
       ds12:
         type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm12?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm12?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
       #ds0配置
       ds210001:
         type: com.zaxxer.hikari.HikariDataSource  #com.alibaba.druid.pool.DruidDataSource #com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm210001?serverTimezone=GMT%2B8&useSSL=false
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/db_spm210001?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true
         username: root
         password: 1234
 

@@ -43,11 +43,11 @@ public class SRealtimesituationController {
 
     @PostMapping("/insertSituation")
     @ResponseBody
-    public ApiResponse insertSituation(@RequestBody SRealtimesituation sRealtimesituation){
+    public ApiResponse insertSituation( SRealtimesituation sRealtimesituation){
 
         sRealtimesituation.setCreate_time(StringTimeUtils.getDateToYearMonthDayString(sRealtimesituation.getDataTime()) );
 
-        return  new ApiResponse(true,null,sRealtimesituationService.insert(sRealtimesituation));
+        return  new ApiResponse(true,null,sRealtimesituationService.insert(sRealtimesituation),sRealtimesituation);
 
     }
 }

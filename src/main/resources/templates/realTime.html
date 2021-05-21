@@ -4,7 +4,7 @@
 <head th:include="header::head">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nifty-RealTime</title>
+    <title>RealTime Page</title>
 
 
 </head>
@@ -101,29 +101,7 @@
                                         <!------------------ realTime数据列 表格 row end ------------------------------>
                                         <!---------------------------------------------------------------->
 
-                                        <!-- 线体设置模态框  -->
-                                        <div class="row">
-                                            <div class="modal fade" id="editLineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                            <h4 class="modal-title" id="exampleModalLabel1">line Message</h4>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form id="form_default">
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            <button type="button" onclick="updata_Line()" class="btn btn-primary">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
 
-
-                                        </div>
 
 
                                     </div>
@@ -131,7 +109,6 @@
                             </div>
                     </div>
                 </div>
-
 
                 <!-- PRE-AOI -->
                 <div class="row">
@@ -178,6 +155,73 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 线体设置模态框  -->
+                <div class="row">
+                    <div class="modal fade" id="editLineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="exampleModalLabel1">line Message</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="form_default">
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" onclick="updata_Line()" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 提交策略模拟框  -->
+                <div class="row">
+
+                    <div class="modal fade" id="situationModal" tabindex="-1" role="dialog" aria-labelledby="situationModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="situationModalLabel">RealTime-Situations(输入对策)</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="situation-form">
+                                        <div class="form-group">
+                                            <label for="situation-name" class="control-label">触发规则:</label>
+                                            <p  class="form-control"   style="height: 15vh;overflow: auto" id="situation-name">fgdgf</p>
+
+                                            <!-- input hidden -->
+                                            <input type="hidden" name="lineNo" class="lineNo" id="s_lineNo" >
+                                            <input type="hidden" name="DataTime" class="DataTime" id="s_DataTime" >
+                                            <input type="hidden" name="jobName" class="JobName" id="s_JobName" >
+                                            <input type="hidden" name="padGroup" class="PadGroup" id="s_PadGroup" >
+                                            <input type="hidden" name="PCBIDs" class="PCBIDs" id="s_PCBIDs" >
+                                            <input type="hidden" name="PCBBarcodes" class="PCBBarcodes"id="s_PCBBarcodes" >
+                                            <input type="hidden" name="rules" class="Rules" id="s_Rules" >
+                                            <input type="hidden" name="fieldType" class="FieldType"id="s_FieldType" >
+                                            <input type="hidden" name="remark3" class="FieldType"id="rule_pcbStartTime" >
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="control-label">输入对策策略:</label>
+                                            <textarea class="form-control" name="resources" id="message-text"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="updata_situation()">Send message</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
             <!--===================================================-->
             <!--End page content-->
@@ -244,9 +288,12 @@
             var arrLineNo = [];
             //全局变量  暂停定时任务
             var bIsStopTimeIntever=false;
-
+            //全局变量  realTimeBool
+            var bRealTimeLineIsNull = true;
+            showRealTimeTableConfig([]);
             showRealTimeLineListButton();
             showRealTimeTableSituation();
+
             //getRealTimeInfoByCShapeSocket(lineNo);
 
 
@@ -487,6 +534,7 @@
             }
             //realTime table config js  config表格
             function showRealTimeTableConfig(data){
+                //$('#realTimeConfig').bootstrapTable('dis').dist;
                 $('#realTimeConfig').bootstrapTable({
                     dataType:"json",
                     method: 'GET',                      //请求方式（*）
@@ -673,8 +721,11 @@
                     onLoadError: function (status,res) {
                     },
                 });
-
-
+                //$('#realTimeConfig').bootstrapTable.refresh();
+                // 监听 refresh 事件
+                /*$('#realTimeConfig').on("refresh.bs.table", function() {
+                    // code here
+                });*/
             }
             function refreshRealTimeTableConfig(data){
                 var opt = {
@@ -685,7 +736,7 @@
                         level:2
                     }
                 };
-                $("#realTimeConfig").bootstrapTable('refresh', opt);
+                $("#realTimeConfig").bootstrapTable('refreshOptions', opt);
             }
 
             //realTime table situation js  策略对策表格
@@ -760,10 +811,22 @@
                             align:'center',
                             sortable: true,
                             width:50,
+                            formatter:function(value,row,index){
+                                return '<b style="cursor: pointer" data-toggle="popover" data-trigger="hover" data-html="true" data-placement="bottom" title="'+row.rules+'">'+row.rules.substring( row.rules.indexOf('触发规则'),row.rules.indexOf('触发规则')+4)+'……'+'</b>';
+                            },
                             cellStyle: function (value, row, index){
                                 return {css:{'font-size':'9px','padding':'0px'}}
                             },
                         }, {
+                            field: 'fieldType',
+                            title:  'fieldType',
+                            align:'center',
+                            sortable: true,
+                            width:50,
+                            cellStyle: function (value, row, index){
+                                return {css:{'font-size':'9px','padding':'0px'}}
+                            },
+                        },{
                             field:  'resources',
                             title:  'resources',
                             align:  'center',
@@ -801,15 +864,6 @@
                             cellStyle: function (value, row, index){
                                 return {css:{'font-size':'9px','padding':'0px'}}
                             },
-                        }, {
-                            field: 'fieldType',
-                            title:  'fieldType',
-                            align:'center',
-                            sortable: true,
-                            width:50,
-                            cellStyle: function (value, row, index){
-                                return {css:{'font-size':'9px','padding':'0px'}}
-                            },
                         },
                     ],
                     onLoadSuccess: function (sta) {
@@ -817,7 +871,6 @@
                     onLoadError: function (status,res) {
                     },
                 });
-
             }
             function refreshRealTimeTableSituation(){
                 if(bIsStopTimeIntever){
@@ -902,9 +955,7 @@
                             title: 'PCBIDs',
                             align:'center',
                             width:50,
-                            formatter:function(value,row,index){
-
-                            },cellStyle: function (value, row, index){
+                            cellStyle: function (value, row, index){
                                 return {css:{'font-size':'9px','padding':'0px'}}
                             },
                             sortable: true
@@ -1060,11 +1111,17 @@
                     onLoadError: function (status,res) {
                     },
                 });
+                //$('#'+tableID).bootstrapTable('refresh');
             }
 
             //get socket server    调用客户端c#服务
             function getRealTimeInfoByCShapeSocket(AlineNo){
+
                 if(bIsLineOpened(AlineNo) == false){
+                    // 渲染窗体方法
+                    if(AlineNo == lineNo){
+                        interfaceRendering({data:[]});
+                    }
                     return;
                 }
                 let startTime = localStorage.getItem('startTime-line-'+AlineNo);
@@ -1079,62 +1136,68 @@
                         //请求前的处理
                     },
                     success:function(res){
-
                         if(res.data!=null && res.data.length>0){
                             // do rendering  渲染当前窗体选中线体 其它默认不显示
-                            if(res.data[0].Config.LineNo = lineNo){
+                            if(AlineNo == lineNo){
+                                // 渲染窗体方法
+                               // alert(lineNo);
                                 interfaceRendering(res);
                             }
 
                             //获取到后台数据 如果当message出现触发规则  button改变颜色
-
-                            //if(bIsLineOpened())
+                            <!-- -----------------------------  -->
+                            <!--   告警信息   begin  -->
+                            <!--   先停止轮询  每一条告警的消息通知UI并且说明策略   保存至DB -->
                             for (let i = 0; i < res.data.length; i++) {
                                 if(res.data[i].RuleMessage !=null && res.data[i].RuleMessage !=''){
-                                    // button id line-button-lineNo
-                                    let $lineButtonID = $('#line-button-'+AlineNo);
-                                    if($lineButtonID.hasClass('btn-default')){
+
+                                <!--  保存此时该线体报警的pcbstartTime  防止重复报警  begin-->
+                                    let pcbStartTimes = res.data[i].LstPCBData[0].PCBStartTimes;
+                                    let rulePcbStartTime = localStorage.getItem('rulePcbStartTime_'+res.data[i].Config.LineNo);
+                                    if( rulePcbStartTime === pcbStartTimes )
+                                    {
+                                        continue;
+                                    }
+
+                                <!--  保存此时该线体报警的pcbstartTime  防止重复报警  end-->
+                                        //alert(AlineNo);
+                                    // button设置为danger
+                                    let $lineButtonID = $('#line-button-'+res.data[i].Config.LineNo);
+                                   // if($lineButtonID.hasClass('btn-default')){
+                                        $lineButtonID.removeClass('btn-success');
                                         $lineButtonID.removeClass('btn-default');
                                         $lineButtonID.addClass('btn-danger');
-                                    }else if($lineButtonID.hasClass('btn-success')){
-                                        $lineButtonID.removeClass('btn-success');
-                                        $lineButtonID.addClass('btn-danger');
-                                    }
-
-                                    //获取PCBIDS
-                                   /* let pcbids = '';
-                                    let pcbbarcodes = '';
-                                    for (let j = 0; j < res.data[i].LstPCBData.length; j++) {
-                                        pcbids+= res.data[i].LstPCBData[j].PCBIDs;
-                                        pcbbarcodes+= res.data[i].LstPCBData[j].PCBBarcodes;
-                                    }
-
-                                    insertRealTimeSituationTable(lineNo,
-                                        dateFomate(new Date(res.data[i].Config.dtLastUpdateTime),'yyyy-MM-dd HH:mm:ss'),
-                                        //res.data[i].Config.dtLastUpdateTime,
-                                        res.data[i].Config.JobName,
-                                        res.data[i].Config.PadGroup,
-                                        pcbids,
-                                        pcbbarcodes,
-                                        res.data[i].RuleMessage,
-                                        res.data[i].Config.Title,''
-
-                                    )
-                                    */
+                                    //}else if($lineButtonID.hasClass('btn-success')){
+                                        //$lineButtonID.removeClass('btn-success');
+                                       //$lineButtonID.addClass('btn-danger');
+                                   // }
+                                    bIsStopTimeIntever = true;
+                                    //过滤message
+                                    const message = JSON.stringify(res.data[i]).replace(/\"/g,"'");
+                                    //var message = res.data[i].RuleMessage.replace(/"\"/g,"'").replace(',','').replace(',','');
+                                    $lineButtonID.attr('data-toggle','popover')
+                                        .attr('data-placement','top')
+                                        .attr('data-content','<a href="javascript:;" onclick="showSituationModel('+ message +',this);"  style="font-size: 9px;">'+message.substring( message.indexOf('('),message.indexOf('(')+6)+'…'+'</a>')
+                                        .attr('data-html',true);
+                                        //.attr('animation','changeButtons 5s infinite alternate')
+                                        //.attr('data-trigger','manual');
+                                    $lineButtonID.popover('toggle');
 
                                     //弹出规则输入框  通知UI报警
 
 
+
+
+
                                 }
                             }
-
-
-
-
+                            <!--   告警信息   end  -->
+                            <!-- -----------------------------  -->
                         }
+
                     },
                     error:function(err){
-                        //alert(arr);
+                        //alert(err);
                     }
 
                 });
@@ -1171,6 +1234,9 @@
                 if(res.data!=null && res.data.length>0){
                     //循环realTime规则
                     for (let i = 0; i < res.data.length; i++) {
+                        //bRealTimeLineIsNull == false 说明此时存在真实line
+                        bRealTimeLineIsNull = true;
+
                         tableConfig.push(res.data[i].Config);
                         arrChartID =[];
                         //渲染xbar chart组 class col-lg
@@ -1252,8 +1318,6 @@
                             <!--     chart data  parts   end       -->
                             <!-- ------------------------------ -->
                         }
-
-
                         //del
                         //lChartHtml1.deleteBuffer();
                         lChartHtml1.innerHTML = '';
@@ -1280,13 +1344,63 @@
 
                     }
                     //渲染cpnfig页面
-                    showRealTimeTableConfig(tableConfig);
+                    //showRealTimeTableConfig(tableConfig);
+                    refreshRealTimeTableConfig(tableConfig);
+                    //refreshRealTimeTableConfig(tableConfig);
+                }
+                else{
+                    //渲染xbar chart组 class col-lg
+                    lgCount = 14 ;
+                    lIdName = "realTime-xbar-chart";
+                    lcollgIdName ="col-lg-chart";
+                    //创建chart Html
+                    let lChartHtml1 = $('<div class="col-lg-'+lgCount+'"></div>')
+                        .attr("id",lcollgIdName)
+                        .append($('<div style="min-height: 13vh; height: 13vh; margin: 0 auto;width:100%"></div>')
+                            .attr("id",lIdName));
+                    lChartHtml1.appendTo($('#chartContent'));
+
+                    arrChartID.push(lIdName);  //push idName chart数组
+                    //r chart组 class col-lg
+                    lIdName = "realTime-r-chart-";
+                    let lChartHtml2 = $('<div style="min-height: 13vh; height: 13vh; margin: 0 auto;width:100%"></div>')
+                        .attr("id",lIdName);
+                    lChartHtml2.appendTo($('#'+lcollgIdName+''));
+                    arrChartID.push(lIdName);//push idName chart数组
+                    //A chart组 class col-lg
+                    lIdName = "realTime-a-chart-";
+                    let lChartHtml3 = $('<div style="min-height: 13vh; height: 13vh; margin: 0 auto;width:100%"></div>')
+                        .attr("id",lIdName);
+                    lChartHtml3.appendTo($('#'+lcollgIdName+''));
+                    arrChartID.push(lIdName);//push idName chart数组
+                    //cpk chart组 class col-lg
+                    lIdName = "realTime-cpk-chart-";
+                    let lChartHtml4 = $('<div style="min-height: 13vh; height: 13vh; margin: 0 auto;width:100%"></div>')
+                        .attr("id",lIdName);
+                    lChartHtml4.appendTo($('#'+lcollgIdName+''));
+                    arrChartID.push(lIdName);//push idName chart数组
 
 
-                }else{
+                    //创建chart table Html
+                    lIdName = "realTime-table-chart";
+                    lcollgIdName = "col-lg-table-chart";
+                    let lChartHtml5 = $('<div class="col-lg-'+lgCount+'"></div>')
+                        .attr("id",lcollgIdName)
+                        .append($('<div style="min-height: 13vh; height: 13vh; margin: 0 auto;width:100%"></div>')
+                            .attr("id",lIdName));
+                    lChartHtml5.appendTo($('#chartTable'));
+                    //渲染cpnfig页面
+                    tableConfig = [];
+
                     //接收socket为空 返回空图表数据;
+                    //渲染 chart图表
+                    showCharts(xbarData,rData,afData,CPKData,arrChartID,tableConfig);
 
+                    //渲染 table图表
+                    showRealTimeTableData([],lIdName);
 
+                    refreshRealTimeTableConfig([]);
+                    //refreshRealTimeTableConfig(tableConfig);
 
                 }
 
@@ -1398,13 +1512,22 @@
             //通过line数组个数来遍历 异步调用客户端c#服务
             function asyncCallCSHapeSocket(){
 
+                var iScount = 0;
                 $('#realTime-line-group button').each(function(index,element){
                     //如果线体后台设置开启则执行
                     if(bIsLineOpened(this.innerHTML)) {
+                        iScount++;
                         getRealTimeInfoByCShapeSocket(this.innerHTML);
                         //console.log(index+'--'+this.innerHTML);
                     }
                 });
+
+                //如果线体都没有打开默认刷新空数据图表
+                if(iScount==0){
+
+                    interfaceRendering({data:[]});
+                }
+
 
             }
 
@@ -1413,21 +1536,28 @@
                 lineNo = AlineNo;
                 //localstoage赋值lineNo
                 localStorage.setItem('lineNo',lineNo);
+                //addActiveWithLine(AlineNo);
                 //遍历线体 改变class 状态
                 $('#realTime-line-group button').each(function(index,element){
-                    if(this.innerHTML == AlineNo){
+                    if(this.innerHTML === AlineNo){
                         addActiveWithLine(AlineNo);
                     }else{
-                        removeActiveWithLine(AlineNo);
+                        removeActiveWithLine(this.innerHTML);
                     }
+                    /*if(this.innerHTML != AlineNo){
+                        removeActiveWithLine(this.innerHTML);
+                    }*/
                 });
                 //刷新situation config chart table
                 refreshRealTimeTableSituation();
-                showRealTimeLineListButton();
-                /*if (bIsLineOpened(AlineNo)) {
-                    getRealTimeInfoByCShapeSocket(lineNo);
 
-                }*/
+                //asyncCallCSHapeSocket();
+
+               // showRealTimeLineListButton();
+                //if (bIsLineOpened(AlineNo)) {
+                getRealTimeInfoByCShapeSocket(AlineNo);
+
+                //}
 
             }
 
@@ -1494,8 +1624,8 @@
                                     .append(
                                         $('<span></span>').addClass('glyphicon glyphicon-calendar')
                                     ).append(
-                                        $('<input style="line-height: 16px;height: 16px;border: 1px #c9cdc3 solid" size="16" type="text" readonly id="'+lineStartTime+'" /> -' +
-                                            '<input style="line-height: 16px;height: 16px;border: 1px #c9cdc3 solid" size="16" type="text" readonly id= "'+lineEndTime+'" />')
+                                        $('<input style="line-height: 16px;height: 16px;border: 1px #c9cdc3 solid" size="16" type="text" readonly id="'+lineStartTime+'" /> - ' +
+                                            '<input style="line-height: 16px;height: 16px;border: 1px #c9cdc3 solid" size="16" type="text" readonly id= "'+lineEndTime+'" /> ')
                                     ).append(
                                         $('<input class="toggle-switch" type="checkbox" >').attr('id',lineChecked).attr('value',lineChecked)
                                     ).append(
@@ -1534,7 +1664,7 @@
                                 if(localStorage.getItem(lineEndTime)!=null){
                                     $("#"+lineEndTime).val(localStorage.getItem(lineEndTime)) ;
                                 }else{
-                                    $("#"+lineEndTime).val(dateFomate( new Date(new Date().getDate()+2),'yyyy-MM-dd HH:mm:ss' ));
+                                    $("#"+lineEndTime).val(dateFomate( new Date(new Date().getTime() + 48 * 60 * 60 * 1000),'yyyy-MM-dd HH:mm:ss' ));
                                 }
                                 if(localStorage.getItem(lineChecked) !=null){
                                     if(localStorage.getItem(lineChecked) !='1'){
@@ -1566,6 +1696,9 @@
 
             //元素被选中方法
             function addActiveWithLine(ALineNo){
+                if($('#line-button-'+ALineNo).hasClass('active')){
+                    $('#line-button-'+ALineNo).removeClass('active');
+                }
                 $('#line-button-'+ALineNo).addClass('active');
                 //刷新div
                 //$('#line-button-'+ALineNo).load(location.href+'#line-button-'+ALineNo);
@@ -1612,13 +1745,107 @@
                 //打开定时任务
                 bIsStopTimeIntever =false;
                 refreshRealTimeTableSituation();
+                //getRealTimeInfoByCShapeSocket(lineNo);
                 showRealTimeLineListButton();
             }
 
+            //显示输入对策单
+            showSituationModel = function(data,elment){
+                //获取PCBIDS
+                 let pcbids = '';
+                 let pcbbarcodes = '';
+                 for (let j = 0; j < data.LstPCBData.length; j++) {
+                     pcbids+= data.LstPCBData[j].PCBIDs;
+                     pcbbarcodes+= data.LstPCBData[j].PCBBarcodes;
+                 }
+
+                $('#situation-name').html(data.RuleMessage);
+                $('#s_lineNo').val(data.Config.LineNo);
+                var dataa= dateFomate(new Date(data.Config.dtLastUpdateTime),'yyyy-MM-dd HH:mm:ss');
+                $('#s_DataTime').val( dateFomate(new Date(),'yyyy/MM/dd HH:mm:ss'));
+                $('#s_JobName').val(data.Config.JobName);
+
+                $('#s_PadGroup').val(data.Config.PadGroup);
+                $('#s_PCBIDs').val(pcbids);
+                $('#s_PCBBarcodes').val(pcbbarcodes);
+                $('#s_Rules').val(data.RuleMessage);
+                $('#s_FieldType').val(data.Config.Title);
+                $('#rule_pcbStartTime').val(data.LstPCBData[0].PCBStartTimes);
+
+
+                // show modal
+                $('#situationModal').modal({
+                    backdrop:'static',keyboard:false   //锁定界面
+                });
+                //alert(data.RuleMessage);
+
+            }
+
+            //提交对策策略
+            function updata_situation(){
+                $('#situationModal').modal('hide');
+                //提交后 定时任务打开 bIsStopTimeIntever
+                bIsStopTimeIntever = false;
+                $.ajax({
+                    url:"/sRealtimesituation/insertSituation",
+                    data:$('#situation-form').serialize(),
+                    //dataType:"application/x-www-form-urlencoded",
+                    type:"POST",
+                    beforeSend:function(){
+                    },
+                    success:function(data) {
+
+                        //获取线体号----
+                        let cLineNo = data.rows.lineNo;
+                     //提交成功后  1.报警按钮样式初始化运行状态  2.取消报警提示框  3.重复报警问题
+                    <!--  初始化报警button begin -->
+                        let $lineButtonID = $('#line-button-'+cLineNo);
+                        $lineButtonID.removeClass('btn-danger');
+                        $lineButtonID.removeClass('btn-default');
+                        $lineButtonID.addClass('btn-success');
+                        /*$lineButtonID.removeAttr('data-toggle');
+                        $lineButtonID.removeAttr('data-placement');
+                        $lineButtonID.removeAttr('data-content');
+                        $lineButtonID.removeAttr('data-html');*/
+                        $lineButtonID.popover('destroy');
+                        /*if($lineButtonID.hasClass('btn-danger')){
+                            $lineButtonID.removeClass('btn-danger');
+                            $lineButtonID.addClass('btn-success');
+                        }else if($lineButtonID.hasClass('btn-default')){
+                            $lineButtonID.removeClass('btn-default');
+                            $lineButtonID.addClass('btn-success');
+                        }*/
+                    <!--  初始化报警button end -->
+                    <!--  更新localStorage ruleStartTime begin-->
+                        localStorage.setItem('rulePcbStartTime_'+cLineNo,data.rows.remark3);
+                    <!--  更新localStorage ruleStartTime end-->
+
+
+                        refreshRealTimeTableSituation();
+                        if(data.success === true){
+                            alert('提交成功!');
+                        }else{
+                            alert('提交异常!线体号:'+data.rows);
+                        }
+
+                    },
+                    error:function (data) {
+                        alert(data.message);
+                    }
+                });
+
+
+
+
+            }
             //asyncCallCHapeSocket();
             //定时任务
             setInterval(refreshRealTimeTableSituation,1000*20);
             setInterval(showRealTimeLineListButton,1000*20);
+
+            $(function () {
+                $('[data-toggle="popover"]').popover();
+            });
 
     </script>
 </body>

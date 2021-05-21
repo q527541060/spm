@@ -106,7 +106,7 @@ public class SRealtimeautorefreshController {
         //if(false) {
             if (StringUtils.isEmpty(lineNo) == false) {
                 //String ip  = null;
-                SStatus sStatus = sStatusService.selectOne(Condition.create().eq("lineNo", lineNo).ge("updateTime", startTime).le("updateTime", endTime).last("limit 1"));
+                SStatus sStatus = sStatusService.selectOne(Condition.create().eq("lineNo", lineNo).ge("updateTime", startTime).le("updateTime", endTime).orderBy("updateTime",false).last("limit 1"));
                 if (sStatus != null) {
                     String ip = sStatus.getIpAddress();
                     String content = "{\"StartTime\":\"" + startTime + "\",\"EndTime\":\" " + endTime + " \"}";

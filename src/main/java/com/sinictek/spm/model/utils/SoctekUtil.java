@@ -59,7 +59,7 @@ public class SoctekUtil {
         //创建socket
         InetSocketAddress addr = new InetSocketAddress(ip, port);
         Socket sock = new Socket();
-        //sock.setSoTimeout(15000);
+        sock.setSoTimeout(6000);   //6s超时
         //连接服务器
         sock.connect(addr);
         //获得输入输出流
