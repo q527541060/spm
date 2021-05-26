@@ -55,6 +55,10 @@ public  class ConstParam {
      * autoDeleteMaxDays 自动删除设置最大天数
      */
     public static int DEFAULTSETTING_autoDeleteMaxDays=0;
+    /**
+     * autoDeleteMaxMonth 自动删除设置保存月数
+     */
+    //public static int DEFAULTSETTING_autoDeleteMaxMonth=0;
 
     /**
      * hChartColor  表格图背景主题

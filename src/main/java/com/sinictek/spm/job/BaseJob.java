@@ -1,15 +1,20 @@
 package com.sinictek.spm.job;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.sinictek.spm.api.SDefaultsettingController;
 import com.sinictek.spm.api.SStatusController;
+import com.sinictek.spm.model.APcb;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.model.SJob;
+import com.sinictek.spm.model.SPcb;
 import com.sinictek.spm.model.utils.StringTimeUtils;
 import com.sinictek.spm.service.*;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +26,7 @@ import java.util.List;
  *  多任务执行类
  */
 @Component
+@Log4j2
 public class BaseJob {
 
     @Autowired
@@ -32,14 +38,24 @@ public class BaseJob {
     @Autowired
     SStatusService sStatusService;
 
+    @Autowired
+    APcbService aPcbService;
+
+    @Autowired
+    AComponentService aComponentService;
+
+    @Autowired
+    AStatusService aStatusService;
+
     /*@Scheduled(cron = "0/2 * * * * *")
-    public void doJob(){
-        System.out.println("springboot thread job..." + new Date());
-    }
-    @Scheduled(cron = "0/2 * * * * *")
-    public void doLine(){
-        System.out.println("springboot thread line..."+new Date());
-    }*/
+     *")
+        public void doJob(){
+            System.out.println("springboot thread job..." + new Date());
+        }
+        @Scheduled(cron = "0/2 * * * * *")
+        public void doLine(){
+            System.out.println("springboot thread line..."+new Date());
+        }*/
     @Scheduled(cron = "0 0 0/1 * * ?")
     public void doGc(){
         //System.out.println("----------------GC-------------");
@@ -112,37 +128,68 @@ public class BaseJob {
     /***
      * 自动删除  删除多少天数据
      */
+    //@Scheduled(cron = "0 0 0/1 * * ?")
+    //@Scheduled(cron = "0/15 * * * * *")
     @Scheduled(cron = "0 0 0/1 * * ?")
     public void doDeleteData(){
-        //System.out.println("大哥这是自动删除:"+ConstParam.DEFAULTSETTING_autoDelete+"");
-            /*if(ConstParam.DEFAULTSETTING_autoDeleteDays==0){
-                ConstParam.DEFAULTSETTING_autoDeleteDays=35;
-            }*/
-            //如果系统自启动 数据库获取参数值
-            if(ConstParam.DEFAULTSETTING_autoDeleteDays==0){
-                ConstController.constController.iniDefaultParamSetting();
-                /*SStatusController sStatusController = new SStatusController();
-                sStatusController.iniDefaultParamSetting();*/
-            }
+        /*if(ConstParam.DEFAULTSETTING_autoDeleteDays==0){
+            ConstParam.DEFAULTSETTING_autoDeleteDays=35;
+        }*/
+        //如果系统自启动 数据库获取参数值
+        if(ConstParam.DEFAULTSETTING_autoDeleteDays==0){
+            ConstController.constController.iniDefaultParamSetting();
+            /*SStatusController sStatusController = new SStatusController();
+            sStatusController.iniDefaultParamSetting();*/
+        }
+        //String createDateNow =   StringTimeUtils.addDataStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_autoDeleteDays) ;
         if(ConstParam.DEFAULTSETTING_autoDelete == 1){
-            //String endTime = StringTimeUtils.getTimeDateToString(new Date());
-            String startTime = StringTimeUtils.addHourTimeStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_autoDeleteDays*24);
-            //String[]  strDateTime = startTime.split(" ");
-            String strPadSqlName="";
-            //System.out.println(new Date()+"---开始delete焊盘");
-            for (int i = 1; i <ConstParam.DEFAULTSETTING_autoDeleteMaxDays; i++) {
-                //拿到pad 表名
-                strPadSqlName = "s_pad_"+ StringTimeUtils.addDataStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_autoDeleteDays-i);
-                //drop pad
-                sPadService.deletePadTableWithName(strPadSqlName);
+            //int iMonthNow = new Date().getMonth()+1;
+            //String tmpMonth = (new Date().getMonth()+1)+"";
+            //String sMonth = tmpMonth.length()>1?tmpMonth:"0"+tmpMonth;
+            //int iSettingMaxMonth = ConstParam.DEFAULTSETTING_autoDeleteDays;
+            if(ConstParam.DEFAULTSETTING_autoDeleteDays>0){
+
+                //获取时间区间
+                String startDeleteTime =  StringTimeUtils.addDataStrNow(Calendar.getInstance(),-ConstParam.DEFAULTSETTING_autoDeleteDays);
+                log.info("delete start------------------dateTime"+startDeleteTime);
+                //do spi delete pcb集合
+                List<SPcb> sPcbList = sPcbService.selectList(Condition.create().lt("inspectStarttime",startDeleteTime).last("limit 10000"));
+                if(sPcbList!=null && sPcbList.size()>0){
+                    String create_time_spi = "";
+                    for (int i = 0; i < sPcbList.size(); i++) {
+                        create_time_spi = sPcbList.get(i).getCreate_time();
+                        if(StringUtils.isEmpty(create_time_spi)){
+                            continue;
+                        }
+                        sPcbService.delete(Condition.create().eq("create_time",create_time_spi));
+                        sPadService.delete(Condition.create().eq("create_time",create_time_spi));
+                        sStatusService.delete(Condition.create().eq("create_time",create_time_spi));
+                    }
+                }
+
+                //do aoi delete pcb集合
+                List<APcb> aPcbList = aPcbService.selectList(Condition.create().lt("inspectStarttime",startDeleteTime).last("limit 10000"));
+                if(aPcbList!=null && aPcbList.size()>0){
+                    String create_time_aoi = "";
+                    for (int i = 0; i < aPcbList.size(); i++) {
+                        create_time_aoi = aPcbList.get(i).getCreate_time();
+                        if(StringUtils.isEmpty(create_time_aoi)){
+                            continue;
+                        }
+                        aPcbService.delete(Condition.create().eq("create_time",create_time_aoi));
+                        aComponentService.delete(Condition.create().eq("create_time",create_time_aoi));
+                        aStatusService.delete(Condition.create().eq("create_time",create_time_aoi));
+                    }
+                }
+
+                log.info("delete end------------------spi pcb count:"+sPcbList.size()+ "----------------aoi pcb count: "+aPcbList.size());
+
+                sPcbList = null;
+                aPcbList = null;
             }
-            //System.out.println(new Date()+"---结束delete焊盘");
-            sPcbService.delete(Condition.create().lt("inspectStarttime",startTime).last("limit 3000") );//..and("1=1  LIMIT 1")
-            sStatusService.delete(Condition.create().lt("updateTime",startTime).last("limit 3000") );
-            //ystem.out.println(bTure);
+
 
         }
-
     }
 
 }

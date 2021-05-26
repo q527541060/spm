@@ -4,17 +4,13 @@ package com.sinictek.spm.api;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.sinictek.spm.annotation.LoginToken;
-import com.sinictek.spm.model.ALine;
+import com.sinictek.spm.model.*;
 import com.sinictek.spm.model.ConstClasses.ConstController;
 import com.sinictek.spm.model.ConstClasses.ConstParam;
 import com.sinictek.spm.model.ConstClasses.ConstPublicClassUtil;
-import com.sinictek.spm.model.SDefaultsetting;
-import com.sinictek.spm.model.SLine;
 import com.sinictek.spm.model.apiResponse.ApiResponse;
 import com.sinictek.spm.model.utils.StringTimeUtils;
-import com.sinictek.spm.service.ALineService;
-import com.sinictek.spm.service.SDefaultsettingService;
-import com.sinictek.spm.service.SLineService;
+import com.sinictek.spm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +43,23 @@ public class SDefaultsettingController {
     @Autowired
     ALineService aLineService;
 
+    @Autowired
+    SPcbService sPcbService;
 
+    @Autowired
+    SPadService sPadService;
+
+    @Autowired
+    SStatusService sStatusService;
+
+    @Autowired
+    APcbService aPcbService;
+
+    @Autowired
+    AComponentService aComponentService;
+
+    @Autowired
+    AStatusService aStatusService;
 
     @GetMapping("setting")
     public ModelAndView showSetting(){
@@ -162,12 +174,45 @@ public class SDefaultsettingController {
 
     @ResponseBody
     @GetMapping("deleteLineSetting")
-    public ApiResponse deleteSettingLine(@RequestParam("id") Long id,@RequestParam("mode")Integer mode){
+    public ApiResponse deleteSettingLine(@RequestParam("id") Long id,@RequestParam("mode")Integer mode,@RequestParam("dlineNo")String lineNo){
         boolean bIsSuccess = false;
         if(mode==1){
             bIsSuccess = sLineService.deleteById(id);
+
+            //清空SPI线体数据!
+            List<SPcb> sPcbList = sPcbService.selectList(Condition.create().lt("lineNo",lineNo));
+            if(sPcbList!=null && sPcbList.size()>0){
+                String create_time_spi = "";
+                for (int i = 0; i < sPcbList.size(); i++) {
+                    create_time_spi = sPcbList.get(i).getCreate_time();
+                    if(StringUtils.isEmpty(create_time_spi)){
+                        continue;
+                    }
+                    sPcbService.delete(Condition.create().eq("create_time",create_time_spi));
+                    sPadService.delete(Condition.create().eq("create_time",create_time_spi));
+                    sStatusService.delete(Condition.create().eq("create_time",create_time_spi));
+                    //sPadService.up
+                }
+            }
+
+
         }else{
             bIsSuccess = aLineService.deleteById(id);
+
+            //清空AOI线体数据
+            List<APcb> aPcbList = aPcbService.selectList(Condition.create().lt("lineNo",lineNo));
+            if(aPcbList!=null && aPcbList.size()>0){
+                String create_time_aoi = "";
+                for (int i = 0; i < aPcbList.size(); i++) {
+                    create_time_aoi = aPcbList.get(i).getCreate_time();
+                    if(StringUtils.isEmpty(create_time_aoi)){
+                        continue;
+                    }
+                    aPcbService.delete(Condition.create().eq("create_time",create_time_aoi));
+                    aComponentService.delete(Condition.create().eq("create_time",create_time_aoi));
+                    aStatusService.delete(Condition.create().eq("create_time",create_time_aoi));
+                }
+            }
         }
 
         if (bIsSuccess){

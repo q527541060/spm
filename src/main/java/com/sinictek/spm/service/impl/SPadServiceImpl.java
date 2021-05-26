@@ -38,4 +38,10 @@ public class SPadServiceImpl extends ServiceImpl<SPadMapper, SPad> implements SP
     public void deletePadTableWithName(String padTableName) {
          sPadMapper.deletePadTableWithName(padTableName);
     }
+
+    @Override
+    public void truncateDataBaseWithBaseName(String baseName) {
+        sPadMapper.truncateDataBaseWithBaseName(baseName);
+    }
+
 }

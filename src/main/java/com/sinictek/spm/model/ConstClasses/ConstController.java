@@ -1,5 +1,6 @@
 package com.sinictek.spm.model.ConstClasses;
 
+import com.baomidou.mybatisplus.mapper.Condition;
 import com.sinictek.spm.model.SDefaultsetting;
 import com.sinictek.spm.service.SDefaultsettingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class ConstController {
                 ConstParam.DEFAULTSETTING_boardViewChartMove==0||
                 ConstParam.DEFAULTSETTING_showPad2DImageMode==0
         ){
-            List<SDefaultsetting> lstDefaultSetting = constController.sDefaultsettingService.selectList(null);
+            List<SDefaultsetting> lstDefaultSetting = constController.sDefaultsettingService.selectList(Condition.create().eq("create_time","21000101"));
             if(lstDefaultSetting!=null&&lstDefaultSetting.size()>0){
                 for (int i = 0; i < lstDefaultSetting.size(); i++) {
                     String strSettingName=lstDefaultSetting.get(i).getSettingName(),strSettingValue=lstDefaultSetting.get(i).getSettingValue();

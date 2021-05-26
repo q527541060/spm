@@ -230,7 +230,7 @@
                 _mode=1;
                 var lineId = row.id;
                 if(confirm("确定删除吗?   删除后线体["+row.lineNo+"]的所有数据将清空!")){
-                    delete_SettingLine(lineId);
+                    delete_SettingLine(lineId,row.lineNo);
                 }else{
                     alert('取消删除!');
                 }
@@ -251,7 +251,7 @@
                 _mode=2;
                 var lineId = row.id;
                 if(confirm("确定删除吗?   删除后线体["+row.lineNo+"]的所有数据将清空!")){
-                    delete_SettingLine(lineId);
+                    delete_SettingLine(lineId,row.lineNo);
                 }else{
                     alert('取消删除!');
                 }
@@ -643,10 +643,10 @@
 
 
         }
-        function delete_SettingLine(lineId) {
+        function delete_SettingLine(lineId,lineno) {
             $.ajax({
                 url:"/sDefaultsetting/deleteLineSetting",
-                data:{id:lineId,mode:_mode},
+                data:{id:lineId,mode:_mode,dlineNo:lineno},
                 type:"GET",
                 beforeSend:function(){
                 },
